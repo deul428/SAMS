@@ -1,20 +1,32 @@
 import { useEffect } from "react";
-import axios, { formToJSON } from 'axios';
+import axios from 'axios';
 import { useState } from "react";
 import { Form, Button, Table } from "react-bootstrap";
 const Api = () => {
-    // Get (요청)
     // useEffect는 랜더링 이후에 실행됨. -> UI  업데이트 후 데이터를 가지고 오는 비동기 작업 처리.
     // 변경 값 빈 배열: 컴포넌트가 처음 렌더링 시 한 번만 실행됨. 이 의존성 배열에 값이 있을 경우 해당 값 변경 시마다 useEffect 훅 다시 실행됨.
+
     // axios 요청: 서버로 비동기 요청을 보냄.
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-
     const [userInput, setUserInput] = useState('');
-    // console.log(userInput);
+    
+    // axios 인스턴스 생성
+    const api = axios.create({
+        baseURL:"http://127.0.0.1:8000/",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+
+    const endpoint = {
+        bizOpp: 'api/resource1/',
+        activity: 'api/resource2/',
+    }
+        
+    // R
     const f_getDataBizOpp = () => {
-        axios
-        .get('http://127.0.0.1:8000/api/data')
+        api.get(endpoint.bizOpp)
         .then(response => {
             console.log(`f_getDataBizOpp DB Data: ${JSON.stringify(response.data)}`);
             setData(response.data);
@@ -25,13 +37,13 @@ const Api = () => {
         })
     };
     
+    // C
     const f_postDataBizOpp = () => {
         if (!userInput) {
             (console.log(`user input is Null or ''.`))
             return;
         }
-        axios
-        .post('http://127.0.0.1:8000/api/data/post/', { name: userInput })
+        api.post(endpoint.bizOpp, { name: userInput })
         .then(() => {
             console.log(`PostData User Input Data: ${userInput}`);
             f_getDataBizOpp();
@@ -43,6 +55,28 @@ const Api = () => {
             f_getDataBizOpp();
         });
 
+    }
+
+    // U - 일부 업데이트. 객체의 일부 값 대체.
+    const f_patchDataBizOpp = () => {
+        api.patch(endpoint.bizOpp, {name: userInput})
+        .then({
+
+        })
+        .catch({
+
+        });
+    }
+
+    // U - 전체 업데이트. 객체의 모든 값 대체.
+    const f_putDataBizOpp = () => {
+        api.put(endpoint.bizOpp, {name: userInput})
+        .then({
+
+        })
+        .catch({
+
+        });
     }
     useEffect(() => {
         f_getDataBizOpp();

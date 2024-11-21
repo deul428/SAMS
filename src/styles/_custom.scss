@@ -1,0 +1,25 @@
+@import './global';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/maps';
+// bootstrap의 기본 스타일 custom file
+// $theme-colors: (
+//   'primary': $point-color,
+// );
+$font-size-base: 2rem;
+h1{ font-size: $font-size-base !important; }
+$theme-colors: map-merge(
+  $theme-colors,
+  (
+    'primary': $point-color,
+  )
+);
+.btn-primary {
+  color: #fff !important;
+}
+#root .form-control {
+  // width: 80%;
+} 
+
+
+@import '~bootstrap/scss/bootstrap';

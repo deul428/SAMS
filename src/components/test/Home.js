@@ -7,7 +7,7 @@ export function Home() {
     const dispatch = useDispatch();
     console.log(`AuthHome.js: ${JSON.stringify(auth)}`);
     return (
-        <div className='wrap'>
+        <div>
             {auth.isLoggedIn1 ?
                 (
                     <div>

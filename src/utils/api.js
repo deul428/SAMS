@@ -1,137 +1,48 @@
-import { useEffect } from "react";
 import axios from 'axios';
-import { useState } from "react";
-import { Form, Button, Table } from "react-bootstrap";
-const Api = () => {
-    // useEffect는 랜더링 이후에 실행됨. -> UI  업데이트 후 데이터를 가지고 오는 비동기 작업 처리.
+
+// 데이터 흐름: 사용자가 특정 트리거(예: 버튼 클릭)를 통해 API 요청을 보내면, 컴포넌트에서 api.js의 공통 모듈을 호출하여 요청을 처리하는 방식
+// 컴포넌트에서 사용하는 useEffect 훅: useEffect는 랜더링 이후에 실행됨. -> UI  업데이트 후 데이터를 가지고 오는 비동기 작업 처리.
     // 변경 값 빈 배열: 컴포넌트가 처음 렌더링 시 한 번만 실행됨. 이 의존성 배열에 값이 있을 경우 해당 값 변경 시마다 useEffect 훅 다시 실행됨.
 
-    // axios 요청: 서버로 비동기 요청을 보냄.
-    const [data, setData] = useState([]);
-    const [errMsg, setErrMsg] = useState('');
-    const [userInput, setUserInput] = useState('');
-    
-    // axios 인스턴스 생성
-    const api = axios.create({
-        baseURL:"http://127.0.0.1:8000/",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
+// axios 인스턴스 생성
+const apiUrl = axios.create({
+    baseURL:"http://192.10.100.100:8000/",
+    headers: {
+        'Content-Type': 'application/json',
+    },
+})
 
-    const endpoint = {
-        bizOpp: 'api/resource1/',
-        activity: 'api/resource2/',
-    }
-        
-    // R
-    const f_getDataBizOpp = () => {
-        api.get(endpoint.bizOpp)
-        .then(response => {
-            console.log(`f_getDataBizOpp DB Data: ${JSON.stringify(response.data)}`);
-            setData(response.data);
-        })
-        .catch(error => {
-            setErrMsg(`f_getDataBizOpp error! ${error.message}`);
-            alert(`f_getDataBizOpp error! ${error.message}`);
-        })
-    };
-    
-    // C
-    const f_postDataBizOpp = () => {
-        if (!userInput) {
-            (console.log(`user input is Null or ''.`))
-            return;
-        }
-        api.post(endpoint.bizOpp, { name: userInput })
-        .then(() => {
-            console.log(`PostData User Input Data: ${userInput}`);
-            f_getDataBizOpp();
-            setUserInput('');
-        })
-        .catch(error => {
-            setErrMsg(`PostData error! ${error.message}`);
-            alert(`PostData error! ${error.message}`);
-            f_getDataBizOpp();
-        });
-
-    }
-
-    // U - 일부 업데이트. 객체의 일부 값 대체.
-    const f_patchDataBizOpp = () => {
-        api.patch(endpoint.bizOpp, {name: userInput})
-        .then({
-
-        })
-        .catch({
-
-        });
-    }
-
-    // U - 전체 업데이트. 객체의 모든 값 대체.
-    const f_putDataBizOpp = () => {
-        api.put(endpoint.bizOpp, {name: userInput})
-        .then({
-
-        })
-        .catch({
-
-        });
-    }
-    useEffect(() => {
-        f_getDataBizOpp();
-    }, []);
-    
-
-    return (
-        <div className="dataPostArea">
-            <Form.Control type="text" placeholder="이름을 입력하세요." value={userInput} onChange={e => setUserInput(e.target.value)}/>
-            <Button onClick={f_postDataBizOpp}>Click</Button>
-            {errMsg ? 
-            (<p>{errMsg}</p>) 
-            :   (
-                <div>
-                    <h1>DataPosts.js</h1>
-                    {data.map((e) => 
-                    <p>{`키 ${Object.keys(e)}와 밸류 ${Object.values(e)}`}</p>)}
-
-                    <h2>1. 객체 그대로 출력</h2>
-                    {data.map((e) => 
-                    (<p className={e.id} key={e.id}>{JSON.stringify(e)}</p>
-                    ))}
-
-                    <h2>2. 객체의 키-값 쌍을 분해해서 출력 - Object.entries(): 객체의 &#123;key:value&#124; 형식을 배열 형태의 [key, value]로 변환해 줌.</h2>
-                    {data.map((e) => (
-                        <div className={e.id} key={e.id}>
-                            {Object.entries(e).map(([key, value]) => (
-                                <p key={key}>{`key: ${key}, value: ${value}`}</p>
-                            ))}
-                        </div>
-                    ))}
-
-                    
-                    <h2>3. 객체의 키-값 쌍을 분해해서 테이블 형태로 출력</h2>
-                    {data.map((e) => (
-                        <Table striped="columns" bordered hover className={e.id} key={e.id}>
-                            <thead>
-                                <tr><th colSpan={2}>{e.id}</th></tr>
-                            </thead>
-                            <tbody>
-                                {Object.entries(e).map(([key, value]) => (
-                                    <tr key={key}>
-                                        <th>{`key: ${key}`}</th>
-                                        <td>{`value: ${value}`}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                        
-                    ))} 
-                    {userInput}
-                </div>
-                )
-            }
-        </div>
-    )
+const endpoint = {
+    bizOpp: 'api/resource1/',
+    activity: 'api/resource2/',
 }
-export default Api;
+
+/*- HTTP method
+1. get
+    await api.request('get', url)
+2. post
+    await api.request('post', url, 새로 추가할 데이터)
+3. put
+    await api.request('put', url/params, 수정할 데이터)
+4. delete
+    await api.request('delete', url/params)
+-*/
+const api = {
+    request: async(method, url, data = null) => {
+        try {
+            const response = await apiUrl({
+                method, url, data
+            });
+            return response.data;
+        } catch (error) {
+            const errMsg = error.response?.data?.message || error.message;
+            console.error(`${method} ${url} Error! ${errMsg}`);
+            throw new Error(errMsg);
+        }
+    }
+}
+
+export const get = (url) => api.request('get', url);
+export const post = (url, data) => api.request('post', url, data);
+export const put = (url, data) => api.request('put', url, data);
+export const del = (url) => api.request('delete', url);

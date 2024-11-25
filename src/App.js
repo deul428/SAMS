@@ -27,7 +27,6 @@ function AppCntnt() {
               key={index} 
               path={`/${value.depth1}/${value.depth2}`} 
               element={<value.component />}
-              // element={<Auth><value.component /></Auth>} 
             />
           ))}
         </Routes>

@@ -9,6 +9,7 @@ import './App.scss';
 import AuthLogin from './components/Login';
 import Auth from './utils/Auth';
 import ExcelTable from './components/test/ExcelTable';
+import Tree_uiUsed_productManage from './components/test/Tree_uiUsed_productManage';
 function AppCntnt() {
   const location = useLocation();
   // const hiddenPaths = roots.map(route => `/${route.depth1[0]}`);
@@ -20,6 +21,7 @@ function AppCntnt() {
       <div id='cntntArea'>
         {!hiddenPaths.includes(location.pathname) && <MultiTabComponent />}
         {/* <ExcelTable></ExcelTable> */}
+        {/* <Tree_uiUsed_productManage></Tree_uiUsed_productManage> */}
         <Routes>
           <Route exact path='/' element={<AuthLogin />} />
           { roots.map((value, index) => (

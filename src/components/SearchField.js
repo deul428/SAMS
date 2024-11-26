@@ -2,6 +2,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
 import { useLocation } from 'react-router-dom';
 import roots from '../utils/datas/Roots';
+import { useEffect } from 'react';
 const SearchField = () => {
     const location = useLocation();
     let v_handlingHtml = '';
@@ -24,6 +25,13 @@ const SearchField = () => {
                         </Row> */}
 
                         <Row className="mb-3 align-items-center">
+                            <Col sm={4} className="d-flex align-items-center">
+                                <Form.Label className="me-2">계약 일자</Form.Label>
+                                FROM&nbsp;&nbsp;<Form.Control size='sm' type='date'/>
+                            </Col>
+                            <Col sm={3} className="d-flex align-items-center">
+                                TO&nbsp;&nbsp;<Form.Control size='sm' type='date'/>
+                            </Col>
                             <Col sm={4} className="d-flex align-items-center">
                                 <Form.Label className="me-2">매출 일자</Form.Label>
                                 FROM&nbsp;&nbsp;<Form.Control size='sm' type='date'/>

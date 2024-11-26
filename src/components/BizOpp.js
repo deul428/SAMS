@@ -12,7 +12,7 @@ const BizOpp = () => {
     // data: db data
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-    const endpoint = `api/user/`;
+    const endpoint = `select-biz-opp/`;
     /*-
     사업 (기회) ID	biz_opp_id
     사업 (기회)명	biz_opp_name
@@ -52,11 +52,39 @@ const BizOpp = () => {
     3. 서버 응답 객체에서 response.data를 추출하고 반환.
     4. get 함수가 response.data를 그대로 반환.
     -*/
-    const [input, setInput] = useState({
-        username: '', 
-        email: '', 
-        phone: '',
-    });
+    const p_bizopp = {
+        biz_opp_id: '',
+        biz_opp_name: '',
+        user_id: '',
+        change_preparation_dept_id: '',
+        change_preparation_dept_name: '',
+        last_client_com1_code: '',
+        last_client_com2_code: '',
+        sale_com1_code: '',
+        sale_com2_code: '',
+        contract_date: '',
+        progress1_rate: '',
+        progress2_rate: '',
+        sale_item_no: '',
+        sale_date: '',
+        sale_amt: '',
+        sale_profit: '',
+        purchase_date: '',
+        purchase_amt: '',
+        biz_section1_code: '',
+        biz_section2_code: '',
+        essential_achievement_tf: '',
+        product1_code: '',
+        product2_code: '',
+        create_user: '',
+        create_date: '',
+        update_user: '',
+        update_date: '',
+        delete_user: '',
+        delete_date: '',
+    }
+    const [input, setInput] = useState(p_bizopp);
+    
 
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
@@ -68,6 +96,7 @@ const BizOpp = () => {
 
     const f_handlingData = async (method, endpoint, input = null) => {
         try {
+            console.log(p_bizopp);
             const supportedMethods = ['get', 'post', 'put', 'patch', 'del'];
             if (!supportedMethods.includes(method)) {
                 throw new Error('Invalid method');

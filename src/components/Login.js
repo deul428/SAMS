@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 import { login } from '../redux/reducers/AuthSlice';
 import roots from '../utils/datas/Roots';
@@ -11,9 +12,19 @@ const AuthLogin = () => {
     const navigate = useNavigate(); // 페이지 이동에 사용
     const location = useLocation(); // 현재 경로 정보를 가져옴
     const dispatch = useDispatch(); // Redux 액션 호출에 사용
+    const [redirect, setRedirect] = useState(null);
+
+    useEffect(() => {
+        console.log("Redirect Path:", redirect);
+        if (redirect) {
+            navigate(redirect, { replace: true });
+        }
+    }, [redirect, navigate]);
+    
 
     // 유효값 체크 및 로그인 후 경로 리디렉션
-    const f_submitLoginData = (e) => {
+    // 11.26. 리디렉션 처리 안 되고 있으니 다시 확인해 보기.
+    const f_submitLoginData = async (e) => {
         e.preventDefault();
         let userId = document.getElementById('inputId').value;
         let userPw = document.getElementById('inputPw').value;
@@ -23,16 +34,13 @@ const AuthLogin = () => {
             alert(`아이디, 패스워드를 입력하세요.`);
             return;
         }
-        dispatch(login({userId1: userId, userPw1: userPw}));
+        await dispatch(login({userId1: userId, userPw1: userPw}));
 
         // 로그인 시 이전 경로로 리디렉션
         const from = location.state?.from?.pathname || '/biz-opp';
-        console.log(from);
-        
-        navigate(from, { replace: true });
+        setRedirect(from);
     } 
-
-
+    
 
     return (
         <div id='login' className='wrap'>

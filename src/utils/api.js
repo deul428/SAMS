@@ -5,9 +5,11 @@ import axios from 'axios';
     // 변경 값 빈 배열: 컴포넌트가 처음 렌더링 시 한 번만 실행됨. 이 의존성 배열에 값이 있을 경우 해당 값 변경 시마다 useEffect 훅 다시 실행됨.
 
 // axios 인스턴스 생성
-// baseURL:"http://192.10.100.100:8000/",
+
+// baseURL: "http://127.0.0.1:8000/",
+// 
 const apiUrl = axios.create({
-    baseURL: "http://127.0.0.1:8000/",
+    baseURL:"http://192.10.100.100:8000/",
     headers: {
         'Content-Type': 'application/json',
     },

@@ -5,16 +5,17 @@ import axios from 'axios';
     // 변경 값 빈 배열: 컴포넌트가 처음 렌더링 시 한 번만 실행됨. 이 의존성 배열에 값이 있을 경우 해당 값 변경 시마다 useEffect 훅 다시 실행됨.
 
 // axios 인스턴스 생성
+// baseURL:"http://192.10.100.100:8000/",
 const apiUrl = axios.create({
-    baseURL:"http://192.10.100.100:8000/",
+    baseURL: "http://127.0.0.1:8000/",
     headers: {
         'Content-Type': 'application/json',
     },
 })
 
 const endpoint = {
-    bizOpp: 'api/resource1/',
-    activity: 'api/resource2/',
+    bizOpp: 'api/user/',
+    // activity: 'api/resource2/',
 }
 
 /*- HTTP method
@@ -28,11 +29,16 @@ const endpoint = {
     await api.request('delete', url/params)
 -*/
 const api = {
-    request: async(method, url, data = null) => {
+    request: async (method, url, data = null) => {
         try {
-            const response = await apiUrl({
-                method, url, data
-            });
+            if (method === 'post' && Object.values(data).some(e => !e)) {
+                alert(`user input is Null or ''.`);
+                return;
+            };
+            if (method !== 'get') {
+                console.log(`Url: ${url} \nData: ${JSON.stringify(data, null, 2)}`);
+            }
+            const response = await apiUrl({ method, url, data });
             return response.data;
         } catch (error) {
             const errMsg = error.response?.data?.message || error.message;
@@ -42,7 +48,10 @@ const api = {
     }
 }
 
-export const get = (url) => api.request('get', url);
-export const post = (url, data) => api.request('post', url, data);
-export const put = (url, data) => api.request('put', url, data);
-export const del = (url) => api.request('delete', url);
+export const apiMethods = {
+    get: (url) => api.request('get', url),
+    post: (url, data) => api.request('post', url, data),
+    put: (url, data) => api.request('put', url, data),
+    patch: (url, data) => api.request('patch', url, data),
+    del: (url) => api.request('delete', url)
+};

@@ -4,12 +4,11 @@ import { Table, Form, Button, ButtonGroup, Container, Nav, Navbar, NavDropdown }
 import { Columns, Person } from 'react-bootstrap-icons';
 import SearchField from './SearchField';
 import MyTable from '../utils/Table.js';
-import { apiMethods } from '../utils/api.js';
+import { get, post, put, patch, del } from '../utils/api.js';
 import axios from 'axios';
 
 const BizOpp = () => {
     // Data Handling
-    // data: db data
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
     const endpoint = `api/user/`;
@@ -66,36 +65,55 @@ const BizOpp = () => {
         })
     }
 
-    const f_handlingData = async (method, endpoint, input = null) => {
+    const f_getData = async () => {
         try {
-            const supportedMethods = ['get', 'post', 'put', 'patch', 'del'];
-            if (!supportedMethods.includes(method)) {
-                throw new Error('Invalid method');
-            }
-    
-            // 상태 업데이트 여부를 결정
-            const isUpdateNeeded = ['post', 'put', 'patch', 'del'].includes(method);
-            console.log(isUpdateNeeded, endpoint);
-    
-            // API 호출
-            // apiMethods[method]에서의 [method]: 객체에 동적으로 접근하는 키. method 변수 값에 따라 객체에서 해당 키에 해당하는 값을 동적으로 갖고 온다. 
-            // 일반적으로 객체의 프로퍼티를 접근할 때에는 .을 사용하지만, 동적으로 키를 설정할 때에는 []를 사용한다.  apiMethods[method]는 apiMethods.특정method와 같은 의미이다.
-            const response = await apiMethods[method](endpoint, input);
-    
-            // 상태 업데이트: 데이터 갱신이 필요한 경우에만 호출
-            if (isUpdateNeeded) {
-                const updatedData = await apiMethods.get(endpoint);
-            } 
+            const response = await get(endpoint);
             setData(response);
-
-            return response;
         } catch (error) {
-            setErrMsg(`f_handlingData(${method}) error! ${error.message}`);
-            throw error;
+            setErrMsg(`f_getDataBizOpp error! ${error.message}`);
         }
     };
+     
+    const f_postData = async () => {
+        try {
+            const response = await post(endpoint, input);
+            f_getData();
+        }
+        catch (error) {
+            setErrMsg(`f_postData error! ${error.message}`);
+        }
+    };
+
+    // U - 전체 업데이트. 객체의 모든 값 대체. (보내지 않을 경우 null로 처리됨)
+    const f_putData = async () => {
+        try {
+            const response = await put(endpoint+'1/', input);
+            f_getData();
+        } catch (error) {
+            setErrMsg(`f_putData error! ${error.message}`);
+        }
+    };
+    // U - 일부 업데이트. 객체의 일부 값만 대체.
+    const f_patchData = async () => {
+        try {
+            const response = await patch(endpoint+'1/', {username: input.username});
+            f_getData();
+        } catch (error) {
+            setErrMsg(`f_patchData error! ${error.message}`);
+        }
+    };
+    // D - 삭제.
+    const f_delData = async () => {
+        try {
+            const response = await del(endpoint+'9/');
+            f_getData();
+        } catch (error) {
+            setErrMsg(`f_delData error! ${error.message}`);
+        }
+    }
+    
     useEffect(() => {
-        f_handlingData('get', endpoint);
+        f_getData();
     }, []);
 
     return (
@@ -109,12 +127,11 @@ const BizOpp = () => {
                     <Form.Control type="email" name="email" placeholder="email을 입력하세요." value={input.email} onChange={f_handlingInput}/>
                     <Form.Control type="tel" name="phone" placeholder="번호를 입력하세요." value={input.phone} onChange={f_handlingInput}/>
                     <div>
-                    <Button style={{ margin: '0 10px' }} variant='primary' onClick={() => f_handlingData('get', endpoint)}>Refresh</Button>
-                    <Button style={{ margin: '0 10px' }} variant='success' onClick={() => f_handlingData('post', endpoint, input)}>Post</Button>
-                    <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('put', endpoint, input)}>Put</Button>
-                    <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('patch', endpoint, input)}>Patch</Button>
-                    <Button style={{ margin: '0 10px' }} variant='danger' onClick={() => f_handlingData('del', endpoint)}>Delete</Button>
-
+                        <Button style={{margin: '0 10px'}} variant='primary' onClick={f_getData}>Refresh</Button>
+                        <Button style={{margin: '0 10px'}} variant='success' onClick={f_postData}>Post</Button>
+                        <Button style={{margin: '0 10px'}} variant='warning' onClick={f_putData}>Put</Button>
+                        <Button style={{margin: '0 10px'}} variant='warning' onClick={f_patchData}>Patch</Button>
+                        <Button style={{margin: '0 10px'}} variant='danger' onClick={f_delData}>Delete</Button>
                     </div>
                     {errMsg ? 
                     (<p>{errMsg}</p>) 

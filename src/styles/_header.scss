@@ -1,0 +1,66 @@
+#root nav#header {
+    width: 18%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0;
+    z-index: 998;
+    .container {
+        margin: 5% 0;
+        height: 90%;
+        padding: 0;
+        flex-direction: column;
+        div.brand {
+            width: $full;
+            text-align: center;
+            img.ci {
+                width: 90%;
+            }
+        }
+        div.navbar-nav.navMenu {
+            width: 62%;
+            justify-content: space-evenly;
+            flex-direction: column;
+            a {
+                font-size: 1.2rem;
+                font-weight: 500;
+                color: $primary-color;
+                &.active, &:hover {
+                    color: #fff; 
+                    background-color: #007bff;
+                    border-radius: 5px; 
+                }
+                &.disabled, &.disabled * {
+                    color: $primary-color !important;
+                }
+                &.menus {
+                    margin: 5% 0;
+                }
+                > a {
+                    margin-left: 5%;
+                    font-size: 1rem;
+                }
+            }
+        }
+        
+        div.loginInfoArea {
+            text-align: right;
+            div.btn-group.btnLoginInfo {
+                border-color: #007bff;
+                button.btn {
+                    color: white;
+                    &.btnUserId {
+                        pointer-events: none;
+                        .bi-person {
+                            font-size: 1.2rem;
+                            margin-top: -0.5%;
+                        }
+                    }
+                    &.btnLogout {}
+                }
+            }
+        }
+        
+    }
+}

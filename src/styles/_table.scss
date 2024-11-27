@@ -1,0 +1,26 @@
+table {
+    font-size: 0.75rem;
+    thead {
+        th {
+            vertical-align: middle;
+            cursor: default;
+        }
+    }
+    tbody {
+        tr {
+            td {
+                vertical-align: middle;
+                padding: 0.1rem 0.4rem !important;
+            }
+            th, td {
+    
+            }
+        }
+        
+        
+        button.btn.light {
+            // font-size: 0.75rem;
+        }
+    }
+    
+}

@@ -7,6 +7,7 @@
 //   'primary': $point-color,
 // );
 $font-size-base: 2rem;
+
 h1{ font-size: $font-size-base !important; }
 $theme-colors: map-merge(
   $theme-colors,
@@ -16,6 +17,21 @@ $theme-colors: map-merge(
 );
 .btn-primary {
   color: #fff !important;
+}
+
+.table {
+  // --#{$prefix}table-bg: pink !important;
+  tr:hover {
+    cursor: pointer;
+  }
+  th, td {
+    white-space: nowrap;
+    text-align: center;
+  }
+  th {
+    background-color: $point-color !important;
+    color: white !important;
+  }
 }
 #root .form-control {
   // width: 80%;

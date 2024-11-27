@@ -17,7 +17,7 @@ $point-color: #1a8ef3;
 h1 { 
     // fontSize 2.5rem
     font-weight: 700;
-    text-align: left;
+    text-align: center;
 }
 h2 {
     // fontSize 2rem, 기본 heading 값
@@ -33,7 +33,7 @@ h3 {
 h4 {
     font-size: 1rem;
 }
-h5 {
+h5, button.btn-sm {
     font-size: 0.75rem;
 }
 // #1a8ef3
@@ -103,11 +103,6 @@ body {
         // }
     }
 
-    .btnLeft {
-        float: right;
-        position: absolute;
-        // top: 2.5%;
-        right: 2.5%;
-    }
+    
 }
 

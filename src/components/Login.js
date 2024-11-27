@@ -60,12 +60,13 @@ const AuthLogin = () => {
                             <Form.Control type='password' placeholder='Password' id='inputPw' />
                         </FloatingLabel>
                         <Form.Text id='passwordHelpBlock' muted>
-                            영문과 숫자를 조합하여 5~20자리 비밀번호를 입력해 주십시오.
+                            영문, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 미포함)
                         </Form.Text>
                     </div>
-                    <Button type='submit' variant='primary' onClick={f_submitLoginData}>확인</Button>
+                    <Button type='submit' variant='primary' onClick={f_submitLoginData}>로그인</Button>
                 </form>
                 {/* react에서는 input-label을 이을 때 label id 값이 아닌 htmlFor를 사용한다. */}
+                {/* 최초 로그인 여부 true이면 비밀번호 변경 팝업 */}
             </div>
         </div>
     );

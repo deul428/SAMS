@@ -25,18 +25,18 @@ const SearchField = () => {
                         </Row> */}
 
                         <Row className="mb-3 align-items-center">
-                            <Col sm={4} className="d-flex align-items-center">
+                            <Col sm={3} className="d-flex align-items-center">
                                 <Form.Label className="me-2">계약 일자</Form.Label>
                                 FROM&nbsp;&nbsp;<Form.Control size='sm' type='date'/>
                             </Col>
-                            <Col sm={3} className="d-flex align-items-center">
+                            <Col sm={2} className="d-flex align-items-center">
                                 TO&nbsp;&nbsp;<Form.Control size='sm' type='date'/>
                             </Col>
-                            <Col sm={4} className="d-flex align-items-center">
+                            <Col sm={3} className="d-flex align-items-center" style={{marginLeft: "2%"}}>
                                 <Form.Label className="me-2">매출 일자</Form.Label>
                                 FROM&nbsp;&nbsp;<Form.Control size='sm' type='date'/>
                             </Col>
-                            <Col sm={3} className="d-flex align-items-center">
+                            <Col sm={2} className="d-flex align-items-center">
                                 TO&nbsp;&nbsp;<Form.Control size='sm' type='date'/>
                             </Col>
                         </Row>
@@ -66,7 +66,7 @@ const SearchField = () => {
                             </Col>
                         </Row>
                         <Row>
-                            <Col sm={4} className="d-flex align-items-center">
+                            <Col sm={3} className="d-flex align-items-center">
                                 <Form.Label className="me-2">진행률</Form.Label>
                                 FROM&nbsp;&nbsp;
                                 <Form.Select size='sm' aria-label="selectBox">
@@ -76,7 +76,7 @@ const SearchField = () => {
                                     <option value="3">Three</option>
                                 </Form.Select>
                             </Col>
-                            <Col sm={3} className="d-flex align-items-center">
+                            <Col sm={2} className="d-flex align-items-center">
                                 TO&nbsp;&nbsp;
                                 <Form.Select size='sm' aria-label="selectBox">
                                     <option>Open this select menu</option>

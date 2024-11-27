@@ -1,0 +1,395 @@
+
+/usr/bin/xauth:  file /home/react/.Xauthority does not exist
+react@ajict-bms:~$ cd /AJICT/BMS/Front-end/
+react@ajict-bms:/AJICT/BMS/Front-end$ ssh-keygen -t ed25519 -C "kimhs@ajnet.co.kr"
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/react/.ssh/id_ed25519):
+Created directory '/home/react/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/react/.ssh/id_ed25519
+Your public key has been saved in /home/react/.ssh/id_ed25519.pub
+The key fingerprint is:
+SHA256:rfWXazqtfl20MNIvyAdqBRG0mLKs/veCrBfHtpvtfhc kimhs@ajnet.co.kr
+The key's randomart image is:
++--[ED25519 256]--+
+|        .+o      |
+|        o..      |
+|     . o .. .    |
+|    . o  . + +  .|
+|     o. S * + +..|
+|    .. + = + E +.|
+|   .. = +   o.=..|
+|  .  + +o  ..o+..|
+|   o+..o*=..=*.  |
++----[SHA256]-----+
+react@ajict-bms:/AJICT/BMS/Front-end$ eval "$(ssh-agent -s)"
+Agent pid 22725
+react@ajict-bms:/AJICT/BMS/Front-end$ ssh-add //home/react/.ssh/id_ed25519
+Enter passphrase for //home/react/.ssh/id_ed25519:
+Identity added: //home/react/.ssh/id_ed25519 (kimhs@ajnet.co.kr)
+react@ajict-bms:/AJICT/BMS/Front-end$ cat /home/react/.ssh/id_ed25519.pub
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK58UWOKL112wdiBOIzoLLEuyXvpwFSveplmmDlbmffv kimhs@ajnet.co.kr
+react@ajict-bms:/AJICT/BMS/Front-end$ ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ git config --local user.name "kimhs"
+fatal: --local can only be used inside a git repository
+react@ajict-bms:/AJICT/BMS/Front-end$ ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint:   git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint:   git branch -m <name>
+Initialized empty Git repository in /AJICT/BMS/Front-end/.git/
+react@ajict-bms:/AJICT/BMS/Front-end$ git config --local user.name "kimhs"
+react@ajict-bms:/AJICT/BMS/Front-end$ git config --local user.email "kimhs@ajnet.co.kr"
+react@ajict-bms:/AJICT/BMS/Front-end$ ssh -T git@github.com
+The authenticity of host 'github.com (20.200.245.247)' can't be established.
+ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
+Hi kimhs-it! You've successfully authenticated, but GitHub does not provide shell access.
+react@ajict-bms:/AJICT/BMS/Front-end$ git clone -b frontend --single-branch git@github.com:AJICT/dev-erp-system.git frontend
+Cloning into 'frontend'...
+remote: Enumerating objects: 113, done.
+remote: Counting objects: 100% (78/78), done.
+remote: Compressing objects: 100% (57/57), done.
+remote: Total 113 (delta 30), reused 58 (delta 19), pack-reused 35 (from 1)
+Receiving objects: 100% (113/113), 1.74 MiB | 1.54 MiB/s, done.
+Resolving deltas: 100% (34/34), done.
+react@ajict-bms:/AJICT/BMS/Front-end$ ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ git clone -b frontend --single-branch git@github.com:AJICT/dev-erp-system.git .
+fatal: destination path '.' already exists and is not an empty directory.
+react@ajict-bms:/AJICT/BMS/Front-end$ git clone -b frontend --single-branch git@github.com:AJICT/dev-erp-system.git
+Cloning into 'dev-erp-system'...
+remote: Enumerating objects: 113, done.
+remote: Counting objects: 100% (78/78), done.
+remote: Compressing objects: 100% (57/57), done.
+remote: Total 113 (delta 30), reused 58 (delta 19), pack-reused 35 (from 1)
+Receiving objects: 100% (113/113), 1.74 MiB | 1.85 MiB/s, done.
+Resolving deltas: 100% (34/34), done.
+react@ajict-bms:/AJICT/BMS/Front-end$ mv frontend/* frontend/.* .
+mv: cannot move 'frontend/.' to './.': Device or resource busy
+mv: cannot move 'frontend/..' to './..': Device or resource busy
+mv: cannot move 'frontend/.git' to './.git': Directory not empty
+react@ajict-bms:/AJICT/BMS/Front-end$ rmdir frontend
+rmdir: failed to remove 'frontend': Directory not empty
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch
+react@ajict-bms:/AJICT/BMS/Front-end$ git checkout frontend
+error: pathspec 'frontend' did not match any file(s) known to git
+react@ajict-bms:/AJICT/BMS/Front-end$ git init
+Reinitialized existing Git repository in /AJICT/BMS/Front-end/.git/
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch
+react@ajict-bms:/AJICT/BMS/Front-end$ git checkout frontend
+error: pathspec 'frontend' did not match any file(s) known to git
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch frontend
+fatal: Not a valid object name: 'master'.
+react@ajict-bms:/AJICT/BMS/Front-end$ ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ ls -a frontend
+ls: cannot access 'frontend': No such file or directory
+react@ajict-bms:/AJICT/BMS/Front-end$ rm -rf .git
+react@ajict-bms:/AJICT/BMS/Front-end$ git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint:   git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint:   git branch -m <name>
+Initialized empty Git repository in /AJICT/BMS/Front-end/.git/
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch
+react@ajict-bms:/AJICT/BMS/Front-end$ git checkout ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ git remote -v
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch -m main
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch
+react@ajict-bms:/AJICT/BMS/Front-end$ git config
+usage: git config [<options>]
+
+Config file location
+    --global              use global config file
+    --system              use system config file
+    --local               use repository config file
+    --worktree            use per-worktree config file
+    -f, --file <file>     use given config file
+    --blob <blob-id>      read config from given blob object
+
+Action
+    --get                 get value: name [value-pattern]
+    --get-all             get all values: key [value-pattern]
+    --get-regexp          get values for regexp: name-regex [value-pattern]
+    --get-urlmatch        get value specific for the URL: section[.var] URL
+    --replace-all         replace all matching variables: name value [value-pattern]
+    --add                 add a new variable: name value
+    --unset               remove a variable: name [value-pattern]
+    --unset-all           remove all matches: name [value-pattern]
+    --rename-section      rename section: old-name new-name
+    --remove-section      remove a section: name
+    -l, --list            list all
+    --fixed-value         use string equality when comparing values to 'value-pattern'
+    -e, --edit            open an editor
+    --get-color           find the color configured: slot [default]
+    --get-colorbool       find the color setting: slot [stdout-is-tty]
+
+Type
+    -t, --type <>         value is given this type
+    --bool                value is "true" or "false"
+    --int                 value is decimal number
+    --bool-or-int         value is --bool or --int
+    --bool-or-str         value is --bool or string
+    --path                value is a path (file or directory name)
+    --expiry-date         value is an expiry date
+
+Other
+    -z, --null            terminate values with NUL byte
+    --name-only           show variable names only
+    --includes            respect include directives on lookup
+    --show-origin         show origin of config (file, standard input, blob, command line)
+    --show-scope          show scope of config (worktree, local, global, system, command)
+    --default <value>     with --get, use default value when missing entry
+
+react@ajict-bms:/AJICT/BMS/Front-end$ ssh -T git@github.com
+Hi kimhs-it! You've successfully authenticated, but GitHub does not provide shell access.
+react@ajict-bms:/AJICT/BMS/Front-end$ git remote add origin git@github.com:AJICT/dev-erp-system.git
+react@ajict-bms:/AJICT/BMS/Front-end$ git remote -v
+origin  git@github.com:AJICT/dev-erp-system.git (fetch)
+origin  git@github.com:AJICT/dev-erp-system.git (push)
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch
+react@ajict-bms:/AJICT/BMS/Front-end$ git checkout frontend
+error: pathspec 'frontend' did not match any file(s) known to git
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch frontend
+fatal: Not a valid object name: 'main'.
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch main
+fatal: Not a valid object name: 'main'.
+react@ajict-bms:/AJICT/BMS/Front-end$ ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch
+react@ajict-bms:/AJICT/BMS/Front-end$ git add .
+react@ajict-bms:/AJICT/BMS/Front-end$ git commit -m "kimhs 11.26. 윈도우에서 리눅스로 소스 이관"
+Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address (got 'react@ajict-bms.(none)')
+react@ajict-bms:/AJICT/BMS/Front-end$ git config --local user.name "kimhs"
+react@ajict-bms:/AJICT/BMS/Front-end$ git config --local user.email "kimhs@ajnet.co.kr"
+react@ajict-bms:/AJICT/BMS/Front-end$ ssh -T git@github.com
+Hi kimhs-it! You've successfully authenticated, but GitHub does not provide shell access.
+react@ajict-bms:/AJICT/BMS/Front-end$ git add .
+react@ajict-bms:/AJICT/BMS/Front-end$ git config --local user.email "kimhs@ajnet.co.kr"
+react@ajict-bms:/AJICT/BMS/Front-end$ git commit -m "kimhs 11.26. 윈도우에서 리눅스로 소스 이관"
+[main (root-commit) d672453] kimhs 11.26. 윈도우에서 리눅스로 소스 이관
+ 53 files changed, 24870 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 README.md
+ create mode 100644 package-lock.json
+ create mode 100644 package.json
+ create mode 100644 public/favicon.ico
+ create mode 100644 public/index.html
+ create mode 100644 public/logo192.png
+ create mode 100644 public/logo512.png
+ create mode 100644 public/manifest.json
+ create mode 100644 public/robots.txt
+ create mode 100644 src/App.js
+ create mode 100644 src/App.scss
+ create mode 100644 src/App.test.js
+ create mode 100644 src/assets/img/AJ_ICT.svg
+ create mode 100644 src/components/Activity.js
+ create mode 100644 src/components/BizOpp copy.js
+ create mode 100644 src/components/BizOpp.js
+ create mode 100644 src/components/Header.js
+ create mode 100644 src/components/Login.js
+ create mode 100644 src/components/SearchField.js
+ create mode 100644 src/components/test/Board.js
+ create mode 100644 src/components/test/DataPost.js
+ create mode 100644 src/components/test/ExcelTable.js
+ create mode 100644 src/components/test/Home.js
+ create mode 100644 src/components/test/Tab.js
+ create mode 100644 src/components/test/Tree.js
+ create mode 100644 src/components/test/Tree_uiUsed_codeManage copy.js
+ create mode 100644 src/components/test/Tree_uiUsed_codeManage.js
+ create mode 100644 src/components/test/Tree_uiUsed_departManage.js
+ create mode 100644 src/components/test/Tree_uiUsed_productManage.js
+ create mode 100644 src/components/test/UseStateTest.js
+ create mode 100644 src/index.js
+ create mode 100644 src/index.scss
+ create mode 100644 src/logo.svg
+ create mode 100644 src/redux/AuthLogin.js
+ create mode 100644 src/redux/login/AuthSlice.js
+ create mode 100644 src/redux/reducers/AuthSlice.js
+ create mode 100644 src/redux/store.js
+ create mode 100644 src/reportWebVitals.js
+ create mode 100644 src/setupTests.js
+ create mode 100644 src/styles/_custom.scss
+ create mode 100644 src/styles/_global.scss
+ create mode 100644 src/styles/_header.scss
+ create mode 100644 src/styles/_login.scss
+ create mode 100644 src/utils/Auth.js
+ create mode 100644 src/utils/Table copy.js
+ create mode 100644 src/utils/Table.js
+ create mode 100644 src/utils/api.js
+ create mode 100644 src/utils/api_thenCatch.js
+ create mode 100644 src/utils/datas/Info.js
+ create mode 100644 src/utils/datas/Roots.js
+ create mode 100644 src/utils/datas/TableDatas.js
+ create mode 100644 src/utils/helpers.js
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch
+* main
+react@ajict-bms:/AJICT/BMS/Front-end$ git checkout backend --track origin/backend
+fatal: missing branch name; try -b
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch frontend
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch
+  frontend
+* main
+react@ajict-bms:/AJICT/BMS/Front-end$ git checkout frontend
+Switched to branch 'frontend'
+react@ajict-bms:/AJICT/BMS/Front-end$ git status
+On branch frontend
+nothing to commit, working tree clean
+react@ajict-bms:/AJICT/BMS/Front-end$ git add .
+react@ajict-bms:/AJICT/BMS/Front-end$ git commit -m "kimhs 11.26. 윈도우에서 리눅스로 소스 이관"
+On branch frontend
+nothing to commit, working tree clean
+react@ajict-bms:/AJICT/BMS/Front-end$ git push origin frontend
+To github.com:AJICT/dev-erp-system.git
+ ! [rejected]        frontend -> frontend (fetch first)
+error: failed to push some refs to 'github.com:AJICT/dev-erp-system.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+react@ajict-bms:/AJICT/BMS/Front-end$ git pull origin frontend
+remote: Enumerating objects: 113, done.
+remote: Counting objects: 100% (78/78), done.
+remote: Compressing objects: 100% (57/57), done.
+remote: Total 113 (delta 30), reused 58 (delta 19), pack-reused 35 (from 1)
+Receiving objects: 100% (113/113), 1.74 MiB | 1.53 MiB/s, done.
+Resolving deltas: 100% (34/34), done.
+From github.com:AJICT/dev-erp-system
+ * branch            frontend   -> FETCH_HEAD
+ * [new branch]      frontend   -> origin/frontend
+hint: You have divergent branches and need to specify how to reconcile them.
+hint: You can do so by running one of the following commands sometime before
+hint: your next pull:
+hint:
+hint:   git config pull.rebase false  # merge (the default strategy)
+hint:   git config pull.rebase true   # rebase
+hint:   git config pull.ff only       # fast-forward only
+hint:
+hint: You can replace "git config" with "git config --global" to set a default
+hint: preference for all repositories. You can also pass --rebase, --no-rebase,
+hint: or --ff-only on the command line to override the configured default per
+hint: invocation.
+fatal: Need to specify how to reconcile divergent branches.
+react@ajict-bms:/AJICT/BMS/Front-end$ git add test.txt
+react@ajict-bms:/AJICT/BMS/Front-end$ git commit -m "commit test"
+[frontend 617fbb8] commit test
+ 1 file changed, 1 insertion(+)
+ create mode 100644 test.txt
+react@ajict-bms:/AJICT/BMS/Front-end$ git push origin frontend
+To github.com:AJICT/dev-erp-system.git
+ ! [rejected]        frontend -> frontend (non-fast-forward)
+error: failed to push some refs to 'github.com:AJICT/dev-erp-system.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+react@ajict-bms:/AJICT/BMS/Front-end$ ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ git pull origin frontend --no-rebase
+From github.com:AJICT/dev-erp-system
+ * branch            frontend   -> FETCH_HEAD
+fatal: refusing to merge unrelated histories
+react@ajict-bms:/AJICT/BMS/Front-end$ ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ git branch
+* frontend
+  main
+react@ajict-bms:/AJICT/BMS/Front-end$ git remote branch
+error: Unknown subcommand: branch
+usage: git remote [-v | --verbose]
+   or: git remote add [-t <branch>] [-m <master>] [-f] [--tags | --no-tags] [--mirror=<fetch|push>] <name> <url>
+   or: git remote rename <old> <new>
+   or: git remote remove <name>
+   or: git remote set-head <name> (-a | --auto | -d | --delete | <branch>)
+   or: git remote [-v | --verbose] show [-n] <name>
+   or: git remote prune [-n | --dry-run] <name>
+   or: git remote [-v | --verbose] update [-p | --prune] [(<group> | <remote>)...]
+   or: git remote set-branches [--add] <name> <branch>...
+   or: git remote get-url [--push] [--all] <name>
+   or: git remote set-url [--push] <name> <newurl> [<oldurl>]
+   or: git remote set-url --add <name> <newurl>
+   or: git remote set-url --delete <name> <url>
+
+    -v, --verbose         be verbose; must be placed before a subcommand
+
+react@ajict-bms:/AJICT/BMS/Front-end$ git remote -v
+origin  git@github.com:AJICT/dev-erp-system.git (fetch)
+origin  git@github.com:AJICT/dev-erp-system.git (push)
+react@ajict-bms:/AJICT/BMS/Front-end$ git pull origin frontend --allow-unrelated-histories
+From github.com:AJICT/dev-erp-system
+ * branch            frontend   -> FETCH_HEAD
+hint: You have divergent branches and need to specify how to reconcile them.
+hint: You can do so by running one of the following commands sometime before
+hint: your next pull:
+hint:
+hint:   git config pull.rebase false  # merge (the default strategy)
+hint:   git config pull.rebase true   # rebase
+hint:   git config pull.ff only       # fast-forward only
+hint:
+hint: You can replace "git config" with "git config --global" to set a default
+hint: preference for all repositories. You can also pass --rebase, --no-rebase,
+hint: or --ff-only on the command line to override the configured default per
+hint: invocation.
+fatal: Need to specify how to reconcile divergent branches.
+react@ajict-bms:/AJICT/BMS/Front-end$ ^C
+react@ajict-bms:/AJICT/BMS/Front-end$ git pull origin frontend --allow-unrelated-histories --no-rebase
+From github.com:AJICT/dev-erp-system
+ * branch            frontend   -> FETCH_HEAD
+Merge made by the 'ort' strategy.
+react@ajict-bms:/AJICT/BMS/Front-end$ git add .
+react@ajict-bms:/AJICT/BMS/Front-end$ git commit -m "commit test"
+On branch frontend
+nothing to commit, working tree clean
+react@ajict-bms:/AJICT/BMS/Front-end$ git push origin frontned
+error: src refspec frontned does not match any
+error: failed to push some refs to 'github.com:AJICT/dev-erp-system.git'
+react@ajict-bms:/AJICT/BMS/Front-end$ git push origin frontend
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 606 bytes | 606.00 KiB/s, done.
+Total 5 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 1 local object.
+To github.com:AJICT/dev-erp-system.git
+   9f86040..21737ad  frontend -> frontend
+react@ajict-bms:/AJICT/BMS/Front-end$ git pull origin frontend
+From github.com:AJICT/dev-erp-system
+ * branch            frontend   -> FETCH_HEAD
+Already up to date.
+react@ajict-bms:/AJICT/BMS/Front-end$ npm start
+
+> erp@0.1.0 start
+> react-scripts start --openssl-legacy-provider --host 0.0.0.0
+
+sh: 1: react-scripts: not found
+react@ajict-bms:/AJICT/BMS/Front-end$
+logout
+

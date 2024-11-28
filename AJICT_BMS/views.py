@@ -71,83 +71,83 @@ def f_select_biz_opp(request):
    # v_sale_date_to = request.POST.get('a_sale_date_to')
    # v_essential_achievement_tf = request.POST.get('a_essential_achievement_tf')
    v_sql = """SELECT biz_opp_id,
-                        biz_opp_name,
-                        user_id,
-                        (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = A.user_id) AS user_name,
-                        change_preparation_dept_id,
-                        change_preparation_dept_name,
-                        last_client_com1_code,
-                        last_client_com2_code,
-                        (SELECT DISTINCT BB.great_classi_name
-                         FROM ajict_bms_schema.commonness_code BB
-                         WHERE BB.great_classi_code = A.last_client_com1_code) AS last_client_com1_name,
-                        (SELECT CC.small_classi_name
-                         FROM ajict_bms_schema.commonness_code CC
-                         WHERE CC.great_classi_code = A.last_client_com1_code AND
-                               CC.small_classi_code = A.last_client_com2_code) AS last_client_com2_name,
-                        sale_com1_code,
-                        sale_com2_code,
-                        (SELECT DISTINCT DD.great_classi_name
-                         FROM ajict_bms_schema.commonness_code DD
-                         WHERE DD.great_classi_code = A.sale_com1_code) AS sale_com1_name,
-                        (SELECT EE.small_classi_name
-                         FROM ajict_bms_schema.commonness_code EE
-                         WHERE EE.great_classi_code = A.sale_com1_code AND
-                               EE.small_classi_code = A.sale_com2_code) AS sale_com2_name,
-                        contract_date,
-                        progress1_rate,
-                        progress2_rate,
-                        sale_item_no,
-                        sale_date,
-                        sale_amt,
-                        sale_profit,
-                        purchase_date,
-                        purchase_amt,
-                        biz_section1_code,
-                        biz_section2_code,
-                       (SELECT DISTINCT FF.great_classi_name
-                        FROM ajict_bms_schema.commonness_code FF
-                        WHERE FF.great_classi_code = A.biz_section1_code) AS biz_section1_name,
-                       (SELECT GG.small_classi_name
-                        FROM ajict_bms_schema.commonness_code GG
-                        WHERE GG.great_classi_code = A.biz_section1_code AND
-                              GG.small_classi_code = A.biz_section2_code) AS biz_section2_name,
-                       essential_achievement_tf,
-                       product1_code,
-                       product2_code,
-                       (SELECT DISTINCT HH.great_classi_name
-                        FROM ajict_bms_schema.commonness_code HH
-                        WHERE HH.great_classi_code = A.product1_code) AS product1_name,
-                       (SELECT II.small_classi_name
-                        FROM ajict_bms_schema.commonness_code II
-                        WHERE II.great_classi_code = A.product1_code AND
-                              II.small_classi_code = A.product2_code) AS product2_name,
-                       (SELECT JJ.dept_id
-                        FROM ajict_bms_schema.aj_user JJ
-                        WHERE JJ.user_id = A.user_id) AS dept_id,
-                       (SELECT KK.high_dept_id
-                        FROM ajict_bms_schema.dept KK
-                        WHERE KK.dept_id = (SELECT AAA.dept_id
-                                            FROM ajict_bms_schema.aj_user AAA
-                                            WHERE AAA.user_id = A.user_id)) AS high_dept_id,
-                       (SELECT LL.dept_name
-                        FROM ajict_bms_schema.dept LL
-                        WHERE LL.dept_id = (SELECT BBB.dept_id
-                                            FROM ajict_bms_schema.aj_user BBB
-                                            WHERE BBB.user_id = A.user_id)) AS dept_name,
-                       (SELECT MM.dept_name
-                        FROM ajict_bms_schema.dept MM
-                        WHERE MM.dept_id = (SELECT CCC.high_dept_id
-                                            FROM ajict_bms_schema.dept CCC
-                                            WHERE CCC.dept_id = (SELECT AAAA.dept_id
-                                                                 FROM ajict_bms_schema.aj_user AAAA
-                                                                 WHERE AAAA.user_id = A.user_id))) AS high_dept_name,
-                       create_user,
-                       create_date,
-                       update_user,
-                       update_date,
-                       delete_user,
-                       delete_date
+                     biz_opp_name,
+                     user_id,
+                     (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = A.user_id) AS user_name,
+                     change_preparation_dept_id,
+                     change_preparation_dept_name,
+                     last_client_com1_code,
+                     last_client_com2_code,
+                     (SELECT DISTINCT BB.great_classi_name
+                      FROM ajict_bms_schema.commonness_code BB
+                      WHERE BB.great_classi_code = A.last_client_com1_code) AS last_client_com1_name,
+                     (SELECT CC.small_classi_name
+                      FROM ajict_bms_schema.commonness_code CC
+                      WHERE CC.great_classi_code = A.last_client_com1_code AND
+                            CC.small_classi_code = A.last_client_com2_code) AS last_client_com2_name,
+                     sale_com1_code,
+                     sale_com2_code,
+                     (SELECT DISTINCT DD.great_classi_name
+                      FROM ajict_bms_schema.commonness_code DD
+                      WHERE DD.great_classi_code = A.sale_com1_code) AS sale_com1_name,
+                     (SELECT EE.small_classi_name
+                      FROM ajict_bms_schema.commonness_code EE
+                      WHERE EE.great_classi_code = A.sale_com1_code AND
+                            EE.small_classi_code = A.sale_com2_code) AS sale_com2_name,
+                     contract_date,
+                     progress1_rate_code,
+                     progress2_rate_code,
+                     sale_item_no,
+                     sale_date,
+                     sale_amt,
+                     sale_profit,
+                     purchase_date,
+                     purchase_amt,
+                     biz_section1_code,
+                     biz_section2_code,
+                     (SELECT DISTINCT FF.great_classi_name
+                      FROM ajict_bms_schema.commonness_code FF
+                      WHERE FF.great_classi_code = A.biz_section1_code) AS biz_section1_name,
+                     (SELECT GG.small_classi_name
+                      FROM ajict_bms_schema.commonness_code GG
+                      WHERE GG.great_classi_code = A.biz_section1_code AND
+                            GG.small_classi_code = A.biz_section2_code) AS biz_section2_name,
+                     essential_achievement_tf,
+                     product1_code,
+                     product2_code,
+                     (SELECT DISTINCT HH.great_classi_name
+                      FROM ajict_bms_schema.commonness_code HH
+                      WHERE HH.great_classi_code = A.product1_code) AS product1_name,
+                     (SELECT II.small_classi_name
+                      FROM ajict_bms_schema.commonness_code II
+                      WHERE II.great_classi_code = A.product1_code AND
+                            II.small_classi_code = A.product2_code) AS product2_name,
+                     (SELECT JJ.dept_id
+                      FROM ajict_bms_schema.aj_user JJ
+                      WHERE JJ.user_id = A.user_id) AS dept_id,
+                     (SELECT KK.high_dept_id
+                      FROM ajict_bms_schema.dept KK
+                      WHERE KK.dept_id = (SELECT AAA.dept_id
+                                          FROM ajict_bms_schema.aj_user AAA
+                                          WHERE AAA.user_id = A.user_id)) AS high_dept_id,
+                     (SELECT LL.dept_name
+                      FROM ajict_bms_schema.dept LL
+                      WHERE LL.dept_id = (SELECT BBB.dept_id
+                                          FROM ajict_bms_schema.aj_user BBB
+                                          WHERE BBB.user_id = A.user_id)) AS dept_name,
+                     (SELECT MM.dept_name
+                      FROM ajict_bms_schema.dept MM
+                      WHERE MM.dept_id = (SELECT CCC.high_dept_id
+                                          FROM ajict_bms_schema.dept CCC
+                                          WHERE CCC.dept_id = (SELECT AAAA.dept_id
+                                                               FROM ajict_bms_schema.aj_user AAAA
+                                                               WHERE AAAA.user_id = A.user_id))) AS high_dept_name,
+                     create_user,
+                     create_date,
+                     update_user,
+                     update_date,
+                     delete_user,
+                     delete_date
                  FROM ajict_bms_schema.biz_opp A
                  WHERE 1 =1 """
    v_param = []

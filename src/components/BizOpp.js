@@ -3,16 +3,19 @@ import { login } from '../';
 import { Table, Form, Button, ButtonGroup, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Columns, Person } from 'react-bootstrap-icons';
 import SearchField from './SearchField';
-import MyTable from '../utils/Table.js';
 import { apiMethods } from '../utils/api.js';
 import axios from 'axios';
+import roots from '../utils/datas/Roots.js';
+import DynamicTable from '../utils/Table.js';
+import { useLocation } from 'react-router-dom';
 
 const BizOpp = () => {
+    const location = useLocation();
     // Data Handling
     // data: db data
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-    const endpoint = `select-biz-opp/`;
+    const endpoint = roots[4].url;
     /*-
     사업 (기회) ID	biz_opp_id
     사업 (기회)명	biz_opp_name
@@ -60,8 +63,12 @@ const BizOpp = () => {
         change_preparation_dept_name: '',
         last_client_com1_code: '',
         last_client_com2_code: '',
+        last_client_com1_name: '',
+        last_client_com2_name: '',
         sale_com1_code: '',
         sale_com2_code: '',
+        sale_com1_name: '',
+        sale_com2_name: '',
         contract_date: '',
         progress1_rate: '',
         progress2_rate: '',
@@ -73,9 +80,17 @@ const BizOpp = () => {
         purchase_amt: '',
         biz_section1_code: '',
         biz_section2_code: '',
+        biz_section1_name: '',
+        biz_section2_name: '',
         essential_achievement_tf: '',
         product1_code: '',
         product2_code: '',
+        product1_name: '',
+        product2_name: '',
+        dept_id: '',
+        high_dept_id: '',
+        dept_name: '',
+        high_dept_name: '',
         create_user: '',
         create_date: '',
         update_user: '',
@@ -96,7 +111,7 @@ const BizOpp = () => {
 
     const f_handlingData = async (method, endpoint, input = null) => {
         try {
-            console.log(p_bizopp);
+            // console.log(p_bizopp);
             const supportedMethods = ['get', 'post', 'put', 'patch', 'del'];
             if (!supportedMethods.includes(method)) {
                 throw new Error('Invalid method');
@@ -104,7 +119,7 @@ const BizOpp = () => {
     
             // 상태 업데이트 여부를 결정
             const isUpdateNeeded = ['post', 'put', 'patch', 'del'].includes(method);
-            console.log(isUpdateNeeded, endpoint);
+            // console.log(isUpdateNeeded, endpoint);
     
             // API 호출
             // apiMethods[method]에서의 [method]: 객체에 동적으로 접근하는 키. method 변수 값에 따라 객체에서 해당 키에 해당하는 값을 동적으로 갖고 온다. 
@@ -125,6 +140,7 @@ const BizOpp = () => {
     };
     useEffect(() => {
         f_handlingData('get', endpoint);
+        // console.log(location);
     }, []);
 
     return (
@@ -132,7 +148,6 @@ const BizOpp = () => {
             <h2>사업 (기회) 조회</h2>
             <SearchField/>
             <div className='wrap'>
-                {/* <MyTable /> */}
                 <div className="dataPostArea">
                     <Form.Control type="text" name="username" placeholder="이름을 입력하세요." value={input.username} onChange={f_handlingInput}/>
                     <Form.Control type="email" name="email" placeholder="email을 입력하세요." value={input.email} onChange={f_handlingInput}/>
@@ -143,49 +158,52 @@ const BizOpp = () => {
                     <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('put', endpoint, input)}>Put</Button>
                     <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('patch', endpoint, input)}>Patch</Button>
                     <Button style={{ margin: '0 10px' }} variant='danger' onClick={() => f_handlingData('del', endpoint)}>Delete</Button>
-
                     </div>
+
+                    
+
                     {errMsg ? 
                     (<p>{errMsg}</p>) 
                     :   (
-                        <div>
-                            <h1>DataPosts.js</h1>
-                            {data.map((e) => 
-                            <p>{`키 ${Object.keys(e)}와 밸류 ${Object.values(e)}`}</p>)}
+                        <DynamicTable/>
+                        // <div>
+                        //     <h1>DataPosts.js</h1>
+                        //     {data.map((e) => 
+                        //     <p>{`키 ${Object.keys(e)}와 밸류 ${Object.values(e)}`}</p>)}
 
-                            <h2>1. 객체 그대로 출력</h2>
-                            {data.map((e) => 
-                            (<p className={e.id} key={e.id}>{JSON.stringify(e)}</p>
-                            ))}
+                        //     <h2>1. 객체 그대로 출력</h2>
+                        //     {data.map((e) => 
+                        //     (<p className={e.id} key={e.id}>{JSON.stringify(e)}</p>
+                        //     ))}
 
-                            <h2>2. 객체의 키-값 쌍을 분해해서 출력 - Object.entries(): 객체의 &#123;key:value&#124; 형식을 배열 형태의 [key, value]로 변환해 줌.</h2>
-                            {data.map((e) => (
-                                <div className={e.id} key={e.id}>
-                                    {Object.entries(e).map(([key, value]) => (
-                                        <p key={key}>{`key: ${key}, value: ${value}`}</p>
-                                    ))}
-                                </div>
-                            ))}
+                        //     <h2>2. 객체의 키-값 쌍을 분해해서 출력 - Object.entries(): 객체의 &#123;key:value&#124; 형식을 배열 형태의 [key, value]로 변환해 줌.</h2>
+                        //     {data.map((e) => (
+                        //         <div className={e.id} key={e.id}>
+                        //             {Object.entries(e).map(([key, value]) => (
+                        //                 <p key={key}>{`key: ${key}, value: ${value}`}</p>
+                        //             ))}
+                        //         </div>
+                        //     ))}
 
                             
-                            <h2>3. 객체의 키-값 쌍을 분해해서 테이블 형태로 출력</h2>
-                            {data.map((e) => (
-                                <Table striped="columns" bordered hover className={e.id} key={e.id}>
-                                    <thead>
-                                        <tr><th colSpan={2}>{e.id}</th></tr>
-                                    </thead>
-                                    <tbody>
-                                        {Object.entries(e).map(([key, value]) => (
-                                            <tr key={key}>
-                                                <th>{`key: ${key}`}</th>
-                                                <td>{`value: ${value}`}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
+                        //     <h2>3. 객체의 키-값 쌍을 분해해서 테이블 형태로 출력</h2>
+                        //     {data.map((e) => (
+                        //         <Table striped="columns" bordered hover className={e.id} key={e.id}>
+                        //             <thead>
+                        //                 <tr><th colSpan={2}>{e.id}</th></tr>
+                        //             </thead>
+                        //             <tbody>
+                        //                 {Object.entries(e).map(([key, value]) => (
+                        //                     <tr key={key}>
+                        //                         <th>{`key: ${key}`}</th>
+                        //                         <td>{`value: ${value}`}</td>
+                        //                     </tr>
+                        //                 ))}
+                        //             </tbody>
+                        //         </Table>
                                 
-                            ))} 
-                        </div>
+                        //     ))} 
+                        // </div>
                         )
                     }
                 </div>

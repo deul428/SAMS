@@ -37,7 +37,7 @@ const AuthLogin = () => {
         await dispatch(login({userId1: userId, userPw1: userPw}));
 
         // 로그인 시 이전 경로로 리디렉션
-        const from = location.state?.from?.pathname || '/biz-opp';
+        const from = location.state?.from?.pathname || `/${roots[4].depth1}/`;
         setRedirect(from);
     } 
     

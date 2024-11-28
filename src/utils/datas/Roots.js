@@ -10,7 +10,7 @@ const roots = [
     {depth1: 'admin', depth2: 'user', component: Home},
     {depth1: 'admin', depth2: 'code', component: Home},
     {depth1: 'admin', depth2: 'product', component: Home},
-    {depth1: 'biz-opp', depth2: '', component: BizOpp, 
+    {depth1: 'biz-opp', depth2: '', url: 'select-biz-opp/', component: BizOpp, 
     props: [
         { Header: '사업 일련 번호', accessor: 'biz_opp_id' },
         { Header: '부서명', accessor: 'change_preparation_dept_name' },
@@ -65,7 +65,6 @@ function v_handlingDate(value) {
     return value;
 }
 function v_handlingNum(value) {
-    console.log(value);
     if (value || value === 0) { 
         const v_formatValue = value.toLocaleString('ko-KR'); return v_formatValue; 
     }

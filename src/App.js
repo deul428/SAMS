@@ -1,5 +1,7 @@
-import { useLocation, BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { useEffect } from 'react';import { useLocation, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Provider, useDispatch } from 'react-redux';
+import { setLocation } from './redux/reducers/LocationSlice';
+
 import store from './redux/store';
 import roots from './utils/datas/Roots';
 import Header from './components/Header';
@@ -10,8 +12,15 @@ import AuthLogin from './components/Login';
 import Auth from './utils/Auth';
 import ExcelTable from './components/test/ExcelTable';
 import Tree_uiUsed_productManage from './components/test/Tree_uiUsed_productManage';
+
 function AppCntnt() {
   const location = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setLocation(location.pathname));
+  }, [location, dispatch]);
+  
   // const hiddenPaths = roots.map(route => `/${route.depth1[0]}`);
   const hiddenPaths = `/login`;
   // console.log(hiddenPaths);

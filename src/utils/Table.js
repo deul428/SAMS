@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useTable } from "react-table";
 import { apiMethods } from "./api"; // API 호출 메서드
 import roots from "./datas/Roots";
-import { Table as BootTable, Button } from "react-bootstrap";
-function Table() {
+import { Table, Button } from "react-bootstrap";
+function DynamicTable() {
   // API에서 데이터를 가져오기 위한 상태
   const [data, setData] = useState([]);
   const rootsData = roots[4].props;
@@ -12,17 +12,17 @@ function Table() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const getData = await apiMethods.get("/api/biz-opp/"); // API 호출
+        const getData = await apiMethods.get(roots[4].url); // API 호출
         if (getData && Array.isArray(getData)) {
           getData.map((e, index) => {
             if(index === e.length - 1){
               const locale = getData[index].sale_amt.toLocaleString('ko-KR');
-              console.log(locale);
+              // console.log(locale);
             } 
             
           })
           const filterData = getData.filter(e => !e.STATUS);
-          console.log(filterData);
+          // console.log(filterData);
           setData(filterData); // 데이터부만 filter
         }
       } catch (error) {
@@ -41,41 +41,68 @@ function Table() {
       columns,
       data,
     });
+
   return (
-    <BootTable bordered hover responsive {...getTableProps()}>
+    <Table bordered hover responsive {...getTableProps()}>
       <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()} /*-style={cellStyle}-*/>
-                {column.render("Header")}
-              </th>
-            ))}
-          </tr>
-        ))}
+        {headerGroups.map((headerGroup) => {
+          const { key, ...restProps } = headerGroup.getHeaderGroupProps();
+          return (
+            <tr key={key} {...restProps} >
+              {headerGroup.headers.map((column) => {
+                const { key, ...restProps } = column.getHeaderProps();
+                return (
+                  <th key={key} {...restProps} >
+                    {column.render("Header")}
+                  </th>
+                )
+              })}
+            </tr>
+          )
+        })}
       </thead>
+        
       <tbody {...getTableBodyProps()}>
         {rows.map((row) => {
           prepareRow(row);
+          const { key, ...restProps } = row.getRowProps();
           return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell, index) => (
-                index === row.cells.length - 1 ? (
-                  <td {...cell.getCellProps()}>
-                    <Button size="sm" variant="light">이력</Button>
+            <tr key={key} {...restProps}>
+              {row.cells.map((cell, index) => {
+                const { key, ...restProps } = cell.getCellProps();
+                return (
+                  <td key={key} {...restProps}>
+                    {index === row.cells.length - 1
+                      ? cell.render(<Button size="sm" variant="light">이력</Button>)
+                      : cell.render("Cell")}
                   </td>
-                ):(
-                  <td {...cell.getCellProps()}>
-                    {cell.render("Cell")}
-                  </td>
-                )
-              ))}
+                );
+              })}
             </tr>
           );
         })}
       </tbody>
-    </BootTable>
+      {/* <tbody {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map((cell, index) => {
+                const { key, ...restProps } = cell.getCellProps();
+                return (
+                  <td key={key} {...restProps}>
+                    {index === row.cells.length - 1
+                      ? cell.render(<Button size="sm" variant="light">이력</Button>)
+                      : cell.render("Cell")}
+                  </td>
+                );
+              })}
+            </tr>
+          );
+        })}
+      </tbody> */}
+    </Table>
   );
 }
 
-export default Table;
+export default DynamicTable;

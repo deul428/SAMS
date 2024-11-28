@@ -24,10 +24,7 @@ SECRET_KEY = "django-insecure-gab36_^a*v$c(!e%_l(%sq=c6xvnq0$%$n75fo8=srep*!_@4r
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
+ALLOWED_HOSTS = ['*']
 # Application definition
 
 
@@ -86,7 +83,7 @@ WSGI_APPLICATION = "AJICT_BMS.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
-#cci10000(2024-10-22)
+#cci10000(2024-10-22, 2024-11-28)
 #DATABASES = {
 #    "default": {
 #        "ENGINE": "django.db.backends.sqlite3",
@@ -98,7 +95,7 @@ DATABASES = {"default":{"ENGINE":"django.db.backends.postgresql",
                         "NAME":"ajict_bms_db",
                         "USER":"ajict_bms_user",
                         "PASSWORD":"ajictcci4",
-                        "HOST":"localhost",
+                        "HOST":"10.0.60.201",
                         "PORT":"5432"}}
 
 

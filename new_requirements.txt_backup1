@@ -1,0 +1,7 @@
+asgiref @ file:///croot/asgiref_1724072470684/work
+Django @ file:///croot/django_1731615954020/work
+django-cors-headers==4.6.0
+djangorestframework==3.15.2
+setuptools==75.1.0
+sqlparse @ file:///work/perseverance-python-buildout/croot/sqlparse_1698874574933/work
+wheel==0.44.0

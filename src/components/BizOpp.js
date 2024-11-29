@@ -6,7 +6,7 @@ import SearchField from './SearchField';
 import { apiMethods } from '../utils/api.js';
 import axios from 'axios';
 import roots from '../utils/datas/Roots.js';
-import DynamicTable from '../utils/Table.js';
+import DynamicTable from '../utils/DynamicTable.js';
 import { useLocation } from 'react-router-dom';
 
 const BizOpp = () => {
@@ -74,15 +74,15 @@ const BizOpp = () => {
         progress2_rate: '',
         sale_item_no: '',
         sale_date: '',
-        sale_amt: '',
-        sale_profit: '',
+        sale_amt: 0,
+        sale_profit: 0,
         purchase_date: '',
-        purchase_amt: '',
+        purchase_amt: 0,
         biz_section1_code: '',
         biz_section2_code: '',
         biz_section1_name: '',
         biz_section2_name: '',
-        essential_achievement_tf: '',
+        essential_achievement_tf: false,
         product1_code: '',
         product2_code: '',
         product1_name: '',
@@ -93,25 +93,25 @@ const BizOpp = () => {
         high_dept_name: '',
         create_user: '',
         create_date: '',
-        update_user: '',
-        update_date: '',
-        delete_user: '',
-        delete_date: '',
+        update_user: null,
+        update_date: null,
+        delete_user: null,
+        delete_date: null,
     }
     const [input, setInput] = useState(p_bizopp);
     
 
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
+        console.log({ name, value }, input);
         setInput({
             ...input,
             [name]: value,
-        })
+        });
     }
 
     const f_handlingData = async (method, endpoint, input = null) => {
         try {
-            // console.log(p_bizopp);
             const supportedMethods = ['get', 'post', 'put', 'patch', 'del'];
             if (!supportedMethods.includes(method)) {
                 throw new Error('Invalid method');
@@ -149,9 +149,9 @@ const BizOpp = () => {
             <SearchField/>
             <div className='wrap'>
                 <div className="dataPostArea">
-                    <Form.Control type="text" name="username" placeholder="이름을 입력하세요." value={input.username} onChange={f_handlingInput}/>
-                    <Form.Control type="email" name="email" placeholder="email을 입력하세요." value={input.email} onChange={f_handlingInput}/>
-                    <Form.Control type="tel" name="phone" placeholder="번호를 입력하세요." value={input.phone} onChange={f_handlingInput}/>
+                    <Form.Control type="text" name="biz_opp_name" placeholder="사업명을 입력하세요." value={input.biz_opp_name} onChange={f_handlingInput}/>
+                    <Form.Control type="text" name="user_name" placeholder="유저 이름을 입력하세요." value={input.user_name} onChange={f_handlingInput}/>
+                    <Form.Control type="text" name="last_client_com2_name" placeholder="최종 고객사 상호를 입력하세요." value={input.last_client_com2_name} onChange={f_handlingInput}/>
                     <div>
                     <Button style={{ margin: '0 10px' }} variant='primary' onClick={() => f_handlingData('get', endpoint)}>Refresh</Button>
                     <Button style={{ margin: '0 10px' }} variant='success' onClick={() => f_handlingData('post', endpoint, input)}>Post</Button>

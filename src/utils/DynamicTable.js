@@ -3,6 +3,7 @@ import { useTable } from "react-table";
 import { apiMethods } from "./api"; // API 호출 메서드
 import roots from "./datas/Roots";
 import { Table, Button } from "react-bootstrap";
+
 function DynamicTable() {
   // API에서 데이터를 가져오기 위한 상태
   const [data, setData] = useState([]);

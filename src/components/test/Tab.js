@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 // 컴포넌트 불러오기 (export 방식에 맞추어 확인 필요)
 import Home from './Home';       // default export인 경우
 import AuthLogin from '../Login';         // default export인 경우
-import Data from '../../utils/Table';
+import Data from '../../utils/DynamicTable';
 const components = {
   Home: () => <Home />,
   AuthLogin: () => <AuthLogin />,

@@ -1,4 +1,4 @@
-import Table from '../utils/Table';
+import Table from '../utils/DynamicTable';
 import SearchField from './SearchField';
 import { useSelector } from 'react-redux';
 const Activity = () => {

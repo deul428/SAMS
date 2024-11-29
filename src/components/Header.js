@@ -49,7 +49,7 @@ function Header() {
  
     return (
         <>
-            <Navbar id='header' fixed='top' bg='primary' v_hasChildUrls-bs-theme='dark'>
+            <Navbar id='header' fixed='top' bg='primary' v_haschildurls-bs-theme='dark'>
                 <Container>
                     <Nav className='brand'>
                         <Navbar.Brand href='#'>
@@ -58,24 +58,24 @@ function Header() {
                     </Nav>
                     
                     <Nav className='navMenu'>
-                        <Nav.Link className={`menus ${isActive && location.pathname.includes(roots[1].depth1) ? 'active' : ''}`} id='menu01'>
+                        <div className={`menus ${isActive && location.pathname.includes(roots[1].depth1) ? 'active' : ''} nav-link`} id='menu01'>
                             기본 정보 관리
-                            <Nav.Link className='menuItem' as={NavLink} to={`/${roots[1].depth1}/${roots[1].depth2}`}>사용자 관리</Nav.Link>
-                            <Nav.Link className='menuItem' as={NavLink} to={`/${roots[2].depth1}/${roots[2].depth2}`}>공통 코드 관리</Nav.Link>
-                            <Nav.Link className='menuItem' id='menu02' as={NavLink} to={`/${roots[3].depth1}/${roots[3].depth2}`}>제품 관리</Nav.Link>
-                        </Nav.Link>
-                        <Nav.Link className={`menuItem menus ${location.pathname.includes(roots[4].depth1) ? 'active' : ''}`} id='menu03' as={NavLink} to={`/${roots[4].depth1}/${roots[4].depth2}`}>
+                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[1].depth1}/${roots[1].depth2}`}>사용자 관리</Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[2].depth1}/${roots[2].depth2}`}>공통 코드 관리</Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' id='menu02' to={`/${roots[3].depth1}/${roots[3].depth2}`}>제품 관리</Nav.Link>
+                        </div>
+                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots[4].depth1) ? 'active' : ''}`} id='menu03' to={`/${roots[4].depth1}/${roots[4].depth2}`}>
                             사업 (기회) 관리
                         </Nav.Link>
-                        <Nav.Link className={`menuItem menus ${location.pathname.includes(roots[5].depth1) ? 'active' : ''}`} as={NavLink} to={`/${roots[5].depth1}/${roots[5].depth2}`}>
+                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots[5].depth1) ? 'active' : ''}`} to={`/${roots[5].depth1}/${roots[5].depth2}`}>
                             영업 활동 관리
                         </Nav.Link>
 
-                        <Nav.Link className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[1]) ? 'active' : ''}`} id='menu04'>
+                        <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[1]) ? 'active' : ''} nav-link`} id='menu04'>
                         목표 관리
-                            <Nav.Link className='menuItem' as={NavLink} to={`/${roots[6].depth1}/${roots[6].depth2}`}>목표 관리</Nav.Link>
-                            <Nav.Link className='menuItem' as={NavLink} to={`/${roots[7].depth1}/${roots[7].depth2}`}>달성률 조회</Nav.Link>
-                        </Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[6].depth1}/${roots[6].depth2}`}>목표 관리</Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[7].depth1}/${roots[7].depth2}`}>달성률 조회</Nav.Link>
+                        </div>
                     </Nav>
                     <div className='loginInfoArea'>{v_loginInfo}</div>
                 </Container>

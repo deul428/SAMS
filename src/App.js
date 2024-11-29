@@ -12,7 +12,7 @@ import AuthLogin from './components/Login';
 import Auth from './utils/Auth';
 import ExcelTable from './components/test/ExcelTable';
 import Tree_uiUsed_productManage from './components/test/Tree_uiUsed_productManage';
-
+import ResizableTable from './components/test/ResizableTable';
 function AppCntnt() {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -28,6 +28,7 @@ function AppCntnt() {
     <>
       {!hiddenPaths.includes(location.pathname) && <Header />}
       <div id='cntntArea'>
+      <ResizableTable/>
         {!hiddenPaths.includes(location.pathname) && <MultiTabComponent />}
         {/* <ExcelTable></ExcelTable> */}
         {/* <Tree_uiUsed_productManage></Tree_uiUsed_productManage> */}

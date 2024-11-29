@@ -7,6 +7,7 @@ import roots from '../utils/datas/Roots';
 import { Form, Button, FloatingLabel } from 'react-bootstrap';
 import { ArrowRight, Person } from 'react-bootstrap-icons';
 import ci from '../assets/img/AJ_ICT.svg';
+import { apiMethods } from '../utils/api';
 
 const AuthLogin = () => {
     const navigate = useNavigate(); // 페이지 이동에 사용
@@ -14,34 +15,58 @@ const AuthLogin = () => {
     const dispatch = useDispatch(); // Redux 액션 호출에 사용
     const [redirect, setRedirect] = useState(null);
 
+    const p_login = {
+        userId: '',
+        userPw: '',
+    }
+
+    const [input, setInput] = useState(p_login);
+    
+    const endpoint = 'login/';
+    // const f_handlingData = async (method, endpoint, input = null) => {
+    //     try {  
+    //         const response = await apiMethods['post']('post', endpoint, input);
+            
+    //     }
+    // }
     useEffect(() => {
         console.log("Redirect Path:", redirect);
         if (redirect) {
             navigate(redirect, { replace: true });
         }
     }, [redirect, navigate]);
-    
+
+    const f_handlingInput = (e) => {
+        const { name, value } = e.target;
+        // console.log({ name, value }, input);
+        setInput({
+            ...input,
+            [name]: value,
+        });
+    }
 
     // 유효값 체크 및 로그인 후 경로 리디렉션
     // 11.26. 리디렉션 처리 안 되고 있으니 다시 확인해 보기.
-    const f_submitLoginData = async (e) => {
-        e.preventDefault();
-        let userId = document.getElementById('inputId').value;
-        let userPw = document.getElementById('inputPw').value;
-        console.log(userId, userPw);
-        // 유효성 검사: Falsy value 처리 (null, undefined, '')
-        if (!userId || !userPw) {
-            alert(`아이디, 패스워드를 입력하세요.`);
-            return;
+    const f_submitLoginData = async (method, endpoint, input = null, e) => {
+        e.preventDefault(); // submit 방지
+        try {
+            if (!input.userId || !input.userPw) {
+                alert(`아이디, 패스워드를 입력하세요.`);
+                return;
+            }
+            const response = await apiMethods[method](endpoint, input);
+            
+            // await dispatch(login({userId1: input.userId, userPw1: input.userPw}));
+            console.log(response);
+            return response;
+        } catch (error) {
+            console.log("error!!!", error);
+        } finally {
+            // 로그인 시 이전 경로로 리디렉션
+            // const from = location.state?.from?.pathname || `/${roots[4].depth1}/`;
+            // setRedirect(from);
         }
-        await dispatch(login({userId1: userId, userPw1: userPw}));
-
-        // 로그인 시 이전 경로로 리디렉션
-        const from = location.state?.from?.pathname || `/${roots[4].depth1}/`;
-        setRedirect(from);
-    } 
-    
-
+    };
     return (
         <div id='login' className='wrap'>
             <div id='loginArea'>
@@ -52,18 +77,21 @@ const AuthLogin = () => {
                 <form>
                     <div className='inputFields idField'>
                         <FloatingLabel label='ID' className='mb-3'>
-                            <Form.Control type='id' placeholder='id' id='inputId' />
+                            <Form.Control type='id' name='userId' placeholder='id' id='inputId' value={input.userId} onChange={f_handlingInput}/>
                         </FloatingLabel>
                     </div>
                     <div className='inputFields pwField'>
                         <FloatingLabel label='Password'>
-                            <Form.Control type='password' placeholder='Password' id='inputPw' />
+                            <Form.Control type='password' name='userPw' placeholder='Password' id='inputPw' value={input.userPw} onChange={f_handlingInput}/>
                         </FloatingLabel>
                         <Form.Text id='passwordHelpBlock' muted>
                             영문, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 미포함)
                         </Form.Text>
                     </div>
-                    <Button type='submit' variant='primary' onClick={f_submitLoginData}>로그인</Button>
+                    {/* <Button type='submit' variant='primary' onClick={f_submitLoginData}>로그인</Button> */}
+                    {/* <Button type='submit' variant='primary' onClick={() => f_submitLoginData('post', endpoint, input)}>Post</Button> */}
+                    <Button type="submit" variant="primary" onClick={(e) => f_submitLoginData('post', endpoint, input, e)}>Post</Button>
+                {/* </form> */}
                 </form>
                 {/* react에서는 input-label을 이을 때 label id 값이 아닌 htmlFor를 사용한다. */}
                 {/* 최초 로그인 여부 true이면 비밀번호 변경 팝업 */}

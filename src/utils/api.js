@@ -9,7 +9,8 @@ import axios from 'axios';
 // baseURL: "http://127.0.0.1:8000/",
 // 
 const apiUrl = axios.create({
-    baseURL: "http://127.0.0.1:8000/",
+    // baseURL: "http://127.0.0.1:8000/",
+    baseURL: "http://10.0.60.201:8000/",
     // baseURL:"http://192.10.100.100:8000/",
     headers: {
         'Content-Type': 'application/json',
@@ -29,14 +30,21 @@ const apiUrl = axios.create({
 const api = {
     request: async (method, url, data = null) => {
         try {
-            if (method === 'post' && Object.values(data).some(e => !e)) {
-                alert(`user input is Null or ''.`);
-                return;
+            console.log('api 부');
+            if (method === 'post') {
+                console.log(data);
+                // if (Object.values(data).some(e => !e)){
+                //     alert(`user input is Null or ''.`);
+                // }
+                // return;
             };
+            const response = await apiUrl({ method, url, data });
             if (method !== 'get') {
                 console.log(`Url: ${url} \nData: ${JSON.stringify(data, null, 2)}`);
+            } else {
+                console.log(response);
             }
-            const response = await apiUrl({ method, url, data });
+            console.log('api 부 끝');
             return response.data;
         } catch (error) {
             const errMsg = error.response?.data?.message || error.message;

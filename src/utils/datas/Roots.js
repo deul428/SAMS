@@ -13,16 +13,21 @@ const roots = [
     {depth1: 'biz-opp', depth2: '', url: 'select-biz-opp/', component: BizOpp, 
     props: [
         { Header: '사업 일련 번호', accessor: 'biz_opp_id' },
-        { Header: '부서명', accessor: 'change_preparation_dept_name' },
-        { Header: '사용자 이름', accessor: 'user_name' },
+        { Header: '본부', accessor: 'high_dept_name' },
+        { Header: '팀', accessor: 'change_preparation_dept_name' },
+        { Header: '영업 담당자', accessor: 'user_name' },
         { Header: '판품 번호', accessor: 'sale_item_no' },
-        { Header: '사업 (기회)명', accessor: 'biz_opp_name' },
-        { Header: '최종 고객사1 이름', accessor: 'last_client_com1_name' },
-        { Header: '최종 고객사2 이름', accessor: 'last_client_com2_name' },
-        { Header: '매출처1 이름', accessor: 'sale_com1_name' },
-        { Header: '매출처2 이름', accessor: 'sale_com2_name' },
-        { Header: '진행률1 code', accessor: 'progress1_rate' },
-        { Header: '진행률2 code', accessor: 'progress2_rate' },
+        { Header: '사업 (기회) 명', accessor: 'biz_opp_name' },
+        { Header: '최종 고객사', accessor: 'last_client_com2_name' },
+        { Header: '매출처', accessor: 'sale_com2_name' },
+        
+        
+        
+        { Header: '진행률1 code', accessor: 'progress1_rate_code' },
+        { Header: '진행률2 code', accessor: 'progress2_rate_code' },
+        
+        
+        
         { Header: '필달 여부', accessor: 'essential_achievement_tf', Cell: ({value}) => v_handlingTF(value) },
         { Header: '계약 일자', accessor: 'contract_date',
         Cell: ({value}) => v_handlingDate(value) },
@@ -36,25 +41,11 @@ const roots = [
         Cell: ({value}) => v_handlingNum(value) },
         { Header: '매출 이익', accessor: 'sale_profit', 
         Cell: ({value}) => v_handlingNum(value) },
-        { Header: '사업 구분1 code', accessor: 'biz_section1_code' },
-        { Header: '사업 구분2 code', accessor: 'biz_section2_code' },
-        { Header: '제품1 이름', accessor: 'product1_name' },
-        { Header: '제품2 이름', accessor: 'product2_name' },
+        { Header: '사업 구분', accessor: 'biz_section2_name' },
+        { Header: '제품', accessor: 'product2_name' },
         { Header: '활동 이력', accessor: 'history'},
-        // { Header: '사용자 ID', accessor: 'user_id' },
-        // { Header: '부서 ID', accessor: 'change_preparation_dept_id' },
-        // { Header: '최종 고객사1 code', accessor: 'last_client_com1_code' },
-        // { Header: '최종 고객사2 code', accessor: 'last_client_com2_code' },
-        // { Header: '매출처1 code', accessor: 'sale_com1_code' },
-        // { Header: '매출처2 code', accessor: 'sale_com2_code' },
-        // { Header: '등록자 ID', accessor: 'create_user' },
-        // { Header: '등록 일시', accessor: 'create_date' },
-        // { Header: '수정자 ID', accessor: 'update_user' },
-        // { Header: '수정 일시', accessor: 'update_date' },
-        // { Header: '삭제자 ID', accessor: 'delete_user' },
-        // { Header: '삭제 일시', accessor: 'delete_date' },
-        ]
-    },
+    ]
+},
     {depth1: 'activity', depth2: '', component: Activity},
     {depth1: 'aim', depth2: 'manage', component: Home},
     {depth1: 'aim', depth2: 'achievement', component: Home}

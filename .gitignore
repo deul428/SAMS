@@ -279,3 +279,6 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,django,python
+
+# kimheesoo 수정 
+/AJICT/BMS/Back-end/AJICT_BMS/settings.py

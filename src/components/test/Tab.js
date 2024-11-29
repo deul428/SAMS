@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 // 컴포넌트 불러오기 (export 방식에 맞추어 확인 필요)
-import Home from './Home';       // default export인 경우
-import AuthLogin from '../Login';         // default export인 경우
+import AuthLogin from '../Login';
 import Data from '../../utils/DynamicTable';
+import ResizableTable from './ResizableTable';
 const components = {
-  Home: () => <Home />,
   AuthLogin: () => <AuthLogin />,
   Data: () => <Data />,
+  ResizableTable: () => <ResizableTable />,
   Settings: () => <div>Settings Content</div>,
 };
 
@@ -42,12 +42,11 @@ const MultiTabComponent = () => {
   };
 
   return (
-    <div id='tab'>
+    <div id='tab' style={{ background: 'pink' }}>
       <div className='btnArea'>
-        <button onClick={() => openTab('Home')}>Home</button>
-        {/* <button onClick={() => openTab('AuthLogin')}>AuthLogin</button> */}
         <button onClick={() => openTab('Settings')}>Settings</button>
         <button onClick={() => openTab('Data')}>Data</button>
+        <button onClick={() => openTab('ResizableTable')}>ResizableTable</button>
       </div>
 
       <div style={{ display: 'flex', borderBottom: '1px solid #ccc' }}>

@@ -19,26 +19,13 @@ const AuthLogin = () => {
         userId: '',
         userPw: '',
     }
-
     const [input, setInput] = useState(p_login);
-    
     const endpoint = 'login/';
-    // const f_handlingData = async (method, endpoint, input = null) => {
-    //     try {  
-    //         const response = await apiMethods['post']('post', endpoint, input);
-            
-    //     }
-    // }
-    useEffect(() => {
-        console.log("Redirect Path:", redirect);
-        if (redirect) {
-            navigate(redirect, { replace: true });
-        }
-    }, [redirect, navigate]);
 
+
+    
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
-        // console.log({ name, value }, input);
         setInput({
             ...input,
             [name]: value,
@@ -55,18 +42,29 @@ const AuthLogin = () => {
                 return;
             }
             const response = await apiMethods[method](endpoint, input);
-            
-            // await dispatch(login({userId1: input.userId, userPw1: input.userPw}));
             console.log(response);
+            // if (response.STATUS === 'SUCCESS') {
+                // login reducers로 액션 전송(유저 상태 값 redux에 저장, 전역 상태 관리)
+            await dispatch(login({userId1: input.userId, userPw1: input.userPw}));
+            
+            // 로그인 시 이전 경로로 리디렉션
+            const from = location.state?.from?.pathname || `/${roots[4].depth1}/`;
+            console.log(from);
+            setRedirect(from);
+            // } else {
+            //     alert(response.MESSAGE);
+            // }
             return response;
         } catch (error) {
             console.log("error!!!", error);
-        } finally {
-            // 로그인 시 이전 경로로 리디렉션
-            // const from = location.state?.from?.pathname || `/${roots[4].depth1}/`;
-            // setRedirect(from);
         }
     };
+    useEffect(() => {
+        console.log("Redirect Path:", redirect); // 확인
+        if (redirect) {
+            navigate(redirect, { replace: true });
+        }
+    }, [redirect, navigate]);
     return (
         <div id='login' className='wrap'>
             <div id='loginArea'>
@@ -88,9 +86,7 @@ const AuthLogin = () => {
                             영문, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 미포함)
                         </Form.Text>
                     </div>
-                    {/* <Button type='submit' variant='primary' onClick={f_submitLoginData}>로그인</Button> */}
-                    {/* <Button type='submit' variant='primary' onClick={() => f_submitLoginData('post', endpoint, input)}>Post</Button> */}
-                    <Button type="submit" variant="primary" onClick={(e) => f_submitLoginData('post', endpoint, input, e)}>Post</Button>
+                    <Button type="submit" variant="primary" onClick={(e) => f_submitLoginData('post', endpoint, input, e)}>로그인</Button>
                 {/* </form> */}
                 </form>
                 {/* react에서는 input-label을 이을 때 label id 값이 아닌 htmlFor를 사용한다. */}

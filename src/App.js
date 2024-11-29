@@ -28,7 +28,6 @@ function AppCntnt() {
     <>
       {!hiddenPaths.includes(location.pathname) && <Header />}
       <div id='cntntArea'>
-      <ResizableTable/>
         {!hiddenPaths.includes(location.pathname) && <MultiTabComponent />}
         {/* <ExcelTable></ExcelTable> */}
         {/* <Tree_uiUsed_productManage></Tree_uiUsed_productManage> */}

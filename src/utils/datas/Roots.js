@@ -1,4 +1,3 @@
-import Home from '../../components/test/Home';
 import AuthLogin from '../../components/Login';
 import BizOpp from '../../components/BizOpp';
 import Activity from '../../components/Activity';
@@ -7,9 +6,9 @@ import { Button } from 'react-bootstrap';
 
 const roots = [
     {depth1: 'login', depth2: '', component: AuthLogin},
-    {depth1: 'admin', depth2: 'user', component: Home},
-    {depth1: 'admin', depth2: 'code', component: Home},
-    {depth1: 'admin', depth2: 'product', component: Home},
+    {depth1: 'admin', depth2: 'user', component: <><h1>아직입니다...</h1></>},
+    {depth1: 'admin', depth2: 'code', component: <><h1>아직입니다...</h1></>},
+    {depth1: 'admin', depth2: 'product', component: <><h1>아직입니다...</h1></>},
     {depth1: 'biz-opp', depth2: '', url: 'select-biz-opp/', component: BizOpp, 
     props: [
         { Header: '사업 일련 번호', accessor: 'biz_opp_id' },
@@ -47,8 +46,8 @@ const roots = [
     ]
 },
     {depth1: 'activity', depth2: '', component: Activity},
-    {depth1: 'aim', depth2: 'manage', component: Home},
-    {depth1: 'aim', depth2: 'achievement', component: Home}
+    {depth1: 'aim', depth2: 'manage', component: <><h1>아직입니다...</h1></>},
+    {depth1: 'aim', depth2: 'achievement', component: <><h1>아직입니다...</h1></>}
 ] 
 function v_handlingTF(value) { return value ? 'Y' : 'N'; }
 function v_handlingDate(value) {

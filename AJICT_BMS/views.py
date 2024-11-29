@@ -1,64 +1,71 @@
 import logging
+import json
 from django.db import connection
 from django.http import HttpResponse,JsonResponse
 logging.basicConfig(level=logging.DEBUG)
 def f_login(request):
    if request.method == "POST":
-      v_user_id = request.POST.get('a_user_id')
-      v_cipher = request.POST.get('a_cipher')
+      #v_user_id = request.POST.get('a_user_id')
+      #v_cipher = request.POST.get('a_cipher')
    #v_user_id = "leec"
    #v_cipher = "12345"
-      v_sql1 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s"""
-      v_param1=[]
-      v_param1.append(v_user_id)
-      with connection.cursor() as v_cursor:
-         v_cursor.execute(v_sql1,v_param1)
-         v_row1 = v_cursor.fetchone()
-         v_count1 = v_row1[0]
-         if v_count1 == 0:
-            v_data1 = {"STATUS":"NONE","MESSAGE":"존재하지 않는 사용자 ID입니다."}
-            return JsonResponse(v_data1,safe=False,json_dumps_params={'ensure_ascii':False})
-      v_sql2 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s AND cipher = %s"""
-      v_param2=[]
-      v_param2.append(v_user_id)
-      v_param2.append(v_cipher)
-      with connection.cursor() as v_cursor:
-         v_cursor.execute(v_sql2,v_param2)
-         v_row2 = v_cursor.fetchone()
-         v_count2 = v_row2[0]
-         if v_count2 == 0:
-            return JsonResponse({"STATUS":"NONE","MESSAGE":"비밀번호가 틀립니다."})
-      v_sql3 = """SELECT user_id,
-                         user_name,
-                         cipher,
-                         dept_id,
-                         position1_code,
-                         position2_code,
-                         responsibility1_code,
-                         responsibility2_code,
-                         auth1_code,
-                         auth2_code,
-                         beginning_login_tf,
-                         create_user,
-                         create_date,
-                         update_user,
-                         update_date,
-                         delete_user,
-                         delete_date
-                  FROM ajict_bms_schema.aj_user
-                  WHERE user_id = %s AND
-                        cipher = %s"""
-      v_param3 = []
-      v_param3.append(v_user_id)
-      v_param3.append(v_cipher)
-      with connection.cursor() as v_cursor:
-         v_cursor.execute(v_sql3,v_param3)
-         v_columns = [v_column[0] for v_column in v_cursor.description]
-         v_rows = v_cursor.fetchall()
-         v_data = [dict(zip(v_columns,row)) for row in v_rows]
-         v_additional_info = {"STATUS": "SUCCESS","MESSAGE": "인증되었습니다."}
-         v_data.append(v_additional_info)
-         return JsonResponse(v_data,safe=False,json_dumps_params={'ensure_ascii':False})
+      try:
+         v_data=json.loads(request.body)
+         v_user_id=v_data.get('a_user_id')
+         v_cipher=v_data.get('a_cipher')
+         v_sql1 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s"""
+         v_param1=[]
+         v_param1.append(v_user_id)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql1,v_param1)
+            v_row1 = v_cursor.fetchone()
+            v_count1 = v_row1[0]
+            if v_count1 == 0:
+               v_data1 = {"STATUS":"NONE","MESSAGE":"존재하지 않는 사용자 ID입니다."}
+               return JsonResponse(v_data1,safe=False,json_dumps_params={'ensure_ascii':False})
+         v_sql2 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s AND cipher = %s"""
+         v_param2=[]
+         v_param2.append(v_user_id)
+         v_param2.append(v_cipher)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql2,v_param2)
+            v_row2 = v_cursor.fetchone()
+            v_count2 = v_row2[0]
+            if v_count2 == 0:
+               return JsonResponse({"STATUS":"NONE","MESSAGE":"비밀번호가 틀립니다."})
+         v_sql3 = """SELECT user_id,
+                            user_name,
+                            cipher,
+                            dept_id,
+                            position1_code,
+                            position2_code,
+                            responsibility1_code,
+                            responsibility2_code,
+                            auth1_code,
+                            auth2_code,
+                            beginning_login_tf,
+                            create_user,
+                            create_date,
+                            update_user,
+                            update_date,
+                            delete_user,
+                            delete_date
+                     FROM ajict_bms_schema.aj_user
+                     WHERE user_id = %s AND
+                           cipher = %s"""
+         v_param3 = []
+         v_param3.append(v_user_id)
+         v_param3.append(v_cipher)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql3,v_param3)
+            v_columns = [v_column[0] for v_column in v_cursor.description]
+            v_rows = v_cursor.fetchall()
+            v_data = [dict(zip(v_columns,row)) for row in v_rows]
+            v_additional_info = {"STATUS": "SUCCESS","MESSAGE": "인증되었습니다."}
+            v_data.append(v_additional_info)
+            return JsonResponse(v_data,safe=False,json_dumps_params={'ensure_ascii':False})
+      except json.JSONDecodeError:
+         return JsonResponse({"STATUS":"JSON","MESSAGE":"JSON의 format가 틀립니다."})
 def f_select_biz_opp(request):
     if request.method == "POST":
        v_progress_rate_code_from = request.POST.get('a_progress_rate_code_from')

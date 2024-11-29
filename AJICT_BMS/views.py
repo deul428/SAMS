@@ -61,8 +61,8 @@ def f_login(request):
       return JsonResponse(v_data,safe=False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp(request):
    # if request.method == "POST":
-   v_progress_rate_from = "0001"
-   v_progress_rate_to = "0006"
+   v_progress_rate_code_from = "0001"
+   v_progress_rate_code_to = "0006"
    # v_progress_rate_from = request.POST.get('a_progress_rate_from')
    # v_progress_rate_to = request.POST.get('a_progress_rate_to')
    # v_contract_date_from = request.POST.get('a_contract_date_from')
@@ -151,11 +151,11 @@ def f_select_biz_opp(request):
                  FROM ajict_bms_schema.biz_opp A
                  WHERE 1 =1 """
    v_param = []
-   if v_progress_rate_from:
-      if v_progress_rate_to:
-         v_sql += "AND progress1_rate = 'PRO' AND progress2_rate BETWEEN %s AND %s"
-         v_param.append(v_progress_rate_from)
-         v_param.append(v_progress_rate_to)
+   if v_progress_rate_code_from:
+      if v_progress_rate_code_to:
+         v_sql += "AND progress1_rate_code = 'PRO' AND progress2_rate_code BETWEEN %s AND %s"
+         v_param.append(v_progress_rate_code_from)
+         v_param.append(v_progress_rate_code_to)
    with connection.cursor() as v_cursor:
       v_cursor.execute(v_sql,v_param)
       v_columns = [v_column[0] for v_column in v_cursor.description]

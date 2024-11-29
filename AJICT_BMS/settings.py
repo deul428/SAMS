@@ -46,7 +46,7 @@ INSTALLED_APPS = ["django.contrib.admin",
                   "AJICT_BMS"]
 
 
-# cci10000(2024-11-21)
+# cci10000(2024-11-21, 2024-11-29)
 # MIDDLEWARE = [
 #    "django.middleware.security.SecurityMiddleware",
 #    "django.contrib.sessions.middleware.SessionMiddleware",
@@ -61,7 +61,6 @@ MIDDLEWARE = ["corsheaders.middleware.CorsMiddleware",
               "django.middleware.security.SecurityMiddleware",
               "django.contrib.sessions.middleware.SessionMiddleware",
               "django.middleware.common.CommonMiddleware",
-              "django.middleware.csrf.CsrfViewMiddleware",
               "django.contrib.auth.middleware.AuthenticationMiddleware",
               "django.contrib.messages.middleware.MessageMiddleware",
               "django.middleware.clickjacking.XFrameOptionsMiddleware"]

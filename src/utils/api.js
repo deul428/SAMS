@@ -41,6 +41,7 @@ const api = {
             const response = await apiUrl({ method, url, data });
             if (method !== 'get') {
                 console.log(`Url: ${url} \nData: ${JSON.stringify(data, null, 2)}`);
+                console.log(data);
             } else {
                 console.log(response);
             }

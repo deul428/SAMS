@@ -24,7 +24,7 @@ const AuthLogin = () => {
             alert(`ID, Password를 입력하세요.`);
             return;
         }
-        dispatch(login({userId1: userId, userPw1: userPw}));
+        dispatch(login({userId: userId, userPw: userPw}));
         navigate('/home');
     } 
     return (

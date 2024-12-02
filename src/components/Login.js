@@ -16,12 +16,11 @@ const AuthLogin = () => {
     const [redirect, setRedirect] = useState(null);
 
     const p_login = {
-        userId: '',
-        userPw: '',
+        a_user_id: '',
+        a_cipher: '',
     }
     const [input, setInput] = useState(p_login);
     const endpoint = 'login/';
-
 
     
     const f_handlingInput = (e) => {
@@ -32,33 +31,77 @@ const AuthLogin = () => {
         });
     }
 
+    // 바닥 페이지 비우기
+    // 로그인했을 때 사용자 정보 세션마다 돌게 
+    // 사업기회조회 어드민 아니면 권한 맞는 조회 조건만 보이게 
+
     // 유효값 체크 및 로그인 후 경로 리디렉션
     // 11.26. 리디렉션 처리 안 되고 있으니 다시 확인해 보기.
     const f_submitLoginData = async (method, endpoint, input = null, e) => {
         e.preventDefault(); // submit 방지
         try {
-            if (!input.userId || !input.userPw) {
+            if (!input.a_user_id || !input.a_cipher) {
                 alert(`아이디, 패스워드를 입력하세요.`);
                 return;
             }
+            // API 호출
             const response = await apiMethods[method](endpoint, input);
-            console.log(response);
-            // if (response.STATUS === 'SUCCESS') {
-                // login reducers로 액션 전송(유저 상태 값 redux에 저장, 전역 상태 관리)
-            await dispatch(login({userId1: input.userId, userPw1: input.userPw}));
-            
-            // 로그인 시 이전 경로로 리디렉션
-            const from = location.state?.from?.pathname || `/${roots[4].depth1}/`;
-            console.log(from);
-            setRedirect(from);
-            // } else {
-            //     alert(response.MESSAGE);
-            // }
+            console.log(response, [response].length);
+            console.log(response[1].STATUS);
+    
+            // 응답 데이터 검증 및 처리
+            if (response.length === 2 && response[1].STATUS === 'SUCCESS') {
+                // Redux에 로그인 정보 저장
+                await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher }));
+    
+                // 이전 경로로 리디렉션
+                const from = location.state?.from?.pathname || `/${roots[4].depth1}/`;
+                console.log("Redirect Path:", from);
+                setRedirect(from);
+            } else if (response.STATUS === 'NONE') {
+                // 실패 메시지 알림
+                alert(response.MESSAGE || "알 수 없는 오류가 발생했습니다.");
+            } else {
+                alert("서버로부터 올바른 응답을 받지 못했습니다.");
+            }
+    
             return response;
         } catch (error) {
-            console.log("error!!!", error);
+            console.log("Error during login:", error);
+            alert("로그인 중 오류가 발생했습니다. 관리자에게 문의하세요.");
         }
     };
+    
+    
+    // const f_submitLoginData = async (method, endpoint, input = null, e) => {
+    //     e.preventDefault(); // submit 방지
+    //     try {
+    //         if (!input.a_user_id || !input.a_cipher) {
+    //             alert(`아이디, 패스워드를 입력하세요.`);
+    //             return;
+    //         }
+    //         const response = await apiMethods[method](endpoint, input);
+    //         console.log([...response]);
+    //         if (response.STATUS === 'SUCCESS') {
+    //             // login reducers로 액션 전송(유저 상태 값 redux에 저장, 전역 상태 관리)
+    //             await dispatch(login({userId: input.a_user_id, userPw: input.a_cipher}));
+            
+    //             // 로그인 시 이전 경로로 리디렉션
+    //             const from = location.state?.from?.pathname || `/${roots[4].depth1}/`;
+    //             console.log(from);
+            
+    //             setRedirect(from);
+    //         } else {
+    //             // response.MESSAGE가 있는 경우 출력
+    //             const errorMessage = response[1].MESSAGE || "오류가 발생했습니다.";
+    //             console.log(errorMessage);
+    //             alert(errorMessage);
+    //         }
+    //         return response;
+    //     } catch (error) {
+    //         console.log("error!!!", error);
+    //     }
+    // };
     useEffect(() => {
         console.log("Redirect Path:", redirect); // 확인
         if (redirect) {
@@ -75,12 +118,12 @@ const AuthLogin = () => {
                 <form>
                     <div className='inputFields idField'>
                         <FloatingLabel label='ID' className='mb-3'>
-                            <Form.Control type='id' name='userId' placeholder='id' id='inputId' value={input.userId} onChange={f_handlingInput}/>
+                            <Form.Control type='id' name='a_user_id' placeholder='id' id='inputId' value={input.a_user_id} onChange={f_handlingInput}/>
                         </FloatingLabel>
                     </div>
                     <div className='inputFields pwField'>
                         <FloatingLabel label='Password'>
-                            <Form.Control type='password' name='userPw' placeholder='Password' id='inputPw' value={input.userPw} onChange={f_handlingInput}/>
+                            <Form.Control type='password' name='a_cipher' placeholder='Password' id='inputPw' value={input.a_cipher} onChange={f_handlingInput}/>
                         </FloatingLabel>
                         <Form.Text id='passwordHelpBlock' muted>
                             영문, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 미포함)

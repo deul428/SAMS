@@ -11,13 +11,13 @@ export function Home() {
             {auth.isLoggedIn1 ?
                 (
                     <div>
-                        <h1>hello, {auth.userId1}!</h1>
+                        <h1>hello, {auth.userId}!</h1>
                         <Button variant='warning' onClick={() => dispatch(logout())}>LogOut</Button>
                     </div>
                 ) :
                 (
                     <div>
-                        <h1>Please Log-in.{auth.userId1}</h1>
+                        <h1>Please Log-in.{auth.userId}</h1>
                     </div>
                 )
             }

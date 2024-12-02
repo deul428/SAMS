@@ -27,7 +27,7 @@ function Header() {
     (v_loginInfo = 
         <ButtonGroup className='btnLoginInfo'>
             <Button variant='text' className='btnUserId'>
-                <Person></Person> {auth.userId1}
+                <Person></Person> {auth.userId}
             </Button>
             <Button variant='text' className='btnLogout' onClick={f_logoutConfirm}> Logout </Button>
         </ButtonGroup>

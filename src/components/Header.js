@@ -23,7 +23,7 @@ function Header() {
         // isLoggedIn === true: User Id Text, Logout Button 생성 
         // isLoggedIn === false: User Id Falsy, Login Button 생성 
     let v_loginInfo = <ButtonGroup><Button variant='primary' href={`/${roots[0].depth1}`}> Login </Button></ButtonGroup>;
-    auth.isLoggedIn1 ? 
+    auth.isLoggedIn ? 
     (v_loginInfo = 
         <ButtonGroup className='btnLoginInfo'>
             <Button variant='text' className='btnUserId'>

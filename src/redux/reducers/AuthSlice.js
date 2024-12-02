@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { apiMethods } from '../../utils/api';
 const initialState  = {
-    isLoggedIn1: false,
+    isLoggedIn: false,
     userId: '',
     userPw: '',
 };
@@ -14,14 +14,14 @@ const authSlice = createSlice({
     reducers: {
         login(state, action) {
             console.log('action: auth.login', action.payload);  
-            state.isLoggedIn1 = true;
+            state.isLoggedIn = true;
             state.userId = action.payload.userId;
             state.userPw = action.payload.userPw;
         },
         // 추가적으로 데이터를 받을 필요가 없을 때는 action을 파라미터로 줄 필요가 없음.
         logout(state) {
             console.log('action: auth.logout');
-            state.isLoggedIn1 = false;
+            state.isLoggedIn = false;
             state.userId = '';
             state.userPw = '';
         },

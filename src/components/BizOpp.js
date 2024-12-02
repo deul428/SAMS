@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
+import axios from 'axios';
+import { apiMethods } from '../utils/api.js';
 import { login } from '../index.js';
+import SearchField from './SearchField.js';
+import DynamicTable from '../utils/DynamicTable.js';
+import BizOppDetail from './BizOppDetail.js';
+
+import roots from '../utils/datas/Roots.js';
+
 import { Table, Form, Button, ButtonGroup, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Columns, Person } from 'react-bootstrap-icons';
-import SearchField from './SearchField.js';
-import { apiMethods } from '../utils/api.js';
-import axios from 'axios';
-import roots from '../utils/datas/Roots.js';
-import DynamicTable from '../utils/DynamicTable.js';
-import { useLocation } from 'react-router-dom';
 
 const BizOpp = () => {
     const location = useLocation();
@@ -16,6 +20,8 @@ const BizOpp = () => {
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
     const endpoint = roots[4].url;
+
+    const [content, setContent] = useState(false);
     /*-
     사업 (기회) ID	biz_opp_id
     사업 (기회)명	biz_opp_name
@@ -110,6 +116,13 @@ const BizOpp = () => {
         });
     }
 
+    const activeDetail = () => {
+        // const htmlD = e.target;
+        // console.log(htmlD, htmlD.parentElement.closest('div.wrap'));
+        // <BizOppDetail />
+        setContent(true);
+        console.log(content);
+    }
     const f_handlingData = async (method, endpoint, input = null) => {
         try {
             const supportedMethods = ['get', 'post', 'put', 'patch', 'del'];
@@ -147,21 +160,29 @@ const BizOpp = () => {
         <>
             <h2>사업 (기회) 조회</h2>
             <SearchField/>
-            <div className='wrap'>
-                <div className="dataPostArea">
-                    <Form.Control type="text" name="biz_opp_name" placeholder="사업명을 입력하세요." value={input.biz_opp_name} onChange={f_handlingInput}/>
-                    <Form.Control type="text" name="user_name" placeholder="유저 이름을 입력하세요." value={input.user_name} onChange={f_handlingInput}/>
-                    <Form.Control type="text" name="last_client_com2_name" placeholder="최종 고객사 상호를 입력하세요." value={input.last_client_com2_name} onChange={f_handlingInput}/>
-                    <div>
-                    <Button style={{ margin: '0 10px' }} variant='primary' onClick={() => f_handlingData('get', endpoint)}>Refresh</Button>
-                    <Button style={{ margin: '0 10px' }} variant='success' onClick={() => f_handlingData('post', endpoint, input)}>Post</Button>
-                    <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('put', endpoint, input)}>Put</Button>
-                    <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('patch', endpoint, input)}>Patch</Button>
-                    <Button style={{ margin: '0 10px' }} variant='danger' onClick={() => f_handlingData('del', endpoint)}>Delete</Button>
-                    </div>
-
+            {content && <BizOppDetail/>}
+            <div className='wrap' id='bizOpp'>
+                <div className='dataPostArea'>
+                    {/* <div className='ex'>
+                        <Form.Control type='text' name='biz_opp_name' placeholder='사업명을 입력하세요.' value={input.biz_opp_name} onChange={f_handlingInput}/>
+                        <Form.Control type='text' name='user_name' placeholder='유저 이름을 입력하세요.' value={input.user_name} onChange={f_handlingInput}/>
+                        <Form.Control type='text' name='last_client_com2_name' placeholder='최종 고객사 상호를 입력하세요.' value={input.last_client_com2_name} onChange={f_handlingInput}/>
+                        <div>
+                            <Button style={{ margin: '0 10px' }} variant='primary' onClick={() => f_handlingData('get', endpoint)}>Refresh</Button>
+                            <Button style={{ margin: '0 10px' }} variant='success' onClick={() => f_handlingData('post', endpoint, input)}>Post</Button>
+                            <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('put', endpoint, input)}>Put</Button>
+                            <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('patch', endpoint, input)}>Patch</Button>
+                            <Button style={{ margin: '0 10px' }} variant='danger' onClick={() => f_handlingData('del', endpoint)}>Delete</Button>
+                        </div>
+                    </div> */}
                     
 
+                    
+                    <div className='btnSet'>
+                        <Button style={{ margin: '0 10px' }} variant='success' className='btnLeft' onClick={activeDetail}>사업 (기회) 등록</Button>
+                        {/* <Button style={{ margin: '0 10px' }} variant='success' className='btnLeft' onClick={(e) => activeDetail(e)}>사업 (기회) 등록</Button> */}
+                    </div>
+                    
                     {errMsg ? 
                     (<p>{errMsg}</p>) 
                     :   (
@@ -188,7 +209,7 @@ const BizOpp = () => {
                             
                         //     <h2>3. 객체의 키-값 쌍을 분해해서 테이블 형태로 출력</h2>
                         //     {data.map((e) => (
-                        //         <Table striped="columns" bordered hover className={e.id} key={e.id}>
+                        //         <Table striped='columns' bordered hover className={e.id} key={e.id}>
                         //             <thead>
                         //                 <tr><th colSpan={2}>{e.id}</th></tr>
                         //             </thead>

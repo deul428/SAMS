@@ -8,7 +8,7 @@ import roots from '../utils/datas/Roots';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
 
-const SearchField = () => {
+const SearchFieldDetail = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
@@ -119,10 +119,11 @@ const SearchField = () => {
     }, [currentPath]);
 
     return (
-        <div id='search' className='wrap'>
+        <div id='searchDetail'>
+            <div onClick={("() => ")}>X</div>
             {v_handlingHtml}
         </div>
     );
 };
 
-export default SearchField;
+export default SearchFieldDetail;

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useTable } from "react-table";
-import { apiMethods } from "./api"; // API 호출 메서드
-import roots from "./datas/Roots";
-import { Table, Button } from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
+import { useTable } from 'react-table';
+import { apiMethods } from './api'; // API 호출 메서드
+import roots from './datas/Roots';
+import { Table, Button } from 'react-bootstrap';
 
 function DynamicTable() {
   // API에서 데이터를 가져오기 위한 상태
@@ -27,7 +27,7 @@ function DynamicTable() {
           setData(filterData); // 데이터부만 filter
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -54,7 +54,7 @@ function DynamicTable() {
                 const { key, ...restProps } = column.getHeaderProps();
                 return (
                   <th key={key} {...restProps} >
-                    {column.render("Header")}
+                    {column.render('Header')}
                   </th>
                 )
               })}
@@ -74,8 +74,8 @@ function DynamicTable() {
                 return (
                   <td key={key} {...restProps}>
                     {index === row.cells.length - 1
-                      ? cell.render(<Button size="sm" variant="light">이력</Button>)
-                      : cell.render("Cell")}
+                      ? cell.render(<Button size='sm' variant='light'>이력</Button>)
+                      : cell.render('Cell')}
                   </td>
                 );
               })}
@@ -93,8 +93,8 @@ function DynamicTable() {
                 return (
                   <td key={key} {...restProps}>
                     {index === row.cells.length - 1
-                      ? cell.render(<Button size="sm" variant="light">이력</Button>)
-                      : cell.render("Cell")}
+                      ? cell.render(<Button size='sm' variant='light'>이력</Button>)
+                      : cell.render('Cell')}
                   </td>
                 );
               })}

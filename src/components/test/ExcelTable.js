@@ -42,15 +42,15 @@ const ExcelTable = () => {
     <div>
       <h1>Excel Upload and Table</h1>
       <input
-        type="file"
-        accept=".xlsx, .xls"
+        type='file'
+        accept='.xlsx, .xls'
         onChange={handleFileUpload}
         style={{ marginBottom: '20px' }}
       />
       <button onClick={handleExport} style={{ marginBottom: '20px' }}>
         Export to Excel
       </button>
-      <table border="1" cellPadding="5" style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table border='1' cellPadding='5' style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             {columns.map((col) => (
@@ -64,7 +64,7 @@ const ExcelTable = () => {
               {columns.map((col) => (
                 <td key={col}>
                   <input
-                    type="text"
+                    type='text'
                     value={row[col]}
                     onChange={(e) => handleCellChange(rowIndex, col, e.target.value)}
                   />

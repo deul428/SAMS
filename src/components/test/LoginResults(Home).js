@@ -8,7 +8,7 @@ export function Home() {
     console.log(`AuthHome.js: ${JSON.stringify(auth)}`);
     return (
         <div>
-            {auth.isLoggedIn1 ?
+            {auth.isLoggedIn ?
                 (
                     <div>
                         <h1>hello, {auth.userId}!</h1>

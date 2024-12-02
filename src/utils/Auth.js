@@ -5,7 +5,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 const Auth = ({children}) => {
     const auth = useSelector((state) => state.auth);
     const location = useLocation();
-    return (!auth.isLoggedIn1 ? <Navigate to='/biz-opp' state={{from: location}} /> : children);
+    return (!auth.isLoggedIn ? <Navigate to='/biz-opp' state={{from: location}} /> : children);
 }
 
 export default Auth;

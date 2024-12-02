@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import axios from 'axios';
-import { useState } from "react";
-import { Form, Button, Table } from "react-bootstrap";
+import { useState } from 'react';
+import { Form, Button, Table } from 'react-bootstrap';
 const Api = () => {
     // useEffect는 랜더링 이후에 실행됨. -> UI  업데이트 후 데이터를 가지고 오는 비동기 작업 처리.
     // 변경 값 빈 배열: 컴포넌트가 처음 렌더링 시 한 번만 실행됨. 이 의존성 배열에 값이 있을 경우 해당 값 변경 시마다 useEffect 훅 다시 실행됨.
@@ -13,7 +13,7 @@ const Api = () => {
     
     // axios 인스턴스 생성
     const api = axios.create({
-        baseURL:"http://127.0.0.1:8000/",
+        baseURL:'http://127.0.0.1:8000/',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -82,8 +82,8 @@ const Api = () => {
     
 
     return (
-        <div className="dataPostArea">
-            <Form.Control type="text" placeholder="이름을 입력하세요." value={userInput} onChange={e => setUserInput(e.target.value)}/>
+        <div className='dataPostArea'>
+            <Form.Control type='text' placeholder='이름을 입력하세요.' value={userInput} onChange={e => setUserInput(e.target.value)}/>
             <Button onClick={f_postDataBizOpp}>Click</Button>
             {errMsg ? 
             (<p>{errMsg}</p>) 
@@ -110,7 +110,7 @@ const Api = () => {
                     
                     <h2>3. 객체의 키-값 쌍을 분해해서 테이블 형태로 출력</h2>
                     {data.map((e) => (
-                        <Table striped="columns" bordered hover className={e.id} key={e.id}>
+                        <Table striped='columns' bordered hover className={e.id} key={e.id}>
                             <thead>
                                 <tr><th colSpan={2}>{e.id}</th></tr>
                             </thead>

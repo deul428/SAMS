@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { login } from '../';
+import { login } from '../../index.js';
 import { Table, Form, Button, ButtonGroup, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Columns, Person } from 'react-bootstrap-icons';
-import SearchField from './SearchField';
+import SearchField from '../SearchField.js';
 import MyTable from '../utils/Table.js';
-import { apiMethods } from '../utils/api.js';
+import { apiMethods } from '../../utils/api.js';
 import axios from 'axios';
 
 const BizOpp = () => {
@@ -133,10 +133,10 @@ const BizOpp = () => {
             <SearchField/>
             <div className='wrap'>
                 {/* <MyTable /> */}
-                <div className="dataPostArea">
-                    <Form.Control type="text" name="username" placeholder="이름을 입력하세요." value={input.username} onChange={f_handlingInput}/>
-                    <Form.Control type="email" name="email" placeholder="email을 입력하세요." value={input.email} onChange={f_handlingInput}/>
-                    <Form.Control type="tel" name="phone" placeholder="번호를 입력하세요." value={input.phone} onChange={f_handlingInput}/>
+                <div className='dataPostArea'>
+                    <Form.Control type='text' name='username' placeholder='이름을 입력하세요.' value={input.username} onChange={f_handlingInput}/>
+                    <Form.Control type='email' name='email' placeholder='email을 입력하세요.' value={input.email} onChange={f_handlingInput}/>
+                    <Form.Control type='tel' name='phone' placeholder='번호를 입력하세요.' value={input.phone} onChange={f_handlingInput}/>
                     <div>
                     <Button style={{ margin: '0 10px' }} variant='primary' onClick={() => f_handlingData('get', endpoint)}>Refresh</Button>
                     <Button style={{ margin: '0 10px' }} variant='success' onClick={() => f_handlingData('post', endpoint, input)}>Post</Button>
@@ -170,7 +170,7 @@ const BizOpp = () => {
                             
                             <h2>3. 객체의 키-값 쌍을 분해해서 테이블 형태로 출력</h2>
                             {data.map((e) => (
-                                <Table striped="columns" bordered hover className={e.id} key={e.id}>
+                                <Table striped='columns' bordered hover className={e.id} key={e.id}>
                                     <thead>
                                         <tr><th colSpan={2}>{e.id}</th></tr>
                                     </thead>

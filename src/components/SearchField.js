@@ -37,28 +37,26 @@ const SearchField = () => {
                 case `/${roots[4].depth1}/`:
                     setVHandlingHtml(
                         <>
-                            <Button variant='info' className='btnLeft'>조회</Button>
                             <div className='searchField'>
                                 <div className='searchItem'>
-                                    <Row className='mb-3 align-items-center'>
-                                        <Col sm={3} className='d-flex align-items-center'>
-                                            <Form.Label className='me-2'>계약 일자</Form.Label>
-                                            FROM&nbsp;&nbsp;<Form.Control size='sm' type='date'/>
+                                    <Row className="row justify-content-start">
+                                        <Col xs={12} md={6} lg={5} className="d-flex align-items-center">
+                                            <Form.Label className="me-2">계약 일자</Form.Label>
+                                            FROM&nbsp;&nbsp;<Form.Control size="sm" type="date" className="me-3" />
+                                            TO&nbsp;&nbsp;<Form.Control size="sm" type="date" />
                                         </Col>
-                                        <Col sm={2} className='d-flex align-items-center'>
-                                            TO&nbsp;&nbsp;<Form.Control size='sm' type='date'/>
+                                        <Col xs={12} md={6} lg={5} className="d-flex align-items-center">
+                                            <Form.Label className="me-2">매출 일자</Form.Label>
+                                            FROM&nbsp;&nbsp;<Form.Control size="sm" type="date" className="me-3" />
+                                            TO&nbsp;&nbsp;<Form.Control size="sm" type="date" />
                                         </Col>
-                                        <Col sm={3} className='d-flex align-items-center' style={{marginLeft: '2%'}}>
-                                            <Form.Label className='me-2'>매출 일자</Form.Label>
-                                            FROM&nbsp;&nbsp;<Form.Control size='sm' type='date'/>
-                                        </Col>
-                                        <Col sm={2} className='d-flex align-items-center'>
-                                            TO&nbsp;&nbsp;<Form.Control size='sm' type='date'/>
+                                        <Col xs={2} md={3} lg={2} className='d-flex align-items-center  justify-content-end'>
+                                            <Button variant='primary'>조회</Button>
                                         </Col>
                                     </Row>
             
-                                    <Row className='mb-3 align-items-center'>
-                                        <Col sm={3} className='d-flex align-items-center'>
+                                    <Row className="row justify-content-start">
+                                        <Col xs={12} md={4} lg={3} className="d-flex align-items-center">
                                             <Form.Label className='me-2'>본부</Form.Label>
                                             <Form.Select size='sm' aria-label='selectBox'>
                                                 <option>Choose...</option>
@@ -67,7 +65,7 @@ const SearchField = () => {
                                                 <option value='3'>Three</option>
                                             </Form.Select>
                                         </Col>
-                                        <Col sm={3} className='d-flex align-items-center'>
+                                        <Col xs={12} md={4} lg={3} className="d-flex align-items-center">
                                             <Form.Label className='me-2'>팀</Form.Label>
                                             <Form.Select size='sm' aria-label='selectBox'>
                                                 <option>Choose...</option>
@@ -76,23 +74,21 @@ const SearchField = () => {
                                                 <option value='3'>Three</option>
                                             </Form.Select>
                                         </Col>
-                                        <Col sm={4} className='d-flex align-items-center'>
+                                        <Col xs={12} md={4} lg={3} className="d-flex align-items-center">
                                             <Form.Label className='me-2'>영업 담당자</Form.Label>
                                             <Form.Control size='sm' type='text' placeholder='Default input' />
                                         </Col>
                                     </Row>
-                                    <Row>
-                                        <Col sm={3} className='d-flex align-items-center'>
+                                    <Row className="row justify-content-start">
+                                        <Col xs={12} md={5} lg={6} className="d-flex align-items-center me-2">
                                             <Form.Label className='me-2'>진행률</Form.Label>
                                             FROM&nbsp;&nbsp;
-                                            <Form.Select size='sm' aria-label='selectBox'>
+                                            <Form.Select size='sm' aria-label='selectBox' className='me-3'>
                                                 <option>Open this select menu</option>
                                                 <option value='1'>One</option>
                                                 <option value='2'>Two</option>
                                                 <option value='3'>Three</option>
                                             </Form.Select>
-                                        </Col>
-                                        <Col sm={2} className='d-flex align-items-center'>
                                             TO&nbsp;&nbsp;
                                             <Form.Select size='sm' aria-label='selectBox'>
                                                 <option>Open this select menu</option>
@@ -101,8 +97,8 @@ const SearchField = () => {
                                                 <option value='3'>Three</option>
                                             </Form.Select>
                                         </Col>
-                                        <Col sm={2} className='d-flex align-items-center'>
-                                            <Form.Check type={`checkbox`} id={`checkBox`} label={`필달 여부`}/>
+                                        <Col xs={3} md={2} lg={2} className="d-flex align-items-center">
+                                            <Form.Check style={{marginBottom: '0'}} type={`checkbox`} id={`checkBox`} label={`필달 여부`}/>
                                         </Col>
                                     </Row>
                                 </div>

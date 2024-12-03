@@ -1,0 +1,41 @@
+// react-bootstrap's Modal Style
+
+
+.modal {
+    .modal-dialog {
+        .modal-content {
+            > * {
+                padding: 1.5rem;
+            }
+            .modal-header {
+                .modal-title {
+                }
+                button.btn-close {
+
+                }
+            }
+            .modal-body {
+                .row {
+                    .d-flex {
+                        > * {}
+                    }
+                }
+            }
+            .modal-footer {
+                button {
+
+                }
+                button.btn-secondary {
+
+                }
+                button.btn-primary {
+
+                }
+                button.btn-warning {
+
+                }
+            }
+        }
+
+    }
+}

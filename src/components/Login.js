@@ -25,19 +25,52 @@ const AuthLogin = () => {
         a_user_id: '',
         a_cipher: '',
     }
+    const p_changePw = {
+        a_user_id: '',
+        a_old_cipher: '',
+        a_new_cipher: '',
+    }
     const [input, setInput] = useState(p_login);
+    const [pwInput, setPwInput] = useState(p_changePw);
     const endpoint = 'login/';
 
-    
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
-        console.log(e.target.value);
-        setInput({
-            ...input,
+    
+        // input 업데이트
+        setInput((prevInput) => ({
+            ...prevInput,
             [name]: value.trim(),
+        }));
+    
+        // pwInput 업데이트
+        setPwInput((prevPwInput) => {
+            const updatedPwInput = {
+                ...prevPwInput,
+                [name]: value.trim(),
+            };
+    
+            // a_old_cipher는 input.a_cipher를 복사
+            if (name === "a_cipher") {
+                updatedPwInput.a_old_cipher = value.trim();
+            } else if (!updatedPwInput.a_old_cipher && input.a_cipher) {
+                updatedPwInput.a_old_cipher = input.a_cipher.trim();
+            }
+    
+            // a_user_id와 a_cipher를 pwInput에서 제거
+            if (name === "a_cipher") {
+                delete updatedPwInput[name];
+            }
+            // if (name === "a_user_id" || name === "a_cipher") {
+            //     delete updatedPwInput[name];
+            // }
+    
+            return updatedPwInput;
         });
-    }
-
+    
+        console.log(`input: ${JSON.stringify(input, null, 1)},\npwInput: ${JSON.stringify(pwInput, null, 1)}`);
+    };
+    
     // 바닥 페이지 비우기
     // 로그인했을 때 사용자 정보 세션마다 돌게 
     // 사업기회조회 어드민 아니면 권한 맞는 조회 조건만 보이게 
@@ -47,53 +80,69 @@ const AuthLogin = () => {
     const f_submitLoginData = async (method, endpoint, input = null, e, firstLoggedIn) => {
         e.preventDefault(); // submit 방지
         try {
-            if (!input.a_user_id || !input.a_cipher) {
-                alert(`아이디, 패스워드를 입력하세요.`);
-                return;
-            }
-            // API 호출
-            const response = await apiMethods[method](endpoint, input);
-            console.log(response, response.length);
-            // console.log(response[1].STATUS, "beginning_login_tf: ", response[0].beginning_login_tf);
-    
-            // 로그인 성공 시 객체 length 2. (데이터부, 상태부)
-            if (response.length === 2) {
-                console.log("로그인 성공.\nresponse.length: ", response.length, "response: ", response);
-                if (response[1].STATUS === 'SUCCESS') {
-                    console.log(response[0].beginning_login_tf);
-                    // Redux에 로그인 정보 저장
-                    await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher }));
-
-                    if (response[0].beginning_login_tf) {
-                        window.confirm('최초 로그인 시 비밀번호를 변경해야 합니다. 지금 변경하시겠습니까?', setIsBeginningLogin(true)); 
-                    }
-                    
-            
-                }
-
-                // 이전 경로로 리디렉션
-                // const from = location.state?.from?.pathname || `/${roots[4].depth1}/`;
-                // console.log('Redirect Path:', from);
-                // setRedirect(from);
-            } else if (response.STATUS === 'NONE') {
-                console.log("로그인 실패.\nresponse: ", response, response.STATUS)
-                // 실패 메시지 알림
-                alert(response.MESSAGE || '알 수 없는 오류가 발생했습니다.');
-                return;
-            } else {
-                alert('서버로부터 올바른 응답을 받지 못했습니다.');
-                return;
-            }
-
             // 최초 로그인 비밀번호 변경 로직
             if (firstLoggedIn) {
-                await dispatch(login({ userId: auth.userId, userPw: input.a_cipher }));
-                console.log("present: ", input.a_cipher);
-                const response = await apiMethods[method]('cipher-change/', input.a_cipher);
+                if(pwInput.a_new_cipher === pwInput.a_old_cipher) {
+                    alert(`현재 비밀번호와 변경하려는 비밀번호가 동일합니다. 다른 비밀번호를 입력하세요.`);
+                    return;
+                }
+                console.log('최초 비밀번호 변경');
+                // input.a_cipher = '';
+                // p_changePw.a_new_cipher = input.a_cipher;
+                console.log(p_changePw);
+
+                const response = await apiMethods[method]('cipher-change/', pwInput);
                 console.log("비밀번호 변경 response: ", response);
+
+                await dispatch(login({ userId: auth.userId, userPw: pwInput.a_new_cipher }));
+                console.log("present: ", pwInput.a_new_cipher);
+                
+                // 이전 경로로 리디렉션
+                const from = location.state?.from?.pathname || `/${roots[8].url}`;
+                console.log('Redirect Path:', from);
+                setRedirect(from);
                 return response;
+            } else {
+                if (!input.a_user_id || !input.a_cipher) {
+                    alert(`아이디, 패스워드를 입력하세요.`);
+                    return;
+                }
+                // API 호출
+                const response = await apiMethods[method](endpoint, input);
+                console.log(response, response.length);
+                // console.log(response[1].STATUS, "beginning_login_tf: ", response[0].beginning_login_tf);
+
+                // 로그인 성공 시 객체 length 2. (데이터부, 상태부)
+                if (response.length === 2) {
+                    console.log("로그인 성공.\nresponse.length: ", response.length, "response: ", response);
+                    if (response[1].STATUS === 'SUCCESS') {
+                        console.log(response[0].beginning_login_tf);
+                        // Redux에 로그인 정보 저장
+                        await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher }));
+
+                        if (response[0].beginning_login_tf) {
+                            // p_changePw.a_old_cipher = input.a_cipher;
+                            console.log(p_changePw);
+                            window.confirm('최초 로그인 시 비밀번호를 변경해야 합니다. 지금 변경하시겠습니까?', setIsBeginningLogin(true)); 
+                        } else {
+                            // 이전 경로로 리디렉션
+                            const from = location.state?.from?.pathname || `/${roots[8].url}`;
+                            console.log('Redirect Path:', from);
+                            setRedirect(from);
+                            return response;
+                        }
+                    }
+                } else if (response.STATUS === 'NONE') {
+                    console.log("로그인 실패.\nresponse: ", response, response.STATUS)
+                    // 실패 메시지 알림
+                    alert(response.MESSAGE || '알 수 없는 오류가 발생했습니다.');
+                    return;
+                } else {
+                    alert('서버로부터 올바른 응답을 받지 못했습니다.');
+                    return;
+                }
             }
-            return response;
+            
         } catch (error) {
             console.log('Error during login:', error);
             alert('로그인 중 오류가 발생했습니다. 관리자에게 문의하세요.');
@@ -135,22 +184,23 @@ const AuthLogin = () => {
                 ) :
                 (
                 <form id='changeLoginArea'>
-                    <h3 style={{textAlign: 'center', marginBottom: '1rem'}}>비밀번호 변경</h3>
+                    <h3 style={{textAlign: 'center'}}>비밀번호 변경</h3>
+                    <h4 style={{textAlign: 'center'}}>최초 로그인 시 비밀번호를 변경하셔야 합니다.</h4>
+                    <h4 style={{textAlign: 'center', marginBottom: '1rem'}}>변경할 비밀번호를 입력해 주시기 바랍니다.</h4>
                     <div className='inputFields idField'>
                         <FloatingLabel label='ID' className='mb-3'>
-                            <Form.Control type='id' name='a_user_id' placeholder='id' id='inputId' value={input.a_user_id} onChange={f_handlingInput}/>
+                            <Form.Control type='id' name='a_user_id' placeholder='id' id='inputPwChangeId' value={pwInput.a_user_id} onChange={(e) => f_handlingInput(e, false)}/>
                         </FloatingLabel>
                     </div>
                     <div className='inputFields pwField'>
                         <FloatingLabel label='Password'>
-                            <Form.Control type='password' name='a_cipher' placeholder='Password' id='inputPw' value={input.a_cipher} onChange={f_handlingInput}/>
+                            <Form.Control type='password' name='a_new_cipher' placeholder='Password' id='inputPwChangePw' value={pwInput.a_new_cipher} onChange={f_handlingInput}/>
                         </FloatingLabel>
                         <Form.Text id='passwordHelpBlock' muted>
-                            최초 로그인 시 비밀번호를 변경하셔야 합니다. 변경할 비밀번호를 입력해 주시기 바랍니다.
                             영문, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 미포함)
                         </Form.Text>
                     </div>
-                    <Button type='submit' variant='primary' onClick={(e) => f_submitLoginData('post', endpoint, input, e, true)}>비밀번호 변경</Button>
+                    <Button type='submit' variant='primary' onClick={(e) => f_submitLoginData('post', endpoint, pwInput, e, true)}>비밀번호 변경</Button>
                 </form>
                 )  
             }

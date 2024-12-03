@@ -12,6 +12,7 @@ import roots from '../utils/datas/Roots.js';
 
 import { Table, Form, Button, ButtonGroup, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Columns, Person } from 'react-bootstrap-icons';
+import SearchFieldDetail from './SearchFieldDetail.js';
 
 const BizOpp = () => {
     const location = useLocation();
@@ -107,6 +108,11 @@ const BizOpp = () => {
     const [input, setInput] = useState(p_bizopp);
     
 
+    const [showModal, setShowModal] = useState(false);
+
+    const openModal = () => setShowModal(true);
+    const closeModal = () => setShowModal(false);
+
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
         console.log({ name, value }, input);
@@ -116,13 +122,6 @@ const BizOpp = () => {
         });
     }
 
-    const activeDetail = () => {
-        // const htmlD = e.target;
-        // console.log(htmlD, htmlD.parentElement.closest('div.wrap'));
-        // <BizOppDetail />
-        setContent(true);
-        console.log(content);
-    }
     const f_handlingData = async (method, endpoint, input = null) => {
         try {
             const supportedMethods = ['get', 'post', 'put', 'patch', 'del'];
@@ -159,8 +158,8 @@ const BizOpp = () => {
     return (
         <>
             <h2>사업 (기회) 조회</h2>
+            <SearchFieldDetail show={showModal} onHide={closeModal} />
             <SearchField/>
-            {content && <BizOppDetail/>}
             <div className='wrap' id='bizOpp'>
                 <div className='dataPostArea'>
                     {/* <div className='ex'>
@@ -176,13 +175,10 @@ const BizOpp = () => {
                         </div>
                     </div> */}
                     
-
-                    
                     <div className='btnSet'>
-                        <Button style={{ margin: '0 10px' }} variant='success' className='btnLeft' onClick={activeDetail}>사업 (기회) 등록</Button>
+                        <Button style={{ margin: '0 10px' }} variant='success' className='btnLeft' onClick={openModal}>사업 (기회) 등록</Button>
                         {/* <Button style={{ margin: '0 10px' }} variant='success' className='btnLeft' onClick={(e) => activeDetail(e)}>사업 (기회) 등록</Button> */}
                     </div>
-                    
                     {errMsg ? 
                     (<p>{errMsg}</p>) 
                     :   (

@@ -10,10 +10,13 @@ def f_login(request):
    v_user_id = ""
    v_cipher = ""
    if request.method == "POST":
-      v_user_id = request.POST.get("a_user_id")
-      v_cipher = request.POST.get("a_cipher")
-      logging.debug(f"v_user_id : {v_user_id}")
-      logging.debug(f"v_cipher : {v_cipher}")
+      v_body = json.loads(request.body)
+      v_parameter_user_id = v_body.get("a_user_id")
+      v_parameter_cipher = v_body.get("a_cipher")
+      #logging.debug(f"v_user_id : {v_user_id}")
+      #logging.debug(f"v_cipher : {v_cipher}")
+      v_user_id = v_parameter_user_id
+      v_cipher = v_parameter_cipher
    #v_user_id = "leecj"
    #v_cipher = "123456777ㅁㅁㅁㅁ"
    try:

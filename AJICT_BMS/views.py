@@ -87,9 +87,10 @@ def f_serialize(a_row,a_columns):
       else:
          v_row_dict[v_column] = v_value
 def f_cipher_change(request):
-   #if request.method == "POST":
-      v_old_cipher = request.POST.get('a_old_cipher')
-      v_new_cipher = request.POST.get('a_new_cipher')
+   if request.method == "POST":
+      v_body = json.loads(request.body)
+      v_old_cipher = v_body.get("a_old_cipher")
+      v_new_cipher = v_body.get("a_new_cipher")
       #v_old_cipher = "12345"
       #v_new_cipher = "123456777"
       v_global_data = request.session.get('v_global_data',[])

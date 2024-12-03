@@ -7,12 +7,12 @@ from django.http import HttpResponse,JsonResponse
 from datetime import datetime
 logging.basicConfig(level=logging.DEBUG)
 def f_login(request):
-   v_user_id = ''
-   v_cipher = ''
+   v_user_id = ""
+   v_cipher = ""
    if request.method == "POST":
-      v_user_id = request.POST.get('a_user_id')
-      v_cipher = request.POST.get('a_cipher')
-   #v_user_id = "leecj"
+      v_user_id = request.POST.get("a_user_id")
+      v_cipher = request.POST.get("a_cipher")
+   #v_user_id = "leecjㅁㅁㅁㅁㅁ"
    #v_cipher = "123456777"
    try:
       #v_data = json.loads(request.body)
@@ -115,10 +115,10 @@ def f_logout(request):
    v_return = {"STATUS":"SUCCESS","MESSAGE":"logout 되었습니다."}
    return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp1(request):
-   if request.method == "POST":
+   #if request.method == "POST":
       try:
-         v_progress_rate_code_from = request.POST.get('a_progress_rate_code_from')
-         v_progress_rate_code_to = request.POST.get('a_progress_rate_code_to')
+         #v_progress_rate_code_from = request.POST.get('a_progress_rate_code_from')
+         #v_progress_rate_code_to = request.POST.get('a_progress_rate_code_to')
       #v_user_id = request.POST.get('a_user_id')
       #v_cipher = request.POST.get('a_cipher')
       # v_progress_rate_from = request.POST.get('a_progress_rate_from')
@@ -128,8 +128,8 @@ def f_select_biz_opp1(request):
       # v_sale_date_from = request.POST.get('a_sale_date_from')
       # v_sale_date_to = request.POST.get('a_sale_date_to')
       # v_essential_achievement_tf = request.POST.get('a_essential_achievement_tf')
-#   v_progress_rate_code_from = '0001'
-#   v_progress_rate_code_to = '0006'
+         v_progress_rate_code_from = '0001'
+         v_progress_rate_code_to = '0006'
          v_sql = """SELECT biz_opp_id,
                            biz_opp_name,
                            user_id,
@@ -227,7 +227,7 @@ def f_select_biz_opp1(request):
                   v_cursor.execute(v_sql,v_param)
                   v_columns = [v_column[0] for v_column in v_cursor.description]
                   v_rows = v_cursor.fetchall()
-                  v_data = [dict(zip(v_columns,row)) for row in v_rows]
+                  v_data = [[dict(zip(v_columns,row)) for row in v_rows]]
                   if not v_data:
                      v_return = {"STATUS": "NONE","MESSAGE": "Data가 존재하지 않습니다."}
                      return JsonResponse(v_data,safe=False,json_dumps_params={'ensure_ascii':False})

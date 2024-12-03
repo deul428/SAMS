@@ -9,11 +9,11 @@ logging.basicConfig(level=logging.DEBUG)
 def f_login(request):
    v_user_id = ""
    v_cipher = ""
-   if request.method == "POST":
-      v_user_id = request.POST.get("a_user_id")
-      v_cipher = request.POST.get("a_cipher")
-   #v_user_id = "leecjㅁㅁㅁㅁㅁ"
-   #v_cipher = "123456777"
+   #if request.method == "POST":
+   #   v_user_id = request.POST.get("a_user_id")
+   #   v_cipher = request.POST.get("a_cipher")
+   v_user_id = "leecj"
+   v_cipher = "123456777ㅁㅁㅁㅁ"
    try:
       #v_data = json.loads(request.body)
       v_sql1 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s"""

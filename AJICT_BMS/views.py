@@ -1,21 +1,19 @@
 import logging
 import json
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import transaction
 from django.db import connection
 from django.http import HttpResponse,JsonResponse
+from datetime import datetime
 logging.basicConfig(level=logging.DEBUG)
 def f_login(request):
-   if request.method == "POST":
-      v_user_id = request.POST.get('a_user_id')
-      v_cipher = request.POST.get('a_cipher')
-   #v_user_id = "leec"
-   #v_cipher = "12345"
+   #if request.method == "POST":
+      #v_user_id = request.POST.get('a_user_id')
+      #v_cipher = request.POST.get('a_cipher')
+   v_user_id = "leecj"
+   v_cipher = "123456777"
    try:
-      v_data = json.loads(request.body)
-      v_user_id = v_data.get("a_user_id")
-      v_cipher = v_data.get("a_cipher")
-      #v_user_id="leecj"
-      #v_cipher = "12345"
+      #v_data = json.loads(request.body)
       v_sql1 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s"""
       v_param1 = []
       v_param1.append(v_user_id)
@@ -64,14 +62,23 @@ def f_login(request):
          v_cursor.execute(v_sql3,v_param3)
          v_columns = [v_column[0] for v_column in v_cursor.description]
          v_rows = v_cursor.fetchall()
-         v_data = [dict(zip(v_columns,row)) for row in v_rows]
-         request.session['v_global_data'] = v_data
+         v_data3 = [dict(zip(v_columns,row)) for row in v_rows]
+         v_session = [f_serialize(row,v_columns) for row in v_rows]
+         request.session['v_global_data'] = v_session
+         #logging.debug(f"request.session.get : {request.session.get('v_global_data',[])}")
          v_additional_info = {"STATUS": "SUCCESS","MESSAGE": "login 되었습니다."}
-         v_data.append(v_additional_info)
-         return JsonResponse(v_data,safe=False,json_dumps_params={'ensure_ascii':False})
+         v_data3.append(v_additional_info)
+         return JsonResponse(v_data3,safe=False,json_dumps_params={'ensure_ascii':False})
    except json.JSONDecodeError:
       v_return = {"STATUS":"JSON","MESSAGE":"JSON의 format가 틀립니다."}
       return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
+def f_serialize(a_row,a_columns):
+   v_row_dict = {}
+   for v_column,v_value in zip(a_columns,a_row):
+      if isinstance(v_value,datetime):
+         v_row_dict[v_column] = v_value.isoformat()
+      else:
+         v_row_dict[v_column] = v_value
 def f_cipher_change(request):
    #if request.method == "POST":
       v_old_cipher = request.POST.get('a_old_cipher')
@@ -102,6 +109,7 @@ def f_cipher_change(request):
          return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
 def f_logout(request):
    request.session.flush()
+   #logging.debug(f"request.session.get : {request.session.get('v_global_data',[])}")
    v_return = {"STATUS":"SUCCESS","MESSAGE":"logout 되었습니다."}
    return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp1(request):
@@ -224,7 +232,7 @@ def f_select_biz_opp1(request):
                   else:
                      v_additional_info = {"STATUS": "SUCCESS","MESSAGE": "조회되었습니다."}
                      v_data.append(v_additional_info)
-      # logging.debug(f"v_data : {v_data}")
+      #logging.debug(f"v_data : {v_data}")
                      return JsonResponse(v_data,safe=False,json_dumps_params={'ensure_ascii':False})
       except json.JSONDecodeError:
          return JsonResponse({"STATUS":"JSON","MESSAGE":"JSON의 format가 틀립니다."})

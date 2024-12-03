@@ -9,8 +9,8 @@ import axios from 'axios';
 // baseURL: 'http://127.0.0.1:8000/',
 // 
 const apiUrl = axios.create({
-    baseURL: 'http://127.0.0.1:8000/',
-    // baseURL: 'http://10.0.60.201:8000/',
+    // baseURL: 'http://127.0.0.1:8000/',
+    baseURL: 'http://10.0.60.201:8000/',
     // baseURL:'http://192.10.100.100:8000/',
     headers: {
         'Content-Type': 'application/json',
@@ -41,10 +41,9 @@ const api = {
             };
             const response = await apiUrl({ method, url, data });
             if (method !== 'get') {
-                console.log(`Url: ${url} \nData: ${JSON.stringify(data, null, 2)}`);
-                console.log(data);
+                console.log(`API Endpoint: ${url}\nData: ${JSON.stringify(data, null, 2)}`);
             } else {
-                console.log(response);
+                console.log(`API Get ${response}`);
             }
             console.log('api 부 끝');
             return response.data;

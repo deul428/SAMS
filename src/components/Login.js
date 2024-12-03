@@ -87,8 +87,6 @@ const AuthLogin = () => {
                     return;
                 }
                 console.log('최초 비밀번호 변경');
-                // input.a_cipher = '';
-                // p_changePw.a_new_cipher = input.a_cipher;
                 console.log(p_changePw);
 
                 const response = await apiMethods[method]('cipher-change/', pwInput);
@@ -110,8 +108,6 @@ const AuthLogin = () => {
                 // API 호출
                 const response = await apiMethods[method](endpoint, input);
                 console.log(response, response.length);
-                // console.log(response[1].STATUS, "beginning_login_tf: ", response[0].beginning_login_tf);
-
                 // 로그인 성공 시 객체 length 2. (데이터부, 상태부)
                 if (response.length === 2) {
                     console.log("로그인 성공.\nresponse.length: ", response.length, "response: ", response);
@@ -121,7 +117,6 @@ const AuthLogin = () => {
                         await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher }));
 
                         if (response[0].beginning_login_tf) {
-                            // p_changePw.a_old_cipher = input.a_cipher;
                             console.log(p_changePw);
                             window.confirm('최초 로그인 시 비밀번호를 변경해야 합니다. 지금 변경하시겠습니까?', setIsBeginningLogin(true)); 
                         } else {
@@ -145,7 +140,7 @@ const AuthLogin = () => {
             
         } catch (error) {
             console.log('Error during login:', error);
-            alert('로그인 중 오류가 발생했습니다. 관리자에게 문의하세요.');
+            alert('로그인 중 오류가 발생했습니다. 관리자에게 문의하세요.', error);
         }
     };
     

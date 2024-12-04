@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { setLocation } from "../redux/reducers/LocationSlice";
-import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col, ListGroup } from "react-bootstrap";
 
 import roots from "../utils/datas/Roots";
 import '../styles/_customModal.scss';
@@ -14,6 +14,21 @@ const SearchFieldDetail = ({ show, onHide }) => {
     const currentPath = useSelector((state) => state.location.currentPath);
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
 
+
+    // // 등록인지 수정인지 나눔 (개발 중)
+    const [isAdded, setIsAdded] = useState(false); 
+    // if (show) {
+    //     return setIsAdded(true);
+    // }
+
+    // 삭제 누를 시 confirm 
+    const f_warningMsg = () => {
+        if (window.confirm('정말 삭제하시겠습니까?')){
+            alert('삭제 완료');
+            onHide(true);
+        }
+    }
+    // 사업 기회 조회 테이블부 핸들링
     const p_bizopp = {
         biz_opp_id: '',
         biz_opp_name: '',
@@ -77,48 +92,168 @@ const SearchFieldDetail = ({ show, onHide }) => {
                 setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
                 return;
             }
-
             
             switch (currentPath) {
                 case `/${roots[4].depth1}/`:
                     setVHandlingHtml(
-                        <Modal size='xl' show={show} onHide={onHide}>
+                        <Modal size='xl' show={show} onHide={onHide} centered>
                             <Modal.Header closeButton>
-                                <Modal.Title className='fs-3'>Modal title</Modal.Title>
+                                <Modal.Title className='fs-3'>{
+                                    show && isAdded ? '사업 (기회) 등록' : '사업 (기회) 수정'
+                                }
+                                </Modal.Title>
                             </Modal.Header> 
                             <Modal.Body>
                                 <div className='searchField'>
-                                    <div className='searchItem'>
-                                        <Row className="row justify-content-center">
-                                            <Col xs={12} md={6} lg={4} className="d-flex align-items-center">
-                                                <Form.Label className="me-2">사업명</Form.Label>
-                                                <Form.Control name='biz_opp_name' value={input.biz_opp_name} size="sm" type="text" className="me-3" />
+                                    <div className='searchItem bizoppArea'>
+                                        <Row className="d-flex justify-content-between">
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">사업 일련 번호</Form.Label>
+                                                <Form.Control name='biz_opp_id' value={input.biz_opp_id}  size="sm" type="text" className="" />
                                             </Col>
-                                            <Col xs={12} md={6} lg={4} className="d-flex align-items-center">
-                                                <Form.Label className="me-2">사업 일련 번호</Form.Label>
-                                                <Form.Control name='biz_opp_id' value={input.biz_opp_id}  size="sm" type="text" className="me-3" />
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">사업명</Form.Label>
+                                                <Form.Control name='biz_opp_name' value={input.biz_opp_name} size="sm" type="text" className="" />
                                             </Col>
-                                        </Row>
-                                        <Row className="row justify-content-center">
-                                            <Col xs={12} md={6} lg={4} className="d-flex align-items-center">
-                                                <Form.Label className="me-2">영업 담당자</Form.Label>
-                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="text" className="me-3" />
-                                            </Col>
-                                            <Col xs={12} md={6} lg={4} className="d-flex align-items-center">
-                                                <Form.Label className="me-2">소속 팀</Form.Label>
-                                                <Form.Control name='change_preparation_dept_name' value={input.change_preparation_dept_name}  size="sm" type="text" className="me-3" />
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">판품 번호</Form.Label>
+                                                <Form.Control name='biz_opp_name' disabled value={input.biz_opp_name} size="sm" type="text" className="" />
                                             </Col>
                                         </Row>
-                                        <Row className="row justify-content-center">
-                                            <Col xs={12} md={6} lg={4} className="d-flex align-items-center">
-                                                <Form.Label className="me-2">최종 고객사</Form.Label>
-                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="text" className="me-3" />
+                                        <Row className="d-flex justify-content-between">
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">본부</Form.Label>
+                                                <Form.Control name='change_preparation_dept_name' value={input.change_preparation_dept_name}  size="sm" type="text" className="" />
                                             </Col>
-                                            <Col xs={12} md={6} lg={4} className="d-flex align-items-center">
-                                                <Form.Label className="me-2">필달 여부</Form.Label>
-                                                <Form.Control name='change_preparation_dept_name' value={input.change_preparation_dept_name}  size="sm" type="text" className="me-3" />
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">소속 팀</Form.Label>
+                                                <Form.Control name='change_preparation_dept_name' value={input.change_preparation_dept_name}  size="sm" type="text" className="" />
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">영업 담당자</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id} size="sm" type="text" className="" />
                                             </Col>
                                         </Row>
+                                        <Row className="d-flex justify-content-between">
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">최종 고객사</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="text" className="" />
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">매출처</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="text" className="" />
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label for='inputChck' className="">필달 여부</Form.Label>
+                                                <Form.Check type={`checkbox`} id={`inputChck`}/>
+                                            </Col>
+                                        </Row>
+                                        <Row className="d-flex justify-content-between">
+                                            
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">사업 구분</Form.Label>
+                                                <Form.Select size='sm' aria-label='selectBox' className=''>
+                                                    <option>선택</option>
+                                                    <option value='1'>One</option>
+                                                    <option value='2'>Two</option>
+                                                    <option value='3'>Three</option>
+                                                </Form.Select>
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">제품</Form.Label>
+                                                <Form.Select size='sm' aria-label='selectBox' className=''>
+                                                    <option>선택</option>
+                                                    <option value='1'>One</option>
+                                                    <option value='2'>Two</option>
+                                                    <option value='3'>Three</option>
+                                                </Form.Select>
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-st art">
+                                                <Form.Label className="">수금 일자</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="date" className="" />
+                                            </Col>
+                                            
+                                        </Row>
+                                        <Row className="d-flex justify-content-between">
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">계약 일자</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="date" className="" />
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">매출 일자</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="date" className="" />
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">매입 일자</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="date" className="" />
+                                            </Col>
+                                        </Row>
+                                        <Row className="d-flex justify-content-between">
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">매출 금액</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="number" className="" />
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">매입 금액</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="number" className="" />
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">매출 이익</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="number" className="" />
+                                            </Col>
+                                            
+                                        </Row>
+                                        <Row className="d-flex justify-content-between">
+                                            <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">진행률</Form.Label>
+                                                <Form.Select size='sm' aria-label='selectBox' className=''>
+                                                    <option>선택</option>
+                                                    <option value='1'>One</option>
+                                                    <option value='2'>Two</option>
+                                                    <option value='3'>Three</option>
+                                                </Form.Select>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                    <div className="searchItem activityArea">
+                                        <Row className="d-flex justify-content-between">
+                                            <Col xs={12} md={12} lg={12} className="activity col d-flex align-items-center justify-content-start">
+                                                <Form.Label className="">활동 내역</Form.Label>
+                                                <Form.Control name='user_id' value={input.user_id}  size="sm" type="text" className="col-lg-10 col-md-10 col-10" />
+                                            </Col>
+                                        </Row>
+                                        <Row className="d-flex justify-content-between">
+                                            <ListGroup as="ol" numbered>
+                                                <ListGroup.Item
+                                                    as="li"
+                                                    className="d-flex justify-content-between align-items-start"
+                                                >
+                                                    <div className="ms-2 me-auto">
+                                                    <div className="fw-bold">Subheading</div>
+                                                    Cras justo odio
+                                                    </div>
+                                                </ListGroup.Item>
+                                                <ListGroup.Item
+                                                    as="li"
+                                                    className="d-flex justify-content-between align-items-start"
+                                                >
+                                                    <div className="ms-2 me-auto">
+                                                    <div className="fw-bold">Subheading</div>
+                                                    Cras justo odio
+                                                    </div>
+                                                </ListGroup.Item>
+                                                <ListGroup.Item
+                                                    as="li"
+                                                    className="d-flex justify-content-between align-items-start"
+                                                >
+                                                    <div className="ms-2 me-auto">
+                                                    <div className="fw-bold">Subheading</div>
+                                                    Cras justo odio
+                                                    </div>
+                                                </ListGroup.Item>
+                                            </ListGroup>
+                                        </Row>
+                                        
                                     </div>
                                 </div>
                             </Modal.Body>
@@ -127,6 +262,7 @@ const SearchFieldDetail = ({ show, onHide }) => {
                                 <Button variant="primary">등록</Button>
                                 {/* <Button variant="primary">수정</Button> */}
                                 <Button variant="warning">사업 (기회) 복제</Button>
+                                <Button variant="danger" onClick={f_warningMsg}>삭제</Button>
                             </Modal.Footer>
                         </Modal>
                     );

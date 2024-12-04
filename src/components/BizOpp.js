@@ -152,75 +152,22 @@ const BizOpp = () => {
     };
     useEffect(() => {
         f_handlingData('get', endpoint);
-        // console.log(location);
     }, []);
 
     return (
         <>
             <h2>사업 (기회) 조회</h2>
-            <SearchFieldDetail show={showModal} onHide={closeModal} />
-            <SearchField/>
+            <SearchField componentName={'bizOpp'} data={data}/>
             <div className='wrap' id='bizOpp'>
                 <div className='dataPostArea'>
-                    {/* <div className='ex'>
-                        <Form.Control type='text' name='biz_opp_name' placeholder='사업명을 입력하세요.' value={input.biz_opp_name} onChange={f_handlingInput}/>
-                        <Form.Control type='text' name='user_name' placeholder='유저 이름을 입력하세요.' value={input.user_name} onChange={f_handlingInput}/>
-                        <Form.Control type='text' name='last_client_com2_name' placeholder='최종 고객사 상호를 입력하세요.' value={input.last_client_com2_name} onChange={f_handlingInput}/>
-                        <div>
-                            <Button style={{ margin: '0 10px' }} variant='primary' onClick={() => f_handlingData('get', endpoint)}>Refresh</Button>
-                            <Button style={{ margin: '0 10px' }} variant='success' onClick={() => f_handlingData('post', endpoint, input)}>Post</Button>
-                            <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('put', endpoint, input)}>Put</Button>
-                            <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('patch', endpoint, input)}>Patch</Button>
-                            <Button style={{ margin: '0 10px' }} variant='danger' onClick={() => f_handlingData('del', endpoint)}>Delete</Button>
-                        </div>
-                    </div> */}
-                    
-                    <div className='btnSet'>
-                        <Button style={{ margin: '0 10px' }} variant='success' className='btnLeft' onClick={openModal}>사업 (기회) 등록</Button>
-                        {/* <Button style={{ margin: '0 10px' }} variant='success' className='btnLeft' onClick={(e) => activeDetail(e)}>사업 (기회) 등록</Button> */}
+                    <div className='btnArea d-flex justify-content-end'>
+                        <Button variant='success' className='float-right' onClick={openModal}>사업 (기회) 등록</Button>
                     </div>
+                    <SearchFieldDetail show={showModal} onHide={closeModal} />
                     {errMsg ? 
                     (<p>{errMsg}</p>) 
                     :   (
                         <DynamicTable/>
-                        // <div>
-                        //     <h1>DataPosts.js</h1>
-                        //     {data.map((e) => 
-                        //     <p>{`키 ${Object.keys(e)}와 밸류 ${Object.values(e)}`}</p>)}
-
-                        //     <h2>1. 객체 그대로 출력</h2>
-                        //     {data.map((e) => 
-                        //     (<p className={e.id} key={e.id}>{JSON.stringify(e)}</p>
-                        //     ))}
-
-                        //     <h2>2. 객체의 키-값 쌍을 분해해서 출력 - Object.entries(): 객체의 &#123;key:value&#124; 형식을 배열 형태의 [key, value]로 변환해 줌.</h2>
-                        //     {data.map((e) => (
-                        //         <div className={e.id} key={e.id}>
-                        //             {Object.entries(e).map(([key, value]) => (
-                        //                 <p key={key}>{`key: ${key}, value: ${value}`}</p>
-                        //             ))}
-                        //         </div>
-                        //     ))}
-
-                            
-                        //     <h2>3. 객체의 키-값 쌍을 분해해서 테이블 형태로 출력</h2>
-                        //     {data.map((e) => (
-                        //         <Table striped='columns' bordered hover className={e.id} key={e.id}>
-                        //             <thead>
-                        //                 <tr><th colSpan={2}>{e.id}</th></tr>
-                        //             </thead>
-                        //             <tbody>
-                        //                 {Object.entries(e).map(([key, value]) => (
-                        //                     <tr key={key}>
-                        //                         <th>{`key: ${key}`}</th>
-                        //                         <td>{`value: ${value}`}</td>
-                        //                     </tr>
-                        //                 ))}
-                        //             </tbody>
-                        //         </Table>
-                                
-                        //     ))} 
-                        // </div>
                         )
                     }
                 </div>

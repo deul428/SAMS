@@ -50,20 +50,13 @@ const AuthLogin = () => {
                 [name]: value.trim(),
             };
     
-            // a_old_cipher는 input.a_cipher를 복사
+            // a_old_cipher는 input.a_cipher를 복사, a_cipher를 pwInput에서 제거
             if (name === "a_cipher") {
                 updatedPwInput.a_old_cipher = value.trim();
+                delete updatedPwInput[name];
             } else if (!updatedPwInput.a_old_cipher && input.a_cipher) {
                 updatedPwInput.a_old_cipher = input.a_cipher.trim();
             }
-    
-            // a_user_id와 a_cipher를 pwInput에서 제거
-            if (name === "a_cipher") {
-                delete updatedPwInput[name];
-            }
-            // if (name === "a_user_id" || name === "a_cipher") {
-            //     delete updatedPwInput[name];
-            // }
     
             return updatedPwInput;
         });
@@ -127,7 +120,7 @@ const AuthLogin = () => {
                             return response;
                         }
                     }
-                } else if (response.STATUS === 'NONE') {
+                } else if (response.STATUS === 'FAIL') {
                     console.log("로그인 실패.\nresponse: ", response, response.STATUS)
                     // 실패 메시지 알림
                     alert(response.MESSAGE || '알 수 없는 오류가 발생했습니다.');

@@ -1,14 +1,5 @@
-#search.wrap {
+body #root #cntntArea #search.wrap {
     margin-bottom: 2.5%;
-}
-
-#bizOppDetail.wrap {    
-    position: fixed !important;
-    top: 5vh;
-    left: calc(18% + 5vw);
-    z-index: 999;
-    height: 90vh;
-    width: calc(90vw - 18%) !important;
 }
 
 .row {

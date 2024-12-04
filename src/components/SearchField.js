@@ -8,23 +8,26 @@ import roots from '../utils/datas/Roots';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
 
-const SearchField = () => {
+const SearchField = ({ componentName, data }) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
 
+    if(componentName === 'bizOpp') {
+        console.log(data[0]);
+    }
     // Redux와 React Router 동기화
     useEffect(() => {
         const syncPath = async () => {
-            if (!currentPath || currentPath === '/login') {
+            if (!currentPath || currentPath === '/login' || currentPath === '/login/') {
                 await dispatch(setLocation(location.pathname)); // Redux 상태 업데이트를 보장
             }
         };
-
         syncPath();
     }, [currentPath, location.pathname, dispatch]);
-
+    
+    console.log(currentPath);
     // UI 업데이트
     useEffect(() => {
         const updateUI = () => {
@@ -34,71 +37,79 @@ const SearchField = () => {
             }
 
             switch (currentPath) {
+                // biz-opp/
                 case `/${roots[4].depth1}/`:
                     setVHandlingHtml(
                         <>
                             <div className='searchField'>
                                 <div className='searchItem'>
-                                    <Row className="row justify-content-start">
-                                        <Col xs={12} md={6} lg={5} className="d-flex align-items-center">
-                                            <Form.Label className="me-2">계약 일자</Form.Label>
-                                            FROM&nbsp;&nbsp;<Form.Control size="sm" type="date" className="me-3" />
-                                            TO&nbsp;&nbsp;<Form.Control size="sm" type="date" />
+                                    <Row className="d-flex justify-content-between">
+                                        <Col xs={12} md={12} lg={5} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className="">계약 일자</Form.Label>
+                                            <div>
+                                                <Form.Control size="sm" type="date" label="FROM" className="" name="" value=""/>
+                                                <span style={{margin: '0 10px'}}>~</span><Form.Control size="sm" type="date" />
+                                            </div>
                                         </Col>
-                                        <Col xs={12} md={6} lg={5} className="d-flex align-items-center">
-                                            <Form.Label className="me-2">매출 일자</Form.Label>
-                                            FROM&nbsp;&nbsp;<Form.Control size="sm" type="date" className="me-3" />
-                                            TO&nbsp;&nbsp;<Form.Control size="sm" type="date" />
+                                        <Col xs={12} md={12} lg={5} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className="">매출 일자</Form.Label>
+                                            <div>
+                                                <Form.Control size="sm" type="date" label="FROM" className="" name="" value=""/>
+                                                <span style={{margin: '0 10px'}}>~</span><Form.Control size="sm" type="date" />
+                                            </div>
                                         </Col>
-                                        <Col xs={2} md={3} lg={2} className='d-flex align-items-center  justify-content-end'>
-                                            <Button variant='primary'>조회</Button>
+                                        <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
+                                            <Button variant='info'>조회</Button>
                                         </Col>
                                     </Row>
-            
-                                    <Row className="row justify-content-start">
-                                        <Col xs={12} md={4} lg={3} className="d-flex align-items-center">
-                                            <Form.Label className='me-2'>본부</Form.Label>
+                                    <Row className="d-flex justify-content-between">
+                                        <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className="">진행률</Form.Label>
+                                            <div>
+                                                <Form.Select size='sm' aria-label='selectBox' className=''>
+                                                    <option>선택</option>
+                                                    <option value='1'> </option>
+                                                    <option value='2'>Two</option>
+                                                    <option value='3'>Three</option>
+                                                </Form.Select>
+                                                <span style={{margin: '0 10px'}}>~</span>
+                                                <Form.Select size='sm' aria-label='selectBox' className=''>
+                                                    <option>선택</option>
+                                                    <option value='1'>One</option>
+                                                    <option value='2'>Two</option>
+                                                    <option value='3'>Three</option>
+                                                </Form.Select>
+                                            </div>
+                                        </Col>
+                                        <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label for='inputChck' className="">필달 여부</Form.Label>
+                                            <Form.Check type={`checkbox`} id={`inputChck`}/>
+                                        </Col>
+                                        <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                        </Col>
+                                    </Row>
+                                    <Row className="d-flex justify-content-between">
+                                        <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className="">본부</Form.Label>
                                             <Form.Select size='sm' aria-label='selectBox'>
-                                                <option>Choose...</option>
+                                                <option>선택</option>
                                                 <option value='1'>One</option>
                                                 <option value='2'>Two</option>
                                                 <option value='3'>Three</option>
                                             </Form.Select>
                                         </Col>
-                                        <Col xs={12} md={4} lg={3} className="d-flex align-items-center">
-                                            <Form.Label className='me-2'>팀</Form.Label>
+                                        <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className="">팀</Form.Label>
                                             <Form.Select size='sm' aria-label='selectBox'>
-                                                <option>Choose...</option>
+                                                <option>선택</option>
                                                 <option value='1'>One</option>
                                                 <option value='2'>Two</option>
                                                 <option value='3'>Three</option>
                                             </Form.Select>
                                         </Col>
-                                        <Col xs={12} md={4} lg={3} className="d-flex align-items-center">
-                                            <Form.Label className='me-2'>영업 담당자</Form.Label>
+                                        <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className=''>영업 담당자</Form.Label>
                                             <Form.Control size='sm' type='text' placeholder='Default input' />
-                                        </Col>
-                                    </Row>
-                                    <Row className="row justify-content-start">
-                                        <Col xs={12} md={5} lg={6} className="d-flex align-items-center me-2">
-                                            <Form.Label className='me-2'>진행률</Form.Label>
-                                            FROM&nbsp;&nbsp;
-                                            <Form.Select size='sm' aria-label='selectBox' className='me-3'>
-                                                <option>Open this select menu</option>
-                                                <option value='1'>One</option>
-                                                <option value='2'>Two</option>
-                                                <option value='3'>Three</option>
-                                            </Form.Select>
-                                            TO&nbsp;&nbsp;
-                                            <Form.Select size='sm' aria-label='selectBox'>
-                                                <option>Open this select menu</option>
-                                                <option value='1'>One</option>
-                                                <option value='2'>Two</option>
-                                                <option value='3'>Three</option>
-                                            </Form.Select>
-                                        </Col>
-                                        <Col xs={3} md={2} lg={2} className="d-flex align-items-center">
-                                            <Form.Check style={{marginBottom: '0'}} type={`checkbox`} id={`checkBox`} label={`필달 여부`}/>
                                         </Col>
                                     </Row>
                                 </div>

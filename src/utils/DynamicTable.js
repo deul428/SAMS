@@ -24,7 +24,7 @@ function DynamicTable() {
           })
           const filterData = getData.filter(e => !e.STATUS);
           // console.log(filterData);
-          setData(filterData); // 데이터부만 filter
+          setData(filterData[0]); // 데이터부만 filter
         }
       } catch (error) {
         console.error('Error fetching data:', error);

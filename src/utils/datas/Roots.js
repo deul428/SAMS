@@ -23,8 +23,8 @@ const roots = [
         
         
         
-        { Header: '진행률1 code', accessor: 'progress1_rate_code' },
-        { Header: '진행률2 code', accessor: 'progress2_rate_code' },
+        // { Header: '진행률 대분류', accessor: 'progress1_rate_name' },
+        { Header: '진행률', accessor: 'progress2_rate_name' },
         
         
         
@@ -42,7 +42,7 @@ const roots = [
         { Header: '매출 이익', accessor: 'sale_profit', 
         Cell: ({value}) => v_handlingNum(value) },
         { Header: '사업 구분', accessor: 'biz_section2_name' },
-        { Header: '제품', accessor: 'product2_name' },
+        { Header: '주요 제품', accessor: 'principal_product2_name' },
         { Header: '활동 이력', accessor: 'history'},
     ]
     },

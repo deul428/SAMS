@@ -192,11 +192,11 @@ def f_select_biz_opp1(request):
                          principal_product2_code,
                          (SELECT DISTINCT HH.great_classi_name
                           FROM ajict_bms_schema.commonness_code HH
-                          WHERE HH.great_classi_code = A.product1_code) AS product1_name,
+                          WHERE HH.great_classi_code = A.principal_product1_code) AS product1_name,
                          (SELECT II.small_classi_name
                           FROM ajict_bms_schema.commonness_code II
-                          WHERE II.great_classi_code = A.product1_code AND
-                                II.small_classi_code = A.product2_code) AS product2_name,
+                          WHERE II.great_classi_code = A.principal_product1_code AND
+                                II.small_classi_code = A.principal_product2_code) AS product2_name,
                          (SELECT JJ.dept_id
                           FROM ajict_bms_schema.aj_user JJ
                           WHERE JJ.user_id = A.user_id) AS dept_id,

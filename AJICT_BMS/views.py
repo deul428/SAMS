@@ -137,6 +137,7 @@ def f_select_biz_opp1(request):
          v_progress_rate_code_from = '0001'
          v_progress_rate_code_to = '0006'
          v_sql = """SELECT biz_opp_id,
+                           biz_opp_clone_no,
                            biz_opp_name,
                            user_id,
                            (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = A.user_id) AS user_name,
@@ -176,6 +177,7 @@ def f_select_biz_opp1(request):
                           sale_profit,
                           purchase_date,
                           purchase_amt,
+                          collect_money_date,
                           biz_section1_code,
                           biz_section2_code,
                          (SELECT DISTINCT FF.great_classi_name
@@ -186,8 +188,8 @@ def f_select_biz_opp1(request):
                           WHERE GG.great_classi_code = A.biz_section1_code AND
                                 GG.small_classi_code = A.biz_section2_code) AS biz_section2_name,
                          essential_achievement_tf,
-                         product1_code,
-                         product2_code,
+                         principal_product1_code,
+                         principal_product2_code,
                          (SELECT DISTINCT HH.great_classi_name
                           FROM ajict_bms_schema.commonness_code HH
                           WHERE HH.great_classi_code = A.product1_code) AS product1_name,

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import axios from 'axios';
 import { apiMethods } from '../utils/api.js';
 import { login } from '../index.js';
 import InputField from '../utils/InputField.js';

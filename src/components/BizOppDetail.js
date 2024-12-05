@@ -6,7 +6,7 @@ import axios from 'axios';
 import { apiMethods } from '../utils/api.js';
 import '../styles/_search.scss';
 
-import InputFieldDetail from '../utils/InputFieldDetail_past.js';
+import InputFieldDetail from '../utils/InputFieldDetail.js';
 const BizOppDetail = () => {
     const location = useLocation();
     // Data Handling

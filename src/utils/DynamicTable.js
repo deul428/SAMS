@@ -6,8 +6,7 @@ import { Table, Button } from 'react-bootstrap';
 import '../styles/_table.scss'; // 위에서 작성한 CSS를 임포트
 import BizOppHistory from '../components/BizOppHistory';
 
-function DynamicTable({ componentName, propsData, show, onHide }) {
-  
+function DynamicTable({ componentName, propsData }) {
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {console.log(showModal); setShowModal(true)};
   const closeModal = () => setShowModal(false);
@@ -22,19 +21,12 @@ function DynamicTable({ componentName, propsData, show, onHide }) {
       columns,
       data,
     });
-  // const test = (e) => {
-  //   e.preventDefault();
-  //   console.log("click", e);
-    
-  //   e.target.nextSibling.append(<BizOppHistory/>);
-  // };
 
   useEffect(() => {
     switch (componentName) {
       case `bizOpp`: 
         if (propsData.length > 0) {
-          setData(propsData[0]);
-          // console.log("data area: ", data, propsData, componentName);
+          setData(propsData[0]); 
           setVHandlingHtml (
             <>
             <BizOppHistory show={showModal} onHide={closeModal} />
@@ -83,7 +75,9 @@ function DynamicTable({ componentName, propsData, show, onHide }) {
           )
         }
         break;
-      
+      case `bizOppHistory`: 
+        setVHandlingHtml(<h1>{componentName} Area</h1>);
+        break;
       default:
         setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
       // console.log("======= props data =======\n", componentName, propsData, propsData[0]);
@@ -94,6 +88,9 @@ function DynamicTable({ componentName, propsData, show, onHide }) {
   return (
     <div id='tableArea'>
       {v_handlingHtml}
+      
+      <BizOppHistory show={showModal} onHide={closeModal} />
+      <Button size="sm" variant="light" onClick={openModal}>이력</Button>
     </div>
   );
 }

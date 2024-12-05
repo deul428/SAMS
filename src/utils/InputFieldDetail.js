@@ -4,11 +4,12 @@ import { useLocation } from "react-router-dom";
 import { setLocation } from "../redux/reducers/LocationSlice";
 import { Modal, Button, Form, Row, Col, ListGroup } from "react-bootstrap";
 
-import roots from "../utils/datas/Roots";
+import roots from "./datas/Roots";
 import '../styles/_customModal.scss';
+import '../styles/_search.scss';
 
-const SearchFieldDetail = ({ show, onHide }) => {
-    console.log("Modal Props - show:", show, ", onHide:", onHide);
+const InputFieldDetail = ({ show, onHide }) => {
+    // console.log("Modal Props - show:", show, ", onHide:", onHide);
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
@@ -104,7 +105,7 @@ const SearchFieldDetail = ({ show, onHide }) => {
                                 </Modal.Title>
                             </Modal.Header> 
                             <Modal.Body>
-                                <div className='searchField'>
+                                <div className='inputField modalcntnt'>
                                     <div className='searchItem bizoppArea'>
                                         <Row className="d-flex justify-content-between">
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
@@ -268,14 +269,14 @@ const SearchFieldDetail = ({ show, onHide }) => {
                     );
                     break;
                 default:
-                    setVHandlingHtml(<h1>안녕하세요 SearchField.js 작업 중입니다.</h1>);
+                    setVHandlingHtml(<h1>안녕하세요 InputField.js 작업 중입니다.</h1>);
             }
         };
 
         updateUI();
     }, [currentPath, show, onHide]);
 
-    return <div id="searchDetail">{v_handlingHtml}</div>;
+    return <div id="inputFieldDetail">{v_handlingHtml}</div>;
 };
 
-export default SearchFieldDetail;
+export default InputFieldDetail;

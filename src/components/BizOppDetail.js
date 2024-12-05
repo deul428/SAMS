@@ -6,7 +6,7 @@ import axios from 'axios';
 import { apiMethods } from '../utils/api.js';
 import '../styles/_search.scss';
 
-import SearchFieldDetail from './SearchFieldDetail_Exsd.js';
+import InputFieldDetail from '../utils/InputFieldDetail_past.js';
 const BizOppDetail = () => {
     const location = useLocation();
     // Data Handling
@@ -105,7 +105,7 @@ const BizOppDetail = () => {
 
     return (
         <div id='bizOppDetail'>
-            <SearchFieldDetail/>
+            <InputFieldDetail/>
             {/* <Form.Control type='text' name='biz_opp_name' placeholder='사업명을 입력하세요.' value={input.biz_opp_name} onChange={f_handlingInput}/>
             <Form.Control type='text' name='user_name' placeholder='유저 이름을 입력하세요.' value={input.user_name} onChange={f_handlingInput}/>
             <Form.Control type='text' name='last_client_com2_name' placeholder='최종 고객사 상호를 입력하세요.' value={input.last_client_com2_name} onChange={f_handlingInput}/>

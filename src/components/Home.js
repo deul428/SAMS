@@ -3,7 +3,7 @@ import { logout } from '../redux/reducers/AuthSlice';
 import { Button } from 'react-bootstrap';
 import ci from '../assets/img/AJ_ICT.svg';
 import '../styles/_home.scss';
-export function Home() {
+export default function Home() {
     const auth = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     console.log(`AuthHome.js: ${JSON.stringify(auth)}`);
@@ -28,4 +28,4 @@ export function Home() {
     );
 }
 
-export default Home;
+// export default Home;

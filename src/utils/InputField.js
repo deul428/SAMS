@@ -2,22 +2,22 @@ import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLocation } from '../redux/reducers/LocationSlice';
-import { apiMethods } from '../utils/api';
+import { apiMethods } from './api';
 
-import roots from '../utils/datas/Roots';
+import roots from './datas/Roots';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
 
-const SearchField = ({ componentName, data }) => {
+const InputField = ({ componentName, propsData }) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
 
     if(componentName === 'bizOpp') {
-        console.log(data[0]);
+        console.log(propsData[0]);
     }
-    // Redux와 React Router 동기화
+/*     // Redux와 React Router 동기화
     useEffect(() => {
         const syncPath = async () => {
             if (!currentPath || currentPath === '/login' || currentPath === '/login/') {
@@ -27,7 +27,8 @@ const SearchField = ({ componentName, data }) => {
         syncPath();
     }, [currentPath, location.pathname, dispatch]);
     
-    console.log(currentPath);
+    console.log(currentPath); */
+
     // UI 업데이트
     useEffect(() => {
         const updateUI = () => {
@@ -41,7 +42,7 @@ const SearchField = ({ componentName, data }) => {
                 case `/${roots[4].depth1}/`:
                     setVHandlingHtml(
                         <>
-                            <div className='searchField'>
+                            <div className='inputField'>
                                 <div className='searchItem'>
                                     <Row className="d-flex justify-content-between">
                                         <Col xs={12} md={12} lg={5} className="col d-flex align-items-center justify-content-start">
@@ -118,7 +119,7 @@ const SearchField = ({ componentName, data }) => {
                     );
                     break;
                 default:
-                    setVHandlingHtml(<h1>안녕하세요 SearchField.js 작업 중입니다.</h1>);
+                    setVHandlingHtml(<h1>안녕하세요 InputField.js 작업 중입니다.</h1>);
             }
         };
 
@@ -132,4 +133,4 @@ const SearchField = ({ componentName, data }) => {
     );
 };
 
-export default SearchField;
+export default InputField;

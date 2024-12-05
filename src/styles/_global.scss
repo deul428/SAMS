@@ -59,7 +59,8 @@ body {
         // min-width: 1000px;
         #cntntArea {
             width: 82%;
-            height: 100vh;
+            // height: 100vh;
+            height: fit-content;
             position: absolute;
             top: 0;
             right: 0;

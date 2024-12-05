@@ -71,10 +71,10 @@ function Header() {
                             영업 활동 관리
                         </Nav.Link>
 
-                        <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[1]) ? 'active' : ''} nav-link`} id='menu04'>
+                        <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[1]) ? 'active' : ''} nav-link`} id='menu04' disabled>
                         목표 관리
-                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[6].depth1}/${roots[6].depth2}`}>목표 관리</Nav.Link>
-                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[7].depth1}/${roots[7].depth2}`}>달성률 조회</Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[6].depth1}/${roots[6].depth2}`} disabled>목표 관리</Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[7].depth1}/${roots[7].depth2}`} disabled>달성률 조회</Nav.Link>
                         </div>
                     </Nav>
                     <div className='loginInfoArea'>{v_loginInfo}</div>

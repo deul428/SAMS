@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { apiMethods } from '../utils/api.js';
 import { login } from '../index.js';
-import SearchField from './SearchField.js';
+import InputField from '../utils/InputField.js';
 import DynamicTable from '../utils/DynamicTable.js';
 import BizOppDetail from './BizOppDetail.js';
 
@@ -12,7 +12,7 @@ import roots from '../utils/datas/Roots.js';
 
 import { Table, Form, Button, ButtonGroup, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Columns, Person } from 'react-bootstrap-icons';
-import SearchFieldDetail from './SearchFieldDetail.js';
+import InputFieldDetail from '../utils/InputFieldDetail.js';
 
 const BizOpp = () => {
     const location = useLocation();
@@ -157,18 +157,17 @@ const BizOpp = () => {
     return (
         <>
             <h2>사업 (기회) 조회</h2>
-            <SearchField componentName={'bizOpp'} data={data}/>
+            <InputField componentName={'bizOpp'} propsData={data}/>
             <div className='wrap' id='bizOpp'>
+                <InputFieldDetail show={showModal} onHide={closeModal} />
                 <div className='dataPostArea'>
                     <div className='btnArea d-flex justify-content-end'>
                         <Button variant='success' className='float-right' onClick={openModal}>사업 (기회) 등록</Button>
                     </div>
-                    <SearchFieldDetail show={showModal} onHide={closeModal} />
                     {errMsg ? 
-                    (<p>{errMsg}</p>) 
-                    :   (
-                        <DynamicTable/>
-                        )
+                        (<p>{errMsg}</p>) 
+                        :   
+                        (<DynamicTable componentName={'bizOpp'} propsData={data}/>)
                     }
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const SearchFieldDetail = ({ show, onHide }) => {
+const InputFieldDetail = ({ show, onHide }) => {
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
@@ -20,4 +20,4 @@ const SearchFieldDetail = ({ show, onHide }) => {
     );
 };
 
-export default SearchFieldDetail;
+export default InputFieldDetail;

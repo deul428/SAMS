@@ -4,6 +4,9 @@ table {
         th {
             vertical-align: middle;
             cursor: default;
+            &.header_biz_opp_name {
+                max-width: 80px;
+            }
         }
     }
     tbody {
@@ -11,6 +14,13 @@ table {
             td {
                 vertical-align: middle;
                 padding: 0.1rem 0.4rem !important;
+                &.table-cell {
+                    max-width: 250px; /* 최대 너비 */
+                    overflow: hidden; /* 넘친 내용 숨김 */
+                    white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+                    text-overflow: ellipsis; /* 말줄임표 추가 */
+                }
+                  
             }
             th, td {
             }

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { login } from '../../index.js';
 import { Table, Form, Button, ButtonGroup, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Columns, Person } from 'react-bootstrap-icons';
-import SearchField from '../SearchField.js';
+import InputField from '../InputField.js';
 import MyTable from '../utils/Table.js';
 import { apiMethods } from '../../utils/api.js';
 import axios from 'axios';
@@ -130,7 +130,7 @@ const BizOpp = () => {
     return (
         <>
             <h2>사업 (기회) 조회</h2>
-            <SearchField/>
+            <InputField/>
             <div className='wrap'>
                 {/* <MyTable /> */}
                 <div className='dataPostArea'>

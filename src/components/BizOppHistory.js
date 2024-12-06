@@ -11,7 +11,7 @@ const BizOppHistory = ({ show, onHide }) => {
     const [errMsg, setErrMsg] = useState('');
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
 
-    const endpoint = 'test/';
+    const endpoint = 'select-biz-opp1/';
     const f_handlingData = async (method, endpoint, input = null) => {
         try {
             const response = await apiMethods.get(endpoint);
@@ -38,7 +38,7 @@ const BizOppHistory = ({ show, onHide }) => {
                     <Button variant="info" className='btnLeft'>조회</Button>
                     <div className='inputField modalcntnt'>
                         <div className='searchItem bizoppArea'>
-                            <DynamicTable componentName={'bizOppHistory'} propsData={''}/>
+                            <DynamicTable componentName={'bizOppHistory'} propsData={data}/>
                         </div>
                     </div>
                 </Modal.Body>

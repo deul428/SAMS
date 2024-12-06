@@ -5,12 +5,11 @@ import { apiMethods } from '../utils/api.js';
 import { login } from '../index.js';
 import InputField from '../utils/InputField.js';
 import DynamicTable from '../utils/DynamicTable.js';
+import { Button } from 'react-bootstrap';
 import BizOppDetail from './BizOppDetail.js';
 
 import roots from '../utils/datas/Roots.js';
 
-import { Table, Form, Button, ButtonGroup, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { Columns, Person } from 'react-bootstrap-icons';
 import InputFieldDetail from '../utils/InputFieldDetail.js';
 
 const BizOpp = () => {
@@ -21,7 +20,7 @@ const BizOpp = () => {
     const [errMsg, setErrMsg] = useState('');
     const endpoint = roots[4].url;
 
-    const [content, setContent] = useState(false);
+    // const [content, setContent] = useState(false);
     /*-
     사업 (기회) ID	biz_opp_id
     사업 (기회)명	biz_opp_name

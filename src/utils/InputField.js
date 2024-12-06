@@ -60,7 +60,7 @@ const InputField = ({ componentName, propsData }) => {
                                             </div>
                                         </Col>
                                         <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
-                                            <Button variant='info'>조회</Button>
+                                            <Button variant='info btnLeft'>조회</Button>
                                         </Col>
                                     </Row>
                                     <Row className="d-flex justify-content-between">
@@ -87,6 +87,59 @@ const InputField = ({ componentName, propsData }) => {
                                             <Form.Check type={`checkbox`} id={`inputChck`}/>
                                         </Col>
                                         <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                        </Col>
+                                    </Row>
+                                    <Row className="d-flex justify-content-between">
+                                        <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className="">본부</Form.Label>
+                                            <Form.Select size='sm' aria-label='selectBox'>
+                                                <option>선택</option>
+                                                <option value='1'>One</option>
+                                                <option value='2'>Two</option>
+                                                <option value='3'>Three</option>
+                                            </Form.Select>
+                                        </Col>
+                                        <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className="">팀</Form.Label>
+                                            <Form.Select size='sm' aria-label='selectBox'>
+                                                <option>선택</option>
+                                                <option value='1'>One</option>
+                                                <option value='2'>Two</option>
+                                                <option value='3'>Three</option>
+                                            </Form.Select>
+                                        </Col>
+                                        <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className=''>영업 담당자</Form.Label>
+                                            <Form.Control size='sm' type='text' placeholder='Default input' />
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </div>
+                        </>
+                    );
+                    break;
+                case `/${roots[5].depth1}/`:
+                    setVHandlingHtml(
+                        <>
+                            <div className='inputField'>
+                                <div className='searchItem'>
+                                    <Row className="d-flex justify-content-between">
+                                        <Col xs={12} md={12} lg={5} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className="">계약 일자</Form.Label>
+                                            <div>
+                                                <Form.Control size="sm" type="date" label="FROM" className="" name="" value=""/>
+                                                <span style={{margin: '0 10px'}}>~</span><Form.Control size="sm" type="date" />
+                                            </div>
+                                        </Col>
+                                        <Col xs={12} md={12} lg={5} className="col d-flex align-items-center justify-content-start">
+                                            <Form.Label className="">매출 일자</Form.Label>
+                                            <div>
+                                                <Form.Control size="sm" type="date" label="FROM" className="" name="" value=""/>
+                                                <span style={{margin: '0 10px'}}>~</span><Form.Control size="sm" type="date" />
+                                            </div>
+                                        </Col>
+                                        <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
+                                            <Button variant='info'>조회</Button>
                                         </Col>
                                     </Row>
                                     <Row className="d-flex justify-content-between">

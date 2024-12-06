@@ -46,7 +46,7 @@ const roots = [
         { Header: '활동 이력', accessor: 'history'},
     ]
     },
-    {depth1: 'activity', depth2: '', component: Activity},
+    {depth1: 'activity', depth2: '', url: 'activity/', component: Activity},
     {depth1: 'aim', depth2: 'manage', component: Home},
     {depth1: 'aim', depth2: 'achievement', component: Home},
     {depth1: 'home', depth2: '', url: 'home/', component: Home}, 

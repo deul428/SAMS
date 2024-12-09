@@ -98,10 +98,10 @@ def f_serialize(a_row,a_columns):
          v_row_dict[v_column] = v_value
    return v_row_dict
 def f_cipher_change(request):
-   if 'v_global_data' not in request.session:
-      v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
-      v_square_bracket_return = [v_return]
-      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   #if 'v_global_data' not in request.session:
+    #  v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
+     # v_square_bracket_return = [v_return]
+     # return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_old_cipher = v_body.get('a_old_cipher')
@@ -122,7 +122,7 @@ def f_cipher_change(request):
             v_param.append(v_user_id)
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql,v_param)
-               v_return = {'STATUS':'SUCCESS','MESSAGE':"저잗되었습니다."}
+               v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
                v_square_bracket_return = [v_return]
                return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
       except Exception as E:

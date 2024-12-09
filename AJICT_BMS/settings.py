@@ -106,7 +106,7 @@ WSGI_APPLICATION = "AJICT_BMS.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
-# cci10000(2024-10-22)
+# cci10000(2024-10-22, 2024-12-09)
 # DATABASES = {
 #    "default": {
 #        "ENGINE": "django.db.backends.sqlite3",
@@ -114,12 +114,13 @@ WSGI_APPLICATION = "AJICT_BMS.wsgi.application"
 #    }
 # }
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.postgresql",
-                         "NAME": "ajict_bms_db",
-                         "USER": "ajict_bms_user",
-                         "PASSWORD": "ajictcci4",
-                         "HOST": "localhost",
-                         "PORT": "5432"}}
+DATABASES = {"default": {"ENGINE":"django.db.backends.postgresql",
+                         "NAME":"ajict_bms_db",
+                         "USER":"ajict_bms_user",
+                         "PASSWORD":"ajictcci4",
+                         "HOST":"localhost",
+                         "PORT":"5432",
+                         "CONN_MAX_AGE":6000}}
 
 
 # Password validation

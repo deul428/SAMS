@@ -19,7 +19,6 @@ const AuthLogin = () => {
     const [redirect, setRedirect] = useState(null);
     const [isBeginningLogin, setIsBeginningLogin] = useState(false);
     const auth = useSelector((state) => state.auth);
-    // console.log(auth.isLoggedIn);
 
     const p_login = {
         a_user_id: '',
@@ -57,11 +56,8 @@ const AuthLogin = () => {
             } else if (!updatedPwInput.a_old_cipher && input.a_cipher) {
                 updatedPwInput.a_old_cipher = input.a_cipher.trim();
             }
-    
             return updatedPwInput;
         });
-    
-        // console.log(`input: ${JSON.stringify(input, null, 1)},\npwInput: ${JSON.stringify(pwInput, null, 1)}`);
     };
     
     // 바닥 페이지 비우기
@@ -75,23 +71,34 @@ const AuthLogin = () => {
         try {
             // 최초 로그인 비밀번호 변경 로직
             if (firstLoggedIn) {
-                if(pwInput.a_new_cipher === pwInput.a_old_cipher) {
+                console.log("========= 비밀번호 변경 =========");
+                console.log("user Input: ", pwInput);
+
+                // 유효값 검사
+                const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+                if (!passwordRegex.test(pwInput.a_new_cipher)) {
+                    alert('비밀번호는 영문과 숫자를 조합하여 5자 이상으로 입력해 주십시오.');
+                    return;
+                }
+                
+                if (pwInput.a_new_cipher === "") {
+                    alert(`변경하려는 비밀번호를 입력하세요.`);
+                    return;
+                }
+                
+                if (pwInput.a_new_cipher === pwInput.a_old_cipher) {
                     alert(`현재 비밀번호와 변경하려는 비밀번호가 동일합니다. 다른 비밀번호를 입력하세요.`);
                     return;
                 }
-                console.log('최초 비밀번호 변경');
-                console.log(p_changePw);
-
                 const response = await apiMethods[method]('cipher-change/', pwInput);
-                console.log("비밀번호 변경 response: ", response);
+                console.log(response);
 
                 await dispatch(login({ userId: auth.userId, userPw: pwInput.a_new_cipher }));
-                console.log("present: ", pwInput.a_new_cipher);
                 
                 // 이전 경로로 리디렉션
                 const from = location.state?.from?.pathname || `/${roots[8].url}`;
-                console.log('Redirect Path:', from);
                 setRedirect(from);
+                console.log("========= 비밀번호 변경 끝 =========");
                 return response;
             } else {
                 if (!input.a_user_id || !input.a_cipher) {
@@ -100,30 +107,27 @@ const AuthLogin = () => {
                 }
                 // API 호출
                 const response = await apiMethods[method](endpoint, input);
-                console.log(response, response.length);
+                
                 // 로그인 성공 시 객체 length 2. (데이터부, 상태부)
                 if (response.length === 2) {
-                    console.log("로그인 성공.\nresponse.length: ", response.length, "response: ", response);
-                    if (response[1].STATUS === 'SUCCESS') {
-                        console.log(response[0].beginning_login_tf);
+                    console.log("로그인 성공.", "\nresponse[0][0] (data): ", response[0][0], "\nresponse[1][0] (msg): ", response[1][0]);
+                    if (response[1][0].STATUS === 'LOGIN') {
                         // Redux에 로그인 정보 저장
                         await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher }));
 
-                        if (response[0].beginning_login_tf) {
-                            console.log(p_changePw);
+                        if (response[0][0].beginning_login_tf) {
                             window.confirm('최초 로그인 시 비밀번호를 변경해야 합니다. 지금 변경하시겠습니까?', setIsBeginningLogin(true)); 
                         } else {
                             // 이전 경로로 리디렉션
                             const from = location.state?.from?.pathname || `/${roots[8].url}`;
-                            console.log('Redirect Path:', from);
                             setRedirect(from);
                             return response;
                         }
                     }
-                } else if (response.STATUS === 'FAIL') {
-                    console.log("로그인 실패.\nresponse: ", response, response.STATUS)
+                } else if (response[0].STATUS === 'FAIL') {
+                    console.log("로그인 실패.\nresponse: ", response, response[0].STATUS)
                     // 실패 메시지 알림
-                    alert(response.MESSAGE || '알 수 없는 오류가 발생했습니다.');
+                    alert(response[0].MESSAGE || '알 수 없는 오류가 발생했습니다.');
                     return;
                 } else {
                     alert('서버로부터 올바른 응답을 받지 못했습니다.');
@@ -137,13 +141,13 @@ const AuthLogin = () => {
         }
     };
     
-    
     useEffect(() => {
         // console.log('Redirect Path:', redirect); // 확인
         if (redirect) {
             navigate(redirect, { replace: true });
         }
     }, [redirect, navigate]);
+
     return (
         <div id='login' className='wrap'>
             <div id='loginArea'>

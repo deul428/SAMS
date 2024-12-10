@@ -2,15 +2,24 @@ import { useState, useEffect } from 'react';
 
 import DynamicTable from '../utils/DynamicTable';
 import InputField from '../utils/InputField';
+import InputFieldDetail from '../utils/InputFieldDetail.js';
+
 import { useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { apiMethods } from '../utils/api.js';
+
 import roots from '../utils/datas/Roots.js';
 
 const Activity = () => {
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-    const endpoint = roots[5].url;
+    const endpoint = roots[4].url;
+    // const endpoint = roots[5].url;
+
+    
+    const [showModal, setShowModal] = useState(false);
+    const openModal = () => {console.log(showModal); setShowModal(true)};
+    const closeModal = () => setShowModal(false);
 
     const p_activity = {
 
@@ -67,9 +76,13 @@ const f_handlingData = async (method, endpoint, input = null) => {
             <InputField />
             <div className='wrap'>
                 <div className='dataPostArea'>
+                    {/* <InputFieldDetail show={showModal} onHide={closeModal} /> */}
                     <div className='btnArea d-flex justify-content-end'>
-                        <Button variant='success' className='float-right me-2' onClick={''}>저장</Button>
-                        <Button variant='danger' className='float-right' onClick={''}>삭제</Button>
+                        {/* <Button variant='primary' className='me-2' onClick={openModal}>등록</Button> */}
+                        <div>
+                        <Button variant='success' className='me-2' onClick={''}>저장</Button>
+                        <Button variant='danger' className='' onClick={''}>삭제</Button>
+                        </div>
                     </div>
                     {errMsg ? 
                         (<p>{errMsg}</p>) 

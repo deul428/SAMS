@@ -20,14 +20,7 @@ const roots = [
         { Header: '사업 (기회) 명', accessor: 'biz_opp_name' },
         { Header: '최종 고객사', accessor: 'last_client_com2_name' },
         { Header: '매출처', accessor: 'sale_com2_name' },
-        
-        
-        
-        // { Header: '진행률 대분류', accessor: 'progress1_rate_name' },
         { Header: '진행률', accessor: 'progress2_rate_name' },
-        
-        
-        
         { Header: '필달 여부', accessor: 'essential_achievement_tf', Cell: ({value}) => v_handlingTF(value) },
         { Header: '계약 일자', accessor: 'contract_date',
         Cell: ({value}) => v_handlingDate(value) },

@@ -139,7 +139,7 @@ const InputField = ({ componentName, propsData }) => {
                                             </div>
                                         </Col>
                                         <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
-                                            <Button variant='info'>조회</Button>
+                                            <Button variant='info btnLeft'>조회</Button>
                                         </Col>
                                     </Row>
                                     <Row className="d-flex justify-content-between">

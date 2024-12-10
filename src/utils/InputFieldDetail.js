@@ -95,7 +95,7 @@ const InputFieldDetail = ({ show, onHide }) => {
             }
             
             switch (currentPath) {
-                case `/${roots[4].depth1}/`:
+                case (`/${roots[4].depth1}/` || `/${roots[5].depth1}/`):
                     setVHandlingHtml(
                         <Modal size='xl' show={show} onHide={onHide} centered>
                             <Modal.Header closeButton>
@@ -106,6 +106,9 @@ const InputFieldDetail = ({ show, onHide }) => {
                             </Modal.Header> 
                             <Modal.Body>
                                 <div className='inputField modalcntnt'>
+                                    <div className="btnArea text-lg-end">
+                                        <Button variant="warning" className="mb-3">사업 (기회) 복제</Button>
+                                    </div>
                                     <div className='searchItem bizoppArea'>
                                         <Row className="d-flex justify-content-between">
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
@@ -248,18 +251,16 @@ const InputFieldDetail = ({ show, onHide }) => {
                                     </div>
                                 </div>
                             </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={onHide}>닫기</Button>
+                            <Modal.Footer className="btnArea justify-content-center">
                                 <Button variant="primary">등록</Button>
-                                {/* <Button variant="primary">수정</Button> */}
-                                <Button variant="warning">사업 (기회) 복제</Button>
                                 <Button variant="danger" onClick={f_warningMsg}>삭제</Button>
+                                <Button variant="secondary" onClick={onHide}>닫기</Button>
                             </Modal.Footer>
                         </Modal>
                     );
                     break;
                 default:
-                    setVHandlingHtml(<h1>안녕하세요 InputField.js 작업 중입니다.</h1>);
+                    setVHandlingHtml(<h1>안녕하세요 InputFieldDetail.js 작업 중입니다.</h1>);
             }
         };
 

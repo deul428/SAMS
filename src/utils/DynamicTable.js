@@ -110,14 +110,11 @@ function DynamicTable({ componentName, propsData }) {
         setVHandlingHtml(<h1>{componentName} Area</h1>);
         break;
       case `activity`: 
-        setVHandlingHtml (
-          <h2>안녕하세요?</h2>
-        )
-        /* if (propsData.length > 0) {
+        if (propsData.length > 0) {
           setData(propsData[0]); 
+          console.log(data);
           setVHandlingHtml (
             <>
-            <BizOppHistory show={showModal} onHide={closeModal} />
             <Table bordered hover responsive {...getTableProps()}>
               <thead>
                 {headerGroups.map((headerGroup) => {
@@ -127,6 +124,7 @@ function DynamicTable({ componentName, propsData }) {
                       {headerGroup.headers.map((column) => {
                         const { key, ...restProps } = column.getHeaderProps();
                         return (
+                          
                           <th key={key} {...restProps}>
                             {column.render('Header')}
                           </th>
@@ -146,11 +144,7 @@ function DynamicTable({ componentName, propsData }) {
                         const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
                         return (
                           <td key={key} {...restProps}>
-                            {index === row.cells.length - 1
-                              ? 
-                              <Button size="sm" variant="light" onClick={openModal}>이력</Button>
-                              : 
-                              cell.render('Cell')}
+                            {cell.render('Cell')}
                           </td>
                         );
                       })}
@@ -161,7 +155,7 @@ function DynamicTable({ componentName, propsData }) {
             </Table>
             </>
           )
-        } */
+        }
         break;
       
       default:

@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { apiMethods } from '../utils/api.js';
-import { login } from '../index.js';
-import InputField from '../utils/InputField.js';
-import DynamicTable from '../utils/DynamicTable.js';
+import { apiMethods } from '../../utils/api.js';
+import { login } from '../../index.js';
+import InputField from '../../utils/InputField.js';
+import DynamicTable from '../../utils/DynamicTable.js';
 import { Button } from 'react-bootstrap';
-import BizOppDetail from './BizOppDetail.js';
+import BizOppDetail from '../BizOppDetail.js';
 
-import roots from '../utils/datas/Roots.js';
+import roots from '../../utils/datas/Roots.js';
 
-import InputFieldDetail from '../utils/InputFieldDetail.js';
+import InputFieldDetail from '../../utils/InputFieldDetail.js';
 
 const BizOpp = () => {
     const location = useLocation();
@@ -104,8 +104,10 @@ const BizOpp = () => {
         delete_date: null,
     }
     const [input, setInput] = useState(p_bizopp);
+    
 
     const [showModal, setShowModal] = useState(false);
+
     const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
 
@@ -148,14 +150,14 @@ const BizOpp = () => {
     };
     useEffect(() => {
         f_handlingData('get', endpoint);
-    }, [endpoint]);
+    }, []);
 
     return (
         <>
             <h2>사업 (기회) 조회</h2>
-            {/* <InputField v_componentName={'bizOpp'} v_propsData={data}/> */}
+            <InputField v_componentName={'bizOpp'} propsData={data}/>
             <div className='wrap' id='bizOpp'>
-                {/* <InputFieldDetail show={showModal} onHide={closeModal} /> */}
+                <InputFieldDetail show={showModal} onHide={closeModal} />
                 <div className='dataPostArea'>
                     <div className='btnArea d-flex justify-content-end'>
                         <Button variant='success' className='float-right' onClick={openModal}>사업 (기회) 등록</Button>
@@ -163,8 +165,7 @@ const BizOpp = () => {
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   
-                        // ('')
-                        (<DynamicTable v_componentName={'bizOpp'} v_propsData={data}/>)
+                        (<DynamicTable v_componentName={'bizOpp'} propsData={data}/>)
                     }
                 </div>
             </div>

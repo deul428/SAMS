@@ -5,7 +5,7 @@ import { Modal, Button, Form, Row, Col } from
 "react-bootstrap";
 
 const BizOppHistory = ({ show, onHide }) => {
-    console.log("Modal Props - show:", show, ", onHide:", onHide);
+    // console.log("Modal Props - show:", show, ", onHide:", onHide);
   
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
@@ -15,7 +15,6 @@ const BizOppHistory = ({ show, onHide }) => {
     const f_handlingData = async (method, endpoint, input = null) => {
         try {
             const response = await apiMethods.get(endpoint);
-            console.log(response);
             setData(response);
             return response;
         } catch (error) {
@@ -38,7 +37,7 @@ const BizOppHistory = ({ show, onHide }) => {
                     <Button variant="info" className='btnLeft'>조회</Button>
                     <div className='inputField modalcntnt'>
                         <div className='searchItem bizoppArea'>
-                            <DynamicTable componentName={'bizOppHistory'} propsData={data}/>
+                            <DynamicTable v_componentName={'bizOppHistory'} propsData={data}/>
                         </div>
                     </div>
                 </Modal.Body>

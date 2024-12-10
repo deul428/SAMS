@@ -80,7 +80,7 @@ const AuthLogin = () => {
                     alert('비밀번호는 영문과 숫자를 조합하여 5자 이상으로 입력해 주십시오.');
                     return;
                 }
-                
+
                 if (pwInput.a_new_cipher === "") {
                     alert(`변경하려는 비밀번호를 입력하세요.`);
                     return;
@@ -96,7 +96,7 @@ const AuthLogin = () => {
                 await dispatch(login({ userId: auth.userId, userPw: pwInput.a_new_cipher }));
                 
                 // 이전 경로로 리디렉션
-                const from = location.state?.from?.pathname || `/${roots[8].url}`;
+                const from = location.state?.from?.pathname || `/${roots[8].endpoint}`;
                 setRedirect(from);
                 console.log("========= 비밀번호 변경 끝 =========");
                 return response;

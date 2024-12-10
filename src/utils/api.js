@@ -6,8 +6,8 @@ import axios from 'axios';
 
 // axios 인스턴스 생성
 const apiUrl = axios.create({
-    // baseURL: 'http://127.0.0.1:8000/',
-    baseURL: 'http://10.0.60.201:8000/',
+    baseURL: 'http://127.0.0.1:8000/',
+    // baseURL: 'http://10.0.60.201:8000/',
     // baseURL:'http://192.10.100.100:8000/',
     headers: {
         'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const apiUrl = axios.create({
 const api = {
     request: async (method, url, data = null) => {
         try {
-            console.log('api 부');
+            console.log('api 부\n출처: ', url);
             if (method === 'post') {
                 console.log(data);
                 // if (Object.values(data).some(e => !e)){

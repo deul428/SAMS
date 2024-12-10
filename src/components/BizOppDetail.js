@@ -13,7 +13,7 @@ const BizOppDetail = () => {
     // data: db data
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-    const endpoint = roots[4].url;
+    const endpoint = roots[4].endpoint;
 
     const [content, setContent] = useState(false);
     const p_bizopp = {

@@ -8,14 +8,14 @@ import roots from './datas/Roots';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
 
-const InputField = ({ componentName, propsData }) => {
+const InputField = ({ v_componentName, v_propsData }) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
 
-    if(componentName === 'bizOpp') {
-        console.log(propsData[0]);
+    if(v_componentName === 'bizOpp') {
+        console.log(v_propsData);
     }
 /*     // Redux와 React Router 동기화
     useEffect(() => {

@@ -11,49 +11,37 @@ function DynamicTable({ v_componentName, v_propsData }) {
   const openModal = () => {console.log(showModal); setShowModal(true)};
   const closeModal = () => setShowModal(false);
 
-  const [data, setData] = useState([ ]);
+  const [data, setData] = useState([]);
 
-
-
-  // 테이블 헤더 키 값 갖고 오기
-  let rootsData = null;
-  switch(v_componentName) {
-    case `bizOpp`: 
-      rootsData = roots[4].props;
-      break;
-    case `activity`: 
-      rootsData = roots[4].props;
-      break;
-    default:
-      rootsData = roots[4].props;
-      break;
-  }
-
-
+  const rootsData = roots[4].props;
+ 
   const [v_handlingHtml, setVHandlingHtml] = useState(null);
+  const columns = React.useMemo(() => rootsData, [rootsData]);
 
-  const columns = React.useMemo(() => roots[4].props, []);
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });
+  const memoizedData = React.useMemo(() => data, [data]);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({
+      columns,
+      data: memoizedData,
+    });
+    
 
-  // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
   useEffect(() => {
+    console.log("v_propsData: ====================\n", v_propsData);
     if (!v_propsData || v_propsData.length === 0 || !v_propsData[0][3]) {
-      console.warn("v_propsData가 비어 있습니다.");
+      console.warn("v_propsData가 비어 있습니다. 데이터 확인 필요.");
       return;
     }
     const updatedData = v_propsData[0][3];
     console.log("업데이트된 데이터:", updatedData);
+    setData(updatedData); 
 
-    setData(updatedData); // 상태 업데이트
-  }, [v_propsData]);
-
-  useEffect(() => {
-    if (data.length > 0) {
-      let htmlContent = null;
-      switch (v_componentName) {
-        case `bizOpp`: 
-          htmlContent = (
+    switch (v_componentName) {
+      case `bizOpp`: 
+        if (v_propsData.length > 0) {
+          setVHandlingHtml (
             <>
+            <BizOppHistory show={showModal} onHide={closeModal} />
             <Table bordered hover responsive {...getTableProps()}>
               <thead>
                 {headerGroups.map((headerGroup) => {
@@ -84,10 +72,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
                           <td key={key} {...restProps}>
                             {index === row.cells.length - 1
                               ? 
-                              <Button size="sm" variant="light" onClick={() => setShowModal(true)}>
-                                이력
-                              </Button>
-
+                              <Button size="sm" variant="light" onClick={openModal}>이력</Button>
                               : 
                               cell.render('Cell')}
                           </td>
@@ -100,45 +85,47 @@ function DynamicTable({ v_componentName, v_propsData }) {
             </Table>
             </>
           )
-          setVHandlingHtml (htmlContent);
-          break;
-        case `bizOppHistory`: 
-          console.log(v_propsData[0][3]);
-          // v_propsData[0][3].map((e, index) => {
-          //   console.log("==============================", v_propsData[0][3][index], v_propsData[0][3][index-1]);
-          //   if (index !== 0) {
-          //     if (v_propsData[0][3][index].e !== v_propsData[0][3][index-1]) {
-          //       console.log(v_propsData[0][3][index].e);
-          //     }
-          //     // e.map((key, index) => {
-          //       /* if (e[index].key === e[index-1].key) {
-          //         console.log(e.key);
-          //       } */
-          //       // }
-          //       // return e.key;
-          //     // })
-          //   }
-          //   return e;
-          // })
-          if (v_propsData[0][3].length > 1) {
-            for (let i = 1; i < v_propsData[0][3].length; i++) {
-              const prevObject = v_propsData[0][3][i - 1];
-              const currentObject = v_propsData[0][3][i];
-      
-              Object.keys(currentObject).forEach((key) => {
-                if (prevObject[key] !== currentObject[key]) {
-                  console.log(
-                    `Index ${i - 1} -> ${i}: Key "${key}" changed from "${prevObject[key]}" to "${currentObject[key]}"`
-                  );
-                }
-              });
-            }
+        }
+        break;
+      case `bizOppHistory`: 
+        console.log(v_propsData[0][3]);
+        // v_propsData[0][3].map((e, index) => {
+        //   console.log("==============================", v_propsData[0][3][index], v_propsData[0][3][index-1]);
+        //   if (index !== 0) {
+        //     if (v_propsData[0][3][index].e !== v_propsData[0][3][index-1]) {
+        //       console.log(v_propsData[0][3][index].e);
+        //     }
+        //     // e.map((key, index) => {
+        //       /* if (e[index].key === e[index-1].key) {
+        //         console.log(e.key);
+        //       } */
+        //       // }
+        //       // return e.key;
+        //     // })
+        //   }
+        //   return e;
+        // })
+        if (v_propsData[0][3].length > 1) {
+          for (let i = 1; i < v_propsData[0][3].length; i++) {
+            const prevObject = v_propsData[0][3][i - 1];
+            const currentObject = v_propsData[0][3][i];
+    
+            Object.keys(currentObject).forEach((key) => {
+              if (prevObject[key] !== currentObject[key]) {
+                console.log(
+                  `Index ${i - 1} -> ${i}: Key "${key}" changed from "${prevObject[key]}" to "${currentObject[key]}"`
+                );
+              }
+            });
           }
-          setVHandlingHtml(<h1>{v_componentName} Area</h1>);
-          break;
-        case `activity`: 
+        }
+        setVHandlingHtml(<h1>{v_componentName} Area</h1>);
+        break;
+      case `activity`: 
+        if (v_propsData[0][3].length > 0) {
+          setData(v_propsData[0][3]); 
           console.log(data);
-          htmlContent = (
+          setVHandlingHtml (
             <>
             <Table bordered hover responsive {...getTableProps()}>
               <thead>
@@ -180,19 +167,27 @@ function DynamicTable({ v_componentName, v_propsData }) {
             </Table>
             </>
           )
-          setVHandlingHtml (htmlContent);
-          break;
-        default:
-          setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
-      }
+        }
+        break;
+      
+      default:
+        setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
+      // console.log("======= props data =======\n", v_componentName, v_propsData[0][3], v_propsData[0][3]);
     }
-    
-  }, [v_componentName, data]);
+  }, [v_componentName, v_propsData]);
 
-  return <div id="tableArea">
-    {v_handlingHtml}
-    <BizOppHistory show={showModal} onHide={closeModal} />
-    </div>;
+
+  useEffect(() => {
+    console.log("data 상태가 업데이트되었습니다:", data);
+  }, [data]); // 상태 변경 확인용
+
+  return (
+    <div id='tableArea'>
+      {v_handlingHtml}
+      
+      <BizOppHistory show={showModal} onHide={closeModal} />
+    </div>
+  );
 }
 
 export default DynamicTable;

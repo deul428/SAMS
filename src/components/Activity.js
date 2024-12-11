@@ -14,17 +14,17 @@ const Activity = () => {
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
     const endpoint = roots[4].endpoint;
+    console.log("activity data: ======================\n", data);
     // const endpoint = roots[5].endpoint;
-
-    
-    const [showModal, setShowModal] = useState(false);
-    const openModal = () => {console.log(showModal); setShowModal(true)};
-    const closeModal = () => setShowModal(false);
 
     const p_activity = {
 
     }
     const [input, setInput] = useState(p_activity);
+    
+    const [showModal, setShowModal] = useState(false);
+    const openModal = () => {console.log(showModal); setShowModal(true)};
+    const closeModal = () => setShowModal(false);
 
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
@@ -64,9 +64,12 @@ const Activity = () => {
     };
 
     useEffect(() => {
-        f_handlingData('get', endpoint);
-    }, []);
-
+        f_handlingData('get', endpoint).then(response => {
+            console.log("데이터 로드 완료:", response);
+        }).catch(error => {
+            console.error("데이터 로드 실패:", error);
+        });
+    }, [endpoint]);
 
     const currentPath = useSelector((state) => state.location.currentPath);
     // console.log('currentpath====================\n', currentPath);
@@ -87,7 +90,7 @@ const Activity = () => {
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   
-                        (<DynamicTable v_componentName={'activity'} propsData={data}/>)
+                        (<DynamicTable v_componentName={'activity'} v_propsData={data}/>)
                     }
                 </div>
             </div>

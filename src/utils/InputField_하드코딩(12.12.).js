@@ -34,23 +34,8 @@ const InputField = ({ v_componentName, v_propsData }) => {
             ...prevInput,
             [name]: value.trim(),
         }));
-    } 
-    // ================= data 핸들링: bizopp에서 필요한 데이터 배열만 뽑아 오기 ================= 
-    const [data, setData] = useState([ ]);
-    // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
-    useEffect(() => {
-        if (!v_propsData || v_propsData.length === 0 || !v_propsData[0][3]) {
-        console.warn("v_propsData가 비어 있습니다.");
-        return;
-        }
-        const updatedData = v_propsData[0].slice(0, -1);
-        console.log("업데이트된 데이터:", updatedData);
+    }
 
-        setData(updatedData); // 상태 업데이트
-    }, [v_propsData]);
-
-
-    // ================= option 1 변경 시 2도 동적으로 변경 ================= 
     const [options, setOptions] = useState([]);
     const [option1, setOption1] = useState('');
     const [option2, setOption2] = useState('');
@@ -64,64 +49,48 @@ const InputField = ({ v_componentName, v_propsData }) => {
         "1140000": ["1140100", "1140200"],
         "1150000": ["1150100"],
     };
-
     const handleSelect1Change = (e) => {
         const selectedValue = e.target.value;
+        console.log("Selected Value:", selectedValue); // 디버깅 로그 추가
         setOption1(selectedValue);
-        setOptions(optionMapping[selectedValue] || []);
+    
+        const newOptions = optionMapping[selectedValue] || [];
+        console.log("New Options:", newOptions); // 디버깅 로그 추가
+        setOptions(newOptions);
         setOption2(""); // 두 번째 select 초기화
     };
     
-    const handleSelect2Change = (e) => {
-        console.log(options, option2);
+      const handleSelect2Change = (e) => {
         setOption2(e.target.value);
     };
 
-
-    // 본부별 팀 매핑
-    const [depts, setDepts] = useState([]);
-    const [teams, setTeams] = useState([]);
-
-    const [teamByDept, setTeamByDept] = useState({});
-
-    function teamLinkedDept () {
-        // 구조분해 할당
-        const [dataOfDept, dataOfTeam] = data;
-                
-        setDepts(dataOfDept);
-        setTeams(dataOfTeam);
-
-        // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
-        const mapping = dataOfTeam.reduce((acc, items) => {
-            const { high_dept_id } = items;
-            if (!acc[high_dept_id]) {
-                acc[high_dept_id] = [];
-            }
-            acc[high_dept_id].push(items);
-            return acc;
-        }, {});
-
-        setTeamByDept(mapping);
-        console.log("mapping 산출물: ", mapping);
-    }
-    // from-to
-    function fromTo () {
-
-    }
-
-    const [selectDept, setSelectDept] = useState('');
-    const [selectTeam, setSelectTeam] = useState([]);
-    // 본부 선택 핸들러
-    const handlingDept = (e) => {
-        setSelectDept(e.target.value);
-        setSelectTeam(teamByDept[e.target.value] || []);
-    };
+    const deptSelectDynamic = () => {
+        if (data.length > 0) {
+            data[2].map((e) => {
+                return <option value={e.small_classi_code}>{e.small_classi_name}</option>
+            })
+        } else {
     
-    useEffect(() => {
-        if (v_propsData.length > 0) {
-            teamLinkedDept()
+            console.log('data Loading')
         }
-    }, [data]);
+    }
+
+    const [data, setData] = useState([ ]);
+    // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
+    useEffect(() => {
+        if (!v_propsData || v_propsData.length === 0 || !v_propsData[0][3]) {
+        console.warn("v_propsData가 비어 있습니다.");
+        return;
+        }
+        const updatedData = v_propsData[0].slice(0, -1);
+        console.log("업데이트된 데이터:", updatedData);
+
+        setData(updatedData); // 상태 업데이트
+    }, [v_propsData]);
+    useEffect(() => {
+        console.log("Current Option1:", option1);
+        console.log("Options for Select2:", options);
+    }, [option1, options]);
 /*     // Redux와 React Router 동기화
     useEffect(() => {
         const syncPath = async () => {
@@ -148,6 +117,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                 setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
                 return;
             }
+            console.log("option1: ", option1, "\noption2: ", option2);
 
             switch (currentPath) {
                 // biz-opp/
@@ -219,46 +189,55 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     <Row className="d-flex justify-content-between">
                                         <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                             <Form.Label className="">본부</Form.Label>
-                                            <Form.Select id="select1" onChange={handlingDept} value={selectDept} size='sm' aria-label='selectBox'>
-                                                <option value="">-- 본부를 선택하세요 --</option>
-                                                {(data.length > 0 ? 
-                                                (
-                                                    depts.map((dept) => (
-                                                    <option key={dept.dept_id} value={dept.dept_id}>
-                                                        {dept.dept_name}
-                                                    </option>
-                                                    ))
-                                                )
-                                                :
-                                                (console.log('데이터 아직 안 들어왔어요'))
-                                                )}
+                                            <Form.Select id="select1" value={option1} onChange={handleSelect1Change} size='sm' aria-label='selectBox'>
+                                                <option value="">-- Select an option --</option>
+                                                <option value="1000000">1000000</option>
+                                                <option value="1100000">1100000</option>
+                                                <option value="1110000">1110000</option>
+                                                <option value="1120000">1120000</option>
+                                                <option value="1130000">1130000</option>
+                                                <option value="1140000">1140000</option>
+                                                <option value="1150000">1150000</option>
+
+{/*                                                 
+        "1000000": [''],
+        "1100000": [''],
+        "1110000": ["1110100", "1110200"],
+        "1120000": ["1120100", "1120200", "1120300"],
+        "1130000": ["1130100", "1130200", "1130300"],
+        "1140000": ["1140100", "1140200"],
+        "1150000": ["1150100"], */}
                                                 {/* {(data.length > 0 ? 
                                                     (
-                                                        data[0].map((e) => {
+                                                        data[0].map((e, index) => {
                                                             return <option value={e.dept_id}>{e.dept_name}</option>
                                                         })
                                                     )
                                                     :
                                                     (console.log('data Loading'))
                                                 )} */}
-                                                {/* <option value="1000000">1000000</option>
-                                                <option value="1100000">1100000</option>
-                                                <option value="1110000">1110000</option>
-                                                <option value="1120000">1120000</option>
-                                                <option value="1130000">1130000</option>
-                                                <option value="1140000">1140000</option>
-                                                <option value="1150000">1150000</option> */}
                                             </Form.Select>
                                         </Col>
                                         <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                             <Form.Label className="">팀</Form.Label>
-                                            <Form.Select id='select2' size='sm'  /* value={option2} onChange={handleSelect2Change} aria-label='selectBox' disabled={options.length === 0}   */disabled={!selectTeam.length}>
-                                                <option value="">-- 팀을 선택하세요 --</option>
-                                                {selectTeam.map((team) => (
-                                                    <option key={team.dept_id} value={team.dept_id}>
-                                                        {team.dept_name}
-                                                    </option>
-                                                ))}
+                                            <Form.Select id='select2' value={option2} onChange={handleSelect2Change} size='sm' aria-label='selectBox' disabled={options.length === 0}>
+                                            {/* disabled={options.length === 0} */}
+                                            <option value="">-- Select an option --</option>
+                                                {options.length > 0 &&
+                                                    options.map((option, index) => (
+                                                        <option key={index} value={option}>
+                                                            {option}
+                                                        </option>
+                                                    ))}
+                                                {/* {(data.length > 0 ? 
+                                                    (
+                                                        data[1].map((e) => {
+                                                            return <option value={e.dept_id}>{e.dept_name}</option>
+                                                        })
+                                                    )
+                                                    :
+                                                    (console.log('data Loading'))
+                                                )} */}
                                             </Form.Select>
                                         </Col>
                                         <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
@@ -331,7 +310,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
         };
 
         updateUI();
-    }, [currentPath, data, option1, option2, depts, selectTeam]);
+    }, [currentPath, data, option1, option2]);
 
     return (
         <div id='search' className='wrap'>

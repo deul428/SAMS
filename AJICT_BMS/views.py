@@ -12,6 +12,8 @@ def f_login(request):
 
    #v_user_id = 'leecj'
    #v_cipher = '123456777'
+   v_user_id = ''
+   v_cipher = ''
    #v_user_id = ''
    #v_cipher = ''
    if request.method == 'POST':
@@ -79,7 +81,9 @@ def f_login(request):
 #Session의 값 중 일부를 추출할 수 있음.
          v_global_data = request.session.get('v_global_data',{})
          v_user_name = v_global_data[0].get('user_name')
-         logging.debug(f"user_name : {v_user_name}")
+         logging.debug(f"*******************************************")
+         logging.debug(f"f_login()에서의 user_name : {v_user_name}")
+         logging.debug(f"*******************************************")
 
          v_additional_info = {'STATUS':'LOGIN','MESSAGE':'login 했습니다.'}
          v_square_bracket_additional_info = [v_additional_info]
@@ -98,6 +102,14 @@ def f_serialize(a_row,a_columns):
          v_row_dict[v_column] = v_value
    return v_row_dict
 def f_cipher_change(request):
+
+   #Session의 값 중 일부를 추출할 수 있음.
+   v_global_data = request.session.get('v_global_data',{})
+   v_user_name = v_global_data[0].get('user_name')
+   logging.debug(f"*******************************************")
+   logging.debug(f"f_cipher_change()에서의 user_name : {v_user_name}")
+   logging.debug(f"*******************************************")
+
    if 'v_global_data' not in request.session:
       v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
       v_square_bracket_return = [v_return]
@@ -136,6 +148,13 @@ def f_logout(request):
    v_square_bracket_return = [v_return]
    return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp1(request):
+   #Session의 값 중 일부를 추출할 수 있음.
+   v_global_data = request.session.get('v_global_data',{})
+   v_user_name = v_global_data[0].get('user_name')
+   logging.debug(f"*******************************************")
+   logging.debug(f"f_select_biz_opp1()에서의 user_name : {v_user_name}")
+   logging.debug(f"*******************************************")
+
    if 'v_global_data' not in request.session:
       v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
       v_square_bracket_return = [v_return]

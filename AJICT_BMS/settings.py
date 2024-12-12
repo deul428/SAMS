@@ -8,7 +8,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 from pathlib import Path
 
-from django.conf.global_settings import SESSION_COOKIE_AGE
+
+#cci10000(2024-12-12)
+#from django.conf.global_settings import SESSION_COOKIE_AGE,SESSION_ENGINE
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -163,3 +166,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # cci10000(2024-12-03)
 # 이틀임.
 SESSION_COOKIE_AGE = 172800
+
+
+#cci10000(2024-12-12)
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+CACHE = {'default':{'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
+                    'LOCATION':'unique-sessions'}}

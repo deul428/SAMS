@@ -87,6 +87,11 @@ def f_login(request):
          v_additional_info = {'STATUS':'LOGIN','MESSAGE':'login 했습니다.'}
          v_square_bracket_additional_info = [v_additional_info]
          v_square_bracket_data3.append(v_square_bracket_additional_info)
+
+         logging.debug(f"*******************************************")
+         logging.debug(f"JSON의 값 : {v_square_bracket_data3}")
+         logging.debug(f"*******************************************")
+
          return JsonResponse(v_square_bracket_data3,safe=False,json_dumps_params={'ensure_ascii':False})
    except json.JSONDecodeError:
       v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}

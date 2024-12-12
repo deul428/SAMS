@@ -12,11 +12,11 @@ def f_login(request):
 
    v_user_id = 'leecj'
    v_cipher = '12345'
-   v_user_id = ''
-   v_cipher = ''
+   #v_user_id = ''
+   #v_cipher = ''
 
    #if request.method == 'POST':
-      v_body = json.loads(request.body)
+      #v_body = json.loads(request.body)
 
 
       #v_user_id = v_body.get('a_user_id')

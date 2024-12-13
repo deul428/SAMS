@@ -425,9 +425,3 @@ def f_select_biz_opp2(request):
 
 # def f_insert_biz_opp(request):
 #   if request.method == "POST":
-#
-#
-#
-#
-#
-#

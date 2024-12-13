@@ -184,6 +184,3 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
 CORS_ALLOW_CREDENTIALS = True
-#
-#
-#

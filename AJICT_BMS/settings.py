@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 from pathlib import Path
 
+from django.conf.global_settings import SESSION_COOKIE_HTTPONLY,SESSION_COOKIE_SECURE
 
 #cci10000(2024-12-12)
 #from django.conf.global_settings import SESSION_COOKIE_AGE,SESSION_ENGINE
@@ -168,8 +169,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SESSION_COOKIE_AGE = 172800
 
 
-#cci10000(2024-12-12)
+#cci10000(2024-12-12, 2024-12-13)
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+#SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+#SESSION_COOKIE_HTTPONLY = True
+#SESSION_COOKIE_SECURE = False
+
+
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CACHE = {'default':{'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
                     'LOCATION':'unique-sessions'}}

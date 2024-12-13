@@ -118,11 +118,11 @@ def f_cipher_change(request):
    #logging.debug(f"f_cipher_change()에서의 user_name : {v_user_name}")
    #logging.debug(f"*******************************************")
 
-   # if 'v_global_data' not in request.session:
-   #    v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
-   #    v_square_bracket_return = [v_return]
-   #    return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
-   # else:
+    if 'v_global_data' not in request.session:
+       v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
+       v_square_bracket_return = [v_return]
+       return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
+    else:
       #v_old_cipher = '1234'
       #v_new_cipher = '12345'
       v_old_cipher = ''

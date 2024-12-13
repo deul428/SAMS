@@ -10,22 +10,22 @@ logging.basicConfig(level=logging.DEBUG)
 def f_login(request):
    request.session.flush()
 
+   v_user_id = 'leecj'
+   v_cipher = '12345'
+   #v_user_id = ''
+   #v_cipher = ''
 
-   #v_user_id = 'leecj'
-   #v_cipher = '12345'
-   v_user_id = ''
-   v_cipher = ''
-
-   if request.method == 'POST':
-      v_body = json.loads(request.body)
-      v_user_id = v_body.get('a_user_id')
-      v_cipher = v_body.get('a_cipher')
+   #if request.method == 'POST':
+   #   v_body = json.loads(request.body)
+   #   v_user_id = v_body.get('a_user_id')
+   #   v_cipher = v_body.get('a_cipher')
 
       #v_user_id = 'leecj'
       #v_cipher = '12345'
 
 
    try:
+      #v_data = json.loads(request.body)
       v_sql1 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s"""
       v_param1 = []
       v_param1.append(v_user_id)
@@ -118,21 +118,17 @@ def f_cipher_change(request):
    #logging.debug(f"f_cipher_change()에서의 user_name : {v_user_name}")
    #logging.debug(f"*******************************************")
 
-    if 'v_global_data' not in request.session:
-       v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
-       v_square_bracket_return = [v_return]
-       return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
-    else:
-      #v_old_cipher = '1234'
-      #v_new_cipher = '12345'
-      v_old_cipher = ''
-      v_new_cipher = ''
-      if request.method == 'POST':
-         v_body = json.loads(request.body)
-         v_old_cipher = v_body.get('a_old_cipher')
-         v_new_cipher = v_body.get('a_new_cipher')
-      #v_old_cipher = '1234'
-      #v_new_cipher = '12345'
+   if 'v_global_data' not in request.session:
+      v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
+   #else:
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_old_cipher = v_body.get('a_old_cipher')
+      v_new_cipher = v_body.get('a_new_cipher')
+#         v_old_cipher = '1234'
+#         v_new_cipher = '12345'
       v_global_data = request.session.get('v_global_data',{})
       v_user_id = v_global_data[0].get('user_id')
       if v_old_cipher == v_new_cipher:
@@ -170,31 +166,39 @@ def f_select_biz_opp1(request):
    #logging.debug(f"f_select_biz_opp1()에서의 user_name : {v_user_name}")
    #logging.debug(f"*******************************************")
 
-    if 'v_global_data' not in request.session:
-       v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
-       v_square_bracket_return = [v_return]
-       return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
-    else:
+   # if 'v_global_data' not in request.session:
+   #    v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
+   #    v_square_bracket_return = [v_return]
+   #    return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
+   # else:
       try:
-         v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp":[]}
+         v_data = ''
+         v_additional_info = ''
+         v_data_headquarters = {}
+         v_data_team = {}
+         v_data_commonness_pro ={}
+         v_data_biz_opp = {}
          v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE SUBSTRING(dept_id FROM 4 FOR 4) = '0000' ORDER BY dept_id"""
          with connection.cursor() as v_cursor_headquarters:
             v_cursor_headquarters.execute(v_sql_headquarters)
             v_columns_headquarters = [v_column[0] for v_column in v_cursor_headquarters.description]
             v_rows_headquarters = v_cursor_headquarters.fetchall()
-            v_data["search_headquarters"] = [dict(zip(v_columns_headquarters,row)) for row in v_rows_headquarters]
+            v_data_headquarters["search_headquarters"] = [dict(zip(v_columns_headquarters,row)) for row in v_rows_headquarters]
+            v_data = [v_data_headquarters]
          v_sql_team = """SELECT * FROM ajict_bms_schema.dept WHERE SUBSTRING(dept_id FROM 4 FOR 4) != '0000' AND SUBSTRING(dept_id FROM 6 FOR 2) = '00' ORDER BY dept_id"""
          with connection.cursor() as v_cursor_team:
             v_cursor_team.execute(v_sql_team)
             v_columns_team = [v_column[0] for v_column in v_cursor_team.description]
             v_rows_team = v_cursor_team.fetchall()
-            v_data["search_team"] = [dict(zip(v_columns_team,row)) for row in v_rows_team]
+            v_data_team["search_team"] = [dict(zip(v_columns_team,row)) for row in v_rows_team]
+            v_data.append(v_data_team)
          v_sql_commonness_pro = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'PRO' ORDER BY small_classi_code"""
          with connection.cursor() as v_cursor_commonness_pro:
             v_cursor_commonness_pro.execute(v_sql_commonness_pro)
             v_columns_commonness_pro = [v_column[0] for v_column in v_cursor_commonness_pro.description]
             v_rows_commonness_pro = v_cursor_commonness_pro.fetchall()
-            v_data["search_commonness_pro"] = [dict(zip(v_columns_commonness_pro,row)) for row in v_rows_commonness_pro]
+            v_data_commonness_pro["search_commonness_pro"] = [dict(zip(v_columns_commonness_pro,row)) for row in v_rows_commonness_pro]
+            v_data.append(v_data_commonness_pro)
          v_sql_biz_opp = """SELECT biz_opp_id,
                                    biz_opp_clone_no,
                                    biz_opp_name,
@@ -288,12 +292,15 @@ def f_select_biz_opp1(request):
             v_cursor_biz_opp.execute(v_sql_biz_opp)
             v_columns_biz_opp = [v_column[0] for v_column in v_cursor_biz_opp.description]
             v_rows_biz_opp = v_cursor_biz_opp.fetchall()
-            v_data["retrieve_biz_opp"] = [dict(zip(v_columns_biz_opp,row)) for row in v_rows_biz_opp]
-            if not v_data["retrieve_biz_opp"]:
-               v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
+            v_data_biz_opp["retrieve_biz_opp"] = [dict(zip(v_columns_biz_opp,row)) for row in v_rows_biz_opp]
+            v_data.append(v_data_biz_opp)
+            v_square_bracket_data = [v_data]
+            if not v_data_biz_opp:
+               v_additional_info = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
             else:
-               v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
-         return JsonResponse({"data":v_data,"status":v_status},safe=False,json_dumps_params={'ensure_ascii':False})
+               v_additional_info = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
+            v_square_bracket_data.append([v_additional_info])
+         return JsonResponse(v_square_bracket_data,safe=False,json_dumps_params={'ensure_ascii':False})
       except json.JSONDecodeError:
          v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
          v_square_bracket_return = [v_return]
@@ -425,9 +432,3 @@ def f_select_biz_opp2(request):
 
 # def f_insert_biz_opp(request):
 #   if request.method == "POST":
-#
-#
-#
-#
-#
-#

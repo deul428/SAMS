@@ -21,3 +21,6 @@ urlpatterns = [path('login/',f_login,name='login'),
                path('cipher-change/',f_cipher_change,name='cipher-change'),
                path('select-biz-opp1/',f_select_biz_opp1,name='select-biz-opp1'),
                path('select-biz-opp2/',f_select_biz_opp2,name='select-biz-opp2')]
+#
+#
+#

@@ -185,3 +185,4 @@ SESSION_COOKIE_SAMESITE = 'None'  # 크로스-도메인 요청에서도 쿠키 �
 SESSION_COOKIE_SECURE = True  # 로컬 개발 환경에서 HTTP 사용 시 False
 
 CORS_ALLOW_CREDENTIALS = True
+#

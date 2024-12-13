@@ -170,11 +170,11 @@ def f_select_biz_opp1(request):
    #logging.debug(f"f_select_biz_opp1()에서의 user_name : {v_user_name}")
    #logging.debug(f"*******************************************")
 
-   # if 'v_global_data' not in request.session:
-   #    v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
-   #    v_square_bracket_return = [v_return]
-   #    return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
-   # else:
+    if 'v_global_data' not in request.session:
+       v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
+       v_square_bracket_return = [v_return]
+       return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
+    else:
       try:
          v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp":[]}
          v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE SUBSTRING(dept_id FROM 4 FOR 4) = '0000' ORDER BY dept_id"""

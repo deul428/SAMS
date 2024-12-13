@@ -95,6 +95,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
         console.log(e.target.value);
         setSelectFromPro(e.target.value);
         setFilteredToPro(data[2].filter((item) => parseInt(item.small_classi_code) > parseInt(e.target.value)));
+        setSelectToPro('');
     }
     const handleToChange = (e) => {
         console.log(e.target.value);

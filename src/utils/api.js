@@ -8,12 +8,13 @@ import axios from 'axios';
 const apiUrl = axios.create({
     baseURL: 'http://127.0.0.1:8000/',
     // baseURL: 'http://10.0.60.201:8000/',
-    // baseURL:'http://192.10.100.100:8000/',
+    // baseURL: 'http://192.10.100.100:8000/',
+    credentials: "include", // 세션 쿠키 포함
     headers: {
         'Content-Type': 'application/json',
     },
-    credentials: "include", // 세션 쿠키 포함
 })
+console.log(apiUrl.credentials);
 
 /*- HTTP method
 1. get
@@ -37,6 +38,7 @@ const api = {
                 // return;
             };
             const response = await apiUrl({ method, url, data });
+            
             if (method !== 'get') {
                 console.log(`API Endpoint: ${url}\nData: ${JSON.stringify(data, null, 2)}`);
             } else {
@@ -45,6 +47,17 @@ const api = {
             console.log('api 부 끝');
             return response.data;
         } catch (error) {
+            const status = error.response?.STATUS;
+            if (status === 401) { // 인증 실패
+                alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+                // 로그아웃 처리 또는 리다이렉트
+                window.location.href = '/login'; // 로그인 페이지로 이동
+            } else if (status === 403) { // 권한 부족
+                alert("권한이 없습니다.");
+            } else if (status === 500) {
+                alert("서버를 받아오지 못했습니다.");
+            }
+
             const errMsg = error.response?.data?.message || error.message;
             console.error(`${method} ${url} Error! ${errMsg}`);
             throw new Error(errMsg);

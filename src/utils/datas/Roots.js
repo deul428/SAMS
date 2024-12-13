@@ -34,7 +34,7 @@ const roots = [
         Cell: ({value}) => v_handlingNum(value) },
         { Header: '매출 이익', accessor: 'sale_profit', 
         Cell: ({value}) => v_handlingNum(value) },
-        { Header: '사업 구분', accessor: 'biz_section2_name' },
+        { Header: '사업 구분', accessor: 'biz_section1_name' },
         { Header: '주요 제품', accessor: 'principal_product2_name' },
         { Header: '활동 이력', accessor: 'history'},
     ]

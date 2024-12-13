@@ -119,6 +119,8 @@ const AuthLogin = () => {
                             window.confirm('최초 로그인 시 비밀번호를 변경해야 합니다. 지금 변경하시겠습니까?', setIsBeginningLogin(true)); 
                         } else {
                             // 이전 경로로 리디렉션
+                            // const session = localStorage.setItem("sessionid", response.data.sessionid);
+                            // console.log("session: ", response.data.sessionid)
                             const from = location.state?.from?.pathname || `/${roots[8].url}`;
                             setRedirect(from);
                             return response;

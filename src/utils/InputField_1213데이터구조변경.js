@@ -19,6 +19,8 @@ const InputField = ({ v_componentName, v_propsData }) => {
         a_team: '',
         a_commonness_pro: '',
         a_username: '',
+        /* a_user_id: '',
+        a_cipher: '', */
     }
     const [input, setInput] = useState(p_search);
 
@@ -31,15 +33,17 @@ const InputField = ({ v_componentName, v_propsData }) => {
         }));
     } 
     // ================= data 핸들링: bizopp에서 필요한 데이터 배열만 뽑아 오기 ================= 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([ ]);
     // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
     useEffect(() => {
-        if (!v_propsData || Object.keys(v_propsData).length === 0) {
-            console.warn("v_propsData가 비어 있습니다.");
-            return;
+        if (!v_propsData || v_propsData.length === 0 || !v_propsData[0][3]) {
+        console.warn("v_propsData가 비어 있습니다.");
+        return;
         }
-        const { retrieve_biz_opp, ...filter } = v_propsData.data;
-        setData(filter); // 상태 업데이트
+        const updatedData = v_propsData[0].slice(0, -1);
+        console.log("업데이트된 데이터:", updatedData);
+
+        setData(updatedData); // 상태 업데이트
     }, [v_propsData]);
 
 
@@ -47,19 +51,23 @@ const InputField = ({ v_componentName, v_propsData }) => {
     // --------- 본부별 팀 매핑 --------- 
     const [depts, setDepts] = useState([]);
     const [teams, setTeams] = useState([]);
+
     const [teamByDept, setTeamByDept] = useState({});
 
-    const teamLinkedDept = () => {
-        setDepts(data.search_headquarters);
-        setTeams(data.search_team);
+    function teamLinkedDept () {
+        // 구조분해 할당
+        const [dataOfDept, dataOfTeam] = data;
+                
+        setDepts(dataOfDept);
+        setTeams(dataOfTeam);
 
         // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
-        const mapping = data.search_team.reduce((acc, items) => {
+        const mapping = dataOfTeam.reduce((acc, items) => {
             const { high_dept_id } = items;
             if (!acc[high_dept_id]) {
                 acc[high_dept_id] = [];
             }
-        acc[high_dept_id].push(items);
+            acc[high_dept_id].push(items);
             return acc;
         }, {});
 
@@ -68,7 +76,6 @@ const InputField = ({ v_componentName, v_propsData }) => {
 
     const [selectDept, setSelectDept] = useState('');
     const [selectTeam, setSelectTeam] = useState([]);
-
     // 본부 선택 핸들러
     const handlingDept = (e) => {
         setSelectDept(e.target.value);
@@ -78,22 +85,46 @@ const InputField = ({ v_componentName, v_propsData }) => {
 
     
     // --------- From-to 매핑 --------- 
+    const [fromPro, setFromPro] = useState('');
+    const [toPro, setToPro] = useState('');
     const [selectFromPro, setSelectFromPro] = useState([]);
     const [selectToPro, setSelectToPro] = useState([]);
+
     const [filteredToPro, setFilteredToPro] = useState([]);
     const handleFromChange = (e) => {
+        console.log(e.target.value);
         setSelectFromPro(e.target.value);
-        setFilteredToPro(data.search_commonness_pro.filter((item) => parseInt(item.small_classi_code) > parseInt(e.target.value)));
+        setFilteredToPro(data[2].filter((item) => parseInt(item.small_classi_code) > parseInt(e.target.value)));
         setSelectToPro('');
     }
     const handleToChange = (e) => {
         console.log(e.target.value);
         setSelectToPro(e.target.value);
     }
+/*     // "from" 선택 핸들러
+    const handleFromChange = (e) => {
+        if (e) {
+            console.log(e);
+            const selectedValue = e.target.value; 
+            setFrom(selectedValue);
+
+            // "to" 값이 "from" 값보다 작거나 같다면 초기화
+            if (to && selectedValue >= to) {
+                setTo("");
+            }
+        }
+        
+    };
+
+    // "to" 선택 핸들러
+    const handleToChange = (e) => {
+        setTo(e.target.value); // 숫자로 변환
+    };// "to" 박스에 표시할 옵션 필터링
+    // const filteredToOptions = options.filter((option) => option > from); */
     // --------- From-to 매핑 끝 --------- 
 
     useEffect(() => {
-        if (Object.keys(data).length > 0) {
+        if (v_propsData.length > 0) {
             if (v_componentName === `bizOpp`) {
                 teamLinkedDept(); 
             }
@@ -116,14 +147,13 @@ const InputField = ({ v_componentName, v_propsData }) => {
     // UI 업데이트
     useEffect(() => {
         const updateUI = () => {
-            /* if (!currentPath || currentPath === '/login') {
+            if (!currentPath || currentPath === '/login') {
                 setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
                 return;
-            } */
-            switch (v_componentName) {
+            }
+            switch (currentPath) {
                 // biz-opp/
-                case `bizOpp`:
-                    console.log("input Field Data: ", data);
+                case `/${roots[4].depth1}/`:
                     setVHandlingHtml(
                         <>
                         <div className='inputField'>
@@ -155,9 +185,9 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                         <div>
                                             <Form.Select size='sm' aria-label='selectBox' className='pro_1' id="fromSelect" value={selectFromPro} onChange={handleFromChange}>
                                                 <option>선택</option>
-                                                {(Object.keys(data).length > 0 ? 
+                                                {(data.length > 0 ? 
                                                     (
-                                                        data.search_commonness_pro.map((e) => {
+                                                        data[2].map((e) => {
                                                             return <option value={e.small_classi_code}>{e.small_classi_name}</option>
                                                         })
                                                     )
@@ -168,7 +198,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                             <span style={{margin: '0 10px'}}>~</span>
                                             <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id="fromSelect" value={selectToPro} onChange={handleToChange}>
                                                 <option>선택</option>
-                                                {(Object.keys(data).length > 0 ? 
+                                                {(data.length > 0 ? 
                                                     (
                                                         filteredToPro.map((e) => {
                                                             return <option value={e.small_classi_code}>{e.small_classi_name}</option>
@@ -192,7 +222,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                         <Form.Label className="">본부</Form.Label>
                                         <Form.Select id="select1" onChange={handlingDept} value={selectDept} size='sm' aria-label='selectBox'>
                                             <option value="">-- 본부를 선택하세요 --</option>
-                                            {(Object.keys(data).length > 0 ? 
+                                            {(data.length > 0 ? 
                                             (
                                                 depts.map((dept) => (
                                                 <option key={dept.dept_id} value={dept.dept_id}>
@@ -203,6 +233,22 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                             :
                                             ('')
                                             )}
+                                            {/* {(data.length > 0 ? 
+                                                (
+                                                    data[0].map((e) => {
+                                                        return <option value={e.dept_id}>{e.dept_name}</option>
+                                                    })
+                                                )
+                                                :
+                                                (console.log('data Loading'))
+                                            )} */}
+                                            {/* <option value="1000000">1000000</option>
+                                            <option value="1100000">1100000</option>
+                                            <option value="1110000">1110000</option>
+                                            <option value="1120000">1120000</option>
+                                            <option value="1130000">1130000</option>
+                                            <option value="1140000">1140000</option>
+                                            <option value="1150000">1150000</option> */}
                                         </Form.Select>
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
@@ -226,7 +272,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                         </>
                     );
                     break;
-                /* case `activity`:
+                /* case `/${roots[5].depth1}/`:
                     setVHandlingHtml(
                         <>
                             <div className='inputField'>
@@ -279,14 +325,14 @@ const InputField = ({ v_componentName, v_propsData }) => {
                         </>
                     );
                     break;
-                    */
+                     */
                 default:
                     setVHandlingHtml(<h1>안녕하세요 InputField.js 작업 중입니다.</h1>);
             }
         };
 
         updateUI();
-    }, [/* currentPath,  */data, depts, selectTeam, selectFromPro, selectToPro]);
+    }, [currentPath, data, depts, selectTeam, selectFromPro, selectToPro]);
 
     return (
         <div id='search' className='wrap'>

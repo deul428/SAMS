@@ -11,8 +11,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
   const openModal = () => {console.log(showModal); setShowModal(true)};
   const closeModal = () => setShowModal(false);
 
-  const [data, setData] = useState([ ]);
-
+  const [data, setData] = useState([]);
 
 
   // 테이블 헤더 키 값 갖고 오기
@@ -37,14 +36,11 @@ function DynamicTable({ v_componentName, v_propsData }) {
 
   // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
   useEffect(() => {
-    if (!v_propsData || v_propsData.length === 0 || !v_propsData[0][3]) {
+    if (!v_propsData || Object.keys(v_propsData).length === 0) {
       console.warn("v_propsData가 비어 있습니다.");
       return;
     }
-    const updatedData = v_propsData[0][3];
-    console.log("업데이트된 데이터:", updatedData);
-
-    setData(updatedData); // 상태 업데이트
+    setData(v_propsData.data.retrieve_biz_opp);
   }, [v_propsData]);
 
   useEffect(() => {
@@ -103,7 +99,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
           setVHandlingHtml (htmlContent);
           break;
         case `bizOppHistory`: 
-          console.log(v_propsData[0][3]);
+          console.log(v_propsData.data.retrieve_biz_opp);
           // v_propsData[0][3].map((e, index) => {
           //   console.log("==============================", v_propsData[0][3][index], v_propsData[0][3][index-1]);
           //   if (index !== 0) {
@@ -120,10 +116,10 @@ function DynamicTable({ v_componentName, v_propsData }) {
           //   }
           //   return e;
           // })
-          if (v_propsData[0][3].length > 1) {
-            for (let i = 1; i < v_propsData[0][3].length; i++) {
-              const prevObject = v_propsData[0][3][i - 1];
-              const currentObject = v_propsData[0][3][i];
+          if (v_propsData.data.retrieve_biz_opp.length > 1) {
+            for (let i = 1; i < v_propsData.data.retrieve_biz_opp.length; i++) {
+              const prevObject = v_propsData.data.retrieve_biz_opp[i - 1];
+              const currentObject = v_propsData.data.retrieve_biz_opp[i];
       
               Object.keys(currentObject).forEach((key) => {
                 if (prevObject[key] !== currentObject[key]) {

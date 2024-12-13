@@ -19,7 +19,6 @@ const BizOpp = () => {
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
     const endpoint = roots[4].endpoint;
-    console.log("bizOpp data: ======================\n", data);
 
     // const [content, setContent] = useState(false);
     /*-
@@ -160,7 +159,7 @@ const BizOpp = () => {
             <h2>사업 (기회) 조회</h2>
             <InputField v_componentName={'bizOpp'} v_propsData={data}/>
             <div className='wrap' id='bizOpp'>
-                <InputFieldDetail show={showModal} onHide={closeModal} />
+                <InputFieldDetail show={showModal} onHide={closeModal}/*  v_componentName={'bizOppHistory'} v_propsData={data} *//>
                 <div className='dataPostArea'>
                     <div className='btnArea d-flex justify-content-end'>
                         <Button variant='success' className='float-right' onClick={openModal}>사업 (기회) 등록</Button>
@@ -169,12 +168,11 @@ const BizOpp = () => {
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   
-                        // ('')
                         (data.length === 0 ? 
                             (<p>데이터를 불러오는 중입니다...</p>) : 
                             (<DynamicTable v_componentName={'bizOpp'} v_propsData={data} />)
+                            // ('')
                         )
-                        // (<DynamicTable v_componentName={'bizOpp'} v_propsData={data}/>)
                     }
                 </div>
             </div>

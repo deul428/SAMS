@@ -6,15 +6,16 @@ import axios from 'axios';
 
 // axios 인스턴스 생성
 const apiUrl = axios.create({
-    baseURL: 'http://127.0.0.1:8000/',
-    // baseURL: 'http://10.0.60.201:8000/',
+    // baseURL: 'http://127.0.0.1:8000/',
+    baseURL: 'http://10.0.60.201:8000/',
     // baseURL: 'http://192.10.100.100:8000/',
-    credentials: "include", // 세션 쿠키 포함
+    // credentials: "include", // 세션 쿠키 포함
+    // withCredentials: true, 
     headers: {
         'Content-Type': 'application/json',
     },
 })
-console.log(apiUrl.credentials);
+
 
 /*- HTTP method
 1. get
@@ -38,6 +39,10 @@ const api = {
                 // return;
             };
             const response = await apiUrl({ method, url, data });
+            const cookies = document.cookie;
+            // const test = response.set_cookie('csrftoken', 'your_token_value', secure=True, httponly=True, samesite='Lax');
+
+            // console.log(cookies, test);
             
             if (method !== 'get') {
                 console.log(`API Endpoint: ${url}\nData: ${JSON.stringify(data, null, 2)}`);

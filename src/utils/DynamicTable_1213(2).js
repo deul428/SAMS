@@ -37,14 +37,27 @@ function DynamicTable({ v_componentName, v_propsData }) {
 
   // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
   useEffect(() => {
-    if (!v_propsData || v_propsData.length === 0 || !v_propsData[0][3]) {
-      console.warn("v_propsData가 비어 있습니다.");
-      return;
-    }
-    const updatedData = v_propsData[0][3];
+    console.log(v_propsData.data.retrieve_biz_opp);
+    const filteredData = Object.fromEntries(
+      Object.entries(v_propsData.data).filter(([key, value]) => key.includes("search"))
+    );
+    console.log("filteredData: ", filteredData);
+    // if (!v_propsData || v_propsData.length === 0 || !v_propsData[0][key]) {
+      // console.warn("v_propsData가 비어 있습니다.");
+      // return;
+    // }
+    //  // v_propsData[0][1]이 객체이고, 그 안에 'retrieve_biz_opp'가 있는지 확인
+    // if (v_propsData[0][3] && v_propsData[0][3][key]) {
+    //   const updatedData = v_propsData[0][3][key];
+    //   console.log("업데이트된 데이터:", updatedData);
+    //   setData(updatedData); // 상태 업데이트
+    // } else {
+    //   console.warn("retrieve_biz_opp 키가 없습니다.");
+    // }
+    /* const updatedData = v_propsData[data][key];
     console.log("업데이트된 데이터:", updatedData);
 
-    setData(updatedData); // 상태 업데이트
+    setData(updatedData); // 상태 업데이트 */
   }, [v_propsData]);
 
   useEffect(() => {

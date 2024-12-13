@@ -7,8 +7,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 from pathlib import Path
-
 from django.conf.global_settings import SESSION_COOKIE_HTTPONLY,SESSION_COOKIE_SECURE
+
 
 #cci10000(2024-12-12)
 #from django.conf.global_settings import SESSION_COOKIE_AGE,SESSION_ENGINE
@@ -122,7 +122,8 @@ DATABASES = {"default": {"ENGINE":"django.db.backends.postgresql",
                          "NAME":"ajict_bms_db",
                          "USER":"ajict_bms_user",
                          "PASSWORD":"ajictcci4",
-                         "HOST":"localhost",
+                         #"HOST":"localhost",
+                         "HOST":"10.0.60.201",
                          "PORT":"5432",
                          "CONN_MAX_AGE":6000}}
 
@@ -175,7 +176,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 #CACHE = {'default':{'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
 #                    'LOCATION':'unique-sessions'}}
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = False
 

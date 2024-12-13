@@ -123,35 +123,35 @@ def f_cipher_change(request):
       v_square_bracket_return = [v_return]
       return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
    #else:
-   if request.method == 'POST':
-      v_body = json.loads(request.body)
-      v_old_cipher = v_body.get('a_old_cipher')
-      v_new_cipher = v_body.get('a_new_cipher')
-#         v_old_cipher = '1234'
-#         v_new_cipher = '12345'
-      v_global_data = request.session.get('v_global_data',{})
-      v_user_id = v_global_data[0].get('user_id')
-      if v_old_cipher == v_new_cipher:
-         v_return = {"STATUS":"FAIL","MESSAGE":"이전 비밀번호와 같습니다. 다르게 설정해주십시오."}
-         return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
-      if len(v_new_cipher) < 5:
-         v_return = {"STATUS":"FAIL","MESSAGE":"비밀번호는 최소 5자리 이상이어야 합니다."}
-         return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
-      try:
-         with transaction.atomic():
-            v_sql = """UPDATE ajict_bms_schema.aj_user SET cipher = %s,beginning_login_tf = FALSE WHERE user_id = %s"""
-            v_param=[]
-            v_param.append(v_new_cipher)
-            v_param.append(v_user_id)
-            with connection.cursor() as v_cursor:
-               v_cursor.execute(v_sql,v_param)
-               v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
-               v_square_bracket_return = [v_return]
-               return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
-      except Exception as E:
-         v_return = {'STATUS':'FAIL','MESSAGE':'System의 문제로 인해 비밀번호를 변경하지 못했습니다.','ERROR':str(E)}
-         v_square_bracket_return = [v_return]
-         return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
+   #if request.method == 'POST':
+   #   v_body = json.loads(request.body)
+   #   v_old_cipher = v_body.get('a_old_cipher')
+   #   v_new_cipher = v_body.get('a_new_cipher')
+   v_old_cipher = '1234'
+   v_new_cipher = '12345'
+   v_global_data = request.session.get('v_global_data',{})
+   v_user_id = v_global_data[0].get('user_id')
+   if v_old_cipher == v_new_cipher:
+      v_return = {"STATUS":"FAIL","MESSAGE":"이전 비밀번호와 같습니다. 다르게 설정해주십시오."}
+      return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
+   if len(v_new_cipher) < 5:
+      v_return = {"STATUS":"FAIL","MESSAGE":"비밀번호는 최소 5자리 이상이어야 합니다."}
+      return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
+   try:
+      with transaction.atomic():
+         v_sql = """UPDATE ajict_bms_schema.aj_user SET cipher = %s,beginning_login_tf = FALSE WHERE user_id = %s"""
+         v_param=[]
+         v_param.append(v_new_cipher)
+         v_param.append(v_user_id)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql,v_param)
+            v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
+            v_square_bracket_return = [v_return]
+            return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
+   except Exception as E:
+      v_return = {'STATUS':'FAIL','MESSAGE':'System의 문제로 인해 비밀번호를 변경하지 못했습니다.','ERROR':str(E)}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
 def f_logout(request):
    logout(request)
    v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 했습니다.'}

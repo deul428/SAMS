@@ -170,15 +170,15 @@ SESSION_COOKIE_AGE = 172800
 
 
 #cci10000(2024-12-12, 2024-12-13)
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+#SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
-#SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
-#SESSION_COOKIE_HTTPONLY = True
-#SESSION_COOKIE_SECURE = False
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False
 
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-CACHE = {'default':{'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
-                    'LOCATION':'unique-sessions'}}
+#CACHE = {'default':{'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
+#                    'LOCATION':'unique-sessions'}}
 
-SESSION_COOKIE_NAME = 'sessionid'
+#SESSION_COOKIE_NAME = 'sessionid'

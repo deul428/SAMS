@@ -180,3 +180,5 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CACHE = {'default':{'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
                     'LOCATION':'unique-sessions'}}
+
+SESSION_COOKIE_NAME = 'sessionid'

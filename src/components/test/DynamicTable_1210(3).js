@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useTable, usePagination } from 'react-table';
-import { apiMethods } from './api'; // API 호출 메서드
-import roots from './datas/Roots';
+import { apiMethods } from '../../utils/api'; // API 호출 메서드
+import roots from '../../utils/datas/Roots';
 import { Table, Button } from 'react-bootstrap';
 import '../styles/_table.scss'; // 위에서 작성한 CSS를 임포트
-import BizOppHistory from '../components/BizOppHistory'; 
+import BizOppHistory from '../BizOppHistory'; 
 function DynamicTable({ v_componentName, v_propsData }) {
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {console.log(showModal); setShowModal(true)};

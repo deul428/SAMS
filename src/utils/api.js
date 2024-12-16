@@ -6,10 +6,10 @@ import axios from 'axios';
 
 // axios 인스턴스 생성
 const apiUrl = axios.create({
-    // baseURL: 'http://127.0.0.1:8000/',
-    baseURL: 'http://10.0.60.201:8000/',
-    // baseURL: 'http://192.10.100.100:8000/',
-    // credentials: "include", // 세션 쿠키 포함
+    baseURL: 'http://127.0.0.1:8000/', //VPN WAS
+    // baseURL: 'http://10.0.60.62:8000/',
+    // baseURL: 'https://10.0.60.201:8000/',
+    credentials: "include", // 세션 쿠키 포함
     // withCredentials: true, 
     headers: {
         'Content-Type': 'application/json',

@@ -1,10 +1,10 @@
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLocation } from '../redux/reducers/LocationSlice';
-import { apiMethods } from './api';
+import { setLocation } from '../../redux/reducers/LocationSlice';
+import { apiMethods } from '../../utils/api';
 
-import roots from './datas/Roots';
+import roots from '../../utils/datas/Roots';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
 

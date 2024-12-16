@@ -35,7 +35,6 @@ const AuthLogin = () => {
 
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
-    
         // input 업데이트
         setInput((prevInput) => ({
             ...prevInput,
@@ -136,7 +135,6 @@ const AuthLogin = () => {
                     return;
                 }
             }
-            
         } catch (error) {
             console.log('Error during login:', error);
             alert('로그인 중 오류가 발생했습니다. 관리자에게 문의하세요.', error);

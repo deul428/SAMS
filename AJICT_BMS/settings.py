@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 
-# cci10000(2024-10-23, 2024-11-21)
+# cci10000(2024-10-23, 2024-11-21, 2024-12-16)
 # INSTALLED_APPS = [
 #    "django.contrib.admin",
 #    "django.contrib.auth",
@@ -50,7 +50,8 @@ INSTALLED_APPS = ["django.contrib.admin",
                   "django.contrib.staticfiles",
                   "rest_framework",
                   "corsheaders",
-                  "AJICT_BMS"]
+                  "AJICT_BMS",
+                  "django_extensions"]
 
 
 # cci10000(2024-11-21, 2024-11-29)

@@ -1,11 +1,10 @@
-import logging
 import json
-from django.contrib.auth import logout
-from django.core.serializers.json import DjangoJSONEncoder
-from django.db import transaction
-from django.db import connection
-from django.http import HttpResponse,JsonResponse
+import logging
 from datetime import datetime
+from django.contrib.auth import logout
+from django.db import connection
+from django.db import transaction
+from django.http import JsonResponse
 logging.basicConfig(level=logging.DEBUG)
 def f_login(request):
    request.session.flush()
@@ -134,10 +133,9 @@ def f_cipher_change(request):
       #v_old_cipher = '1234'
       #v_new_cipher = '12345'
          v_global_data = request.session.get('v_global_data',{})
-
-      #v_user_id = v_global_data[0].get('user_id')
+         v_user_id = v_global_data[0].get('user_id')
          logging.debug(f"*******************************************")
-         logging.debug(f"f_cipher_change()에서의 user_name : {v_global_data}")
+         logging.debug(f"f_cipher_change()에서의 v_global_data : {v_global_data}")
          logging.debug(f"*******************************************")
 
       if v_old_cipher == v_new_cipher:

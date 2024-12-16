@@ -133,8 +133,13 @@ def f_cipher_change(request):
          v_new_cipher = v_body.get('a_new_cipher')
       #v_old_cipher = '1234'
       #v_new_cipher = '12345'
-      v_global_data = request.session.get('v_global_data',{})
-      v_user_id = v_global_data[0].get('user_id')
+         v_global_data = request.session.get('v_global_data',{})
+
+      #v_user_id = v_global_data[0].get('user_id')
+         logging.debug(f"*******************************************")
+         logging.debug(f"f_cipher_change()에서의 user_name : {v_global_data}")
+         logging.debug(f"*******************************************")
+
       if v_old_cipher == v_new_cipher:
          v_return = {"STATUS":"FAIL","MESSAGE":"이전 비밀번호와 같습니다. 다르게 설정해주십시오."}
          return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
@@ -301,19 +306,18 @@ def f_select_biz_opp1(request):
 def f_select_biz_opp2(request):
    if request.method == "POST":
       try:
+         v_contract_date_from = request.POST.get('a_contract_date_from')
+         v_contract_date_to = request.POST.get('a_contract_date_to')
+         v_sale_date_from = request.POST.get('a_sale_date_from')
+         v_sale_date_to = request.POST.get('a_sale_date_to')
+         v_headquarters_dept_id = request.POST.get('a_headquarters_dept_id')
+         v_team_dept_id = request.POST.get('a_dept_id')
+         v_user_name = request.POST.get('a_user_name')
          v_progress_rate_code_from = request.POST.get('a_progress_rate_code_from')
          v_progress_rate_code_to = request.POST.get('a_progress_rate_code_to')
-      #v_user_id = request.POST.get('a_user_id')
-      #v_cipher = request.POST.get('a_cipher')
-      # v_progress_rate_from = request.POST.get('a_progress_rate_from')
-      # v_progress_rate_to = request.POST.get('a_progress_rate_to')
-      # v_contract_date_from = request.POST.get('a_contract_date_from')
-      # v_contract_date_to = request.POST.get('a_contract_date_to')
-      # v_sale_date_from = request.POST.get('a_sale_date_from')
-      # v_sale_date_to = request.POST.get('a_sale_date_to')
-      # v_essential_achievement_tf = request.POST.get('a_essential_achievement_tf')
-#   v_progress_rate_code_from = '0001'
-#   v_progress_rate_code_to = '0006'
+         v_essential_achievement_tf = request.POST.get('a_essential_achievement_tf')
+         v_global_data = request.session.get('v_global_data',{})
+         v_user_id = v_global_data[0].get('user_name')
          v_sql = """SELECT biz_opp_id,
                            biz_opp_name,
                            user_id,

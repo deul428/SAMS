@@ -8,8 +8,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 from pathlib import Path
 
-from django.conf.global_settings import SESSION_COOKIE_HTTPONLY,SESSION_COOKIE_SECURE
-
 #cci10000(2024-12-12)
 #from django.conf.global_settings import SESSION_COOKIE_AGE,SESSION_ENGINE
 
@@ -24,10 +22,13 @@ SECRET_KEY = "django-insecure-gab36_^a*v$c(!e%_l(%sq=c6xvnq0$%$n75fo8=srep*!_@4r
 DEBUG = True
 
 
-# cci10000(2024-11-21)
+# cci10000(2024-11-21, 2024-12-17)
 # ALLOWED_HOSTS = []
 
-ALLOWED_HOSTS = ["*"]
+#ALLOWED_HOSTS = ["*"]
+
+ALLOWED_HOSTS = ["10.0.60.201","localhost","127.0.0.1","*"]
+
 
 # Application definition
 
@@ -172,19 +173,15 @@ SESSION_COOKIE_AGE = 172800
 
 
 #cci10000(2024-12-12, 2024-12-13)
-#SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 #CACHE = {'default':{'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
 #                    'LOCATION':'unique-sessions'}}
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # SESSION_COOKIE_HTTPONLY = True
-# SESSION_COOKIE_SAMESITE = 'None'
-# SESSION_COOKIE_SECURE = False
 
 
+#cci10000(2024-12-xx)
 SESSION_COOKIE_SAMESITE = 'None'  # 크로스-도메인 요청에서도 쿠키 전송
 SESSION_COOKIE_SECURE = True  # 로컬 개발 환경에서 HTTP 사용 시 False
-
 CORS_ALLOW_CREDENTIALS = True
-#

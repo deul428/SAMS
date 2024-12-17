@@ -15,8 +15,6 @@ const InputField = ({ v_componentName, v_propsData }) => {
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
     const [endpoint, setEndpoint] = useState(null);
 
-
-
     // ================= POST ================= 
     // post용 객체, input field value 저장해서 이후 서버로 송신
     const p_search = {
@@ -24,27 +22,36 @@ const InputField = ({ v_componentName, v_propsData }) => {
         a_contract_date_to: '',
         a_sale_date_from: '',
         a_sale_date_to: '',
-        a_commonness_pro_from: '',
-        a_commonness_pro_to: '',
+        a_progress_rate_code_from: '',
+        a_progress_rate_code_to: '',
         a_essential_achievement_tf: false,
-        a_sql_headquarters: '',
-        a_team: '',
-        a_username: '',
+        a_headquarters_dept_id: '',
+        a_dept_id: '',
+        a_user_name: '',
     }
     const [input, setInput] = useState(p_search);
 
     // input field 값 input에 저장
     const f_handlingInput = (e) => {
-        const { name, value } = e.target;
         if (e.target.name === 'a_essential_achievement_tf') {
             e.target.checked ? e.target.value = true : e.target.value = false;
         }
+        const { name, value } = e.target;
+        console.log(name);
+        /* // input 객체의 키 값과 name 이름이 같음.
+        console.log(Object.keys(p_search));
+        setInput(input.name = value); */
         // input 업데이트
-        setInput((prevInput) => ({
+        setInput((prevInput) => {
+            const newState = { ...prevInput, [name]: value }; // 새로운 상태 생성
+            console.log("업데이트된 상태:", newState); // 상태 업데이트 로그 확인
+            return newState;
+        });
+        /* ({
             ...prevInput,
-            [name]: value.trim(),
-        }));
-        console.log({ name, value }, input);
+            [name]: value.trim(), //해당 name의 value 업데이트 .trim(): 문자열 앞뒤 공백 제거
+        })); */
+        // console.log("f_handlingInput: ", { name, value }, "\n\n", input);
     }     
     
     const f_submitLoginData = async (method, endpoint, input = null, e) => {
@@ -76,15 +83,15 @@ const InputField = ({ v_componentName, v_propsData }) => {
         }
         switch(v_componentName) {
             case `bizOpp`: 
-                setEndpoint(roots[4].endpoint);
                 const { retrieve_biz_opp, ...v_filter } = v_propsData.data;
                 setData(v_filter); // 상태 업데이트
+                setEndpoint(roots[4].endpoint);
                 break;
             case `activity`: 
                 
                 break;
             default:
-                console.log(v_componentName);
+                // console.log(v_componentName);
                 break;
         }
     }, [v_propsData]);
@@ -119,10 +126,26 @@ const InputField = ({ v_componentName, v_propsData }) => {
 
     // 본부 선택 핸들러
     const f_handlingDept = (e) => {
-        setVSelectDept(e.target.value);
-        setVSelectTeam(v_teamByDept[e.target.value] || []);
+        if (e.target.name === 'a_headquarters_dept_id') {
+            setVSelectDept(e.target.value);
+            setVSelectTeam(v_teamByDept[e.target.value] || []);
+        }
         f_handlingInput(e);
     };
+    const f_handlingDeptTest = (e) => {
+        const { name, value } = e.target;
+
+        if (name === 'a_headquarters_dept_id') {
+            setVSelectDept(value);
+            setVSelectTeam(v_teamByDept[value] || []);
+            // 본부 값만 업데이트
+            f_handlingInput(e);
+        } else if (name === 'a_dept_id') {
+            f_handlingInput(e);
+        }
+    };
+
+    
     // --------- 본부별 팀 매핑 끝 --------- 
 
     
@@ -138,7 +161,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
         f_handlingInput(e);
     }
     const f_handleToChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setVSelectProTo(e.target.value);
         f_handlingInput(e);
     }
@@ -170,7 +193,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                     f_teamLinkedDept(); 
                     break;
                 default: 
-                    console.log(v_componentName);
+                    // console.log(v_componentName);
                     break;
             }
         }
@@ -194,19 +217,18 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>계약 일자</Form.Label>
                                         <div>
-                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
+                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
                                             />
                                             <span style={{margin: '0 10px'}}>~</span>
-                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to} onChange={f_handlingInput}/>
-                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </div>
                                     </Col>
                                     <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>매출 일자</Form.Label>
                                         <div>
-                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                             <span style={{margin: '0 10px'}}>~</span>
-                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
                                         </div>
                                     </Col>
                                     <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
@@ -217,12 +239,12 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>진행률</Form.Label>
                                         <div>
-                                            <Form.Select size='sm' aria-label='selectBox' className='pro_1' id='fromSelect' value={input.a_commonness_pro_from} name='a_commonness_pro_from' onChange={f_handleFromChange}>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_1' id='fromSelect' value={input.a_progress_rate_code_from} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
                                                 <option>선택</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                     (
                                                         data.search_commonness_pro.map((e) => {
-                                                            return <option value={e.small_classi_code}>{e.small_classi_name}</option>
+                                                            return <option key={e.key} value={e.small_classi_code}>{e.small_classi_name}</option>
                                                         })
                                                     )
                                                     :
@@ -230,12 +252,12 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                                 )}
                                             </Form.Select>
                                             <span style={{margin: '0 10px'}}>~</span>
-                                            <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id='fromSelect' value={input.a_commonness_pro_to} name='a_commonness_pro_to' onChange={f_handleToChange}>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id='fromSelect' value={input.a_progress_rate_code_to} name='a_progress_rate_code_to' onChange={f_handleToChange}>
                                                 <option>선택</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                     (
                                                         v_filteredProTo.map((e) => {
-                                                            return <option value={e.small_classi_code}>{e.small_classi_name}</option>
+                                                            return <option key={e.key} value={e.small_classi_code}>{e.small_classi_name}</option>
                                                         })
                                                     )
                                                     :
@@ -254,8 +276,8 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                 <Row className='d-flex justify-content-between'>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>본부</Form.Label>
-                                        <Form.Select id='select1' size='sm' aria-label='selectBox' value={input.a_sql_headquarters} name='a_sql_headquarters' onChange={f_handlingDept}>
-                                            <option value=''>-- 본부를 선택하세요 --</option>
+                                        <Form.Select id='select1' size='sm' aria-label='selectBox' value={input.a_headquarters_dept_id} name='a_headquarters_dept_id' onChange={f_handlingDept}>
+                                            <option>-- 본부를 선택하세요 --</option>
                                             {(Object.keys(data).length > 0 ? 
                                             (
                                                 v_depts.map((dept) => (
@@ -271,8 +293,8 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>팀</Form.Label>
-                                        <Form.Select id='select2' size='sm' disabled={!v_selectTeam.length}  value={input.a_team} name='a_team' onChange={f_handlingDept}>
-                                            <option value=''>-- 팀을 선택하세요 --</option>
+                                        <Form.Select id='select2' size='sm' aria-label='selectBox' /* value={input.a_dept_id} */ name='a_dept_id' onChange={f_handlingDept} disabled={!v_selectTeam.length}>
+                                            <option>-- 팀을 선택하세요 --</option>
                                             {v_selectTeam.map((team) => (
                                                 <option key={team.dept_id} value={team.dept_id}>
                                                     {team.dept_name}
@@ -283,7 +305,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>영업 담당자</Form.Label>
 
-                                        <Form.Control size='sm' type='text' placeholder='담당자명을 입력하세요' id='userName' /* value={input.a_username} */ name='a_username' onChange={f_handlingInput}/>
+                                        <Form.Control size='sm' type='text' placeholder='담당자명을 입력하세요' id='userName' /* value={input.a_user_name} */ name='a_user_name' onChange={f_handlingInput}/>
                                     </Col>
                                 </Row>
                             </div>
@@ -351,7 +373,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
         };
 
         updateUI();
-    }, [/* currentPath,  */data, v_depts, v_selectTeam, v_selectProFrom, v_selectProTo, input]);
+    }, [/* currentPath,  */data, input, v_depts, v_teams, v_selectDept, v_selectTeam, v_teamByDept, v_selectProFrom, v_selectProTo]);
 
     return (
         <div id='search' className='wrap'>

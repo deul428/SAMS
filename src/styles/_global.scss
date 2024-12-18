@@ -40,6 +40,42 @@ h5, button.btn-sm {
 }
 // #1a8ef3
 
+
+// pagination
+.pagination {    
+    margin: 2rem 0 0 0;
+    flex-direction: column;
+    align-items: center;
+    .paginationList {
+        .paginationBtnSet {
+            &.paginationBtnPrev {
+                &.paginationBtnPrevFirst {}
+            }
+            &.paginationBtnNext {
+                &.paginationBtnNextEnd {}
+            }
+    
+        }
+
+    }
+    .paginationControll {
+        span {
+            &.paginationGoToPageText {
+
+            }
+            input {
+                // min-width: 2rem;
+                max-width: 3rem;
+                margin: 0 0.5rem;
+            }
+        }
+        select.paginationSelect {
+
+        }
+
+    }
+}
+
 // global Styles
 body {
     width: $full;
@@ -99,6 +135,5 @@ body {
         
     }
 
-    
 }
 

@@ -76,7 +76,7 @@ const Activity = () => {
     return (
         <>
             <h2>영업 활동 관리</h2>
-            <InputField />
+            <InputField v_componentName={'activity'} v_propsData={data} />
             <div className='wrap'>
                 <div className='dataPostArea'>
                     {/* <InputFieldDetail show={showModal} onHide={closeModal} /> */}
@@ -90,7 +90,11 @@ const Activity = () => {
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   
-                        (<DynamicTable v_componentName={'activity'} v_propsData={data}/>)
+                        (data.length === 0 ? 
+                            (<p>데이터를 불러오는 중입니다...</p>) : 
+                            (<DynamicTable v_componentName={'activity'} v_propsData={data} />)
+                            // ('')
+                        )
                     }
                 </div>
             </div>

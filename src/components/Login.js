@@ -115,7 +115,11 @@ const AuthLogin = () => {
                         await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher }));
 
                         if (response[0][0].beginning_login_tf) {
-                            window.confirm('최초 로그인 시 비밀번호를 변경해야 합니다. 지금 변경하시겠습니까?', setIsBeginningLogin(true)); 
+                            if (window.confirm('최초 로그인 시 비밀번호를 변경해야 합니다. 지금 변경하시겠습니까?')) {
+                                setIsBeginningLogin(true);
+                            } else {
+                                return;
+                            }
                         } else {
                             // 이전 경로로 리디렉션
                             // const session = localStorage.setItem("sessionid", response.data.sessionid);

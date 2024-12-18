@@ -14,7 +14,7 @@ const roots = [
     props: [
         { Header: '사업 일련 번호', accessor: 'biz_opp_id' },
         { Header: '본부', accessor: 'high_dept_name' },
-        { Header: '팀', accessor: 'change_preparation_dept_name' },
+        { Header: '팀', accessor: 'dept_name' },
         { Header: '영업 담당자', accessor: 'user_name' },
         { Header: '판품 번호', accessor: 'sale_item_no' },
         { Header: '사업 (기회) 명', accessor: 'biz_opp_name' },
@@ -34,8 +34,8 @@ const roots = [
         Cell: ({value}) => v_handlingNum(value) },
         { Header: '매출 이익', accessor: 'sale_profit', 
         Cell: ({value}) => v_handlingNum(value) },
-        { Header: '사업 구분', accessor: 'biz_section1_name' },
-        { Header: '주요 제품', accessor: 'principal_product2_name' },
+        { Header: '사업 구분', accessor: 'biz_section2_name' },
+        { Header: '제품 구분', accessor: 'product2_name' },
         { Header: '활동 이력', accessor: 'history'},
     ]
     },

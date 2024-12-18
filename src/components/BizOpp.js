@@ -7,7 +7,6 @@ import InputField from '../utils/InputField.js';
 import DynamicTable from '../utils/DynamicTable.js';
 import { Button } from 'react-bootstrap';
 import BizOppDetail from './BizOppDetail.js';
-
 import roots from '../utils/datas/Roots.js';
 
 import InputFieldDetail from '../utils/InputFieldDetail.js';
@@ -19,7 +18,11 @@ const BizOpp = () => {
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
     const endpoint = roots[4].endpoint;
-
+    
+    const [showModal, setShowModal] = useState(false);
+    const openModal = () => setShowModal(true);
+    const closeModal = () => setShowModal(false);
+    
     // const [content, setContent] = useState(false);
     /*-
     사업 (기회) ID	biz_opp_id
@@ -60,54 +63,55 @@ const BizOpp = () => {
     3. 서버 응답 객체에서 response.data를 추출하고 반환.
     4. get 함수가 response.data를 그대로 반환.
     -*/
-    const p_bizopp = {
+    /* const p_bizopp = {
         biz_opp_id: '',
         biz_opp_name: '',
-        user_id: '',
-        change_preparation_dept_id: '',
-        change_preparation_dept_name: '',
-        last_client_com1_code: '',
-        last_client_com2_code: '',
-        last_client_com1_name: '',
-        last_client_com2_name: '',
-        sale_com1_code: '',
-        sale_com2_code: '',
-        sale_com1_name: '',
-        sale_com2_name: '',
-        contract_date: '',
-        progress1_rate: '',
-        progress2_rate: '',
-        sale_item_no: '',
-        sale_date: '',
-        sale_amt: 0,
-        sale_profit: 0,
-        purchase_date: '',
-        purchase_amt: 0,
         biz_section1_code: '',
         biz_section2_code: '',
         biz_section1_name: '',
         biz_section2_name: '',
+        change_preparation_dept_id: '',
+        change_preparation_dept_name: '',
+        collect_money_date: '',
+        contract_date: '',
+        dept_id: '',
+        dept_name: '',
         essential_achievement_tf: false,
-        product1_code: '',
-        product2_code: '',
+        high_dept_id: '',
+        high_dept_name: '',
+        last_client_com1_code: '',
+        last_client_com2_code: '',
+        last_client_com1_name: '',
+        last_client_com2_name: '',
+        principal_product1_code: '',
+        principal_product2_code: '',
         product1_name: '',
         product2_name: '',
-        dept_id: '',
-        high_dept_id: '',
-        dept_name: '',
-        high_dept_name: '',
+        progress1_rate_code: '',
+        progress1_rate_name: '',
+        progress2_rate_code: '',
+        progress2_rate_name: '',
+        purchase_amt: 0,
+        purchase_date: '',
+        sale_amt: 0,
+        sale_com1_code: '',
+        sale_com1_name: '',
+        sale_com2_code: '',
+        sale_com2_name: '',
+        sale_date: '',
+        sale_item_no: '',
+        sale_profit: 0,
+        user_id: '',
+        user_name: '',
+
         create_user: '',
         create_date: '',
         update_user: null,
         update_date: null,
         delete_user: null,
         delete_date: null,
-    }
+    }    
     const [input, setInput] = useState(p_bizopp);
-
-    const [showModal, setShowModal] = useState(false);
-    const openModal = () => setShowModal(true);
-    const closeModal = () => setShowModal(false);
 
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
@@ -117,6 +121,8 @@ const BizOpp = () => {
             [name]: value,
         });
     }
+ */
+
     const f_handlingData = async (method, endpoint, input = null) => {
         try {
             const supportedMethods = ['get', 'post', 'put', 'patch', 'del'];
@@ -159,12 +165,13 @@ const BizOpp = () => {
             <h2>사업 (기회) 조회</h2>
             <InputField v_componentName={'bizOpp'} v_propsData={data}/>
             <div className='wrap' id='bizOpp'>
-                <InputFieldDetail show={showModal} onHide={closeModal}/*  v_componentName={'bizOppHistory'} v_propsData={data} *//>
                 <div className='dataPostArea'>
                     <div className='btnArea d-flex justify-content-end'>
                         <Button variant='success' className='float-right' onClick={openModal}>사업 (기회) 등록</Button>
                     </div>
                     
+                    {/* <DynamicTabletest v_componentName={'bizOpp'} v_propsData={data}/> */}
+                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data}/>
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   

@@ -8,8 +8,9 @@ import '../styles/_customModal.scss';
 import '../styles/_search.scss';
 import { Modal, Button, Form, Row, Col, ListGroup } from "react-bootstrap";
 
-const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData }) => {
-    // console.log("Modal Props - show:", show, ", onHide:", onHide);
+const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData }) => {
+    // console.log(v_componentName, "Modal Props - show:", show, ", onHide:", onHide);
+    // console.log(v_modalPropsData);
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
@@ -18,9 +19,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData }) => {
 
  
     // // 등록인지 수정인지 나눔 (개발 중)
-    const [isAdded, setIsAdded] = useState(false); 
-/*     if (show) {
-        setIsAdded(true);
+    // const [isAdded, setIsAdded] = useState(false); 
+   /*  if (show || isAdded === false) {
+        console.log('수정입니다');
         return;
     } */
 
@@ -99,7 +100,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData }) => {
             return newState;
         });
     }     
-    const f_submitLoginData = async (method, endpoint, input = null, e) => {
+    const f_submitData = async (method, endpoint, input = null, e) => {
         e.preventDefault(); // submit 방지
         try {
             // 유효값 검사
@@ -112,7 +113,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData }) => {
             return response; */
         } catch (error) {
             console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
-            alert('로그인 중 오류가 발생했습니다. 관리자에게 문의하세요.', error);
+            alert('오류가 발생했습니다. 관리자에게 문의하세요.', error);
         }
     }
     // ================= POST 끝 ================= 
@@ -147,9 +148,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData }) => {
                     setVHandlingHtml(
                         <Modal size='xl' show={show} onHide={onHide} centered>
                             <Modal.Header closeButton>
-                                <Modal.Title className='fs-3'>{
+                                <Modal.Title className='fs-3'>{/* {
                                     show && isAdded ? '사업 (기회) 등록' : '사업 (기회) 수정'
-                                }
+                                } */}
+                                ㅎㅇ
                                 </Modal.Title>
                             </Modal.Header> 
                             <Modal.Body>
@@ -300,7 +302,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData }) => {
                                 </div>
                             </Modal.Body>
                             <Modal.Footer className="btnArea justify-content-center">
-                                <Button variant="primary">등록</Button>
+                                <Button variant="primary" onClick={(e) => f_submitData('post', endpoint, input, e)}>등록</Button>
                                 <Button variant="danger" onClick={f_warningMsg}>삭제</Button>
                                 <Button variant="secondary" onClick={onHide}>닫기</Button>
                             </Modal.Footer>

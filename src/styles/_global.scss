@@ -47,7 +47,20 @@ h5, button.btn-sm {
     flex-direction: column;
     align-items: center;
     .paginationList {
+        li {
+            &.active > span.page-link {
+                background-color: $point-color;
+                border-color: $point-color;
+                color: white;
+            }
+            span.page-link{
+                color: $point-color;
+            }
+        }
+        
         .paginationBtnSet {
+            span {
+            }
             &.paginationBtnPrev {
                 &.paginationBtnPrevFirst {}
             }
@@ -102,7 +115,7 @@ body {
             right: 0;
             .wrap {
                 position: relative;
-                margin: $auto;
+                margin: 0 auto 2.5%;
                 width: 95%;
                 padding: 2.5%; 
                 border-radius: 10px;

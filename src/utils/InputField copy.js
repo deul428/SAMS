@@ -46,7 +46,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
         });
     }     
     
-    const f_submitLoginData = async (method, endpoint, input = null, e) => {
+    const f_submitData = async (method, endpoint, input = null, e) => {
         e.preventDefault(); // submit 방지
         try {
             // 유효값 검사
@@ -229,7 +229,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                         </div>
                                     </Col>
                                     <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
-                                        <Button variant='info btnLeft' onClick={(e) => f_submitLoginData('post', endpoint, input, e)}>조회</Button>
+                                        <Button variant='info btnLeft' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
                                     </Col>
                                 </Row>
                                 <Row className='d-flex justify-content-between'>

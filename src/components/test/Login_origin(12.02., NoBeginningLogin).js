@@ -42,7 +42,7 @@ const AuthLogin = () => {
 
     // 유효값 체크 및 로그인 후 경로 리디렉션
     // 11.26. 리디렉션 처리 안 되고 있으니 다시 확인해 보기.
-    const f_submitLoginData = async (method, endpoint, input = null, e) => {
+    const f_submitData = async (method, endpoint, input = null, e) => {
         e.preventDefault(); // submit 방지
         try {
             if (!input.a_user_id || !input.a_cipher) {
@@ -82,7 +82,7 @@ const AuthLogin = () => {
     };
     
     
-    // const f_submitLoginData = async (method, endpoint, input = null, e) => {
+    // const f_submitData = async (method, endpoint, input = null, e) => {
     //     e.preventDefault(); // submit 방지
     //     try {
     //         if (!input.a_user_id || !input.a_cipher) {
@@ -138,7 +138,7 @@ const AuthLogin = () => {
                             영문, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 미포함)
                         </Form.Text>
                     </div>
-                    <Button type='submit' variant='primary' onClick={(e) => f_submitLoginData('post', endpoint, input, e)}>로그인</Button>
+                    <Button type='submit' variant='primary' onClick={(e) => f_submitData('post', endpoint, input, e)}>로그인</Button>
 
                 {/* </form> */}
                 </form>
@@ -161,7 +161,7 @@ const AuthLogin = () => {
                                 영문, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 미포함)
                             </Form.Text>
                         </div>
-                        <Button type='submit' variant='primary' onClick={(e) => f_submitLoginData('post', endpoint, input, e)}>로그인</Button>
+                        <Button type='submit' variant='primary' onClick={(e) => f_submitData('post', endpoint, input, e)}>로그인</Button>
                     </form>
                 </>
                 {/* } */}

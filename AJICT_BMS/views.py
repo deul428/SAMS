@@ -10,15 +10,15 @@ def f_login(request):
    request.session.flush()
 
 
-   v_user_id = 'leecj'
-   v_cipher = '12345'
-   #v_user_id = ''
-   #v_cipher = ''
+   #v_user_id = 'leecj'
+   #v_cipher = '12345'
+   v_user_id = ''
+   v_cipher = ''
 
-   #if request.method == 'POST':
-   #   v_body = json.loads(request.body)
-   #   v_user_id = v_body.get('a_user_id')
-   #   v_cipher = v_body.get('a_cipher')
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_user_id = v_body.get('a_user_id')
+      v_cipher = v_body.get('a_cipher')
 
       #v_user_id = 'leecj'
       #v_cipher = '12345'
@@ -78,6 +78,16 @@ def f_login(request):
          v_data3 = [dict(zip(v_columns,row)) for row in v_rows]
          v_square_bracket_data3 = [v_data3]
          v_session = [f_serialize(row,v_columns) for row in v_rows]
+
+
+         logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+         logging.debug(f"f_login()에서의 v_columns : {v_columns}")
+         logging.debug(f"f_login()에서의 v_rows : {v_rows}")
+         logging.debug(f"f_login()에서의 v_data3 : {v_data3}")
+         logging.debug(f"f_login()에서의 v_square_bracket_data3 : {v_square_bracket_data3}")
+         logging.debug(f"f_login()에서의 v_data3 안에 있는 responsibility2_code : " + v_data3[0]['responsibility2_code'])
+         logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
          request.session['v_global_data'] = v_session
 
 #Session의 값 중 일부를 추출할 수 있음.
@@ -90,10 +100,6 @@ def f_login(request):
          v_additional_info = {'STATUS':'LOGIN','MESSAGE':'login 했습니다.'}
          v_square_bracket_additional_info = [v_additional_info]
          v_square_bracket_data3.append(v_square_bracket_additional_info)
-
-         logging.debug(f"*******************************************")
-         logging.debug(f"JSON의 값 : {v_square_bracket_data3}")
-         logging.debug(f"*******************************************")
 
          return JsonResponse(v_square_bracket_data3,safe=False,json_dumps_params={'ensure_ascii':False})
    except json.JSONDecodeError:
@@ -122,22 +128,25 @@ def f_cipher_change(request):
    #    v_square_bracket_return = [v_return]
    #    return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
    # else:
-      #v_old_cipher = '1234'
-      #v_new_cipher = '12345'
-      v_old_cipher = ''
-      v_new_cipher = ''
-      if request.method == 'POST':
-         v_body = json.loads(request.body)
-         v_old_cipher = v_body.get('a_old_cipher')
-         v_new_cipher = v_body.get('a_new_cipher')
-      #v_old_cipher = '1234'
-      #v_new_cipher = '12345'
-         v_global_data = request.session.get('v_global_data',{})
-         v_user_id = v_global_data[0].get('user_id')
-         logging.debug(f"*******************************************")
-         logging.debug(f"f_cipher_change()에서의 v_global_data : {v_global_data}")
-         logging.debug(f"*******************************************")
+   v_session_user_id = ''
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_session_user_id = v_body.get('a_session_user_id')
+      v_old_cipher = v_body.get('a_old_cipher')
+      v_new_cipher = v_body.get('a_new_cipher')
 
+   #v_session_user_id = 'leecj'
+
+   if not v_session_user_id:
+      v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      #v_old_cipher = '1234'
+      #v_new_cipher = '12345'
+   v_old_cipher = ''
+   v_new_cipher = ''
+   #v_old_cipher = '1234'
+   #v_new_cipher = '12345'
       if v_old_cipher == v_new_cipher:
          v_return = {"STATUS":"FAIL","MESSAGE":"이전 비밀번호와 같습니다. 다르게 설정해주십시오."}
          return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
@@ -149,7 +158,7 @@ def f_cipher_change(request):
             v_sql = """UPDATE ajict_bms_schema.aj_user SET cipher = %s,beginning_login_tf = FALSE WHERE user_id = %s"""
             v_param=[]
             v_param.append(v_new_cipher)
-            v_param.append(v_user_id)
+            v_param.append(v_session_user_id)
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql,v_param)
                v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
@@ -178,7 +187,51 @@ def f_select_biz_opp1(request):
    #    v_square_bracket_return = [v_return]
    #    return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
    # else:
+
+   v_session_user_id = ''
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_session_user_id = v_body.get('a_session_user_id')
+
+   #v_session_user_id = 'leecj'
+
+   if not v_session_user_id:
+      v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   else:
       try:
+         v_sql_session = """SELECT user_id,
+                                   user_name,
+                                   cipher,
+                                   dept_id,
+                                   position1_code,
+                                   position2_code,
+                                   responsibility1_code,
+                                   responsibility2_code,
+                                   auth1_code,
+                                   auth2_code,
+                                   beginning_login_tf,
+                                   create_user,
+                                   create_date,
+                                   update_user,
+                                   update_date,
+                                   delete_user,
+                                   delete_date
+                                 FROM ajict_bms_schema.aj_user
+                                 WHERE user_id = %s"""
+         v_param3 = []
+         v_param3.append(v_session_user_id)
+         with connection.cursor() as v_cursor_session:
+            v_cursor_session.execute(v_sql_session,v_param3)
+            v_columns_session = [v_column[0] for v_column in v_cursor_session.description]
+            v_rows_session = v_cursor_session.fetchall()
+            v_data_session = [dict(zip(v_columns_session,row)) for row in v_rows_session]
+
+            logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 create_date : " + str(v_data_session[0]['create_date']))
+            logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
          v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp":[]}
          v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE SUBSTRING(dept_id FROM 4 FOR 4) = '0000' ORDER BY dept_id"""
          with connection.cursor() as v_cursor_headquarters:
@@ -198,34 +251,33 @@ def f_select_biz_opp1(request):
             v_columns_commonness_pro = [v_column[0] for v_column in v_cursor_commonness_pro.description]
             v_rows_commonness_pro = v_cursor_commonness_pro.fetchall()
             v_data["search_commonness_pro"] = [dict(zip(v_columns_commonness_pro,row)) for row in v_rows_commonness_pro]
-         v_sql_biz_opp = """SELECT biz_opp_id,
-                                   biz_opp_clone_no,
-                                   biz_opp_name,
-                                   user_id,
-                                   (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = A.user_id) AS user_name,
-                                   change_preparation_dept_id,
-                                   change_preparation_dept_name,
-                                   last_client_com1_code,
-                                   last_client_com2_code,
+         v_sql_biz_opp = """SELECT A.biz_opp_id,
+                                   A.biz_opp_name,
+                                   B.user_id,
+                                   (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = B.user_id) AS user_name,
+                                   B.change_preparation_dept_id,
+                                   B.change_preparation_dept_name,
+                                   B.last_client_com1_code,
+                                   B.last_client_com2_code,
                                    (SELECT DISTINCT BB.great_classi_name
                                     FROM ajict_bms_schema.commonness_code BB
-                                    WHERE BB.great_classi_code = A.last_client_com1_code) AS last_client_com1_name,
+                                    WHERE BB.great_classi_code = B.last_client_com1_code) AS last_client_com1_name,
                                    (SELECT CC.small_classi_name
                                     FROM ajict_bms_schema.commonness_code CC
-                                    WHERE CC.great_classi_code = A.last_client_com1_code AND
-                                          CC.small_classi_code = A.last_client_com2_code) AS last_client_com2_name,
-                                   sale_com1_code,
-                                   sale_com2_code,
+                                    WHERE CC.great_classi_code = B.last_client_com1_code AND
+                                          CC.small_classi_code = B.last_client_com2_code) AS last_client_com2_name,
+                                   B.sale_com1_code,
+                                   B.sale_com2_code,
                                    (SELECT DISTINCT DD.great_classi_name
                                     FROM ajict_bms_schema.commonness_code DD
-                                    WHERE DD.great_classi_code = A.sale_com1_code) AS sale_com1_name,
+                                    WHERE DD.great_classi_code = B.sale_com1_code) AS sale_com1_name,
                                    (SELECT EE.small_classi_name
                                     FROM ajict_bms_schema.commonness_code EE
-                                    WHERE EE.great_classi_code = A.sale_com1_code AND
-                                          EE.small_classi_code = A.sale_com2_code) AS sale_com2_name,
-                                   contract_date,
-                                   progress1_rate_code,
-                                   progress2_rate_code,
+                                    WHERE EE.great_classi_code = B.sale_com1_code AND
+                                          EE.small_classi_code = B.sale_com2_code) AS sale_com2_name,
+                                   A.contract_date,
+                                   A.progress1_rate_code,
+                                   A.progress2_rate_code,
                                    (SELECT DISTINCT NN.great_classi_name
                                     FROM ajict_bms_schema.commonness_code NN
                                     WHERE NN.great_classi_code = A.progress1_rate_code) AS progress1_rate_name,
@@ -233,60 +285,70 @@ def f_select_biz_opp1(request):
                                     FROM ajict_bms_schema.commonness_code OO
                                     WHERE OO.great_classi_code = A.progress1_rate_code AND
                                           OO.small_classi_code = A.progress2_rate_code) AS progress2_rate_name,
-                                   sale_item_no,
-                                   sale_date,
-                                   sale_amt,
-                                   sale_profit,
-                                   purchase_date,
-                                   purchase_amt,
-                                   collect_money_date,
-                                   biz_section1_code,
-                                   biz_section2_code,
+                                   B.sale_item_no,
+                                   B.sale_date,
+                                   B.sale_amt,
+                                   B.sale_profit,
+                                   B.purchase_date,
+                                   B.purchase_amt,
+                                   B.collect_money_date,
+                                   B.biz_section1_code,
+                                   B.biz_section2_code,
                                    (SELECT DISTINCT FF.great_classi_name
                                     FROM ajict_bms_schema.commonness_code FF
-                                    WHERE FF.great_classi_code = A.biz_section1_code) AS biz_section1_name,
+                                    WHERE FF.great_classi_code = B.biz_section1_code) AS biz_section1_name,
                                    (SELECT GG.small_classi_name
                                     FROM ajict_bms_schema.commonness_code GG
-                                    WHERE GG.great_classi_code = A.biz_section1_code AND
-                                          GG.small_classi_code = A.biz_section2_code) AS biz_section2_name,
-                                   essential_achievement_tf,
-                                   principal_product1_code,
-                                   principal_product2_code,
+                                    WHERE GG.great_classi_code = B.biz_section1_code AND
+                                          GG.small_classi_code = B.biz_section2_code) AS biz_section2_name,
+                                   A.essential_achievement_tf,
+                                   B.principal_product1_code,
+                                   B.principal_product2_code,
                                    (SELECT DISTINCT HH.great_classi_name
                                     FROM ajict_bms_schema.commonness_code HH
-                                    WHERE HH.great_classi_code = A.principal_product1_code) AS product1_name,
+                                    WHERE HH.great_classi_code = B.principal_product1_code) AS product1_name,
                                    (SELECT II.small_classi_name
                                     FROM ajict_bms_schema.commonness_code II
-                                    WHERE II.great_classi_code = A.principal_product1_code AND
-                                          II.small_classi_code = A.principal_product2_code) AS product2_name,
+                                    WHERE II.great_classi_code = B.principal_product1_code AND
+                                          II.small_classi_code = B.principal_product2_code) AS product2_name,
                                    (SELECT JJ.dept_id
                                     FROM ajict_bms_schema.aj_user JJ
-                                    WHERE JJ.user_id = A.user_id) AS dept_id,
+                                    WHERE JJ.user_id = B.user_id) AS dept_id,
                                    (SELECT KK.high_dept_id
                                     FROM ajict_bms_schema.dept KK
                                     WHERE KK.dept_id = (SELECT AAA.dept_id
                                                         FROM ajict_bms_schema.aj_user AAA
-                                                        WHERE AAA.user_id = A.user_id)) AS high_dept_id,
+                                                        WHERE AAA.user_id = B.user_id)) AS high_dept_id,
                                    (SELECT LL.dept_name
                                     FROM ajict_bms_schema.dept LL
                                     WHERE LL.dept_id = (SELECT BBB.dept_id
                                                         FROM ajict_bms_schema.aj_user BBB
-                                                        WHERE BBB.user_id = A.user_id)) AS dept_name,
+                                                        WHERE BBB.user_id = B.user_id)) AS dept_name,
                                    (SELECT MM.dept_name
                                     FROM ajict_bms_schema.dept MM
                                     WHERE MM.dept_id = (SELECT CCC.high_dept_id
                                                         FROM ajict_bms_schema.dept CCC
                                                         WHERE CCC.dept_id = (SELECT AAAA.dept_id
                                                                              FROM ajict_bms_schema.aj_user AAAA
-                                                                             WHERE AAAA.user_id = A.user_id))) AS high_dept_name,
-                                   create_user,
-                                   create_date,
-                                   update_user,
-                                   update_date,
-                                   delete_user,
-                                   delete_date
-                            FROM ajict_bms_schema.biz_opp A
-                            WHERE 1 = 1 """
+                                                                             WHERE AAAA.user_id = B.user_id))) AS high_dept_name,
+                                   A.create_user AS biz_opp_create_user,
+                                   A.create_date AS biz_opp_create_date,
+                                   A.update_user AS biz_opp_update_user,
+                                   A.update_date AS biz_opp_update_date,
+                                   A.delete_user AS biz_opp_delete_user,
+                                   A.delete_date AS biz_opp_delete_date,
+                                   B.create_user AS biz_opp_detail_create_user,
+                                   B.create_date AS biz_opp_detail_create_date,
+                                   B.update_user AS biz_opp_detail_update_user,
+                                   B.update_date AS biz_opp_detail_update_date,
+                                   B.delete_user AS biz_opp_detail_delete_user,
+                                   B.delete_date AS biz_opp_detail_delete_date
+                            FROM ajict_bms_schema.biz_opp A,
+                                 ajict_bms_schema.biz_opp_detail B
+                            WHERE 1 = 1 AND
+                                  A.biz_opp_id = B.biz_opp_id"""
+         v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
+                                B.detail_no"
          with connection.cursor() as v_cursor_biz_opp:
             v_cursor_biz_opp.execute(v_sql_biz_opp)
             v_columns_biz_opp = [v_column[0] for v_column in v_cursor_biz_opp.description]

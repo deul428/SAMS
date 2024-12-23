@@ -7,6 +7,7 @@ import '../styles/_table.scss'; // 위에서 작성한 CSS를 임포트
 
 import '../styles/_global.scss';
 
+// level 2 테이블 (ex. 사업 (기회) 이력 조회)
 function DynamicTableChild({ v_componentName, v_propsData }) {
   // console.log("dynamicTableChild:", v_componentName, v_propsData)
 

@@ -25,11 +25,39 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     }
 
     // ================= 사업 기회 조회 테이블부 핸들링 ================= 
-    // ----------------- 1) 등록 및 수정 input 핸들링 -----------------
+    // ----------------- 1) 수정 시 핸들링 -----------------
+    // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD .....................
+    const dateKeys = ["sale_date", "collect_money_date", "purchase_date", "contract_date"];
+    const formattedDates = {};
+    if (v_modalPropsData) {
+        dateKeys.forEach(key => {
+            if (v_modalPropsData[key]) {
+                return formattedDates[key] = v_modalPropsData[key].replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3");
+            }
+        });
+
+        /* console.log(
+            "(매출 일자) propsSaleDate: ", formattedDates.sale_date,
+            "\n(수금 일자) propsCollectMoneyDate: ", formattedDates.collect_money_date,
+            "\n(매입 일자) propsPurchaseDate: ", formattedDates.purchase_date,
+            "\n(계약 일자) propsContractDate: ", formattedDates.contract_date
+        ); */
+    }
+    // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD 끝 .....................
+    
+    // ..................... 숫자 문자열로 변환 후 쉼표 추가 ..................... 
+    const [value, setValue] = useState(0);
+    const formatNumber = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 숫자에 쉼표 추가
+    };
+    // ..................... 숫자 문자열로 변환 후 쉼표 추가 끝 ..................... 
+    // ----------------- 1) 수정 시 핸들링 끝 -----------------
+
+    // ----------------- 2) 등록 및 수정 input 핸들링 -----------------
     // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 ..................... 
     const p_bizopp = {
         biz_opp_id: '',
-        biz_opp_name: '',
+        biz_opp_name: '테스트입니다',
         // biz_section1_code: '',
         // biz_section2_code: '',
         // biz_section1_name: '',
@@ -76,48 +104,23 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         delete_date: null, */
     }
     const [input, setInput] = useState(p_bizopp);
-   
+
     // input field 값 input에 저장
     const f_handlingInput = (e) => {
-        const { name, value, type, checked } = e.target;
-        setInput((prevInput) => ({
-            ...prevInput,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
-    };
-    // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 끝 .....................
-    // ----------------- 1) 등록 및 수정 input 핸들링 끝 -----------------
-
-    // ----------------- 2) 수정 시 핸들링 -----------------
-    // v_modalPropsData 데이터 핸들링 후 input 객체에 복사
-    useEffect(() => {
-        if (v_modalPropsData) {
-            // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD .....................
-            const dateKeys = ["sale_date", "collect_money_date", "purchase_date", "contract_date"];
-            dateKeys.forEach(key => {
-                if (v_modalPropsData[key]) {
-                    return v_modalPropsData[key] = v_modalPropsData[key].replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3");
-                }
-            });
-            // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD 끝 .....................
-            // ..................... 숫자 문자열로 변환 후 쉼표 추가 ..................... 
-            const numKeys = ["purchase_amt", "sale_amt", "sale_profit"];
-            numKeys.forEach(key => {
-                if (v_modalPropsData[key]) {
-                    return v_modalPropsData[key] = v_modalPropsData[key].toLocaleString('ko-KR');
-                    // return v_modalPropsData[key] = v_modalPropsData[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                }
-            });
-            // ..................... 숫자 문자열로 변환 후 쉼표 추가 끝 ..................... 
-
-            setInput((prevInput) => ({
-                ...prevInput,
-                ...v_modalPropsData,
-            }));
+        if (e.target.name === 'a_essential_achievement_tf') {
+            e.target.checked ? e.target.value = true : e.target.value = false;
         }
-        console.log("v_modal data 복사 후 input: ", input);
-    }, [v_modalPropsData]);
-    // ----------------- 2) 수정 시 핸들링 끝 -----------------
+        const { name, value } = e.target;
+        console.log(name);
+        // input 업데이트
+        setInput((prevInput) => {
+            const newState = { ...prevInput, [name]: value.trim() };
+            console.log("f_handlingInput 업데이트된 상태:", newState);
+            return newState;
+        });
+    }     
+    // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 끝 .....................
+    // ----------------- 2) 등록 및 수정 input 핸들링 끝 -----------------
     // ================= 사업 기회 조회 테이블부 핸들링 끝 ================= 
 
     
@@ -125,25 +128,16 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const f_submitData = async (method, endpoint, input = null, e) => {
         e.preventDefault(); // submit 방지
         try {
-            console.log("제출할 input: ", input);
-
             // 유효값 검사
-
-            // 날짜 yyyy-mm-dd -> yyyymmdd
-            const dateKeys = ["sale_date", "collect_money_date", "purchase_date", "contract_date"];
-            dateKeys.forEach(key => {
-                if (input[key]) {
-                    return input[key] = input[key].replace(/-/g, "");
+            // ...
+            // 금액 등 숫자로 표시되어야 하는 것들 텍스트 -> 숫자 변환
+            if (e.target.name === 'sale_amt' || e.target.name === 'sale_profit' || e.target.name === 'purchase_amt') {
+                const rawValue = e.target.value.replace(/,/g, ""); // 쉼표 제거
+                if (!isNaN(rawValue)) {
+                    setValue(Number(rawValue)); // 숫자로 변환
                 }
-            });
-
-            // 숫자 , 제거 
-            const numKeys = ["purchase_amt", "sale_amt", "sale_profit"];
-            numKeys.forEach(key => {
-                if (input[key]) {
-                    return input[key] = input[key].replace(/,/g, "");
-                }
-            });
+            }
+            console.log("제출할 input: ", input);
 
             /* const response = await apiMethods[method]('select-biz-opp2/', input);
             console.log('input Field response 송신 완료', endpoint, response);
@@ -192,51 +186,88 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">사업 일련 번호</Form.Label>
                                                 <Form.Control name='biz_opp_id'  onChange={f_handlingInput} size="sm" type="text" className="" 
-                                                value={input.biz_opp_id || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    v_modalPropsData.biz_opp_id
+                                                    : (input.biz_opp_id || '')
+                                                )}/>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">사업명</Form.Label>
                                                 <Form.Control name='biz_opp_name'  onChange={f_handlingInput} size="sm" type="text" className="" 
-                                                value={input.biz_opp_name || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    v_modalPropsData.biz_opp_name
+                                                    : (input.biz_opp_name || '')
+                                                )}/>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">판품 번호</Form.Label>
                                                 <Form.Control disabled name='sale_item_no' onChange={f_handlingInput} size="sm" type="text" className="" 
-                                                value={input.sale_item_no || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    v_modalPropsData.sale_item_no
+                                                    : (input.sale_item_no || '')
+                                                )} />
                                             </Col>
                                         </Row>
                                         <Row className="d-flex justify-content-between">
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">본부</Form.Label>
                                                 <Form.Control name='high_dept_name' onChange={f_handlingInput} size="sm" type="text" className="" 
-                                                value={input.high_dept_name || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    v_modalPropsData.high_dept_name
+                                                    : (input.high_dept_name || '')
+                                                )}/>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">소속 팀</Form.Label>
                                                 <Form.Control name='dept_name'  onChange={f_handlingInput} size="sm" type="text" className="" 
-                                                value={input.dept_name || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    v_modalPropsData.dept_name
+                                                    : (input.dept_name || '')
+                                                )}/>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">영업 담당자</Form.Label>
                                                 <Form.Control name='user_name' onChange={f_handlingInput} size="sm" type="text" className="" 
-                                                value={input.user_name || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    v_modalPropsData.user_name
+                                                    : (input.user_name || '')
+                                                )} 
+                                                />
                                             </Col>
                                         </Row>
                                         <Row className="d-flex justify-content-between">
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">최종 고객사</Form.Label>
                                                 <Form.Control name='last_client_com2_name' onChange={f_handlingInput} size="sm" type="text" className="" 
-                                                value={input.last_client_com2_name || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    v_modalPropsData.last_client_com2_name
+                                                    : (input.last_client_com2_name || '')
+                                                )}/>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">매출처</Form.Label>
                                                 <Form.Control name='sale_com2_name' onChange={f_handlingInput} size="sm" type="text" className="" 
-                                                value={input.sale_com2_name || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    v_modalPropsData.sale_com2_name
+                                                    : (input.sale_com2_name || '')
+                                                )}/>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label htmlFor='inputChck' className="">필달 여부</Form.Label>
                                                 <Form.Check type={`checkbox`} id={`inputChck`}  name='essential_achievement_tf' onChange={f_handlingInput}
-                                                value={input.essential_achievement_tf || false} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    v_modalPropsData.essential_achievement_tf
+                                                    : (input.essential_achievement_tf || false)
+                                                )}/>
                                             </Col>
                                         </Row>
                                         <Row className="d-flex justify-content-between">
@@ -244,7 +275,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">사업 구분</Form.Label>
                                                 <Form.Select size='sm' aria-label='selectBox' className='' name='biz_section2_name' onChange={f_handlingInput} 
-                                                value={input.biz_section2_name || ''} >
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    (v_modalPropsData.biz_section2_name)
+                                                    :
+                                                    (input.biz_section2_name || ''))
+                                                }>
                                                     <option value={(v_modalPropsData ? v_modalPropsData.biz_section2_name : '선택')}>{(v_modalPropsData ? v_modalPropsData.biz_section2_name : '선택')}</option>
                                                     <option value="1">One</option>
                                                     <option value="2">Two</option>
@@ -255,7 +291,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">제품</Form.Label>
                                                 <Form.Select size='sm' aria-label='selectBox' className=''name='product2_name' onChange={f_handlingInput} 
-                                                value={input.product2_name || ''} >
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    (v_modalPropsData.product2_name)
+                                                    :
+                                                    (input.product2_name || ''))
+                                                }>
                                                     <option value={(v_modalPropsData ? v_modalPropsData.product2_name : '선택')}>{(v_modalPropsData ? v_modalPropsData.product2_name : '선택')}</option>
                                                     <option value='1'>One</option>
                                                     <option value='2'>Two</option>
@@ -265,41 +306,73 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-st art">
                                                 <Form.Label className="">수금 일자</Form.Label>
                                                 <Form.Control name='collect_money_date' size="sm" type="date" className="" onChange={f_handlingInput}
-                                                value={input.collect_money_date || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    (formattedDates.collect_money_date)
+                                                    :
+                                                    (input.collect_money_date || ''))
+                                                }/>
                                             </Col>
                                         </Row>
                                         <Row className="d-flex justify-content-between">
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">계약 일자</Form.Label>
                                                 <Form.Control name='contract_date' size="sm" type="date" className="" onChange={f_handlingInput} 
-                                                value={input.contract_date || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    (formattedDates.contract_date)
+                                                    : (input.contract_date || '')
+                                                )}
+                                                />
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">매출 일자</Form.Label>
                                                 <Form.Control name='sale_date' size="sm" type="date" className="" onChange={f_handlingInput}
-                                                value={input.sale_date || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    (formattedDates.sale_date)
+                                                    :
+                                                    (input.sale_date || ''))
+                                                }/>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">매입 일자</Form.Label>
                                                 <Form.Control name='purchase_date' size="sm" type="date" className="" onChange={f_handlingInput}
-                                                value={input.purchase_date || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    (formattedDates.purchase_date)
+                                                    :
+                                                    (input.purchase_date || ''))
+                                                }/>
                                             </Col>
                                         </Row>
                                         <Row className="d-flex justify-content-between">
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">매출 금액</Form.Label>
                                                 <Form.Control name='sale_amt' size="sm" type="text" className="" onChange={f_handlingInput} 
-                                                value={input.sale_amt || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    formatNumber(v_modalPropsData.sale_amt)
+                                                    : (input.sale_amt || '')
+                                                )}/>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">매입 금액</Form.Label>
                                                 <Form.Control name='purchase_amt' size="sm" type="text" className="" onChange={f_handlingInput} 
-                                                value={input.purchase_amt || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    formatNumber(v_modalPropsData.purchase_amt)
+                                                    : (input.purchase_amt || '')
+                                                )}/>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">매출 이익</Form.Label>
                                                 <Form.Control name='sale_profit' size="sm" type="text" className="" onChange={f_handlingInput} 
-                                                value={input.sale_profit || ''} />
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    formatNumber(v_modalPropsData.sale_profit)
+                                                    : (input.sale_profit || '')
+                                                )}/>
                                             </Col>
                                             
                                         </Row>
@@ -307,7 +380,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">진행률</Form.Label>
                                                 <Form.Select size='sm' aria-label='selectBox' className='' name='progress2_rate_name' onChange={f_handlingInput} 
-                                                value={input.progress2_rate_name || ''} >
+                                                value={
+                                                (v_modalPropsData ? 
+                                                    (v_modalPropsData.progress2_rate_name)
+                                                    :
+                                                    (input.progress2_rate_name || ''))
+                                                }>
                                                     <option value={(v_modalPropsData ? v_modalPropsData.progress2_rate_name : '선택')}>{(v_modalPropsData ? v_modalPropsData.progress2_rate_name : '선택')}</option>
                                                     <option value='1'>One</option>
                                                     <option value='2'>Two</option>

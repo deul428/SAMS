@@ -7,6 +7,8 @@ import { apiMethods } from '../utils/api.js';
 import '../styles/_search.scss';
 
 import InputFieldDetail from '../utils/InputFieldDetail.js';
+
+// 사업 (기회) 등록 및 수정
 const BizOppDetail = () => {
     const location = useLocation();
     // Data Handling

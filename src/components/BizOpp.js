@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { apiMethods } from '../utils/api.js';
 import { login } from '../index.js';
@@ -112,7 +113,7 @@ const BizOpp = () => {
         delete_date: null,
     }    
     const [input, setInput] = useState(p_bizopp);
-
+    
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
         console.log({ name, value }, input);
@@ -121,7 +122,7 @@ const BizOpp = () => {
             [name]: value,
         });
     }
- */
+    */
 
     const sampleData = {
         "data": {
@@ -2050,6 +2051,7 @@ const BizOpp = () => {
             // apiMethods[method]에서의 [method]: 객체에 동적으로 접근하는 키. method 변수 값에 따라 객체에서 해당 키에 해당하는 값을 동적으로 갖고 온다. 
             // 일반적으로 객체의 프로퍼티를 접근할 때에는 .을 사용하지만, 동적으로 키를 설정할 때에는 []를 사용한다.  apiMethods[method]는 apiMethods.특정method와 같은 의미이다.
             const response = await apiMethods[method](endpoint, input);
+            // console.log("response: ", response);
     
             // 상태 업데이트: 데이터 갱신이 필요한 경우에만 호출
             if (isUpdateNeeded) {
@@ -2064,20 +2066,24 @@ const BizOpp = () => {
         }
 
     };
+   
+    // -------------- 세션 대체용 userId 송신 -------------- 
+    const auth = useSelector((state) => state.auth);
+    // console.log(auth);
+    const userCheck = {
+        a_session_user_id: auth.userId,
+    }
 
     useEffect(() => {
-        // if 
-
-        // const status = error.response?.STATUS;
-        // if (status === 500) {
-        // }
-        setData(sampleData);
+        // console.log("userCheck: ", userCheck);
+        f_handlingData('post', endpoint, userCheck);
         /* f_handlingData('get', endpoint).then(response => {
             console.log("데이터 로드 완료:", response);
         }).catch(error => {
             console.error("데이터 로드 실패:", error);
         }); */
     }, [endpoint]);
+    // -------------- 세션 대체용 userId 송신 끝 -------------- 
       
     return (
         <>
@@ -2090,7 +2096,7 @@ const BizOpp = () => {
                     </div>
                     
                     {/* <DynamicTabletest v_componentName={'bizOpp'} v_propsData={data}/> */}
-                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data}/>
+                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data} v_modalPropsData={null}/>
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   

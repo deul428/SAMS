@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { apiMethods } from '../utils/api.js';
 import DynamicTableChild from '../utils/DynamicTableChild.js';
 import { Modal, Button, Form, Row, Col } from 
@@ -1947,14 +1948,24 @@ const BizOppHistory = ({ show, onHide }) => {
             "MESSAGE": "조회되었습니다."
         }
     }
+   
+    // -------------- 세션 대체용 userId 송신 -------------- 
+    const auth = useSelector((state) => state.auth);
+    // console.log(auth);
+    const userCheck = {
+        a_session_user_id: auth.userId,
+    }
+
     useEffect(() => {
-        setData(sampleData);
+        // console.log("userCheck: ", userCheck);
+        f_handlingData('post', endpoint, userCheck);
         /* f_handlingData('get', endpoint).then(response => {
             console.log("데이터 로드 완료:", response);
         }).catch(error => {
             console.error("데이터 로드 실패:", error);
         }); */
     }, [endpoint]);
+    // -------------- 세션 대체용 userId 송신 끝 -------------- 
 
 
     useEffect(() => {

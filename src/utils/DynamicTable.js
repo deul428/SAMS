@@ -216,7 +216,6 @@ function DynamicTable({ v_componentName, v_propsData }) {
                 {page.map((row, index) => {
                   prepareRow(row);
                   const { key, ...restProps } = row.getRowProps();
-                  // {console.log(row.original)}
                   return (
                     <tr key={key} {...restProps} 
                     onClick={(e) => {

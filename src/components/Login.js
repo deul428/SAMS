@@ -28,6 +28,7 @@ const AuthLogin = () => {
         a_user_id: '',
         a_old_cipher: '',
         a_new_cipher: '',
+        a_session_user_id: '',
     }
     const [input, setInput] = useState(p_login);
     const [pwInput, setPwInput] = useState(p_changePw);
@@ -54,6 +55,8 @@ const AuthLogin = () => {
                 delete updatedPwInput[name];
             } else if (!updatedPwInput.a_old_cipher && input.a_cipher) {
                 updatedPwInput.a_old_cipher = input.a_cipher.trim();
+            } else if (!updatedPwInput.a_session_user_id) {
+                updatedPwInput.a_session_user_id = input.a_user_id.trim();
             }
             return updatedPwInput;
         });
@@ -87,6 +90,10 @@ const AuthLogin = () => {
                 
                 if (pwInput.a_new_cipher === pwInput.a_old_cipher) {
                     alert(`현재 비밀번호와 변경하려는 비밀번호가 동일합니다. 다른 비밀번호를 입력하세요.`);
+                    return;
+                } 
+                if (!pwInput.a_session_user_id) {
+                    alert(`세션 아이디가 비어 있습니다. (디버깅용)`);
                     return;
                 }
                 const response = await apiMethods[method]('cipher-change/', pwInput);

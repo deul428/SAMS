@@ -13,33 +13,26 @@ import '../styles/_global.scss';
 
 function DynamicTable({ v_componentName, v_propsData }) {
   const [showModal, setShowModal] = useState(false);
-
-  const [isHistory, setIsHistory] = useState(false);
   const [v_modalPropsData, setVModalPropsData] = useState(null);
   const [v_childComponent, setVChildComponent] = useState(null);
-  const openModal = (e, handling) => {
-    console.log(e);
-    if (handling === null) {
-      // e.parent.preventDefault();
-      console.log("흘렀어?");
-      setVChildComponent('BizOppHistory');
-      setIsHistory(true);
-      setVModalPropsData(null);
-    } else {
-      setVChildComponent('InputFieldDetail');
-      setIsHistory(false);
-      setVModalPropsData(handling);
-    }
 
+  const openModal = (e, handling) => {
+    // console.log('e: ', e, '\nhandling: ', handling);
+    if (handling !== null) {
+      setVChildComponent('InputFieldDetail');
+      setVModalPropsData(handling);
+    } else {
+      setVChildComponent('BizOppHistory');
+      setVModalPropsData(null);
+      e.stopPropagation(); //이벤트 전파 방지
+    }
     setShowModal(true);
-    console.log(v_childComponent)
   }
   const closeModal = () => {
     setShowModal(false);
   };
   
 
-  // const [data, setData] = useState([]);
   const [data, setData] = useState(v_propsData?.data?.retrieve_biz_opp || []);
 
 
@@ -189,8 +182,8 @@ function DynamicTable({ v_componentName, v_propsData }) {
   
   // =================== pagination 끝 ===================
   useEffect(() => {
-    console.log(v_childComponent);
-    console.log(isHistory);
+    /* console.log("v_childComponent: ", v_childComponent);
+    console.log("showModal? ", showModal); */
     if (!data.length || !columns.length) {
       return <div>Loading...</div>;
     }
@@ -227,7 +220,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
                   return (
                     <tr key={key} {...restProps} 
                     onClick={(e) => {
-                      openModal(row.original);
+                      openModal(e, row.original);
                     }}
                     >
 
@@ -239,9 +232,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
                             ? 
                             (
                             <Button size="sm" variant="light" onClick={(e) => {
-                              console.log("button click");
-                              openModal(null);
-                              setIsHistory(true);
+                              openModal(e, null);
                             }}>
                               이력
                             </Button>)
@@ -322,28 +313,18 @@ function DynamicTable({ v_componentName, v_propsData }) {
           setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
       }
     }
-  }, [v_childComponent, isHistory, v_componentName, data, page]);
+  }, [v_childComponent, v_componentName, data, page]);
 
-  console.log(isHistory);
   return (
     <div id="tableArea">
       {v_handlingHtml}
       {pagination}
       {
-        (v_childComponent === 'InputFieldDetail' && v_modalPropsData && isHistory === false) 
+        (v_childComponent === 'InputFieldDetail' && v_modalPropsData) 
         ? 
         (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData}/> )
         :
-        ''
-        
-        /* (<BizOppHistory show={showModal} onHide={closeModal} />) */
-      }
-      {
-        (isHistory === true)  
-        ? 
-        (<BizOppHistory show={showModal} onHide={closeModal} />) 
-        :
-        ''
+        (<BizOppHistory show={showModal} onHide={closeModal} />)
       }
     </div>
   )

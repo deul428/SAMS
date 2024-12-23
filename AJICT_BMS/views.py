@@ -22,9 +22,6 @@ def f_login(request):
       v_user_id = v_body.get('a_user_id')
       v_cipher = v_body.get('a_cipher')
 
-      #v_user_id = 'leecj'
-      #v_cipher = '12345'
-
 
    try:
       v_sql1 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s"""
@@ -198,6 +195,13 @@ def f_select_biz_opp1(request):
       v_session_user_id = v_body.get('a_session_user_id')
 
    #v_session_user_id = 'leecj'
+
+
+   logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+   logging.debug(f"f_select_biz_opp1()에서의 v_session_user_id : {v_session_user_id}")
+   logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+   
 
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}

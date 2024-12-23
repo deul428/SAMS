@@ -5,6 +5,7 @@ from django.contrib.auth import logout
 from django.db import connection
 from django.db import transaction
 from django.http import JsonResponse
+from django.db import DatabaseError
 logging.basicConfig(level=logging.DEBUG)
 def f_login(request):
    request.session.flush()
@@ -12,6 +13,7 @@ def f_login(request):
 
    #v_user_id = 'leecj'
    #v_cipher = '12345'
+
    v_user_id = ''
    v_cipher = ''
 
@@ -97,11 +99,16 @@ def f_login(request):
          logging.debug(f"f_login()에서의 user_name : {v_user_name}")
          logging.debug(f"*******************************************")
 
+
          v_additional_info = {'STATUS':'LOGIN','MESSAGE':'login 했습니다.'}
          v_square_bracket_additional_info = [v_additional_info]
          v_square_bracket_data3.append(v_square_bracket_additional_info)
 
          return JsonResponse(v_square_bracket_data3,safe=False,json_dumps_params={'ensure_ascii':False})
+   except DatabaseError:
+      v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
    except json.JSONDecodeError:
       v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
       v_square_bracket_return = [v_return]
@@ -129,24 +136,17 @@ def f_cipher_change(request):
    #    return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
    # else:
    v_session_user_id = ''
+   v_old_cipher = ''
+   v_new_cipher = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = v_body.get('a_session_user_id')
       v_old_cipher = v_body.get('a_old_cipher')
       v_new_cipher = v_body.get('a_new_cipher')
-
-   #v_session_user_id = 'leecj'
-
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
       return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-      #v_old_cipher = '1234'
-      #v_new_cipher = '12345'
-   v_old_cipher = ''
-   v_new_cipher = ''
-   #v_old_cipher = '1234'
-   #v_new_cipher = '12345'
    if v_old_cipher == v_new_cipher:
       v_return = {"STATUS":"FAIL","MESSAGE":"이전 비밀번호와 같습니다. 다르게 설정해주십시오."}
       return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
@@ -164,6 +164,10 @@ def f_cipher_change(request):
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
             v_square_bracket_return = [v_return]
             return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
+   except DatabaseError:
+      v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
    except Exception as E:
       v_return = {'STATUS':'FAIL','MESSAGE':'System의 문제로 인해 비밀번호를 변경하지 못했습니다.','ERROR':str(E)}
       v_square_bracket_return = [v_return]

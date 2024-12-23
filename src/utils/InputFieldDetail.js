@@ -92,6 +92,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // v_modalPropsData 데이터 핸들링 후 input 객체에 복사
     useEffect(() => {
         if (v_modalPropsData) {
+            console.log(v_modalPropsData.essential_achievement_tf);
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD .....................
             const dateKeys = ["sale_date", "collect_money_date", "purchase_date", "contract_date"];
             dateKeys.forEach(key => {
@@ -105,7 +106,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             numKeys.forEach(key => {
                 if (v_modalPropsData[key]) {
                     return v_modalPropsData[key] = v_modalPropsData[key].toLocaleString('ko-KR');
-                    // return v_modalPropsData[key] = v_modalPropsData[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 }
             });
             // ..................... 숫자 문자열로 변환 후 쉼표 추가 끝 ..................... 
@@ -236,7 +236,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
                                                 <Form.Label htmlFor='inputChck' className="">필달 여부</Form.Label>
                                                 <Form.Check type={`checkbox`} id={`inputChck`}  name='essential_achievement_tf' onChange={f_handlingInput}
-                                                value={input.essential_achievement_tf || false} />
+                                                checked={input.essential_achievement_tf || false} />
                                             </Col>
                                         </Row>
                                         <Row className="d-flex justify-content-between">
@@ -320,7 +320,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         <Row className="d-flex justify-content-between">
                                             <Col xs={12} md={12} lg={12} className="activity col d-flex align-items-center justify-content-start">
                                                 <Form.Label className="">활동 내역</Form.Label>
-                                                <Form.Control name='activity_details' value={input.activity_details || ''} onChange={f_handlingInput} size="sm" type="text" className="col-lg-10 col-md-10 col-10" />
+                                                <Form.Control name='activity_details' onChange={f_handlingInput} size="sm" type="text" className="col-lg-10 col-md-10 col-10" 
+                                                value={input.activity_details || ''}
+                                                />
                                             </Col>
                                         </Row>
                                         <Row className="d-flex justify-content-between">

@@ -78,23 +78,22 @@ def f_login(request):
          v_square_bracket_data3 = [v_data3]
          v_session = [f_serialize(row,v_columns) for row in v_rows]
 
-
-         logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-         logging.debug(f"f_login()에서의 v_columns : {v_columns}")
-         logging.debug(f"f_login()에서의 v_rows : {v_rows}")
-         logging.debug(f"f_login()에서의 v_data3 : {v_data3}")
-         logging.debug(f"f_login()에서의 v_square_bracket_data3 : {v_square_bracket_data3}")
-         logging.debug(f"f_login()에서의 v_data3 안에 있는 responsibility2_code : " + v_data3[0]['responsibility2_code'])
-         logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+         #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+         #logging.debug(f"f_login()에서의 v_columns : {v_columns}")
+         #logging.debug(f"f_login()에서의 v_rows : {v_rows}")
+         #logging.debug(f"f_login()에서의 v_data3 : {v_data3}")
+         #logging.debug(f"f_login()에서의 v_square_bracket_data3 : {v_square_bracket_data3}")
+         #logging.debug(f"f_login()에서의 v_data3 안에 있는 responsibility2_code : " + v_data3[0]['responsibility2_code'])
+         #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 
          request.session['v_global_data'] = v_session
 
 #Session의 값 중 일부를 추출할 수 있음.
-         v_global_data = request.session.get('v_global_data',{})
-         v_user_name = v_global_data[0].get('user_name')
-         logging.debug(f"*******************************************")
-         logging.debug(f"f_login()에서의 user_name : {v_user_name}")
-         logging.debug(f"*******************************************")
+         #v_global_data = request.session.get('v_global_data',{})
+         #v_user_name = v_global_data[0].get('user_name')
+         #logging.debug(f"*******************************************")
+         #logging.debug(f"f_login()에서의 user_name : {v_user_name}")
+         #logging.debug(f"*******************************************")
 
 
          v_additional_info = {'STATUS':'LOGIN','MESSAGE':'login 했습니다.'}
@@ -190,18 +189,15 @@ def f_select_biz_opp1(request):
    # else:
 
    v_session_user_id = ''
-   if request.method == 'POST':
-      v_body = json.loads(request.body)
-      v_session_user_id = v_body.get('a_session_user_id')
+   #if request.method == 'POST':
+   #   v_body = json.loads(request.body)
+   #   v_session_user_id = v_body.get('a_session_user_id')
 
-   #v_session_user_id = 'leecj'
-
+   v_session_user_id = 'mj.lee'
 
    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
    logging.debug(f"f_select_biz_opp1()에서의 v_session_user_id : {v_session_user_id}")
    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-   
 
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
@@ -228,17 +224,38 @@ def f_select_biz_opp1(request):
                                    delete_date
                                  FROM ajict_bms_schema.aj_user
                                  WHERE user_id = %s"""
-         v_param3 = []
-         v_param3.append(v_session_user_id)
+         v_param1 = []
+         v_param1.append(v_session_user_id)
+         v_auth1_code = ''
+         v_auth2_code = ''
+         v_responsibility1_code = ''
+         v_responsibility2_code = ''
+         v_user_id = ''
          with connection.cursor() as v_cursor_session:
-            v_cursor_session.execute(v_sql_session,v_param3)
+            v_cursor_session.execute(v_sql_session,v_param1)
             v_columns_session = [v_column[0] for v_column in v_cursor_session.description]
             v_rows_session = v_cursor_session.fetchall()
             v_data_session = [dict(zip(v_columns_session,row)) for row in v_rows_session]
 
-            logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-            logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 create_date : " + str(v_data_session[0]['create_date']))
-            logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 create_date : " + str(v_data_session[0]['create_date']))
+            #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+            v_auth1_code = v_data_session[0]['auth1_code']
+            v_auth2_code = v_data_session[0]['auth2_code']
+            v_responsibility1_code = v_data_session[0]['responsibility1_code']
+            v_responsibility2_code = v_data_session[0]['responsibility2_code']
+            v_user_id = v_data_session[0]['user_id']
+            v_dept_id = v_data_session[0]['dept_id']
+
+            logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
+            logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_auth1_code : " + v_auth1_code)
+            logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_auth2_code : " + v_auth2_code)
+            logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_responsibility1_code : " + v_responsibility1_code)
+            logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_responsibility2_code : " + v_responsibility2_code)
+            logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_user_id : " + v_user_id)
+            logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_dept_id : " + v_dept_id)
+            logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
 
          v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp":[]}
          v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE SUBSTRING(dept_id FROM 4 FOR 4) = '0000' ORDER BY dept_id"""
@@ -354,11 +371,44 @@ def f_select_biz_opp1(request):
                             FROM ajict_bms_schema.biz_opp A,
                                  ajict_bms_schema.biz_opp_detail B
                             WHERE 1 = 1 AND
-                                  A.biz_opp_id = B.biz_opp_id"""
+                                  A.biz_opp_id = B.biz_opp_id AND
+                                  A.contract_date BETWEEN %s AND %s AND
+                                  B.sale_date BETWEEN %s AND %s"""
+         v_param2 = []
+         v_current_year = datetime.now().year
+         v_contract_from_date = str(v_current_year) + '0101'
+         v_param2.append(v_contract_from_date)
+         v_contract_to_date = str(datetime.now().strftime('%Y%m%d'))
+         v_param2.append(v_contract_to_date)
+         v_sale_from_date = v_contract_from_date
+         v_param2.append(v_sale_from_date)
+         v_sale_to_date = v_contract_to_date
+         v_param2.append(v_sale_to_date)
+
+         logging.debug(f")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))")
+         logging.debug(f"f_select_biz_opp1()에서의 v_contract_from_date : " + v_contract_from_date)
+         logging.debug(f"f_select_biz_opp1()에서의 v_contract_to_date : " + v_contract_to_date)
+         logging.debug(f")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))")
+
+         if v_auth1_code == 'AUT' and v_auth2_code == '0003':
+            if v_responsibility1_code == 'RES' and v_responsibility2_code == '0003':
+               v_sql_biz_opp += " AND B.change_preparation_dept_id LIKE SUBSTRING(%s FROM 1 FOR 3) || '%%'"
+               v_param2.append(v_dept_id)
+            if v_responsibility1_code == 'RES' and v_responsibility2_code == '0002':
+               v_sql_biz_opp += " AND B.change_preparation_dept_id = %s"
+               v_param2.append(v_dept_id)
+            if v_responsibility1_code == 'RES' and v_responsibility2_code == '0001':
+               v_sql_biz_opp += " AND B.user_id = %s"
+               v_param2.append(v_user_id)
          v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
-                                B.detail_no"
+                                     B.detail_no"
+
+         logging.debug(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+         logging.debug(f"f_select_biz_opp1()에서의 v_contract_from_date : " + v_sql_biz_opp)
+         logging.debug(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+
          with connection.cursor() as v_cursor_biz_opp:
-            v_cursor_biz_opp.execute(v_sql_biz_opp)
+            v_cursor_biz_opp.execute(v_sql_biz_opp,v_param2)
             v_columns_biz_opp = [v_column[0] for v_column in v_cursor_biz_opp.description]
             v_rows_biz_opp = v_cursor_biz_opp.fetchall()
             v_data["retrieve_biz_opp"] = [dict(zip(v_columns_biz_opp,row)) for row in v_rows_biz_opp]
@@ -367,6 +417,10 @@ def f_select_biz_opp1(request):
             else:
                v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
          return JsonResponse({"data":v_data,"status":v_status},safe=False,json_dumps_params={'ensure_ascii':False})
+      except DatabaseError:
+         v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
       except json.JSONDecodeError:
          v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
          v_square_bracket_return = [v_return]

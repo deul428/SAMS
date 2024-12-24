@@ -12,6 +12,7 @@ table {
     tbody {
         tr {
             td {
+                position: relative;
                 vertical-align: middle;
                 padding: 0.1rem 0.4rem !important;
                 &.table-cell {
@@ -21,6 +22,12 @@ table {
                     text-overflow: ellipsis; /* 말줄임표 추가 */
                     min-height: 32px;
                     padding: 1rem 0.5rem;
+                }
+                button {
+                    width: 100%;
+                }
+                &:last-child {
+                    padding: 0 !important;
                 }
                   
             }

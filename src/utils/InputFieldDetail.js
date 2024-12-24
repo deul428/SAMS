@@ -23,7 +23,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             onHide(true);
         }
     }
-
     // ================= 사업 기회 조회 테이블부 핸들링 ================= 
     // ----------------- 1) 등록 및 수정 input 핸들링 -----------------
     // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 ..................... 
@@ -92,7 +91,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // v_modalPropsData 데이터 핸들링 후 input 객체에 복사
     useEffect(() => {
         if (v_modalPropsData) {
-            console.log(v_modalPropsData.essential_achievement_tf);
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD .....................
             const dateKeys = ["sale_date", "collect_money_date", "purchase_date", "contract_date"];
             dateKeys.forEach(key => {
@@ -115,7 +113,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 ...v_modalPropsData,
             }));
         }
-        console.log("v_modal data 복사 후 input: ", input);
+        // console.log("v_modal data 복사 후 input: ", input);
     }, [v_modalPropsData]);
     // ----------------- 2) 수정 시 핸들링 끝 -----------------
     // ================= 사업 기회 조회 테이블부 핸들링 끝 ================= 
@@ -124,33 +122,46 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // ================= POST ================= 
     const f_submitData = async (method, endpoint, input = null, e) => {
         e.preventDefault(); // submit 방지
-        try {
-            console.log("제출할 input: ", input);
+        let confirmMsg;
+        if (input.biz_opp_id) {
+            confirmMsg = `${input.biz_opp_id}을(를) 등록하시겠습니까?`;
+        } else {
+            alert('사업 일련 번호를 기재하십시오.');
+            return; 
+        }
+        if (window.confirm(confirmMsg)) {
+            try {
+                // console.log("제출할 input: ", input);
 
-            // 유효값 검사
+                // 유효값 검사
 
-            // 날짜 yyyy-mm-dd -> yyyymmdd
-            const dateKeys = ["sale_date", "collect_money_date", "purchase_date", "contract_date"];
-            dateKeys.forEach(key => {
-                if (input[key]) {
-                    return input[key] = input[key].replace(/-/g, "");
-                }
-            });
+                // 날짜 yyyy-mm-dd -> yyyymmdd
+                const dateKeys = ["sale_date", "collect_money_date", "purchase_date", "contract_date"];
+                dateKeys.forEach(key => {
+                    if (input[key]) {
+                        return input[key] = input[key].replace(/-/g, "");
+                    }
+                });
 
-            // 숫자 , 제거 
-            const numKeys = ["purchase_amt", "sale_amt", "sale_profit"];
-            numKeys.forEach(key => {
-                if (input[key]) {
-                    return input[key] = input[key].replace(/,/g, "");
-                }
-            });
+                // 숫자 , 제거 
+                const numKeys = ["purchase_amt", "sale_amt", "sale_profit"];
+                numKeys.forEach(key => {
+                    if (input[key]) {
+                        return input[key] = input[key].replace(/,/g, "");
+                    }
+                });
 
-            /* const response = await apiMethods[method]('select-biz-opp2/', input);
-            console.log('input Field response 송신 완료', endpoint, response);
-            return response; */
-        } catch (error) {
-            console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
-            alert('오류가 발생했습니다. 관리자에게 문의하세요.', error);
+                alert('정상적으로 등록되었습니다.');
+                onHide(true);
+            
+                /* const response = await apiMethods[method]('select-biz-opp2/', input);
+                console.log('input Field response 송신 완료', endpoint, response);
+                return response; */
+            } catch (error) {
+                console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
+                alert('오류가 발생했습니다. 관리자에게 문의하세요.', error);
+            }
+
         }
     }
     // ================= POST 끝 ================= 

@@ -100,13 +100,15 @@ const InputField = ({ v_componentName, v_propsData }) => {
             console.warn('v_propsData가 비어 있습니다.');
             return;
         }
+        const { retrieve_biz_opp, ...v_filter } = v_propsData.data;
         switch(v_componentName) {
             case `bizOpp`: 
-                const { retrieve_biz_opp, ...v_filter } = v_propsData.data;
                 setData(v_filter); // 상태 업데이트
                 setEndpoint(roots[4].endpoint);
                 break;
             case `activity`: 
+                setData(v_filter); // 상태 업데이트
+                setEndpoint(roots[4].endpoint);
                 
                 break;
             default:
@@ -189,6 +191,9 @@ const InputField = ({ v_componentName, v_propsData }) => {
                 case 'bizOpp':
                     f_teamLinkedDept(); 
                     break;
+                case 'activity':
+                    f_teamLinkedDept(); 
+                    break;
                 default: 
                     // console.log(v_componentName);
                     break;
@@ -225,32 +230,55 @@ const InputField = ({ v_componentName, v_propsData }) => {
                         <div className='inputField'>
                             <div className='searchItem'>
                                 <Row className='d-flex justify-content-between'>
-                                    <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                    {/* <span >
+                                        <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                            <Form.Label className=''>계약 일자</Form.Label>
+                                            <div>
+                                                <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
+                                                />
+                                                <span style={{margin: '0 10px'}}>~</span>
+                                                <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
+                                            </div>
+                                        </Col>
+                                        <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                            <Form.Label className=''>매출 일자</Form.Label>
+                                            <div>
+                                                <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
+                                                <span style={{margin: '0 10px'}}>~</span>
+                                                <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
+                                            </div>
+                                        </Col>
+
+                                    </span>
+                                    <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
+                                        <Button variant='info btnLeft' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
+                                    </Col> */}
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>계약 일자</Form.Label>
-                                        <div>
+                                        <div className='d-flex'>
                                             <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
                                             />
                                             <span style={{margin: '0 10px'}}>~</span>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </div>
                                     </Col>
-                                    <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>매출 일자</Form.Label>
-                                        <div>
+                                        <div className='d-flex'>
                                             <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                             <span style={{margin: '0 10px'}}>~</span>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
                                         </div>
                                     </Col>
-                                    <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
-                                        <Button variant='info btnLeft' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
+                                    <Col xs={12} md={2} lg={2} className='btnArea col d-flex justify-content-end'>
+                                        <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
                                     </Col>
                                 </Row>
                                 <Row className='d-flex justify-content-between'>
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>진행률</Form.Label>
                                         <div>
-                                            <Form.Select size='sm' aria-label='selectBox' className='pro_1' id='fromSelect' value={input.a_progress_rate_code_from || ''} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_1 ' id='fromSelect' value={input.a_progress_rate_code_from || ''} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
                                                 <option>선택</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                     (
@@ -277,11 +305,11 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                             </Form.Select>
                                         </div>
                                     </Col>
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label htmlFor='inputChck' className=''>필달 여부</Form.Label>
                                         <Form.Check type={`checkbox`} id={`inputChck`}  value={input.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
                                     </Col>
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
+                                    <Col xs={12} md={2} lg={2} className='col d-flex align-items-center justify-content-start'>
                                     </Col>
                                 </Row>
                                 <Row className='d-flex justify-content-between'>
@@ -330,25 +358,48 @@ const InputField = ({ v_componentName, v_propsData }) => {
                         <div className='inputField'>
                             <div className='searchItem'>
                                 <Row className='d-flex justify-content-between'>
-                                    <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                    {/* <span >
+                                        <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                            <Form.Label className=''>계약 일자</Form.Label>
+                                            <div>
+                                                <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
+                                                />
+                                                <span style={{margin: '0 10px'}}>~</span>
+                                                <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
+                                            </div>
+                                        </Col>
+                                        <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                            <Form.Label className=''>매출 일자</Form.Label>
+                                            <div>
+                                                <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
+                                                <span style={{margin: '0 10px'}}>~</span>
+                                                <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
+                                            </div>
+                                        </Col>
+
+                                    </span>
+                                    <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
+                                        <Button variant='info btnLeft' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
+                                    </Col> */}
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>계약 일자</Form.Label>
-                                        <div>
+                                        <div className='d-flex'>
                                             <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
                                             />
                                             <span style={{margin: '0 10px'}}>~</span>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </div>
                                     </Col>
-                                    <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>매출 일자</Form.Label>
-                                        <div>
+                                        <div className='d-flex'>
                                             <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                             <span style={{margin: '0 10px'}}>~</span>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
                                         </div>
                                     </Col>
-                                    <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
-                                        <Button variant='info btnLeft' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
+                                    <Col xs={12} md={2} lg={2} className='btnArea col d-flex justify-content-end'>
+                                        <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
                                     </Col>
                                 </Row>
                                 <Row className='d-flex justify-content-between'>

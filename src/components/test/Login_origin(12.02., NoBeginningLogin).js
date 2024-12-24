@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 import { login } from '../../redux/reducers/AuthSlice';
 import roots from '../../utils/datas/Roots';
 import { apiMethods } from '../../utils/api';
-import ChangePw from '../ChangePw';
-
 import { Form, Button, FloatingLabel } from 'react-bootstrap';
 import { ArrowRight, Person } from 'react-bootstrap-icons';
 import ci from '../assets/img/AJ_ICT.svg';
@@ -144,7 +142,6 @@ const AuthLogin = () => {
                 </form>
                 {/* {isBeginningLogin && */}
                 <>
-                    <ChangePw />
                     <h2></h2>
                     <form>
                         <div className='inputFields idField'>

@@ -162,9 +162,6 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
         case `bizOppHistory`: 
           htmlContent = (
             <>
-            <div className='wrap'>
-              사업 기회 넘버 및 사업명 들어갈 필드
-            </div>
             <Table bordered hover responsive {...getTableProps()}>
               <thead>
                 {headerGroups.map((headerGroup) => {

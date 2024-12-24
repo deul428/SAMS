@@ -31,13 +31,13 @@ const api = {
     request: async (method, url, data = null) => {
         try {
             console.log('api 부\n출처: ', url);
-            if (method === 'post') {
+            /* if (method === 'post') {
                 console.log(data);
                 // if (Object.values(data).some(e => !e)){
                 //     alert(`user input is Null or ''.`);
                 // }
                 // return;
-            };
+            }; */
             const response = await apiUrl({ method, url, data });
             const cookies = document.cookie;
             // const test = response.set_cookie('csrftoken', 'your_token_value', secure=True, httponly=True, samesite='Lax');
@@ -45,11 +45,10 @@ const api = {
             // console.log(cookies, test);
             
             if (method !== 'get') {
-                console.log(`API Endpoint: ${url}\nData: ${JSON.stringify(data, null, 2)}`);
-            } else {
-                console.log(`API Get\nresponse: `, response);
-            }
-            console.log('api 부 끝');
+                console.log(`API Post/Patch/Put/Del (송신)\nEndpoint: ${url}\nData:`, data);
+            } /* else {
+                console.log(`API Get (수신)\nEndpoint:\nresponse: `, response);
+            } */
             return response.data;
         } catch (error) {
             const status = error.response?.STATUS;

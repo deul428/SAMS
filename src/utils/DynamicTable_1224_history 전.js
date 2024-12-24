@@ -16,15 +16,16 @@ function DynamicTable({ v_componentName, v_propsData }) {
   const [v_modalPropsData, setVModalPropsData] = useState(null);
   const [v_childComponent, setVChildComponent] = useState(null);
 
-  const openModal = (e, handling, isHistory) => {
+  const openModal = (e, handling) => {
     // console.log('e: ', e, '\nhandling: ', handling);
-    if (isHistory === null) {
+    if (handling !== null) {
       setVChildComponent('InputFieldDetail');
+      setVModalPropsData(handling);
     } else {
       setVChildComponent('BizOppHistory');
+      setVModalPropsData(null);
       e.stopPropagation(); //이벤트 전파 방지
     }
-    setVModalPropsData(handling);
     setShowModal(true);
   }
   const closeModal = () => {
@@ -218,7 +219,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
                   return (
                     <tr key={key} {...restProps} 
                     onClick={(e) => {
-                      openModal(e, row.original, null);
+                      openModal(e, row.original);
                     }}
                     >
 
@@ -230,7 +231,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
                             ? 
                             (
                             <Button size="sm" variant="light" onClick={(e) => {
-                              openModal(e, row.original, 'history');
+                              openModal(e, null);
                             }}>
                               이력
                             </Button>)
@@ -318,7 +319,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
       {v_handlingHtml}
       {pagination}
       {
-        (v_childComponent === 'InputFieldDetail'/*  && v_modalPropsData */) 
+        (v_childComponent === 'InputFieldDetail' && v_modalPropsData) 
         ? 
         (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData}/> )
         :

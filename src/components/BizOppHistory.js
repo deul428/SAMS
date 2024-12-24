@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { apiMethods } from '../utils/api.js';
+
 import DynamicTableChild from '../utils/DynamicTableChild.js';
+import InputField from '../utils/InputField.js';
+import InputFieldDetail from "../utils/InputFieldDetail.js";
+
 import { Modal, Button, Form, Row, Col } from 
 "react-bootstrap";
+import '../styles/_search.scss';
+import '../styles/_customModal.scss';
 
-const BizOppHistory = ({ show, onHide }) => {
+const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
+    // console.log("v_modalPropsData: ", v_modalPropsData);
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
@@ -20,15 +27,14 @@ const BizOppHistory = ({ show, onHide }) => {
 
             const response = await apiMethods[method](endpoint, input);
             // const response = await apiMethods.get(endpoint);
-            // console.log(response.data.retrieve_biz_opp);
+            console.log(`API Get (수신)\nEndpoint: (BizOppHistory.js) ${endpoint}\nresponse: `, response);
             setData(response);
-            // updateUI();
             return response;
         } catch (error) {
             setErrMsg(`f_handlingData(${method}) error! ${error.message}`);
             throw error;
         }
-    }
+    };
 /*     if (show) {
         console.log('모달 열림!');
         f_handlingData();
@@ -1957,8 +1963,8 @@ const BizOppHistory = ({ show, onHide }) => {
     }
 
     useEffect(() => {
-        // console.log("userCheck: ", userCheck);
         f_handlingData('post', endpoint, userCheck);
+        
         /* f_handlingData('get', endpoint).then(response => {
             console.log("데이터 로드 완료:", response);
         }).catch(error => {
@@ -1969,24 +1975,39 @@ const BizOppHistory = ({ show, onHide }) => {
 
 
     useEffect(() => {
-        // console.log(endpoint, data, data.data);
         const updateUI = () => {        
             if (!data.data?.retrieve_biz_opp?.length > 0) {
-                console.log("아직 데이터 안 들어왔어요...");
                 return <div>Loading...</div>;
             } else {
-                console.log('이제 들어왔어요!');
                 setVHandlingHtml(
-                    <Modal size='xl' fullscreen show={show} onHide={onHide}>
+                    <Modal size='xl' fullscreen show={show} onHide={onHide} id='bizOppHistory'>
                         <Modal.Header closeButton>
                             <Modal.Title className='fs-3'>
                                 사업 (기회) 이력 조회
                             </Modal.Title>
                         </Modal.Header> 
                         <Modal.Body>
-                            <Button variant="info" className='btnLeft'>조회</Button>
                             <div className='modalcntnt'>
-                                <div className='bizoppHistoryArea'>
+                                <div className="inputField">
+                                    <div className="searchItem">
+                                        {(v_modalPropsData) ? 
+                                            (
+                                                <>
+                                                    <div className="infoArea">
+                                                        <span className="me-2">사업 일련 번호</span>{v_modalPropsData.biz_opp_id}
+                                                        <span className="ms-4 me-2">사업명</span>{v_modalPropsData.biz_opp_name}
+                                                    </div>
+                                                    <Button variant="info" className=''>조회</Button>
+                                                </>
+                                            )
+                                            :
+                                            ('')
+                                        }
+                                        
+                                    </div>
+
+                                </div>
+                                <div className='bizoppHistoryArea mt-4'>
                                     <DynamicTableChild v_componentName={'bizOppHistory'} v_propsData={data}/>
                                 </div>
                             </div>
@@ -2005,9 +2026,11 @@ const BizOppHistory = ({ show, onHide }) => {
     }, [data, show, onHide]);
   
     return (
-        <div id='bizOppHistory'>
+        // <div id='bizOppHistory'>
+        <>
             {v_handlingHtml}
-        </div>
+        </>
+        // </div>
     )
 }
 

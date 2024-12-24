@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { login } from '../redux/reducers/AuthSlice';
 import roots from '../utils/datas/Roots';
 import { apiMethods } from '../utils/api';
-import ChangePw from './ChangePw';
 
 import { Form, Button, FloatingLabel } from 'react-bootstrap';
 import { ArrowRight, Person } from 'react-bootstrap-icons';
@@ -82,12 +81,10 @@ const AuthLogin = () => {
                     alert('비밀번호는 영문과 숫자를 조합하여 5자 이상으로 입력해 주십시오.');
                     return;
                 }
-
                 if (pwInput.a_new_cipher === "") {
                     alert(`변경하려는 비밀번호를 입력하세요.`);
                     return;
                 }
-                
                 if (pwInput.a_new_cipher === pwInput.a_old_cipher) {
                     alert(`현재 비밀번호와 변경하려는 비밀번호가 동일합니다. 다른 비밀번호를 입력하세요.`);
                     return;
@@ -101,10 +98,10 @@ const AuthLogin = () => {
 
                 await dispatch(login({ userId: auth.userId, userPw: pwInput.a_new_cipher }));
                 
-                // 이전 경로로 리디렉션
-                const from = location.state?.from?.pathname || `/${roots[8].endpoint}`;
-                setRedirect(from);
                 console.log("========= 비밀번호 변경 끝 =========");
+                // 이전 경로로 리디렉션
+                const from = location.state?.from?.pathname || `/${roots[8].url}`;
+                setRedirect(from);
                 return response;
             } else {
                 if (!input.a_user_id || !input.a_cipher) {
@@ -129,11 +126,12 @@ const AuthLogin = () => {
                             }
                         } else {
                             // 이전 경로로 리디렉션
-                            // const session = localStorage.setItem("sessionid", response.data.sessionid);
-                            // console.log("session: ", response.data.sessionid)
                             const from = location.state?.from?.pathname || `/${roots[8].url}`;
                             setRedirect(from);
                             return response;
+                            // const session = localStorage.setItem("sessionid", response.data.sessionid);
+                            // console.log("session: ", response.data.sessionid)
+                            // console.log(location.state?.from?.pathname);
                         }
                     }
                 } else if (response[0].STATUS === 'FAIL') {

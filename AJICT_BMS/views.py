@@ -188,12 +188,13 @@ def f_select_biz_opp1(request):
    #    return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
    # else:
 
-   v_session_user_id = ''
-   #if request.method == 'POST':
-   #   v_body = json.loads(request.body)
-   #   v_session_user_id = v_body.get('a_session_user_id')
 
-   v_session_user_id = 'mj.lee'
+   v_session_user_id = ''
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_session_user_id = v_body.get('a_session_user_id')
+
+   #v_session_user_id = 'mj.lee'
 
    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
    logging.debug(f"f_select_biz_opp1()에서의 v_session_user_id : {v_session_user_id}")

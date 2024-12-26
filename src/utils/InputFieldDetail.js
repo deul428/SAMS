@@ -229,22 +229,16 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                     <div className='searchItem bizoppArea'>
                                         <>
                                         <Row className='d-flex justify-content-between'>
-                                            <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
+                                            <Col xs={12} md={4} lg={4} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='사업 일련 번호'>
                                                     <Form.Control name='biz_opp_id' onChange={f_handlingInput} size='sm' type='text' className=''  placeholder='사업 일련 번호'
                                                     value={input.biz_opp_id}/>
                                                 </FloatingLabel>
                                             </Col>
-                                            <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
+                                            <Col xs={12} md={8} lg={8} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='사업 (기회) 명'>
                                                 <Form.Control as='textarea' name='biz_opp_name'  onChange={f_handlingInput} size='sm' type='text' className='' placeholder='사업 일련 번호'
                                                 value={input.biz_opp_name || ''} />
-                                                </FloatingLabel>
-                                            </Col>
-                                            <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
-                                                <FloatingLabel label='판품 번호'>
-                                                <Form.Control disabled name='sale_item_no' onChange={f_handlingInput} size='sm' type='text' className='' placeholder='판품 번호'
-                                                value={input.sale_item_no || ''} />
                                                 </FloatingLabel>
                                             </Col>
                                         </Row>
@@ -289,10 +283,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         </Row>
                                         <Row className='d-flex justify-content-between'>
                                             <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
-                                                <FloatingLabel label='사업 구분'>
-                                                    <Form.Select size='sm' aria-label='사업 구분' className='' name='biz_section2_name' onChange={f_handlingInput} 
-                                                    value={input.biz_section2_name || ''} >
-                                                        <option value={(v_modalPropsData ? v_modalPropsData.biz_section2_name : '선택')}>{(v_modalPropsData ? v_modalPropsData.biz_section2_name : '선택')}</option>
+                                                <FloatingLabel label='진행률'>
+                                                    <Form.Select size='sm' aria-label='selectBox' className='' name='progress2_rate_name' onChange={f_handlingInput} 
+                                                    value={input.progress2_rate_name || ''} >
+                                                        <option value={(v_modalPropsData ? v_modalPropsData.progress2_rate_name : '선택')}>{(v_modalPropsData ? v_modalPropsData.progress2_rate_name : '선택')}</option>
                                                         <option value='1'>One</option>
                                                         <option value='2'>Two</option>
                                                         <option value='3'>Three</option>
@@ -300,30 +294,20 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </FloatingLabel>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
-                                                <FloatingLabel label='제품'>
-                                                    <Form.Select size='sm' aria-label='selectBox' className='' name='product2_name' onChange={f_handlingInput} 
-                                                    value={input.product2_name || ''} >
-                                                        <option value={(v_modalPropsData ? v_modalPropsData.product2_name : '선택')}>{(v_modalPropsData ? v_modalPropsData.product2_name : '선택')}</option>
-                                                        <option value='1'>One</option>
-                                                        <option value='2'>Two</option>
-                                                        <option value='3'>Three</option>
-                                                    </Form.Select>
+                                                <FloatingLabel label='판품 번호'>
+                                                <Form.Control disabled name='sale_item_no' onChange={f_handlingInput} size='sm' type='text' className='' placeholder='판품 번호'
+                                                value={input.sale_item_no || ''} />
                                                 </FloatingLabel>
                                             </Col>
-                                            <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
-                                                <FloatingLabel label='수금 일자'>
-                                                    <Form.Control name='collect_money_date' size='sm' type='date' className='' onChange={f_handlingInput}
-                                                    value={input.collect_money_date || ''} />
-                                                </FloatingLabel>
-                                            </Col>
-                                        </Row>
-                                        <Row className='d-flex justify-content-between'>
                                             <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='계약 일자'>
                                                     <Form.Control name='contract_date' size='sm' type='date' className='' onChange={f_handlingInput}
                                                     value={input.contract_date || ''} />
                                                 </FloatingLabel>
                                             </Col>
+                                        </Row>
+                                        
+                                        <Row className='d-flex justify-content-between'>
                                             <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='매출 일자'>
                                                     <Form.Control name='sale_date' size='sm' type='date' className='' onChange={f_handlingInput}
@@ -334,6 +318,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 <FloatingLabel label='매입 일자'>
                                                     <Form.Control name='purchase_date' size='sm' type='date' className='' onChange={f_handlingInput}
                                                     value={input.purchase_date || ''} />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
+                                                <FloatingLabel label='수금 일자'>
+                                                    <Form.Control name='collect_money_date' size='sm' type='date' className='' onChange={f_handlingInput}
+                                                    value={input.collect_money_date || ''} />
                                                 </FloatingLabel>
                                             </Col>
                                         </Row>
@@ -359,15 +349,28 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         </Row>
                                         <Row className='d-flex justify-content-between'>
                                             <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
-                                                <FloatingLabel label='진행률'>
-                                                    <Form.Select size='sm' aria-label='selectBox' className='' name='progress2_rate_name' onChange={f_handlingInput} 
-                                                    value={input.progress2_rate_name || ''} >
-                                                        <option value={(v_modalPropsData ? v_modalPropsData.progress2_rate_name : '선택')}>{(v_modalPropsData ? v_modalPropsData.progress2_rate_name : '선택')}</option>
+                                                <FloatingLabel label='사업 구분'>
+                                                    <Form.Select size='sm' aria-label='사업 구분' className='' name='biz_section2_name' onChange={f_handlingInput} 
+                                                    value={input.biz_section2_name || ''} >
+                                                        <option value={(v_modalPropsData ? v_modalPropsData.biz_section2_name : '선택')}>{(v_modalPropsData ? v_modalPropsData.biz_section2_name : '선택')}</option>
                                                         <option value='1'>One</option>
                                                         <option value='2'>Two</option>
                                                         <option value='3'>Three</option>
                                                     </Form.Select>
                                                 </FloatingLabel>
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
+                                                <FloatingLabel label='제품'>
+                                                    <Form.Select size='sm' aria-label='selectBox' className='' name='product2_name' onChange={f_handlingInput} 
+                                                    value={input.product2_name || ''} >
+                                                        <option value={(v_modalPropsData ? v_modalPropsData.product2_name : '선택')}>{(v_modalPropsData ? v_modalPropsData.product2_name : '선택')}</option>
+                                                        <option value='1'>One</option>
+                                                        <option value='2'>Two</option>
+                                                        <option value='3'>Three</option>
+                                                    </Form.Select>
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                             </Col>
                                         </Row>
                                         </>

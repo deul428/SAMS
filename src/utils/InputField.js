@@ -5,8 +5,9 @@ import { setLocation } from '../redux/reducers/LocationSlice';
 import { apiMethods } from './api';
 
 import roots from './datas/Roots';
-import { Button, Form, Row, Col } from 'react-bootstrap';
+import { Button, Form, Row, Col, FloatingLabel } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
+import '../styles/_search.scss';
 
 const InputField = ({ v_componentName, v_propsData }) => {
     const dispatch = useDispatch();
@@ -229,30 +230,114 @@ const InputField = ({ v_componentName, v_propsData }) => {
                         <>
                         <div className='inputField'>
                             <div className='searchItem'>
+                                <>
                                 <Row className='d-flex justify-content-between'>
-                                    {/* <span >
-                                        <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
-                                            <Form.Label className=''>계약 일자</Form.Label>
-                                            <div>
-                                                <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
-                                                />
-                                                <span style={{margin: '0 10px'}}>~</span>
-                                                <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
-                                            </div>
-                                        </Col>
-                                        <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
-                                            <Form.Label className=''>매출 일자</Form.Label>
-                                            <div>
-                                                <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
-                                                <span style={{margin: '0 10px'}}>~</span>
-                                                <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
-                                            </div>
-                                        </Col>
+                                    <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='계약 일자 From'>
+                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
+                                            />
+                                        </FloatingLabel>
+                                        <span style={{margin: '0 10px'}}>~</span>
+                                        <FloatingLabel label='계약 일자 To'>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='매출 일자 From'>
+                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
+                                        </FloatingLabel>
+                                            <span style={{margin: '0 10px'}}>~</span>
+                                        <FloatingLabel label='매출 일자 To'>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col xs={12} md={2} lg={4} className='btnArea col d-flex justify-content-end floating'>
+                                        <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
+                                    </Col>
+                                </Row>
+                                <Row className='d-flex justify-content-between'>
+                                    <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='진행률 From'>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_1 ' id='fromSelect' value={input.a_progress_rate_code_from || ''} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
+                                                <option>선택</option>
+                                                {(Object.keys(data).length > 0 ? 
+                                                    (
+                                                        data.search_commonness_pro.map((e) => {
+                                                            return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
+                                                        })
+                                                    )
+                                                    :
+                                                    ('')
+                                                )}
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                        <span style={{margin: '0 10px'}}>~</span>
+                                        <FloatingLabel label='진행률 To'>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id='fromSelect' value={input.a_progress_rate_code_to || ''} name='a_progress_rate_code_to' onChange={f_handleToChange}>
+                                                <option>선택</option>
+                                                {(Object.keys(data).length > 0 ? 
+                                                    (
+                                                        v_filteredProTo.map((e) => {
+                                                            return <option key={e.key} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
+                                                        })
+                                                    )
+                                                    :
+                                                    ('')
+                                                )}
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <Form.Label htmlFor='inputChck' className=''>필달 여부</Form.Label>
+                                        <Form.Check type={`checkbox`} id={`inputChck`}  value={input.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
+                                    </Col>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    </Col>
+                                </Row>
+                                <Row className='d-flex justify-content-between'>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='본부'>
+                                            <Form.Select id='select1' size='sm' aria-label='selectBox' value={input.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept}>
+                                                <option>-- 본부를 선택하세요 --</option>
+                                                {(Object.keys(data).length > 0 ? 
+                                                (
+                                                    v_depts.map((dept) => (
+                                                    <option key={dept.dept_id} value={dept.dept_id}>
+                                                        {dept.dept_name}
+                                                    </option>
+                                                    ))
+                                                )
+                                                :
+                                                ('')
+                                                )}
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='팀'>
+                                            <Form.Select id='select2' size='sm' aria-label='selectBox' /* value={input.a_dept_id} */ name='a_dept_id' onChange={f_handlingDept} disabled={!v_selectTeam.length}>
+                                                <option>-- 팀을 선택하세요 --</option>
+                                                {v_selectTeam.map((team) => (
+                                                    <option key={team.dept_id} value={team.dept_id || ''}>
+                                                        {team.dept_name}
+                                                    </option>
+                                                ))}
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='영업 담당자'>
+                                            <Form.Control size='sm' type='text' id='userName' value={input.a_user_name} name='a_user_name' onChange={f_handlingInput}/>
+                                        </FloatingLabel>
+                                    </Col>
+                                </Row>
+                                </>
 
-                                    </span>
-                                    <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
-                                        <Button variant='info btnLeft' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
-                                    </Col> */}
+
+
+
+                                <div style={{"display":"none"}}>
+                                <Row className='d-flex justify-content-between'>
                                     <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>계약 일자</Form.Label>
                                         <div className='d-flex'>
@@ -347,6 +432,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                         <Form.Control size='sm' type='text' placeholder='담당자명을 입력하세요' id='userName' /* value={input.a_user_name} */ name='a_user_name' onChange={f_handlingInput}/>
                                     </Col>
                                 </Row>
+                                </div>
                             </div>
                         </div>
                         </>
@@ -357,30 +443,75 @@ const InputField = ({ v_componentName, v_propsData }) => {
                         <>
                         <div className='inputField'>
                             <div className='searchItem'>
+                                <>
                                 <Row className='d-flex justify-content-between'>
-                                    {/* <span >
-                                        <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
-                                            <Form.Label className=''>계약 일자</Form.Label>
-                                            <div>
-                                                <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
-                                                />
-                                                <span style={{margin: '0 10px'}}>~</span>
-                                                <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
-                                            </div>
-                                        </Col>
-                                        <Col xs={12} md={12} lg={5} className='col d-flex align-items-center justify-content-start'>
-                                            <Form.Label className=''>매출 일자</Form.Label>
-                                            <div>
-                                                <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
-                                                <span style={{margin: '0 10px'}}>~</span>
-                                                <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
-                                            </div>
-                                        </Col>
+                                    <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='계약 일자 From'>
+                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
+                                            />
+                                        </FloatingLabel>
+                                        <span style={{margin: '0 10px'}}>~</span>
+                                        <FloatingLabel label='계약 일자 To'>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='매출 일자 From'>
+                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
+                                        </FloatingLabel>
+                                            <span style={{margin: '0 10px'}}>~</span>
+                                        <FloatingLabel label='매출 일자 To'>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col xs={12} md={2} lg={4} className='btnArea col d-flex justify-content-end floating'>
+                                        <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
+                                    </Col>
+                                </Row>
+                                <Row className='d-flex justify-content-between'>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='본부'>
+                                            <Form.Select id='select1' size='sm' aria-label='selectBox' value={input.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept}>
+                                                <option>-- 본부를 선택하세요 --</option>
+                                                {(Object.keys(data).length > 0 ? 
+                                                (
+                                                    v_depts.map((dept) => (
+                                                    <option key={dept.dept_id} value={dept.dept_id}>
+                                                        {dept.dept_name}
+                                                    </option>
+                                                    ))
+                                                )
+                                                :
+                                                ('')
+                                                )}
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='팀'>
+                                            <Form.Select id='select2' size='sm' aria-label='selectBox' /* value={input.a_dept_id} */ name='a_dept_id' onChange={f_handlingDept} disabled={!v_selectTeam.length}>
+                                                <option>-- 팀을 선택하세요 --</option>
+                                                {v_selectTeam.map((team) => (
+                                                    <option key={team.dept_id} value={team.dept_id || ''}>
+                                                        {team.dept_name}
+                                                    </option>
+                                                ))}
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                        <FloatingLabel label='영업 담당자'>
+                                            <Form.Control size='sm' type='text' id='userName' value={input.a_user_name} name='a_user_name' onChange={f_handlingInput}/>
+                                        </FloatingLabel>
+                                    </Col>
+                                </Row>
+                                </>
 
-                                    </span>
-                                    <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>
-                                        <Button variant='info btnLeft' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
-                                    </Col> */}
+
+
+
+                                <div style={{"display":"none"}}>
+                                <Row className='d-flex justify-content-between'>
                                     <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>계약 일자</Form.Label>
                                         <div className='d-flex'>
@@ -400,6 +531,44 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     </Col>
                                     <Col xs={12} md={2} lg={2} className='btnArea col d-flex justify-content-end'>
                                         <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
+                                    </Col>
+                                </Row>
+                                <Row className='d-flex justify-content-between'>
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                        <Form.Label className=''>진행률</Form.Label>
+                                        <div>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_1 ' id='fromSelect' value={input.a_progress_rate_code_from || ''} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
+                                                <option>선택</option>
+                                                {(Object.keys(data).length > 0 ? 
+                                                    (
+                                                        data.search_commonness_pro.map((e) => {
+                                                            return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
+                                                        })
+                                                    )
+                                                    :
+                                                    ('')
+                                                )}
+                                            </Form.Select>
+                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id='fromSelect' value={input.a_progress_rate_code_to || ''} name='a_progress_rate_code_to' onChange={f_handleToChange}>
+                                                <option>선택</option>
+                                                {(Object.keys(data).length > 0 ? 
+                                                    (
+                                                        v_filteredProTo.map((e) => {
+                                                            return <option key={e.key} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
+                                                        })
+                                                    )
+                                                    :
+                                                    ('')
+                                                )}
+                                            </Form.Select>
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                        <Form.Label htmlFor='inputChck' className=''>필달 여부</Form.Label>
+                                        <Form.Check type={`checkbox`} id={`inputChck`}  value={input.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
+                                    </Col>
+                                    <Col xs={12} md={2} lg={2} className='col d-flex align-items-center justify-content-start'>
                                     </Col>
                                 </Row>
                                 <Row className='d-flex justify-content-between'>
@@ -437,6 +606,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                         <Form.Control size='sm' type='text' placeholder='담당자명을 입력하세요' id='userName' /* value={input.a_user_name} */ name='a_user_name' onChange={f_handlingInput}/>
                                     </Col>
                                 </Row>
+                                </div>
                             </div>
                         </div>
                         </>

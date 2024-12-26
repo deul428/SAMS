@@ -1,5 +1,5 @@
 table {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     thead {
         th {
             vertical-align: middle;
@@ -14,7 +14,7 @@ table {
             td {
                 position: relative;
                 vertical-align: middle;
-                padding: 0.1rem 0.4rem !important;
+                padding: 0.3rem 0.6rem !important;
                 &.table-cell {
                     max-width: 250px; /* 최대 너비 */
                     overflow: hidden; /* 넘친 내용 숨김 */

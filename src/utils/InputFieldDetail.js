@@ -131,7 +131,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         }
         if (window.confirm(confirmMsg)) {
             try {
-                // console.log("제출할 input: ", input);
+                console.log("제출할 input: ", input);
 
                 // 유효값 검사
 

@@ -89,7 +89,7 @@ const Activity = () => {
             <div className='wrap'>
                 <div className='dataPostArea'>
                     {/* <InputFieldDetail show={showModal} onHide={closeModal} /> */}
-                    <div className='btnArea d-flex justify-content-end'>
+                    <div className='btnArea d-flex justify-content-end mb-2'>
                         {/* <Button variant='primary' className='me-2' onClick={openModal}>등록</Button> */}
                         <div>
                         <Button variant='success' className='me-2' onClick={''}>저장</Button>

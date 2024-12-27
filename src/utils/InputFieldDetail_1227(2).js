@@ -261,13 +261,13 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Col xs={12} md={4} lg={4} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='사업 일련 번호'>
                                                     <Form.Control name='biz_opp_id' onChange={f_handlingInput} size='sm' type='text' className=''  placeholder='사업 일련 번호'
-                                                    value={input.biz_opp_id}/>
+                                                    defaultValue={input.biz_opp_id}/>
                                                 </FloatingLabel>
                                             </Col>
                                             <Col xs={12} md={8} lg={8} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='사업 (기회) 명'>
                                                 <Form.Control as='textarea' name='biz_opp_name'  onChange={f_handlingInput} size='sm' type='text' className='' placeholder='사업 일련 번호'
-                                                value={input.biz_opp_name || ''} />
+                                                defaultValue={input.biz_opp_name || ''} />
                                                 </FloatingLabel>
                                             </Col>
                                         </Row>
@@ -275,19 +275,19 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='본부'>
                                                     <Form.Control name='high_dept_name' onChange={f_handlingInput} size='sm' type='text' className='' placeholder='본부'
-                                                    value={input.high_dept_name}/>
+                                                    defaultValue={input.high_dept_name}/>
                                                 </FloatingLabel>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='소속 팀'>
                                                     <Form.Control name='dept_name' onChange={f_handlingInput} size='sm' type='text' className='' placeholder='소속 팀'
-                                                    value={input.dept_name || ''} />
+                                                    defaultValue={input.dept_name || ''} />
                                                 </FloatingLabel>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='영업 담당자'>
                                                     <Form.Control name='user_name' onChange={f_handlingInput} size='sm' type='text' className='' placeholder='영업 담당자'
-                                                    value={input.user_name || ''} />
+                                                    defaultValue={input.user_name || ''} />
                                                 </FloatingLabel>
                                             </Col>
                                         </Row>
@@ -297,20 +297,20 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     <Form.Control name='last_client_com2_name' onChange={f_handlingInput} size='sm' type='text' className='' placeholder='최종 고객사'
                                                     onCompositionStart={handleCompositionStart}
                                                     onCompositionEnd={handleCompositionEnd}
-                                                    value={input.last_client_com2_name}/>
+                                                    defaultValue={input.last_client_com2_name}/>
                                                 </FloatingLabel>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='매출처'>
                                                     <Form.Control name='sale_com2_name' onChange={f_handlingInput} size='sm' type='text' className='' placeholder='매출처'
-                                                    value={input.sale_com2_name || ''} />
+                                                    defaultValue={input.sale_com2_name || ''} />
                                                 </FloatingLabel>
                                             </Col>
                                             <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                 <Form.Label htmlFor='inputChck2'
                                                 onClick={() => console.log('Label clicked')}>필달 여부</Form.Label>
                                                 <Form.Check type={`checkbox`} id={`inputChck2`} name='essential_achievement_tf' onChange={f_handlingInput}
-                                                checked={input.essential_achievement_tf || false} />
+                                                defaultChecked={input.essential_achievement_tf || false} />
                                             </Col>
                                         </Row>
                                         <Row className='d-flex justify-content-between'>

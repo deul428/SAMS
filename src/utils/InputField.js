@@ -289,7 +289,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <Form.Label htmlFor='inputChck' className=''>필달 여부</Form.Label>
-                                        <Form.Check type={`checkbox`} id={`inputChck`}  value={input.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
+                                        <Form.Check type={`checkbox`} id={`inputChck`} value={input.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                     </Col>

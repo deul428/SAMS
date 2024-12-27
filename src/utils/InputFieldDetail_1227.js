@@ -87,46 +87,38 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const [isComposing, setIsComposing] = useState(false);
     const f_handlingInput = (e) => {
         const { name, value, type, checked } = e.target;
-        // 조합 중에는 값만 유지
-        /* if (isComposing) {
-            return;
-        } */
-        setInput((prevInput) => ({
-            ...prevInput,
-            [name]: type === 'checkbox' ? checked : value, //e.target.name의 값을 키로, e.target.value를 값으로 사용
-        }));
+        if (!isComposing) {
+            setInput((prevInput) => ({
+                ...prevInput,
+                [name]: type === 'checkbox' ? checked : value, //e.target.name의 값을 키로, e.target.value를 값으로 사용
+            }));
 
-        const id = input.biz_opp_id;
-        // 변화 감지 추출
-        setChangeInput((changeInput) => ({
-            ...changeInput,
-            biz_opp_id: id,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
-        
+            const id = input.biz_opp_id;
+            // 변화 감지 추출
+            setChangeInput((changeInput) => ({
+                ...changeInput,
+                biz_opp_id: id,
+                [name]: type === 'checkbox' ? checked : value,
+            }));
+        }
         
     };
     const handleCompositionStart = () => {
-        // setIsComposing(true); // 조합 시작
+        setIsComposing(true); // 조합 시작
         console.log("Composition started");
     };
 
     const handleCompositionEnd = (e) => {
-        // setIsComposing(false); // 조합 끝
+        setIsComposing(false); // 조합 끝
         console.log("Composition ended with value:", e.target.value);
-        const { name, value } = e.target;
-        // 조합 완료 후 최종 상태 업데이트
-        setInput((prevInput) => ({
-            ...prevInput,
-            [name]: value,
-        }));
+        f_handlingInput(e); // 조합 완료 후 상태 업데이트
     };
     
     // 변화 감지 추출 디버깅용
-    useEffect(() => {
+/*     useEffect(() => {
         console.log('changeInput: ', changeInput);
         console.log('input: ', input);
-    }, [changeInput, input]);
+    }, [changeInput, input]); */
     
 
     // 앞으로 필요한 것: 수정 누를 시 변화 키만 전송. 이때, 등록을 누를 시에도 input이 아닌 변화 키(changeInput)를 전송해도 되는지 체크해 보기. 또한 등록 후 수정 시 변화 키를 불러와도 괜찮은지 테스트. 
@@ -160,13 +152,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             setInput((prevInput) => ({
                 ...prevInput,
                 ...v_modalPropsData,
-            }));
-
-            const id = v_modalPropsData.biz_opp_id;
-
-            // 컴포넌트 호출 시 modal data의 사업 기회 id 복사
-            setChangeInput(() => ({
-                biz_opp_id: id,
             }));
         }
         // console.log('v_modal data 복사 후 input: ', input);
@@ -588,7 +573,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         };
 
         updateUI();
-    }, [/* currentPath */, show, onHide, input, changeInput, v_modalPropsData]);
+    }, [/* currentPath */, show, onHide, /* input */, changeInput, v_modalPropsData]);
 
     return <div id='inputFieldDetail'>{v_handlingHtml}</div>;
 };

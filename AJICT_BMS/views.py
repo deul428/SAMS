@@ -479,6 +479,12 @@ def f_select_biz_opp2(request):
             #v_dept_id = v_data_session[0]['dept_id']
          v_contract_date_from = request.POST.get('a_contract_date_from')
          v_contract_date_to = request.POST.get('a_contract_date_to')
+
+         logging.debug(f"################################################################################")
+         logging.debug(f"f_select_biz_opp2()에서의 v_contract_date_from : " + v_contract_date_from)
+         logging.debug(f"f_select_biz_opp2()에서의 v_contract_date_to : " + v_contract_date_to)
+         logging.debug(f"################################################################################")
+
          v_sale_date_from = request.POST.get('a_sale_date_from')
          v_sale_date_to = request.POST.get('a_sale_date_to')
          v_headquarters_dept_id = request.POST.get('a_headquarters_dept_id')
@@ -653,9 +659,9 @@ def f_select_biz_opp2(request):
          v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
                                      B.detail_no"
 
-         logging.debug(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-         logging.debug(f"f_select_biz_opp2()에서의 v_sql_biz_opp : " + v_sql_biz_opp)
-         logging.debug(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+         #logging.debug(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+         #logging.debug(f"f_select_biz_opp2()에서의 v_sql_biz_opp : " + v_sql_biz_opp)
+         #logging.debug(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_biz_opp,v_param2)

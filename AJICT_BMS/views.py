@@ -258,13 +258,13 @@ def f_select_biz_opp1(request):
             #logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
 
          v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp":[]}
-         v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE SUBSTRING(dept_id FROM 4 FOR 4) = '0000' ORDER BY dept_id"""
+         v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 5 ORDER BY dept_id"""
          with connection.cursor() as v_cursor_headquarters:
             v_cursor_headquarters.execute(v_sql_headquarters)
             v_columns_headquarters = [v_column[0] for v_column in v_cursor_headquarters.description]
             v_rows_headquarters = v_cursor_headquarters.fetchall()
             v_data["search_headquarters"] = [dict(zip(v_columns_headquarters,row)) for row in v_rows_headquarters]
-         v_sql_team = """SELECT * FROM ajict_bms_schema.dept WHERE SUBSTRING(dept_id FROM 4 FOR 4) != '0000' AND SUBSTRING(dept_id FROM 6 FOR 2) = '00' ORDER BY dept_id"""
+         v_sql_team = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 4 ORDER BY dept_id"""
          with connection.cursor() as v_cursor_team:
             v_cursor_team.execute(v_sql_team)
             v_columns_team = [v_column[0] for v_column in v_cursor_team.description]
@@ -477,16 +477,16 @@ def f_select_biz_opp2(request):
             v_responsibility2_code = v_data_session[0]['responsibility2_code']
             #v_user_id = v_data_session[0]['user_id']
             #v_dept_id = v_data_session[0]['dept_id']
-         v_contract_date_from = request.POST.get('a_contract_date_from')
-         v_contract_date_to = request.POST.get('a_contract_date_to')
-         v_sale_date_from = request.POST.get('a_sale_date_from')
-         v_sale_date_to = request.POST.get('a_sale_date_to')
-         v_headquarters_dept_id = request.POST.get('a_headquarters_dept_id')
+         v_contract_date_from = v_body.get('a_contract_date_from')
+         v_contract_date_to = v_body.get('a_contract_date_to')
+         v_sale_date_from = v_body.get('a_sale_date_from')
+         v_sale_date_to = v_body.get('a_sale_date_to')
+         v_headquarters_dept_id = v_body.get('a_headquarters_dept_id')
 
-         v_team_dept_id = request.POST.get('a_dept_id')
+         v_team_dept_id = v_body.get('a_dept_id')
          #v_team_dept_id = '9801'
 
-         v_user_name = request.POST.get('a_user_name')
+         v_user_name = v_body.get('a_user_name')
          #v_user_name = '김'
 
          #v_progress_rate_code_from = request.POST.get('a_progress_rate_code_from')

@@ -479,12 +479,6 @@ def f_select_biz_opp2(request):
             #v_dept_id = v_data_session[0]['dept_id']
          v_contract_date_from = request.POST.get('a_contract_date_from')
          v_contract_date_to = request.POST.get('a_contract_date_to')
-
-         logging.debug(f"################################################################################")
-         logging.debug(f"f_select_biz_opp2()에서의 v_contract_date_from : " + v_contract_date_from)
-         logging.debug(f"f_select_biz_opp2()에서의 v_contract_date_to : " + v_contract_date_to)
-         logging.debug(f"################################################################################")
-
          v_sale_date_from = request.POST.get('a_sale_date_from')
          v_sale_date_to = request.POST.get('a_sale_date_to')
          v_headquarters_dept_id = request.POST.get('a_headquarters_dept_id')
@@ -497,6 +491,12 @@ def f_select_biz_opp2(request):
 
          v_progress_rate_code_from = request.POST.get('a_progress_rate_code_from')
          v_progress_rate_code_to = request.POST.get('a_progress_rate_code_to')
+
+         logging.debug(f"################################################################################")
+         logging.debug(f"f_select_biz_opp2()에서의 v_progress_rate_code_from : " + v_progress_rate_code_from)
+         logging.debug(f"f_select_biz_opp2()에서의 v_progress_rate_code_to : " + v_progress_rate_code_to)
+         logging.debug(f"################################################################################")
+
          v_essential_achievement_tf = request.POST.get('a_essential_achievement_tf')
          #v_global_data = request.session.get('v_global_data',{})
          #v_user_id = v_global_data[0].get('user_name')

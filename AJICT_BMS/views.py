@@ -489,8 +489,10 @@ def f_select_biz_opp2(request):
          v_user_name = request.POST.get('a_user_name')
          #v_user_name = '김'
 
-         v_progress_rate_code_from = request.POST.get('a_progress_rate_code_from')
-         v_progress_rate_code_to = request.POST.get('a_progress_rate_code_to')
+         #v_progress_rate_code_from = request.POST.get('a_progress_rate_code_from')
+         #v_progress_rate_code_to = request.POST.get('a_progress_rate_code_to')
+         v_progress_rate_code_from = v_body.get('a_progress_rate_code_from','')
+         v_progress_rate_code_to = v_body.get('a_progress_rate_code_to','')
 
          logging.debug(f"################################################################################")
          logging.debug(f"f_select_biz_opp2()에서의 v_progress_rate_code_from : " + v_progress_rate_code_from)

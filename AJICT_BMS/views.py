@@ -431,9 +431,9 @@ def f_select_biz_opp2(request):
    #v_session_user_id = 'gosh'
 
    v_body = ''
-   #if request.method == 'POST':
-   #   v_body = json.loads(request.body)
-   #   v_session_user_id = v_body.get('a_session_user_id')
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_session_user_id = v_body.get('a_session_user_id')
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]

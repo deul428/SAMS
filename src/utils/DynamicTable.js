@@ -320,7 +320,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
       {
         (v_childComponent === 'InputFieldDetail'/*  && v_modalPropsData */) 
         ? 
-        (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData}/> )
+        (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData}/*  mode={'수정'} *//> )
         :
         (<BizOppHistory show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData} />)
       }

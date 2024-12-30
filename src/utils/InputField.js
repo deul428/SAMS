@@ -56,16 +56,21 @@ const InputField = ({ v_componentName, v_propsData }) => {
 
     // input field 값 input에 저장
     const f_handlingInput = (e) => {
-        if (e.target.name === 'a_essential_achievement_tf') {
+        /* if (e.target.name === 'a_essential_achievement_tf') {
             e.target.checked ? e.target.value = true : e.target.value = false;
-        }
-        const { name, value } = e.target;
+        } */
+        const { name, value, type, checked } = e.target;
+        setInput((prevInput) => ({
+            ...prevInput,
+            [name]: type === 'checkbox' ? checked : value, //e.target.name의 값을 키로, e.target.value를 값으로 사용
+        }));
+        /* const { name, value } = e.target;
         // input 업데이트
         setInput((prevInput) => {
             const newState = { ...prevInput, [name]: value.trim() };
             console.log("f_handlingInput 업데이트된 상태:", newState);
             return newState;
-        });
+        }); */
     }     
     
     const f_submitData = async (method, endpoint, input = null, e) => {
@@ -73,9 +78,10 @@ const InputField = ({ v_componentName, v_propsData }) => {
         try {
             // 유효값 검사
             
-            if (input.a_contract_date_from > input.a_contract_date_to || input.a_sale_date_from > input.a_contract_date_to) {
-                alert('일자는')
+            if (input.a_contract_date_from > input.a_contract_date_to || input.a_sale_date_from > input.a_sale_date_to) {
+                alert('일자는 From보다 To가 더 작을 수 없습니다.')
                 console.log('from보다 to가 더 작아요!');
+                return;
             }
             // ...
 
@@ -218,6 +224,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
 
     // UI 업데이트
     useEffect(() => {
+        console.log("f_handlingInput 업데이트된 상태:", input);
         const updateUI = () => {
             /* if (!currentPath || currentPath === "/login") {
                 setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
@@ -289,7 +296,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <Form.Label htmlFor='inputChck' className=''>필달 여부</Form.Label>
-                                        <Form.Check type={`checkbox`} id={`inputChck`} value={input.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
+                                        <Form.Check type={`checkbox`} id={`inputChck`} checked={input.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                     </Col>
@@ -327,7 +334,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='영업 담당자'>
-                                            <Form.Control size='sm' type='text' id='userName' value={input.a_user_name} name='a_user_name' onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='text' id='userName' /* value={input.a_user_name}  */name='a_user_name' onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
                                 </Row>
@@ -602,7 +609,6 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
                                         <Form.Label className=''>영업 담당자</Form.Label>
-
                                         <Form.Control size='sm' type='text' placeholder='담당자명을 입력하세요' id='userName' /* value={input.a_user_name} */ name='a_user_name' onChange={f_handlingInput}/>
                                     </Col>
                                 </Row>

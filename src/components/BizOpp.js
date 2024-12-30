@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { apiMethods } from '../utils/api.js';
@@ -29,6 +29,8 @@ const BizOpp = () => {
     4. get 함수가 response.data를 그대로 반환.
     -*/
 
+    // const navigate = useNavigate();
+    const [returnMsg, setReturnMsg] = useState(null);
     const sampleData = {
         "data": {
             "search_headquarters": [
@@ -1963,8 +1965,15 @@ const BizOpp = () => {
                 const updatedData = await apiMethods.get(endpoint);
             } 
             console.log(`API Get (수신)\nEndpoint: (BizOpp.js) ${endpoint}\nresponse: `, response);
-            setData(response);
-            return response;
+            if (Array.isArray(response)) {
+                alert(response[0].MESSAGE || '로그인 필요');
+                setReturnMsg(<Navigate to="/login/"/>);
+                return returnMsg;
+            } else {
+                setData(response);
+                return response;
+
+            }
         } catch (error) {
             setErrMsg(`f_handlingData(${method}) error! ${error.message}`);
             throw error;
@@ -1991,6 +2000,7 @@ const BizOpp = () => {
       
     return (
         <>
+            {returnMsg || ''}
             <h2>사업 (기회) 조회</h2>
             <InputField v_componentName={'bizOpp'} v_propsData={data}/>
             <div className='wrap' id='bizOpp'>
@@ -2000,7 +2010,7 @@ const BizOpp = () => {
                     </div>
                     
                     {/* <DynamicTabletest v_componentName={'bizOpp'} v_propsData={data}/> */}
-                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data} v_modalPropsData={null}/>
+                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data} v_modalPropsData={null}/*  mode={'등록'} *//>
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   

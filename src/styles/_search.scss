@@ -32,10 +32,10 @@
             width: $full;
             // margin-bottom: 1rem;
             margin-bottom: 0.5rem;
+            margin-right: -2rem;
             .col {
                 padding: 0;
                 padding-right: 1rem;
-
                 &.floating {
                     label {
                         font-size: 0.9rem;
@@ -121,8 +121,12 @@
                         width: calc(100% - (6.5rem + 0.5rem));
                     }
                 } 
+                h3 {
+                    padding: 0;
+                    margin: 1rem 0 0.5rem;
+                    text-align: left;
+                }
                 ol.list-group {
-                    padding: 0; 
                     li {
 
                     }

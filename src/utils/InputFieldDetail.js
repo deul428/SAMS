@@ -627,17 +627,19 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         </div>
                                         <div className='searchItem activityArea'>
                                             <Row className='d-flex justify-content-between'>
-                                                <Col xs={12} md={12} lg={12} className='activity col d-flex align-items-center'>
-                                                    <Form.Label className=''>활동 내역</Form.Label>
-                                                    <Form.Control name='activity_details' size='sm' type='text' className='col-lg-10 col-md-10 col-10' 
-                                                    placeholder='활동 내역'
-                                                    onChange={f_handlingInput} 
-                                                    value={input.activity_details || ''}
-                                                    />
+                                                <Col xs={12} md={12} lg={12} className='activity col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='활동 내역 신규 입력'>
+                                                        <Form.Control as='textarea' name='activity_details' size='sm' type='text' className='' placeholder='활동 내역 신규 입력'
+                                                        onChange={f_handlingInput} 
+                                                        // value={input.활동 내역 || ''} 
+                                                        defaultValue={v_modalPropsData?.activity_details || ''}
+                                                        />
+                                                    </FloatingLabel>
                                                 </Col>
                                             </Row>
                                             <Row className='d-flex justify-content-between'>
-                                                <ListGroup as='ol' numbered>
+                                                <h3>활동 내역 이력 &#40;최근 5건&#41;</h3>
+                                                <ListGroup as='ol' numbered className='col activity '>
                                                     <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
                                                         <div className='ms-2 me-auto'>
                                                         <div className='fw-bold'>Subheading</div>

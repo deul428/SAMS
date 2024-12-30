@@ -9,7 +9,8 @@ import { Button, Form, Row, Col, FloatingLabel } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
 import '../styles/_search.scss';
 
-const InputField = ({ v_componentName, v_propsData }) => {
+const InputField = ({ v_componentName, v_propsData, setRes }) => {
+    // console.log(setRes);
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
@@ -17,10 +18,44 @@ const InputField = ({ v_componentName, v_propsData }) => {
     const [endpoint, setEndpoint] = useState(null);
 
     // ================= POST ================= 
+
+    // input field 값 input에 저장
+    const f_handlingInput = (e) => {
+        /* if (e.target.name === 'a_essential_achievement_tf') {
+            e.target.checked ? e.target.value = true : e.target.value = false;
+        } */
+        const { name, value, type, checked } = e.target;
+        setInput((prevInput) => ({
+            ...prevInput,
+            [name]: type === 'checkbox' ? checked : value, //e.target.name의 값을 키로, e.target.value를 값으로 사용
+        }));
+        /* const { name, value } = e.target;
+        // input 업데이트
+        setInput((prevInput) => {
+            const newState = { ...prevInput, [name]: value.trim() };
+            console.log("f_handlingInput 업데이트된 상태:", newState);
+            return newState;
+        }); */
+    }        
+    // -------------- 세션 대체용 userId 송신 -------------- 
+    const auth = useSelector((state) => state.auth);
+    // console.log(auth);
+/*     const userCheck = {
+        a_session_user_id: auth.userId,
+    }
+
+    useEffect(() => {
+        f_submitData('post', endpoint, userCheck);
+    }, [endpoint]);
+     */
+    // -------------- 세션 대체용 userId 송신 끝 -------------- 
+
     // post용 객체, input field value 저장해서 이후 서버로 송신
-    
+
     let p_input = null;
+
     const p_bizopp = {
+        a_session_user_id: auth.userId,
         a_contract_date_from: '',
         a_contract_date_to: '',
         a_sale_date_from: '',
@@ -50,46 +85,52 @@ const InputField = ({ v_componentName, v_propsData }) => {
         if (v_componentName === 'activity') return { ...p_activity };
         return {};
     };
-
     // 상태 초기화
     const [input, setInput] = useState(getInitialInput());
 
-    // input field 값 input에 저장
-    const f_handlingInput = (e) => {
-        /* if (e.target.name === 'a_essential_achievement_tf') {
-            e.target.checked ? e.target.value = true : e.target.value = false;
-        } */
-        const { name, value, type, checked } = e.target;
-        setInput((prevInput) => ({
-            ...prevInput,
-            [name]: type === 'checkbox' ? checked : value, //e.target.name의 값을 키로, e.target.value를 값으로 사용
-        }));
-        /* const { name, value } = e.target;
-        // input 업데이트
-        setInput((prevInput) => {
-            const newState = { ...prevInput, [name]: value.trim() };
-            console.log("f_handlingInput 업데이트된 상태:", newState);
-            return newState;
-        }); */
-    }     
-    
     const f_submitData = async (method, endpoint, input = null, e) => {
-        e.preventDefault(); // submit 방지
+        if (e) {
+            e.preventDefault(); // submit 방지
+        }
         try {
             // 유효값 검사
-            
-            if (input.a_contract_date_from > input.a_contract_date_to || input.a_sale_date_from > input.a_sale_date_to) {
-                alert('일자는 From보다 To가 더 작을 수 없습니다.')
-                console.log('from보다 to가 더 작아요!');
-                return;
+            // 날짜 yyyy-mm-dd -> yyyymmdd
+            const dateKeys = ['a_contract_date_to', 'a_contract_date_from', 'a_sale_date_from', 'a_sale_date_to'];
+            dateKeys.forEach(key => {
+                if (input[key]) {
+                    return input[key] = input[key].replace(/-/g, '');
+                }
+            });  
+
+            // 날짜: 1) to null 가능. 2) from > to일 경우 return
+            if (!input.a_contract_date_to || input.a_sale_date_to) {
+                console.log("to 값이 null이거나 빈 문자열입니다."); // 디버깅용
+            } else {
+                if ((input.a_contract_date_from > input.a_contract_date_to) || (input.a_sale_date_from > input.a_sale_date_to)) {
+                    alert('일자는 From보다 To가 더 작을 수 없습니다.');
+                    return;
+                }
             }
-            // ...
+            
+            
+            /* // 각 키와 타입을 출력
+            for (const key in input) {
+                if (input.hasOwnProperty(key)) {
+                    console.log(`Key: ${key}, Type: ${typeof input[key]}`);
+                }
+            } */
+
 
             console.log("submit 될 input data\n", input);
-
-            /* const response = await apiMethods[method]('select-biz-opp2/', input);
-            console.log('input Field response 송신 완료', endpoint, response);
-            return response; */
+            const response = await apiMethods[method]('select-biz-opp2/', input);
+            if (Array.isArray(response)) {
+                console.log(response[0].STATUS, response[0].MESSAGE);
+                return;
+            } else {
+                console.log('input Field response 송신 완료', endpoint, response);
+                setRes(response);
+                return response;
+            }
         } catch (error) {
             console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
             alert('로그인 중 오류가 발생했습니다. 관리자에게 문의하세요.', error);
@@ -111,12 +152,12 @@ const InputField = ({ v_componentName, v_propsData }) => {
         switch(v_componentName) {
             case `bizOpp`: 
                 setData(v_filter); // 상태 업데이트
-                setEndpoint(roots[4].endpoint);
+                // setEndpoint(roots[4].endpoint);
+                setEndpoint('select-biz-opp2/');
                 break;
             case `activity`: 
                 setData(v_filter); // 상태 업데이트
                 setEndpoint(roots[4].endpoint);
-                
                 break;
             default:
                 // console.log(v_componentName);
@@ -224,7 +265,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
 
     // UI 업데이트
     useEffect(() => {
-        console.log("f_handlingInput 업데이트된 상태:", input);
+        // console.log("f_handlingInput 업데이트된 상태:", input);
         const updateUI = () => {
             /* if (!currentPath || currentPath === "/login") {
                 setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
@@ -266,7 +307,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='진행률 From'>
                                             <Form.Select size='sm' aria-label='selectBox' className='pro_1 ' id='fromSelect' value={input.a_progress_rate_code_from || ''} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
-                                                <option>선택</option>
+                                                <option value=''>선택</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                     (
                                                         data.search_commonness_pro.map((e) => {
@@ -281,7 +322,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                         <span style={{margin: '0 10px'}}>~</span>
                                         <FloatingLabel label='진행률 To'>
                                             <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id='fromSelect' value={input.a_progress_rate_code_to || ''} name='a_progress_rate_code_to' onChange={f_handleToChange}>
-                                                <option>선택</option>
+                                                <option value=''>선택</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                     (
                                                         v_filteredProTo.map((e) => {
@@ -305,7 +346,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='본부'>
                                             <Form.Select id='select1' size='sm' aria-label='selectBox' value={input.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept}>
-                                                <option>-- 본부를 선택하세요 --</option>
+                                                <option value=''>-- 본부를 선택하세요 --</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                 (
                                                     v_depts.map((dept) => (
@@ -323,7 +364,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='팀'>
                                             <Form.Select id='select2' size='sm' aria-label='selectBox' /* value={input.a_dept_id} */ name='a_dept_id' onChange={f_handlingDept} disabled={!v_selectTeam.length}>
-                                                <option>-- 팀을 선택하세요 --</option>
+                                                <option value=''>-- 팀을 선택하세요 --</option>
                                                 {v_selectTeam.map((team) => (
                                                     <option key={team.dept_id} value={team.dept_id || ''}>
                                                         {team.dept_name}

@@ -1998,11 +1998,12 @@ const BizOpp = () => {
     }, [endpoint]);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
       
+    const [res, setRes] = useState([]);
     return (
         <>
             {returnMsg || ''}
             <h2>사업 (기회) 조회</h2>
-            <InputField v_componentName={'bizOpp'} v_propsData={data}/>
+            <InputField v_componentName={'bizOpp'} v_propsData={data} setRes={setRes}/>
             <div className='wrap' id='bizOpp'>
                 <div className='dataPostArea'>
                     <div className='btnArea d-flex justify-content-end'>
@@ -2016,7 +2017,7 @@ const BizOpp = () => {
                         :   
                         (data.length === 0 ? 
                             (<p>데이터를 불러오는 중입니다...</p>) : 
-                            (<DynamicTable v_componentName={'bizOpp'} v_propsData={data} />)
+                            (<DynamicTable v_componentName={'bizOpp'} v_propsData={data} res={res} />)
                             // ('')
                         )
                     }

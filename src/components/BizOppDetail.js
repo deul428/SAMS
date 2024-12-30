@@ -66,7 +66,7 @@ const BizOppDetail = () => {
 
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
-        console.log({ name, value }, input);
+        // console.log({ name, value }, input);
         setInput({
             ...input,
             [name]: value,

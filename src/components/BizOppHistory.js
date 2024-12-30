@@ -1993,11 +1993,11 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
                                         {(v_modalPropsData) ? 
                                             (
                                                 <>
-                                                    <div className="infoArea">
+                                                    <div className="infoArea mt-2 mb-2">
                                                         <span className="me-2">사업 일련 번호</span>{v_modalPropsData.biz_opp_id}
                                                         <span className="ms-4 me-2">사업명</span>{v_modalPropsData.biz_opp_name}
                                                     </div>
-                                                    <Button variant="info" className=''>조회</Button>
+                                                    {/* <Button variant="info" className=''>조회</Button> */}
                                                 </>
                                             )
                                             :
@@ -2012,11 +2012,11 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
                                 </div>
                             </div>
                         </Modal.Body>
-                        <Modal.Footer className="btnArea justify-content-center">
+                        {/* <Modal.Footer className="btnArea justify-content-center">
                             <Button variant="secondary" onClick={onHide}>
                             닫기
                             </Button>
-                        </Modal.Footer>
+                        </Modal.Footer> */}
                     </Modal>
                 )
             

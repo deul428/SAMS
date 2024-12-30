@@ -108,7 +108,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         
         
     };
-    const handleCompositionStart = () => {
+    /* const handleCompositionStart = () => {
         // setIsComposing(true); // 조합 시작
         console.log("Composition started");
     };
@@ -122,7 +122,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             ...prevInput,
             [name]: value,
         }));
-    };
+    }; */
     
 /*     // 변화 감지 추출 디버깅용
     useEffect(() => {
@@ -143,7 +143,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // ----------------- 2) 수정 시 핸들링 -----------------
     useEffect(() => {
         // v_modalPropsData 데이터 핸들링 후 input 객체에 복사
-        console.log('v_modalPropsData: ', v_modalPropsData);
+        // console.log('v_modalPropsData: ', v_modalPropsData);
         if (v_modalPropsData) {
             // console.log("v_modalPropsData 사업 기회명:", v_modalPropsData.biz_opp_name);
             // console.log("v_modalPropsData 들어온 이후 복사하기 이전 input.biz_opp_name:\n", input.biz_opp_name);
@@ -184,10 +184,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     
     // ================= POST ================= 
     const f_submitData = async (method, endpoint, input = null, e) => {
-        console.log(changeInput);
+        // console.log(changeInput);
         e.preventDefault(); // submit 방지
         let confirmMsg;
-        console.log('제출될 input(changeInput): ', input);
+        // console.log('제출될 input(changeInput): ', input);
         if (input.biz_opp_id) {
             confirmMsg = `${input.biz_opp_id}을(를) 등록하시겠습니까?`;
         } else {
@@ -336,8 +336,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     <FloatingLabel label='최종 고객사'>
                                                         <Form.Control name='last_client_com2_name' size='sm' type='text' className='' placeholder='최종 고객사'
                                                         onChange={f_handlingInput} 
-                                                        onCompositionStart={handleCompositionStart}
-                                                        onCompositionEnd={handleCompositionEnd}
+                                                        // onCompositionStart={handleCompositionStart}
+                                                        // onCompositionEnd={handleCompositionEnd}
                                                         // value={input.last_client_com2_name || ''} 
                                                         defaultValue={v_modalPropsData?.last_client_com2_name || ''}
                                                         />
@@ -353,8 +353,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
-                                                    <Form.Label htmlFor='inputChck2'
-                                                    onClick={() => console.log('Label clicked')}>필달 여부</Form.Label>
+                                                    <Form.Label htmlFor='inputChck2'>필달 여부</Form.Label>
                                                     <Form.Check type={`checkbox`} id={`inputChck2`} name='essential_achievement_tf' 
                                                     onChange={f_handlingInput}
                                                     // checked={input.essential_achievement_tf || false} 

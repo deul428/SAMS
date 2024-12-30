@@ -11,7 +11,7 @@ import { Table, Button, Pagination } from 'react-bootstrap';
 import '../styles/_table.scss';
 import '../styles/_global.scss';
 
-function DynamicTable({ v_componentName, v_propsData }) {
+function DynamicTable({ v_componentName, v_propsData, res }) {
   const [showModal, setShowModal] = useState(false);
   const [v_modalPropsData, setVModalPropsData] = useState(null);
   const [v_childComponent, setVChildComponent] = useState(null);
@@ -34,7 +34,6 @@ function DynamicTable({ v_componentName, v_propsData }) {
 
   const [data, setData] = useState(v_propsData?.data?.retrieve_biz_opp || []);
 
-
   // 테이블 헤더 키 값 갖고 오기
   let rootsData = null;
   switch(v_componentName) {
@@ -49,11 +48,10 @@ function DynamicTable({ v_componentName, v_propsData }) {
       break;
   }
 
-
   const [v_handlingHtml, setVHandlingHtml] = useState(null);
-  const columns = React.useMemo(() => roots[4]?.props || [], []);
+  // const columns = React.useMemo(() => roots[4]?.props || [], []);
+  const columns = React.useMemo(() => rootsData || [], []);
   
-
   // react-table 훅 설정
   const {
     getTableProps,
@@ -91,9 +89,20 @@ function DynamicTable({ v_componentName, v_propsData }) {
       console.warn("v_propsData가 비어 있습니다.");
       setData([]); // 기본값으로 빈 배열 설정
       return;
-    }
+    }  
     setData(v_propsData.data.retrieve_biz_opp);
   }, [v_propsData]);
+
+/*   useEffect(() => {
+    console.log(res.data, res.data.length);
+    if(res.data) {
+      if (res.data.length > 0) {
+        // console.log("res.data: ", res.data, "res: ", res);
+        setData(res?.data);
+      }
+    }
+  }, [res]); */
+
 
   // =================== pagination jsx ===================
   const renderPagination = () => {
@@ -183,10 +192,22 @@ function DynamicTable({ v_componentName, v_propsData }) {
   useEffect(() => {
     /* console.log("v_childComponent: ", v_childComponent);
     console.log("showModal? ", showModal); */
+
+    console.log(typeof(res));
+    // console.log(res.data);
+    if(res.data) {
+      console.log(typeof(res), res.data, res.data.length);
+      if (res.data.length > 0) {
+        setData(res?.data);
+      } /* else if(res.data.length === 0) {
+        return <div>데이터가 존재하지 않습니다.</div>;
+      } */
+    } 
     if (!data.length || !columns.length) {
       return <div>Loading...</div>;
     }
-    
+
+    // console.log(v_componentName);
     if (data.length > 0) {
       let htmlContent = null;
       switch (v_componentName) {
@@ -311,7 +332,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
           setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
       }
     }
-  }, [v_childComponent, v_componentName, data, page, showModal]);
+  }, [v_childComponent, v_componentName, data, page, showModal, res]);
 
   return (
     <div id="tableArea">

@@ -15,22 +15,20 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
 
 
   // 테이블 헤더 키 값 갖고 오기
-/*   let rootsData = null;
+  let rootsData = null;
   switch(v_componentName) {
-    case `bizOpp`: 
-      rootsData = roots[4].props;
-      break;
-    case `activity`: 
-      rootsData = roots[4].props;
+    case `bizOppHistory`: 
+      rootsData = roots[5].props;
       break;
     default:
       rootsData = roots[4].props;
       break;
-  } */
+  }
 
 
   const [v_handlingHtml, setVHandlingHtml] = useState(null);
-  const columns = React.useMemo(() => roots[4]?.props || [], []);
+  // const columns = React.useMemo(() => roots[5]?.props || [], []);
+  const columns = React.useMemo(() => rootsData || [], []);
   
   // react-table 훅 설정
   const {
@@ -51,7 +49,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 15 }, // 초기 페이지 설정
+      initialState: { pageIndex: 0, pageSize: 10 }, // 초기 페이지 설정
     },
     usePagination
   );
@@ -162,6 +160,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
         case `bizOppHistory`: 
           htmlContent = (
             <>
+            <h1>jsx는 dynamicTableChild에 있어요</h1>
             <Table bordered hover responsive {...getTableProps()}>
               <thead>
                 {headerGroups.map((headerGroup) => {

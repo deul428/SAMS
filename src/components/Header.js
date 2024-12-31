@@ -22,7 +22,7 @@ function Header() {
     // ----------------------- Log-In Mapping -----------------------
         // isLoggedIn === true: User Id Text, Logout Button 생성 
         // isLoggedIn === false: User Id Falsy, Login Button 생성 
-    let v_loginInfo = <ButtonGroup><Button variant='primary' href={`/${roots[0].depth1}`}> Login </Button></ButtonGroup>;
+    let v_loginInfo = <ButtonGroup><Button variant='primary' href={`/${roots.login.depth1}`}> Login </Button></ButtonGroup>;
     auth.isLoggedIn ? 
     (v_loginInfo = 
         <ButtonGroup className='btnLoginInfo'>
@@ -33,7 +33,7 @@ function Header() {
         </ButtonGroup>
     ) : 
     (v_loginInfo = 
-        <ButtonGroup><Button variant='primary' href={`/${roots[0].depth1}`}> Login </Button></ButtonGroup>
+        <ButtonGroup><Button variant='primary' href={`/${roots.login.depth1}`}> Login </Button></ButtonGroup>
     )
     // ============== Log-In 처리 끝 ==============
     
@@ -42,7 +42,7 @@ function Header() {
     const location = useLocation();
     // useEffect 훅: 컴포넌트 렌더링 or 상태/속성 변경 시 실행되는 작업 처리 영역.
     // location이 변경될 때마다 그 후로 처리되어야 할 작업을 작성함.
-    const v_hasChildUrls = [roots[1].depth1, roots[6].depth1];
+    const v_hasChildUrls = [roots.adminUser.depth1, roots.aimManage.depth1];
     useEffect(() => {
         v_hasChildUrls.some(value => location.pathname.includes(value)) ? setIsActive(true) : setIsActive(false);
     }, [location]);
@@ -58,23 +58,23 @@ function Header() {
                     </Nav>
                     
                     <Nav className='navMenu'>
-                        <div className={`menus ${isActive && location.pathname.includes(roots[1].depth1) ? 'active' : ''} nav-link`} id='menu01'>
+                        <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[0]) ? 'active' : ''} nav-link`} id='menu01'>
                             기본 정보 관리
-                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[1].depth1}/${roots[1].depth2}`}>사용자 관리</Nav.Link>
-                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[2].depth1}/${roots[2].depth2}`}>공통 코드 관리</Nav.Link>
-                            <Nav.Link as={NavLink} className='menuItem' id='menu02' to={`/${roots[3].depth1}/${roots[3].depth2}`}>제품 관리</Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots.adminUser.depth1}/${roots.adminUser.depth2}`}>사용자 관리</Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots.adminCode.depth1}/${roots.adminCode.depth2}`}>공통 코드 관리</Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' id='menu02' to={`/${roots.adminProduct.depth1}/${roots.adminProduct.depth2}`}>제품 관리</Nav.Link>
                         </div>
-                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots[4].depth1) ? 'active' : ''}`} id='menu03' to={`/${roots[4].depth1}/${roots[4].depth2}`}>
+                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.bizopp.depth1) ? 'active' : ''}`} id='menu03' to={`/${roots.bizopp.depth1}/${roots.bizopp.depth2}`}>
                             사업 (기회) 관리
                         </Nav.Link>
-                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots[5].depth1) ? 'active' : ''}`} to={`/${roots[5].depth1}/${roots[5].depth2}`}>
+                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.activity.depth1) ? 'active' : ''}`} to={`/${roots.activity.depth1}/${roots.activity.depth2}`}>
                             영업 활동 관리
                         </Nav.Link>
 
-                        <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[1]) ? 'active' : ''} nav-link`} id='menu04' disabled>
+                        <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[1]) ? 'active' : ''} nav-link`} id='menu04'>
                         목표 관리
-                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[6].depth1}/${roots[6].depth2}`} disabled>목표 관리</Nav.Link>
-                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots[7].depth1}/${roots[7].depth2}`} disabled>달성률 조회</Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots.aimManage.depth1}/${roots.aimManage.depth2}`}>목표 관리</Nav.Link>
+                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots.aimacheive.depth1}/${roots.aimacheive.depth2}`}>달성률 조회</Nav.Link>
                         </div>
                     </Nav>
                     <div className='loginInfoArea'>{v_loginInfo}</div>

@@ -13,6 +13,7 @@ import Auth from './utils/Auth';
 import ExcelTable from './components/test/ExcelTable';
 import Tree_uiUsed_productManage from './components/test/Tree_uiUsed_productManage';
 import ResizableTable from './components/test/ResizableTable';
+
 function AppCntnt() {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -33,13 +34,21 @@ function AppCntnt() {
         {/* <Tree_uiUsed_productManage></Tree_uiUsed_productManage> */}
         <Routes>
           <Route exact path='/' element={<AuthLogin />} />
-          { roots.map((value, index) => (
+          {/* { roots.map((value, index) => (
             <Route 
               key={index} 
               path={`/${value.depth1}/${value.depth2}`} 
               element={<value.component />}
             />
+          ))} */}
+          {Object.entries(roots).map(([key, value]) => (
+            <Route
+              key={key}
+              path={`/${value.depth1}/${value.depth2}`}
+              element={<value.component />}
+            />
           ))}
+
         </Routes>
       </div>
     </>

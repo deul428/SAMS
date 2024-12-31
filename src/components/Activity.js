@@ -13,8 +13,8 @@ import roots from '../utils/datas/Roots.js';
 const Activity = () => {
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-    const endpoint = roots[4].endpoint;
-    // const endpoint = roots[5].endpoint;
+    const endpoint = roots.bizopp.endpoint;
+    // const endpoint = roots.bizoppHistory.endpoint;
 
     const [showModal, setShowModal] = useState(false);
     const openModal = () => {console.log(showModal); setShowModal(true)};

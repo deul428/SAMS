@@ -15,7 +15,7 @@ const Activity = () => {
     const [errMsg, setErrMsg] = useState('');
     const endpoint = roots[4].endpoint;
     console.log("activity data: ======================\n", data);
-    // const endpoint = roots[5].endpoint;
+    // const endpoint = roots.bizoppHistory.endpoint;
 
     const p_activity = {
 

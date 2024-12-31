@@ -1,42 +1,66 @@
 import React, { useState, useEffect } from 'react';
+// import { useTable, usePagination } from 'react-table';
 import { useTable, usePagination } from 'react-table';
+
+import BizOppHistory from '../components/BizOppHistory';
+import InputFieldDetail from './InputFieldDetail';
+
 import { apiMethods } from './api';
 import roots from './datas/Roots';
-import { Table, Button, Pagination } from 'react-bootstrap';
 
-import '../styles/_table.scss'; 
+import { Table, Button, Pagination } from 'react-bootstrap';
+import '../styles/_table.scss';
 import '../styles/_global.scss';
 
-// level 2 테이블 (ex. 사업 (기회) 이력 조회)
-function DynamicTableChild({ v_componentName, v_propsData }) {
-  // console.log("dynamicTableChild:", v_componentName, v_propsData)
+function DynamicTable({ v_componentName, v_propsData, res }) {
+  const [showModal, setShowModal] = useState(false);
+  const [v_modalPropsData, setVModalPropsData] = useState(null);
+  const [v_childComponent, setVChildComponent] = useState(null);
+
+  const openModal = (e, handling, isHistory) => {
+    // console.log('e: ', e, '\nhandling: ', handling);
+    if (isHistory === null) {
+      setVChildComponent('InputFieldDetail');
+    } else {
+      setVChildComponent('BizOppHistory');
+      e.stopPropagation(); //이벤트 전파 방지
+    }
+    setVModalPropsData(handling);
+    setShowModal(true);
+  }
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  
 
   const [data, setData] = useState(v_propsData?.data?.retrieve_biz_opp || []);
-
 
   // 테이블 헤더 키 값 갖고 오기
   let rootsData = null;
   switch(v_componentName) {
-    case `bizOppHistory`: 
-      rootsData = roots.bizoppHistory.props;
+    case `bizOpp`: 
+      rootsData = roots.bizopp.props;
+      break;
+    case `activity`: 
+      rootsData = roots.bizopp.props;
       break;
     default:
       rootsData = roots.bizopp.props;
       break;
   }
 
-
   const [v_handlingHtml, setVHandlingHtml] = useState(null);
-  // const columns = React.useMemo(() => roots.bizoppHistory?.props || [], []);
+  // const columns = React.useMemo(() => roots.bizopp?.props || [], []);
   const columns = React.useMemo(() => rootsData || [], []);
   
-  // @tanstack/react-table 훅 설정
+  // react-table 훅 설정
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     page, // 페이지 단위로 렌더링되는 데이터
     prepareRow,
+    rows,
     nextPage,
     previousPage,
     canNextPage,
@@ -49,20 +73,37 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 10 }, // 초기 페이지 설정
+      initialState: { pageIndex: 0, pageSize: 15 }, // 초기 페이지 설정
     },
     usePagination
   );
-
+/*   console.log(
+    `
+    pageCount: ${pageCount}
+    pageIndex: ${pageIndex}
+    pageSize: ${pageSize}
+    `
+  ) */
   // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
   useEffect(() => {
     if (!v_propsData || Object.keys(v_propsData).length === 0 || !v_propsData.data?.retrieve_biz_opp) {
       console.warn("v_propsData가 비어 있습니다.");
       setData([]); // 기본값으로 빈 배열 설정
       return;
-    }
+    }  
     setData(v_propsData.data.retrieve_biz_opp);
   }, [v_propsData]);
+
+/*   useEffect(() => {
+    console.log(res.data, res.data.length);
+    if(res.data) {
+      if (res.data.length > 0) {
+        // console.log("res.data: ", res.data, "res: ", res);
+        setData(res?.data);
+      }
+    }
+  }, [res]); */
+
 
   // =================== pagination jsx ===================
   const renderPagination = () => {
@@ -150,17 +191,30 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
   
   // =================== pagination 끝 ===================
   useEffect(() => {
+    /* console.log("v_childComponent: ", v_childComponent);
+    console.log("showModal? ", showModal); */
+
+    console.log(typeof(res));
+    // console.log(res.data);
+    if(res.data) {
+      console.log(typeof(res), res.data, res.data.length);
+      if (res.data.length > 0) {
+        setData(res?.data);
+      } /* else if(res.data.length === 0) {
+        return <div>데이터가 존재하지 않습니다.</div>;
+      } */
+    } 
     if (!data.length || !columns.length) {
       return <div>Loading...</div>;
     }
-    
+
+    // console.log(v_componentName);
     if (data.length > 0) {
       let htmlContent = null;
       switch (v_componentName) {
-        case `bizOppHistory`: 
+        case `bizOpp`: 
           htmlContent = (
             <>
-            <h1>jsx는 dynamicTableChild에 있어요</h1>
             <Table bordered hover responsive {...getTableProps()}>
               <thead>
                 {headerGroups.map((headerGroup) => {
@@ -180,6 +234,70 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
                 })}
               </thead>
               <tbody {...getTableBodyProps()}>
+                {page.map((row, index) => {
+                  prepareRow(row);
+                  const { key, ...restProps } = row.getRowProps();
+                  return (
+                    <tr key={key} {...restProps} 
+                    onClick={(e) => {
+                      openModal(e, row.original, null);
+                    }}
+                    >
+
+                      {row.cells.map((cell, index) => {
+                        const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
+                        return (
+                          <td key={key} {...restProps}>
+                            {index === row.cells.length - 1
+                            ? 
+                            (
+                            <Button size="sm" variant="light" onClick={(e) => {
+                              openModal(e, row.original, 'history');
+                            }}>
+                              이력
+                            </Button>)
+                            : 
+                            cell.render('Cell')}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+            </>
+          )
+          setVHandlingHtml (htmlContent);
+          break;
+/*         case `bizOppHistory`: 
+          console.log(v_componentName, " 들어왔다~");
+          setVHandlingHtml(<h1>{v_componentName} Area</h1>);
+          break; */ 
+        case `activity`: 
+          console.log(data);
+          htmlContent = (
+            <>
+            <Table bordered hover responsive {...getTableProps()}>
+              <thead>
+                {headerGroups.map((headerGroup) => {
+                  const { key, ...restProps } = headerGroup.getHeaderGroupProps();
+                  return (
+                    <tr key={key} {...restProps}>
+                      {headerGroup.headers.map((column) => {
+                        const { key, ...restProps } = column.getHeaderProps();
+                        return (
+                          <th key={key} {...restProps}>
+                            {column.render('Header')}
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                
                 {page.map(row => {
                     prepareRow(row);
                     const { key, ...restProps } = row.getRowProps();
@@ -189,7 +307,16 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
                                 const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
                                 return (
                                     <td key={key} {...restProps}>
-                                        {cell.render('Cell')}
+                                        {index === row.cells.length - 1
+                                        ? (
+                                          (console.log("index 존재함")),
+                                        <Button size="sm" variant="light" onClick={(e) => {
+                                          openModal();
+                                        }}>
+                                          이력
+                                        </Button>)
+                                        : 
+                                        cell.render('Cell')}
                                     </td>
                                 );
                             })}
@@ -206,15 +333,21 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
           setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
       }
     }
-    
-  }, [v_componentName, data, page]);
+  }, [v_childComponent, v_componentName, data, page, showModal, res]);
 
   return (
-    <div id="tableAreaChild">
+    <div id="tableArea">
       {v_handlingHtml}
       {pagination}
+      {
+        (v_childComponent === 'InputFieldDetail'/*  && v_modalPropsData */) 
+        ? 
+        (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData}/*  mode={'수정'} *//> )
+        :
+        (<BizOppHistory show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData} />)
+      }
     </div>
   )
 }
 
-export default DynamicTableChild;
+export default DynamicTable;

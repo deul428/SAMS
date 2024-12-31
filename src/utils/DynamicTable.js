@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useTable, usePagination } from 'react-table';
+// import { useTable, usePagination } from 'react-table';
+import { useTable, usePagination, useSortBy } from 'react-table';
 
 import BizOppHistory from '../components/BizOppHistory';
 import InputFieldDetail from './InputFieldDetail';
@@ -38,18 +39,18 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
   let rootsData = null;
   switch(v_componentName) {
     case `bizOpp`: 
-      rootsData = roots[4].props;
+      rootsData = roots.bizopp.props;
       break;
     case `activity`: 
-      rootsData = roots[4].props;
+      rootsData = roots.bizopp.props;
       break;
     default:
-      rootsData = roots[4].props;
+      rootsData = roots.bizopp.props;
       break;
   }
 
   const [v_handlingHtml, setVHandlingHtml] = useState(null);
-  // const columns = React.useMemo(() => roots[4]?.props || [], []);
+  // const columns = React.useMemo(() => roots.bizopp?.props || [], []);
   const columns = React.useMemo(() => rootsData || [], []);
   
   // react-table 훅 설정
@@ -74,7 +75,7 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
       data,
       initialState: { pageIndex: 0, pageSize: 15 }, // 초기 페이지 설정
     },
-    usePagination
+    useSortBy, usePagination
   );
 /*   console.log(
     `
@@ -187,29 +188,44 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
       </div>
     </Pagination>
   )
-  
   // =================== pagination 끝 ===================
-  useEffect(() => {
-    /* console.log("v_childComponent: ", v_childComponent);
-    console.log("showModal? ", showModal); */
 
-    console.log(typeof(res));
-    // console.log(res.data);
-    if(res.data) {
-      console.log(typeof(res), res.data, res.data.length);
+  // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
+  const [sortStyle, setSortStyle] = useState({"opacity":"0.3"});
+
+  const f_sortStyle = (e, column) => {
+    console.log(column.isSorted);
+    if (column.isSorted/* column.isSorted && e.target === e.currentTarget */) {
+      console.log(e, column, e.target.style, e.target);
+      e.target.style.opacity = 1;
+      // setSortStyle({"opacity":"1"});
+    } 
+    if(e.target.style.opacity === 1) {
+      e.target.style.opacity = 0.3;
+      // setSortStyle({"opacity":"0.3"});
+    }
+  } 
+  // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
+
+  useEffect(() => {
+    // res obj / res.data arr
+    if(res && res.data) {
+      console.log("res.data:", res.data, res.data.length);
       if (res.data.length > 0) {
         setData(res?.data);
-      } /* else if(res.data.length === 0) {
+        console.log(data.length);
+      } else {
+        console.log('데이터 없음');
         return <div>데이터가 존재하지 않습니다.</div>;
-      } */
+      }
     } 
+
     if (!data.length || !columns.length) {
       return <div>Loading...</div>;
     }
 
-    // console.log(v_componentName);
+    let htmlContent = null;
     if (data.length > 0) {
-      let htmlContent = null;
       switch (v_componentName) {
         case `bizOpp`: 
           htmlContent = (
@@ -221,13 +237,18 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
                   return (
                     <tr key={key} {...restProps}>
                       {headerGroup.headers.map((column) => {
-                        const { key, ...restProps } = column.getHeaderProps();
+                        const { key, ...restProps } = column.getHeaderProps(column.getSortByToggleProps());
                         return (
                           <th key={key} {...restProps}>
                             {column.render('Header')}
+                            <span /* style={sortStyle} onClick={(e) => f_sortStyle(e, column)} */>
+                              {/* test */}
+                              {column.isSorted ? (column.isSortedDesc ? " ⬇︎" : " ⬆︎") : "⬇︎"}
+                            </span>
                           </th>
                         );
                       })}
+                      
                     </tr>
                   );
                 })}

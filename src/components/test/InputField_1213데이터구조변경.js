@@ -153,7 +153,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
             }
             switch (currentPath) {
                 // biz-opp/
-                case `/${roots[4].depth1}/`:
+                case `/${roots.bizopp.depth1}/`:
                     setVHandlingHtml(
                         <>
                         <div className='inputField'>
@@ -272,7 +272,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                         </>
                     );
                     break;
-                /* case `/${roots[5].depth1}/`:
+                /* case `/${roots.bizoppHistory.depth1}/`:
                     setVHandlingHtml(
                         <>
                             <div className='inputField'>

@@ -16,7 +16,7 @@ const BizOpp = () => {
     // const location = useLocation();
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-    const endpoint = roots[4].endpoint;
+    const endpoint = roots.bizopp.endpoint;
     
     const [showModal, setShowModal] = useState(false);
     const openModal = () => setShowModal(true);

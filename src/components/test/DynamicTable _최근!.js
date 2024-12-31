@@ -19,20 +19,20 @@ function DynamicTable({ v_componentName, v_propsData }) {
   let rootsData = null;
   switch(v_componentName) {
     case `bizOpp`: 
-      rootsData = roots[4].props;
+      rootsData = roots.bizopp.props;
       break;
     case `activity`: 
-      rootsData = roots[4].props;
+      rootsData = roots.bizopp.props;
       break;
     default:
-      rootsData = roots[4].props;
+      rootsData = roots.bizopp.props;
       break;
   }
 
 
   const [v_handlingHtml, setVHandlingHtml] = useState();
 
-  const columns = React.useMemo(() => roots[4].props, []);
+  const columns = React.useMemo(() => roots.bizopp.props, []);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });
 
   // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅

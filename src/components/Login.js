@@ -126,7 +126,7 @@ const AuthLogin = () => {
                             }
                         } else {
                             // 이전 경로로 리디렉션
-                            const from = location.state?.from?.pathname || `/${roots[8].url}`;
+                            const from = location.state?.from?.pathname || `/${roots.home.url}`;
                             setRedirect(from);
                             return response;
                             // const session = localStorage.setItem("sessionid", response.data.sessionid);

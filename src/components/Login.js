@@ -110,15 +110,17 @@ const AuthLogin = () => {
                 }
                 // API 호출
                 const response = await apiMethods[method](endpoint, input);
-                
+                let res = response[0][0];
+                let resStts = response[1][0];
+
                 // 로그인 성공 시 객체 length 2. (데이터부, 상태부)
                 if (response.length === 2) {
-                    console.log("로그인 성공.", "\nresponse[0][0] (data): ", response[0][0], "\nresponse[1][0] (msg): ", response[1][0]);
-                    if (response[1][0].STATUS === 'LOGIN') {
+                    console.log("로그인 성공.", "\nresponse[0][0] (data): ", res, "\nresponse[1][0] (msg): ", resStts);
+                    if (resStts.STATUS === 'LOGIN') {
                         // Redux에 로그인 정보 저장
-                        await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher }));
+                        await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher, userName: res.user_name, userResCode: res.responsibility2_code, userDeptCode: res.dept_id, userAuthCode: res.auth2_code }));
 
-                        if (response[0][0].beginning_login_tf) {
+                        if (res.beginning_login_tf) {
                             if (window.confirm('최초 로그인 시 비밀번호를 변경해야 합니다. 지금 변경하시겠습니까?')) {
                                 setIsBeginningLogin(true);
                             } else {

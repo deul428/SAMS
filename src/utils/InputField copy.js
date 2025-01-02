@@ -87,30 +87,14 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
     };
     // 상태 초기화
     const [input, setInput] = useState(getInitialInput());
-/* 
-    const f_resetData = (msg) => {
-        if (msg) { 
-            const updatedInput = { ...input };
-            setInput((input) => {
-                // 현재 상태 복사
-                Object.keys(updatedInput).forEach((key) => {
-                  updatedInput[key] = ""; // 모든 키 초기화
-                });
-                updatedInput.a_session_user_id = auth.userId; // 특정 키 값 재할당
-                return updatedInput; // 새로운 객체 반환
-            });
-            // f_submitData('post', endpoint, updatedInput);
-            f_authLevel2('post', endpoint, updatedInput);
-        } 
-    } */
 
-    const f_submitData = async (method, endpoint, input = null, e, msg) => {
+    const f_submitData = async (method, endpoint, input = null, e) => {
         if (input) {
-            console.log("-----------------input--------------", input);
+            console.log(input);
         }
-        if (e && e !== 'cancel') {
+        if (e) {
             e.preventDefault(); // submit 방지
-        } 
+        }
         try {
             // 유효값 검사
             // 날짜 yyyy-mm-dd -> yyyymmdd
@@ -130,7 +114,17 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                     return;
                 }
             }
-            console.log("submit 될 input data\n", input, e);
+            
+            
+            /* // 각 키와 타입을 출력
+            for (const key in input) {
+                if (input.hasOwnProperty(key)) {
+                    console.log(`Key: ${key}, Type: ${typeof input[key]}`);
+                }
+            } */
+
+
+            console.log("submit 될 input data\n", input);
             const response = await apiMethods[method]('select-biz-opp2/', input);
             if (Array.isArray(response)) {
                 console.log(response[0].STATUS, response[0].MESSAGE);
@@ -173,7 +167,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                 break;
         }
         setInput(getInitialInput());
-        // console.log("getInitialInput? ", input);
+        console.log("getInitialInput? ", input);
     }, [v_propsData, v_componentName]);
     // ================= get data 핸들링 끝 ================= 
 
@@ -186,7 +180,6 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
 
 
     const f_teamLinkedDept = () => {
-
         // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
         const f_mapping = data.search_team.reduce((acc, items) => {
             const { high_dept_id } = items;
@@ -214,12 +207,11 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
             }
         }
     }, [data]) */
-
     // 디버깅용
-/*     useEffect(() => {
+    useEffect(() => {
         // console.log("v_depts:", v_depts, "\nv_teams:", v_teams);
-        // console.log("v_teamByDept: ", v_teamByDept);
-    }, [v_depts, v_teams,v_teamByDept]) */
+        console.log("v_teamByDept: ", v_teamByDept);
+    }, [/* v_depts, v_teams,  */v_teamByDept])
 
 
     const [v_selectDept, setVSelectDept] = useState('');
@@ -227,7 +219,6 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
 
     // 본부 선택 핸들러
     const f_handlingDept = (e) => {
-        console.log(e.target.name, e.target.value);
         if (e.target.name === 'a_headquarters_dept_id') {
             setVSelectDept(e.target.value);
             setVSelectTeam(v_teamByDept[e.target.value] || []);
@@ -265,147 +256,38 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
     
     console.log(currentPath); */
 
-    // 권한별 UI 
-    // Level 1. 권한(AUT) Check 0001admin / 0002guest / 0003none
-    const f_authLevel1 = () => {
-        switch(auth.userAuthCode) {
-            //1. admin
-            case '0001' :
-                setVDepts(data.search_headquarters);
-                setVTeams(data.search_team);
-                f_teamLinkedDept(); 
-                break;
-            // 2. guest
-            case '0002' :
-                console.log(auth.userAuthCode);
-                break;
-            // 3. none
-            case '0003' :
-                f_authLevel2();
-                break;
-            default :
-                alert('권한이 없습니다. 다시 로그인해 주세요.');
-                break;
-        }
-    }
-
-    // Level 2. 부서(dept 테이블의 dept_id)
-    /* 9201	경영관리팀
-    9509	운영팀
-    9711	영업1팀
-    9712	영업2팀
-    9713	영업3팀
-    9721	전략사업1팀
-    9722	전략사업2팀
-    9723	전략사업3팀
-    9801	신사업추진팀 */
-    
-    const [v_deptHandling, setVDeptHandling] = useState({
-        deptValue: '',
-        deptMsg: '-- 본부를 선택하세요 --',
-        detpDisabled: false,
-    })
-    const [v_teamHandling, setVTeamHandling] = useState({
-        teamValue: '',
-        teamMsg: '-- 팀을 선택하세요 --',
-        teamDisabled: false,
-    })
-
-    // Level 2. 직책(RES) Check 0001팀원 0002팀장 0003본부장 0004이사
-    const f_authLevel2 = () => {
-        const resCode = auth.userResCode;
-        switch(resCode) {
-            case '0001' :
-                setVUserhandling({userValue: auth.userName});
-                f_authLevel3();
-                break;
-            case '0002' :
-                setVUserhandling('');
-                f_authLevel3();
-                break;
-            case '0003' :
-                setVUserhandling('');
-                f_authLevel3('본부장');
-                break;
-            case '0004' :
-                setVUserhandling('');
-                f_authLevel3('이사');
-                break;
-            default :
-                console.log(auth.userName);
-                break;
-        }
-    }
-    const f_authLevel3 = (userAuth2Data) => {
-        let head, team;
-        const deptId = auth.userDeptCode;
-        switch(deptId) {
-            case '9201' :
-                head = [data.search_headquarters[1]];
-                team = [data.search_team[0]];
-                break;
-            case '9509' :
-                head = [data.search_headquarters[1]];
-                team = [data.search_team[0]];
-                break;
-            case '9801' :
-                head = [data.search_headquarters[5]];
-                team = [data.search_team[8]];
-                break;
-            default :
-                head = '';
-                team = '';
-                break;
-        }
-        if (userAuth2Data === '본부장') {
-            setVTeams('');
-            setVTeamHandling({
-                teamValue: team[0].dept_name,
-                teamMsg: team[0].dept_name,
-                teamDisabled: true
-            })
-        } else {
-            setVTeams(team);
-            setVTeamHandling({
-                teamValue: team[0].dept_name,
-                teamMsg: team[0].dept_name,
-                teamDisabled: false
-            })
-        }
-        if (userAuth2Data === '이사') {
-            setVTeams('');
-            setVDeptHandling({
-                deptValue : head[0].dept_name, 
-                deptMsg : head[0].dept_name,
-                detpDisabled: true,
-            });
-        } else {
-            setVDeptHandling({
-                deptValue : head[0].dept_name, 
-                deptMsg : head[0].dept_name,
-                detpDisabled: false,
-            });
-        }
-        setVDepts(head);
-        setInput(input, input.a_headquarters_dept_id = team[0].high_dept_id, input.a_dept_id = team[0].dept_id);
-        f_submitData('post', endpoint, input);
-        // f_teamLinkedDept();
-    }
-    // 디버깅용
-    useEffect(()=> {
-        console.log(v_teamHandling);
-    }, [v_teamHandling]);
-    const [v_userHandling, setVUserhandling] = useState({
-        userValue: '',
-        userMsg: '-- 담당자를 선택하세요 --',
-    })
-
-
+    const [deptValue, setDeptValue] = useState('');
+    const [deptMsg, setDeptMsg] = useState('-- 본부를 선택하세요 --');
+    const [teamValue, setTeamValue] = useState('');
+    const [teamMsg, setTeamMsg] = useState('-- 팀을 선택하세요 --');
     useEffect(() => {
         if (Object.keys(data).length > 0) {
             switch(v_componentName) {
                 case 'bizOpp':
-                    f_authLevel1();
+                    // 1. etc: no admin, no guest
+                    if (auth.userAuthCode === '0003') {
+                        if (auth.userDeptCode === '9801'){
+                            const head = [data.search_headquarters[5]];
+                            const team = [data.search_team[8]];
+                            setVDepts(head);
+                            setVTeams(team);
+                            setDeptValue(head[0].dept_name);
+                            setDeptMsg(head[0].dept_name);
+                            setTeamValue(team[0].dept_name);
+                            setTeamMsg(team[0].dept_name);
+                            console.log("team[0].high_dept_id:", team[0].high_dept_id);
+                            setInput(input, input.a_headquarters_dept_id = team[0].high_dept_id, input.a_dept_id = team[0].dept_id);
+                            // console.log(deptValue, deptMsg);
+                            f_submitData('post', endpoint, input);
+                            // f_teamLinkedDept();
+                        }
+                    } 
+                    //2. admin or guest
+                    else {
+                        setVDepts(data.search_headquarters);
+                        setVTeams(data.search_team);
+                        f_teamLinkedDept(); 
+                    }
                     break;
                 case 'activity':
                     f_teamLinkedDept(); 
@@ -450,32 +332,31 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                                 <Row className='d-flex justify-content-between'>
                                     <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='계약 일자 From'>
-                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input?.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
+                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
                                             />
                                         </FloatingLabel>
                                         <span style={{margin: '0 10px'}}>~</span>
                                         <FloatingLabel label='계약 일자 To'>
-                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='매출 일자 From'>
-                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                             <span style={{margin: '0 10px'}}>~</span>
                                         <FloatingLabel label='매출 일자 To'>
-                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input?.a_sale_date_to || ''} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={2} lg={4} className='btnArea col d-flex justify-content-end floating'>
-                                        <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e, null)}>조회</Button>
-                                        {/* <Button variant='dark' className='ms-2' onClick={(e) => f_resetData('cancel')}>초기화</Button> */}
+                                        <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
                                     </Col>
                                 </Row>
                                 <Row className='d-flex justify-content-between'>
                                     <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='진행률 From'>
-                                            <Form.Select size='sm' aria-label='selectBox' className='pro_1 ' id='fromSelect' value={input?.a_progress_rate_code_from || ''} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_1 ' id='fromSelect' value={input.a_progress_rate_code_from || ''} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
                                                 <option value=''>선택</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                     (
@@ -490,7 +371,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                                         </FloatingLabel>
                                         <span style={{margin: '0 10px'}}>~</span>
                                         <FloatingLabel label='진행률 To'>
-                                            <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id='fromSelect' value={input?.a_progress_rate_code_to || ''} name='a_progress_rate_code_to' onChange={f_handleToChange}>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id='fromSelect' value={input.a_progress_rate_code_to || ''} name='a_progress_rate_code_to' onChange={f_handleToChange}>
                                                 <option value=''>선택</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                     (
@@ -506,7 +387,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <Form.Label htmlFor='inputChck' className=''>필달 여부</Form.Label>
-                                        <Form.Check type={`checkbox`} id={`inputChck`} checked={input?.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
+                                        <Form.Check type={`checkbox`} id={`inputChck`} checked={input.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                     </Col>
@@ -514,8 +395,8 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                                 <Row className='d-flex justify-content-between'>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='본부'>
-                                            <Form.Select id='select1' size='sm' aria-label='selectBox' value={input?.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept} disabled={!v_deptHandling.detpDisabled}>
-                                                <option value={v_deptHandling.deptValue || ''}>{v_deptHandling.deptMsg || '-- 본부를 선택하세요 --'}</option>
+                                            <Form.Select id='select1' size='sm' aria-label='selectBox' value={input.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept} disabled={deptValue.length}>
+                                                <option defaultValue={deptValue || ''}>{deptMsg || '-- 본부를 선택하세요'}</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                 (
                                                     v_depts.map((dept) => (
@@ -549,8 +430,8 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='팀'>
-                                            <Form.Select id='select2' size='sm' aria-label='selectBox' name='a_dept_id' onChange={f_handlingDept} disabled={!v_teamHandling.teamDisabled}/* {!v_selectTeam.length} */>
-                                                <option value={v_teamHandling.teamValue || ''}>{v_teamHandling.teamMsg || ''}</option>
+                                            <Form.Select id='select2' size='sm' aria-label='selectBox' name='a_dept_id' onChange={f_handlingDept} disabled={!v_selectTeam.length}>
+                                                <option defaultValue={teamValue}>{teamMsg}</option>
                                                 {v_selectTeam.map((team) => (
                                                     <option key={team.dept_id} value={team.dept_id || ''}>
                                                         {team.dept_name}
@@ -569,11 +450,132 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='영업 담당자'>
-                                            <Form.Control size='sm' type='text' id='userName' defaultValue={v_userHandling.userValue || ''} name='a_user_name' onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='text' id='userName' /* value={input.a_user_name}  */name='a_user_name' onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
                                 </Row>
                                 </>
+
+
+
+
+                                <div style={{"display":"none"}}>
+                                <Row className='d-flex justify-content-between'>
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                        <Form.Label className=''>계약 일자</Form.Label>
+                                        <div className='d-flex'>
+                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
+                                            />
+                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input.a_contract_date_to || ''} onChange={f_handlingInput}/>
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                        <Form.Label className=''>매출 일자</Form.Label>
+                                        <div className='d-flex'>
+                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input.a_sale_date_from || ''} onChange={f_handlingInput}/>
+                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input.a_sale_date_to || ''} onChange={f_handlingInput}/>
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={2} lg={2} className='btnArea col d-flex justify-content-end'>
+                                        <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e)}>조회</Button>
+                                    </Col>
+                                </Row>
+                                <Row className='d-flex justify-content-between'>
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                        <Form.Label className=''>진행률</Form.Label>
+                                        <div>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_1 ' id='fromSelect' value={input.a_progress_rate_code_from || ''} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
+                                                <option>선택</option>
+                                                {(Object.keys(data).length > 0 ? 
+                                                    (
+                                                        data.search_commonness_pro.map((e) => {
+                                                            return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
+                                                        })
+                                                    )
+                                                    :
+                                                    ('')
+                                                )}
+                                            </Form.Select>
+                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id='fromSelect' value={input.a_progress_rate_code_to || ''} name='a_progress_rate_code_to' onChange={f_handleToChange}>
+                                                <option>선택</option>
+                                                {(Object.keys(data).length > 0 ? 
+                                                    (
+                                                        v_filteredProTo.map((e) => {
+                                                            return <option key={e.key} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
+                                                        })
+                                                    )
+                                                    :
+                                                    ('')
+                                                )}
+                                            </Form.Select>
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={5} lg={5} className='col d-flex align-items-center justify-content-start'>
+                                        <Form.Label htmlFor='inputChck' className=''>필달 여부</Form.Label>
+                                        <Form.Check type={`checkbox`} id={`inputChck`}  value={input.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
+                                    </Col>
+                                    <Col xs={12} md={2} lg={2} className='col d-flex align-items-center justify-content-start'>
+                                    </Col>
+                                </Row>
+                                <Row className='d-flex justify-content-between'>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
+                                        <Form.Label className=''>본부</Form.Label>
+                                        <Form.Select id='select1' size='sm' aria-label='selectBox' 
+                                       /*  defaultValue={(
+                                            (v_depts && v_depts.length === 1) ? 
+                                            (v_depts[0]) : 
+                                            (''))
+                                        }  */
+                                        value={input.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept}>
+                                            <option>본부를 선택하세요</option>
+                                            {(Object.keys(data).length > 0 ? 
+                                            (
+                                                v_depts.map((dept) => (
+                                                <option key={dept.dept_id} value={dept.dept_id}>
+                                                    {dept.dept_name}
+                                                </option>
+                                                ))
+                                            )
+                                            :
+                                            ('')
+                                            )}
+                                        </Form.Select>
+                                        {/* <Form.Select id='select1' size='sm' aria-label='selectBox' value={input.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept}>
+                                            <option>-- 본부를 선택하세요 --</option>
+                                            {(Object.keys(data).length > 0 ? 
+                                            (
+                                                v_depts.map((dept) => (
+                                                <option key={dept.dept_id} value={dept.dept_id}>
+                                                    {dept.dept_name}
+                                                </option>
+                                                ))
+                                            )
+                                            :
+                                            ('')
+                                            )}
+                                        </Form.Select> */}
+                                    </Col>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
+                                        <Form.Label className=''>팀</Form.Label>
+                                        <Form.Select id='select2' size='sm' aria-label='selectBox' /* value={input.a_dept_id} */ name='a_dept_id' onChange={f_handlingDept} disabled={!v_selectTeam.length}>
+                                            <option>-- 팀을 선택하세요 --</option>
+                                            {v_selectTeam.map((team) => (
+                                                <option key={team.dept_id} value={team.dept_id || ''}>
+                                                    {team.dept_name}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Col>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start'>
+                                        <Form.Label className=''>영업 담당자</Form.Label>
+
+                                        <Form.Control size='sm' type='text' placeholder='담당자명을 입력하세요' id='userName' /* value={input.a_user_name} */ name='a_user_name' onChange={f_handlingInput}/>
+                                    </Col>
+                                </Row>
+                                </div>
                             </div>
                         </div>
                         </>

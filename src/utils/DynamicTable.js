@@ -9,6 +9,7 @@ import { apiMethods } from './api';
 import roots from './datas/Roots';
 
 import { Table, Button, Pagination } from 'react-bootstrap';
+import { CaretUp, CaretDown } from 'react-bootstrap-icons';
 import '../styles/_table.scss';
 import '../styles/_global.scss';
 
@@ -208,18 +209,6 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
   // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
 
   useEffect(() => {
-    // res obj / res.data arr
-    if(res && res.data) {
-      console.log("res.data:", res.data, res.data.length);
-      if (res.data.length > 0) {
-        setData(res?.data);
-        console.log(data.length);
-      } else {
-        console.log('데이터 없음');
-        return <div>데이터가 존재하지 않습니다.</div>;
-      }
-    } 
-
     if (!data.length || !columns.length) {
       return <div>Loading...</div>;
     }
@@ -241,9 +230,10 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
                         return (
                           <th key={key} {...restProps}>
                             {column.render('Header')}
-                            <span /* style={sortStyle} onClick={(e) => f_sortStyle(e, column)} */>
+                            <span className='ms-1' /* style={sortStyle} onClick={(e) => f_sortStyle(e, column)} */>
                               {/* test */}
-                              {column.isSorted ? (column.isSortedDesc ? " ⬇︎" : " ⬆︎") : "⬇︎"}
+                              {column.isSorted ? (column.isSortedDesc ? <CaretDown /> : <CaretUp />) : <CaretDown />}
+                              {/* {column.isSorted ? (column.isSortedDesc ? " ⬇︎" : " ⬆︎") : "⬇︎"} */}
                             </span>
                           </th>
                         );
@@ -328,15 +318,11 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
                                 return (
                                     <td key={key} {...restProps}>
                                         {index === row.cells.length - 1
-                                        ? (
-                                          (console.log("index 존재함")),
-                                        <Button size="sm" variant="light" onClick={(e) => {
-                                          openModal();
-                                        }}>
-                                          이력
-                                        </Button>)
+                                        ? 
+                                        (<Button size="sm" variant="light" onClick={(e) => {openModal();}}>이력</Button>)
                                         : 
-                                        cell.render('Cell')}
+                                        cell.render('Cell')
+                                        }
                                     </td>
                                 );
                             })}
@@ -347,12 +333,24 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
             </Table>
             </>
           )
-          setVHandlingHtml (htmlContent);
+          setVHandlingHtml(htmlContent);
           break;
         default:
           setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
       }
     }
+
+    // res obj / res.data arr
+    if(res && res.data) {
+      // console.log("res.data:", res.data, res.data.length);
+      if (res.data.length > 0) {
+        setData(res?.data);
+        // console.log(data.length);
+      } else {
+        console.log('데이터 없음');
+        setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
+      }
+    } 
   }, [v_childComponent, v_componentName, data, page, showModal, res]);
 
   return (

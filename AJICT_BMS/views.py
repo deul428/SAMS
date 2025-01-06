@@ -18,9 +18,9 @@ def f_login(request):
 
 
       #test
-      logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-      logging.debug(f"f_login()에서의 v_user_id : {v_user_id}")
-      logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+      #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+      #logging.debug(f"f_login()에서의 v_user_id : {v_user_id}")
+      #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 
 
    try:
@@ -662,6 +662,44 @@ def f_select_biz_opp2(request):
                v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
       # logging.debug(f"v_data : {v_data}")
             return JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})
+      except DatabaseError:
+         v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      except json.JSONDecodeError:
+         v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+def f_select_popup_biz_opp(request):
+   v_session_user_id = ''
+   v_status = ''
+   if not v_session_user_id:
+      v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   else:
+      try:
+         v_data = {"search_last_client_com_code":[],"search_biz_section_code":[],"search_principal_product_code":[]}
+         v_sql_last_client_com_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'PRO' ORDER BY small_classi_code"""
+         with connection.cursor() as v_cursor_last_client_com_code:
+            v_cursor_last_client_com_code.execute(v_sql_last_client_com_code)
+            v_columns_last_client_com_code = [v_column[0] for v_column in v_cursor_last_client_com_code.description]
+            v_rows_last_client_com_code = v_cursor_last_client_com_code.fetchall()
+            v_data["search_last_client_com_code"] = [dict(zip(v_columns_last_client_com_code,row)) for row in v_rows_last_client_com_code]
+         v_sql_biz_section_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'BIZ' ORDER BY small_classi_code"""
+         with connection.cursor() as v_cursor_biz_section_code:
+            v_cursor_biz_section_code.execute(v_sql_biz_section_code)
+            v_columns_biz_section_code = [v_column[0] for v_column in v_cursor_biz_section_code.description]
+            v_rows_biz_section_code = v_cursor_biz_section_code.fetchall()
+            v_data["search_biz_section_code"] = [dict(zip(v_columns_biz_section_code,row)) for row in v_rows_biz_section_code]
+         v_sql_principal_product_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'PRI' ORDER BY small_classi_code"""
+         with connection.cursor() as v_cursor_principal_product_code:
+            v_cursor_principal_product_code.execute(v_sql_principal_product_code)
+            v_columns_principal_product_code = [v_column[0] for v_column in v_cursor_principal_product_code.description]
+            v_rows_principal_product_code = v_cursor_principal_product_code.fetchall()
+         v_data["search_principal_product_code"] = [dict(zip(v_columns_principal_product_code,row)) for row in v_rows_principal_product_code]
+         v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
+         return JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})
       except DatabaseError:
          v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
          v_square_bracket_return = [v_return]

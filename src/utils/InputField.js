@@ -10,7 +10,6 @@ import { Person } from 'react-bootstrap-icons';
 import '../styles/_search.scss';
 
 const InputField = ({ v_componentName, v_propsData, setRes }) => {
-    // console.log(setRes);
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
@@ -123,7 +122,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
 
             // 날짜: 1) to null 가능. 2) from > to일 경우 return
             if (!input.a_contract_date_to || input.a_sale_date_to) {
-                console.log("to 값이 null이거나 빈 문자열입니다."); // 디버깅용
+                // console.log("to 값이 null이거나 빈 문자열입니다."); // 디버깅용
             } else {
                 if ((input.a_contract_date_from > input.a_contract_date_to) || (input.a_sale_date_from > input.a_sale_date_to)) {
                     alert('일자는 From보다 To가 더 작을 수 없습니다.');
@@ -132,8 +131,10 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
             }
             console.log("submit 될 input data\n", input, e);
             const response = await apiMethods[method]('select-biz-opp2/', input);
-            if (Array.isArray(response)) {
-                console.log(response[0].STATUS, response[0].MESSAGE);
+            if (response.status.STATUS === 'NONE') {
+                console.log(response.status.STATUS, response.status.MESSAGE);
+                setRes(null);
+                // v_handlingHtmlNone = response.status.MESSAGE;
                 return;
             } else {
                 console.log('input Field response 송신 완료', endpoint, response);
@@ -289,16 +290,6 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
         }
     }
 
-    // Level 2. 부서(dept 테이블의 dept_id)
-    /* 9201	경영관리팀
-    9509	운영팀
-    9711	영업1팀
-    9712	영업2팀
-    9713	영업3팀
-    9721	전략사업1팀
-    9722	전략사업2팀
-    9723	전략사업3팀
-    9801	신사업추진팀 */
     
     const [v_deptHandling, setVDeptHandling] = useState({
         deptValue: '',
@@ -310,6 +301,11 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
         teamMsg: '-- 팀을 선택하세요 --',
         teamDisabled: false,
     })
+    const [v_userHandling, setVUserhandling] = useState({
+        userValue: '',
+        userMsg: '-- 담당자를 선택하세요 --',
+    })
+
 
     // Level 2. 직책(RES) Check 0001팀원 0002팀장 0003본부장 0004이사
     const f_authLevel2 = () => {
@@ -336,6 +332,17 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                 break;
         }
     }
+    
+    // Level 3. 부서(dept 테이블의 dept_id)
+    /* 9201	경영관리팀
+    9509	운영팀
+    9711	영업1팀
+    9712	영업2팀
+    9713	영업3팀
+    9721	전략사업1팀
+    9722	전략사업2팀
+    9723	전략사업3팀
+    9801	신사업추진팀 */
     const f_authLevel3 = (userAuth2Data) => {
         let head, team;
         const deptId = auth.userDeptCode;
@@ -395,13 +402,10 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
     useEffect(()=> {
         console.log(v_teamHandling);
     }, [v_teamHandling]);
-    const [v_userHandling, setVUserhandling] = useState({
-        userValue: '',
-        userMsg: '-- 담당자를 선택하세요 --',
-    })
 
 
     useEffect(() => {
+        console.log("=-=-==-=--=data:-=-=-=--=-", data);
         if (Object.keys(data).length > 0) {
             switch(v_componentName) {
                 case 'bizOpp':
@@ -528,43 +532,18 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                                                 ('')
                                                 )}
                                             </Form.Select>
-                                            {/* <Form.Select id='select1' size='sm' aria-label='selectBox' value={input.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept}>
-                                                <option value=''>-- 본부를 선택하세요 --</option>
-                                                {(Object.keys(data).length > 0 ? 
-                                                (
-                                                    (Array.isArray(v_depts)) ?
-                                                    (v_depts.map((dept) => (
-                                                    <option key={dept.dept_id} value={dept.dept_id}>
-                                                        {dept.dept_name}
-                                                    </option>
-                                                    )))
-                                                    : 
-                                                    (console.log("v_depts: ", v_depts))
-                                                )
-                                                :
-                                                ('')
-                                                )}
-                                            </Form.Select> */}
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='팀'>
-                                            <Form.Select id='select2' size='sm' aria-label='selectBox' name='a_dept_id' onChange={f_handlingDept} disabled={!v_teamHandling.teamDisabled}/* {!v_selectTeam.length} */>
-                                                <option value={v_teamHandling.teamValue || ''}>{v_teamHandling.teamMsg || ''}</option>
+                                            <Form.Select id='select2' size='sm' aria-label='selectBox' name='a_dept_id' onChange={f_handlingDept} disabled={!v_teamHandling.teamDisabled}>
+                                                <option value={v_teamHandling.teamValue || ''}>{v_teamHandling.teamMsg || '-- 팀을 선택하세요 --'}</option>
                                                 {v_selectTeam.map((team) => (
                                                     <option key={team.dept_id} value={team.dept_id || ''}>
                                                         {team.dept_name}
                                                     </option>
                                                 ))}
                                             </Form.Select>
-                                            {/* <Form.Select id='select2' size='sm' aria-label='selectBox' name='a_dept_id' onChange={f_handlingDept} disabled={!v_selectTeam.length}>
-                                                <option value=''>-- 팀을 선택하세요 --</option>
-                                                {v_selectTeam.map((team) => (
-                                                    <option key={team.dept_id} value={team.dept_id || ''}>
-                                                        {team.dept_name}
-                                                    </option>
-                                                ))}
-                                            </Form.Select> */}
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
@@ -766,7 +745,9 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
 
     return (
         <div id='search' className='wrap'>
-            {v_handlingHtml}
+            {(data) ? 
+                (v_handlingHtml) : ('')
+            }
         </div>
     );
 };

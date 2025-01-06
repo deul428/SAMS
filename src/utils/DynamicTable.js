@@ -232,7 +232,7 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
                             {column.render('Header')}
                             <span className='ms-1' /* style={sortStyle} onClick={(e) => f_sortStyle(e, column)} */>
                               {/* test */}
-                              {column.isSorted ? (column.isSortedDesc ? <CaretDown /> : <CaretUp />) : <CaretDown />}
+                              {column.isSorted ? (column.isSortedDesc ? <CaretDown /> : <CaretUp />) : ''}
                               {/* {column.isSorted ? (column.isSortedDesc ? " ⬇︎" : " ⬆︎") : "⬇︎"} */}
                             </span>
                           </th>
@@ -295,13 +295,19 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
                   return (
                     <tr key={key} {...restProps}>
                       {headerGroup.headers.map((column) => {
-                        const { key, ...restProps } = column.getHeaderProps();
+                        const { key, ...restProps } = column.getHeaderProps(column.getSortByToggleProps());
                         return (
                           <th key={key} {...restProps}>
                             {column.render('Header')}
+                            <span className='ms-1' /* style={sortStyle} onClick={(e) => f_sortStyle(e, column)} */>
+                              {/* test */}
+                              {column.isSorted ? (column.isSortedDesc ? <CaretDown /> : <CaretUp />) : ''}
+                              {/* {column.isSorted ? (column.isSortedDesc ? " ⬇︎" : " ⬆︎") : "⬇︎"} */}
+                            </span>
                           </th>
                         );
                       })}
+                      
                     </tr>
                   );
                 })}
@@ -312,21 +318,20 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
                     prepareRow(row);
                     const { key, ...restProps } = row.getRowProps();
                     return (
-                        <tr key={key} {...restProps}>
-                            {row.cells.map((cell, index) => {
-                                const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
-                                return (
-                                    <td key={key} {...restProps}>
-                                        {index === row.cells.length - 1
-                                        ? 
-                                        (<Button size="sm" variant="light" onClick={(e) => {openModal();}}>이력</Button>)
-                                        : 
-                                        cell.render('Cell')
-                                        }
-                                    </td>
-                                );
-                            })}
-                        </tr>
+                      <tr key={key} {...restProps}>
+                        {row.cells.map((cell, index) => {
+                          const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
+                          return (
+                            <td key={key} {...restProps}>
+                              {(index === row.cells.length - 1) ? 
+                              (<Button size="sm" variant="light" onClick={(e) => {openModal();}}>이력</Button>)
+                              : 
+                              cell.render('Cell')
+                              }
+                            </td>
+                          );
+                        })}
+                      </tr>
                     );
                 })}
               </tbody>
@@ -341,6 +346,7 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
     }
 
     // res obj / res.data arr
+    console.log("res---------------------------------------", res);
     if(res && res.data) {
       // console.log("res.data:", res.data, res.data.length);
       if (res.data.length > 0) {

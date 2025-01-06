@@ -9,18 +9,18 @@ from django.db import DatabaseError
 logging.basicConfig(level=logging.DEBUG)
 def f_login(request):
    request.session.flush()
-
-
-   #v_user_id = 'leecj'
-   #v_cipher = '12345'
-
    v_user_id = ''
    v_cipher = ''
-
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_user_id = v_body.get('a_user_id')
       v_cipher = v_body.get('a_cipher')
+
+
+      #test
+      logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+      logging.debug(f"f_login()에서의 v_user_id : {v_user_id}")
+      logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 
 
    try:
@@ -34,7 +34,7 @@ def f_login(request):
          if v_count1 == 0:
             v_data1 = {'STATUS':'FAIL','MESSAGE':'존재하지 않는 사용자 ID입니다.'}
             v_square_bracket_data1 = [v_data1]
-            return JsonResponse(v_square_bracket_data1,safe=False,json_dumps_params={'ensure_ascii':False})
+            return JsonResponse(v_square_bracket_data1,safe = False,json_dumps_params={'ensure_ascii':False})
       v_sql2 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s AND cipher = %s"""
       v_param2=[]
       v_param2.append(v_user_id)
@@ -46,7 +46,7 @@ def f_login(request):
          if v_count2 == 0:
             v_data2 = {'STATUS':'FAIL','MESSAGE':'비밀번호가 틀립니다.'}
             v_square_bracket_data2 = [v_data2]
-            return JsonResponse(v_square_bracket_data2,safe=False,json_dumps_params={'ensure_ascii':False})
+            return JsonResponse(v_square_bracket_data2,safe = False,json_dumps_params={'ensure_ascii':False})
       v_sql3 = """SELECT user_id,
                          user_name,
                          cipher,
@@ -95,11 +95,10 @@ def f_login(request):
          #logging.debug(f"f_login()에서의 user_name : {v_user_name}")
          #logging.debug(f"*******************************************")
 
-
          v_additional_info = {'STATUS':'LOGIN','MESSAGE':'login 했습니다.'}
          v_square_bracket_additional_info = [v_additional_info]
          v_square_bracket_data3.append(v_square_bracket_additional_info)
-         return JsonResponse(v_square_bracket_data3,safe=False,json_dumps_params={'ensure_ascii':False})
+         return JsonResponse(v_square_bracket_data3,safe = False,json_dumps_params={'ensure_ascii':False})
    except DatabaseError:
       v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
       v_square_bracket_return = [v_return]
@@ -107,7 +106,7 @@ def f_login(request):
    except json.JSONDecodeError:
       v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
       v_square_bracket_return = [v_return]
-      return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_serialize(a_row,a_columns):
    v_row_dict = {}
    for v_column,v_value in zip(a_columns,a_row):
@@ -144,10 +143,10 @@ def f_cipher_change(request):
       return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
    if v_old_cipher == v_new_cipher:
       v_return = {"STATUS":"FAIL","MESSAGE":"이전 비밀번호와 같습니다. 다르게 설정해주십시오."}
-      return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
+      return JsonResponse(v_return,safe = False,json_dumps_params={'ensure_ascii':False})
    if len(v_new_cipher) < 5:
       v_return = {"STATUS":"FAIL","MESSAGE":"비밀번호는 최소 5자리 이상이어야 합니다."}
-      return JsonResponse(v_return,safe=False,json_dumps_params={'ensure_ascii':False})
+      return JsonResponse(v_return,safe = False,json_dumps_params={'ensure_ascii':False})
    try:
       with transaction.atomic():
          v_sql = """UPDATE ajict_bms_schema.aj_user SET cipher = %s,beginning_login_tf = FALSE WHERE user_id = %s"""
@@ -158,7 +157,7 @@ def f_cipher_change(request):
             v_cursor.execute(v_sql,v_param)
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
             v_square_bracket_return = [v_return]
-            return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
+            return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
    except DatabaseError:
       v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
       v_square_bracket_return = [v_return]
@@ -166,34 +165,17 @@ def f_cipher_change(request):
    except Exception as E:
       v_return = {'STATUS':'FAIL','MESSAGE':'System의 문제로 인해 비밀번호를 변경하지 못했습니다.','ERROR':str(E)}
       v_square_bracket_return = [v_return]
-      return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_logout(request):
    logout(request)
    v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 했습니다.'}
    v_square_bracket_return = [v_return]
-   return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
+   return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp1(request):
-
-   #Session의 값 중 일부를 추출할 수 있음.
-   #v_global_data = request.session.get('v_global_data',{})
-   #v_user_name = v_global_data[0].get('user_name')
-   #logging.debug(f"*******************************************")
-   #logging.debug(f"f_select_biz_opp1()에서의 user_name : {v_user_name}")
-   #logging.debug(f"*******************************************")
-
-   # if 'v_global_data' not in request.session:
-   #    v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
-   #    v_square_bracket_return = [v_return]
-   #    return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
-   # else:
-
-
    v_session_user_id = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = v_body.get('a_session_user_id')
-
-   #v_session_user_id = 'mj.lee'
 
    #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
    #logging.debug(f"f_select_biz_opp1()에서의 v_session_user_id : {v_session_user_id}")
@@ -416,19 +398,19 @@ def f_select_biz_opp1(request):
                v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
             else:
                v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
-         return JsonResponse({"data":v_data,"status":v_status},safe=False,json_dumps_params={'ensure_ascii':False})
+         return JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params={'ensure_ascii':False})
       except DatabaseError:
          v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
          v_square_bracket_return = [v_return]
-         return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
       except json.JSONDecodeError:
          v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
          v_square_bracket_return = [v_return]
-         return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params={'ensure_ascii':False})
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp2(request):
 
    v_session_user_id = ''
-   #v_session_user_id = 'gosh'
+   #v_session_user_id = 'leecj'
 
    v_body = ''
    if request.method == 'POST':
@@ -475,33 +457,39 @@ def f_select_biz_opp2(request):
             v_auth2_code = v_data_session[0]['auth2_code']
             v_responsibility1_code = v_data_session[0]['responsibility1_code']
             v_responsibility2_code = v_data_session[0]['responsibility2_code']
-            #v_user_id = v_data_session[0]['user_id']
-            #v_dept_id = v_data_session[0]['dept_id']
+
          v_contract_date_from = v_body.get('a_contract_date_from')
          v_contract_date_to = v_body.get('a_contract_date_to')
          v_sale_date_from = v_body.get('a_sale_date_from')
          v_sale_date_to = v_body.get('a_sale_date_to')
          v_headquarters_dept_id = v_body.get('a_headquarters_dept_id')
 
+         #v_contract_date_from = ''
+         #v_contract_date_to = ''
+         #v_sale_date_from = ''
+         #v_sale_date_to = ''
+         #v_headquarters_dept_id = ''
+
          v_team_dept_id = v_body.get('a_dept_id')
-         #v_team_dept_id = '9801'
+         #v_team_dept_id = ''
 
          v_user_name = v_body.get('a_user_name')
-         #v_user_name = '김'
+         #v_user_name = ''
 
-         #v_progress_rate_code_from = request.POST.get('a_progress_rate_code_from')
-         #v_progress_rate_code_to = request.POST.get('a_progress_rate_code_to')
          v_progress_rate_code_from = v_body.get('a_progress_rate_code_from','')
          v_progress_rate_code_to = v_body.get('a_progress_rate_code_to','')
 
-         logging.debug(f"################################################################################")
-         logging.debug(f"f_select_biz_opp2()에서의 v_progress_rate_code_from : " + v_progress_rate_code_from)
-         logging.debug(f"f_select_biz_opp2()에서의 v_progress_rate_code_to : " + v_progress_rate_code_to)
-         logging.debug(f"################################################################################")
+         #v_progress_rate_code_from = ''
+         #v_progress_rate_code_to = ''
 
-         v_essential_achievement_tf = request.POST.get('a_essential_achievement_tf')
-         #v_global_data = request.session.get('v_global_data',{})
-         #v_user_id = v_global_data[0].get('user_name')
+         #logging.debug(f"################################################################################")
+         #logging.debug(f"f_select_biz_opp2()에서의 v_progress_rate_code_from : " + v_progress_rate_code_from)
+         #logging.debug(f"f_select_biz_opp2()에서의 v_progress_rate_code_to : " + v_progress_rate_code_to)
+         #logging.debug(f"################################################################################")
+
+         v_essential_achievement_tf = v_body.get('a_essential_achievement_tf')
+         #v_essential_achievement_tf = False
+
          v_sql_biz_opp = """SELECT A.biz_opp_id,
                                    B.detail_no,
                                    A.biz_opp_name,
@@ -596,11 +584,9 @@ def f_select_biz_opp2(request):
                                    B.delete_user AS biz_opp_detail_delete_user,
                                    B.delete_date AS biz_opp_detail_delete_date
                             FROM ajict_bms_schema.biz_opp A,
-                                 ajict_bms_schema.biz_opp_detail B"""
-         #if v_user_name:
-         #   v_sql_biz_opp += ",ajict_bms_schema.aj_user C"
-         v_sql_biz_opp += " WHERE 1 = 1 AND\
-                                  A.biz_opp_id = B.biz_opp_id"
+                                 ajict_bms_schema.biz_opp_detail B
+                            WHERE 1 = 1 AND
+                                  A.biz_opp_id = B.biz_opp_id"""
          v_param2 = []
          if not v_contract_date_from:
             v_contract_date_from = '19500101'
@@ -623,9 +609,9 @@ def f_select_biz_opp2(request):
          v_sql_biz_opp += " AND A.progress1_rate_code = 'PRO' AND A.progress2_rate_code BETWEEN %s AND %s"
          v_param2.append(v_progress_rate_code_from)
          v_param2.append(v_progress_rate_code_to)
-         if v_essential_achievement_tf == 'TRUE':
+         if v_essential_achievement_tf:
             v_sql_biz_opp += " AND A.essential_achievement_tf = TRUE"
-         if v_essential_achievement_tf == 'FALSE':
+         else:
             v_sql_biz_opp += " AND A.essential_achievement_tf = FALSE"
          if v_auth1_code == 'AUT' and (v_auth2_code == '0001' or v_auth2_code == '0002'):
             if v_headquarters_dept_id:
@@ -684,7 +670,276 @@ def f_select_biz_opp2(request):
          v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+def f_insert_biz_opp(request):
+   v_session_user_id = ''
+   #v_session_user_id = 'leecj'
 
+   v_body = ''
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_session_user_id = v_body.get('a_session_user_id')
+   if not v_session_user_id:
+      v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   else:
+      try:
+         v_sql_session = """SELECT user_id,
+                                   user_name,
+                                   cipher,
+                                   dept_id,
+                                   position1_code,
+                                   position2_code,
+                                   responsibility1_code,
+                                   responsibility2_code,
+                                   auth1_code,
+                                   auth2_code,
+                                   beginning_login_tf,
+                                   create_user,
+                                   create_date,
+                                   update_user,
+                                   update_date,
+                                   delete_user,
+                                   delete_date
+                                   FROM ajict_bms_schema.aj_user
+                                   WHERE user_id = %s"""
+         v_param1 = []
+         v_param1.append(v_session_user_id)
+         v_auth1_code = ''
+         v_auth2_code = ''
+         v_dept_id = ''
+         with connection.cursor() as v_cursor_session:
+            v_cursor_session.execute(v_sql_session,v_param1)
+            v_columns_session = [v_column[0] for v_column in v_cursor_session.description]
+            v_rows_session = v_cursor_session.fetchall()
+            v_data_session = [dict(zip(v_columns_session,row)) for row in v_rows_session]
+            v_auth1_code = v_data_session[0]['auth1_code']
+            v_auth2_code = v_data_session[0]['auth2_code']
+            v_dept_id = v_data_session[0]['dept_id']
+         v_biz_opp_id = ''
+         with transaction.atomic():
+            v_sql_max = """SELECT TO_CHAR(NOW(),'YYYY') || LPAD((MAX(SUBSTRING(biz_opp_id FROM 5 FOR 4)::INTEGER) + 1)::TEXT,4,'0') FROM ajict_bms_schema.biz_opp"""
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_max)
+               v_row1 = v_cursor.fetchone()
+               v_biz_opp_id = v_row1[0]
+            v_sql_insert_biz_opp = """INSERT INTO ajict_bms_schema.biz_opp (biz_opp_id,
+                                                                            biz_opp_name,
+                                                                            progress1_rate_code,
+                                                                            progress2_rate_code,
+                                                                            contract_date,
+                                                                            essential_achievement_tf,
+                                                                            create_user)
+                                                                           VALUES (%s,
+                                                                                   %s,
+                                                                                   'PRO',
+                                                                                   %s,
+                                                                                   %s,
+                                                                                   %s,
+                                                                                   %s)"""
+            v_param_insert_biz_opp = []
+            v_param_insert_biz_opp.append(v_biz_opp_id)
+            v_param_insert_biz_opp.append(None if v_body.get('a_biz_opp_name') == '' else v_body.get('a_biz_opp_name'))
+            v_param_insert_biz_opp.append(v_body.get('a_progress2_rate_code'))
+            v_param_insert_biz_opp.append(v_body.get('a_contract_date'))
+            v_param_insert_biz_opp.append(v_body.get('essential_achievement_tf'))
+            v_param_insert_biz_opp.append(v_session_user_id)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_insert_biz_opp,v_param_insert_biz_opp)
+            v_sql_insert_biz_opp_detail = """INSERT INTO ajict_bms_schema.biz_opp_detail (biz_opp_id,
+                                                                                          detail_no,
+                                                                                          user_id,
+                                                                                          change_preparation_dept_id,
+                                                                                          change_preparation_dept_name,
+                                                                                          last_client_com1_code,
+                                                                                          last_client_com2_code,
+                                                                                          sale_com1_code,
+                                                                                          sale_com2_code,
+                                                                                          sale_item_no,
+                                                                                          sale_date,
+                                                                                          sale_amt,
+                                                                                          sale_profit,
+                                                                                          purchase_date,
+                                                                                          purchase_amt,
+                                                                                          collect_money_date,
+                                                                                          biz_section1_code,
+                                                                                          biz_section2_code,
+                                                                                          principal_product1_code,
+                                                                                          principal_product2_code,
+                                                                                          create_user)
+                                                                                         VALUES (%s,
+                                                                                                 1,
+                                                                                                 %s,
+                                                                                                 %s,
+                                                                                                 (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s),
+                                                                                                 'COR',
+                                                                                                 %s,
+                                                                                                 'COR',
+                                                                                                 %s,
+                                                                                                 %s,
+                                                                                                 %s,
+                                                                                                 %s,
+                                                                                                 %s,
+                                                                                                 %s,
+                                                                                                 %s,
+                                                                                                 %s,
+                                                                                                 'BIZ',
+                                                                                                 %s,
+                                                                                                 'COR',
+                                                                                                 %s,
+                                                                                                 %s)"""
+            v_param_insert_biz_opp_detail = []
+            v_param_insert_biz_opp_detail.append(v_biz_opp_id)
+            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+               v_param_insert_biz_opp_detail.append(v_body.get('a_user_id'))
+            else:
+               v_param_insert_biz_opp_detail.append(v_session_user_id)
+            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+               v_param_insert_biz_opp_detail.append(v_body.get('a_change_preparation_dept_id'))
+            else:
+               v_param_insert_biz_opp_detail.append(v_dept_id)
+            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+               v_param_insert_biz_opp_detail.append(v_body.get('a_change_preparation_dept_id'))
+            else:
+               v_param_insert_biz_opp_detail.append(v_dept_id)
+            v_param_insert_biz_opp_detail.append(None if v_body.get('a_last_client_com2_code') == '' else v_body.get('a_last_client_com2_code'))
+            v_param_insert_biz_opp_detail.append(v_body.get('a_sale_com2_code'))
+            v_param_insert_biz_opp_detail.append(None if v_body.get('a_sale_item_no') == '' else v_body.get('a_sale_item_no'))
+            v_param_insert_biz_opp_detail.append(v_body.get('a_sale_date'))
+            v_param_insert_biz_opp_detail.append(v_body.get('a_sale_amt'))
+            v_param_insert_biz_opp_detail.append(v_body.get('a_sale_profit'))
+            v_param_insert_biz_opp_detail.append(v_body.get('a_purchase_date'))
+            v_param_insert_biz_opp_detail.append(v_body.get('a_purchase_amt'))
+            v_param_insert_biz_opp_detail.append(None if v_body.get('a_collect_money_date') == '' else v_body.get('a_collect_money_date'))
+            v_param_insert_biz_opp_detail.append(v_body.get('a_biz_section2_code'))
+            v_param_insert_biz_opp_detail.append(v_body.get('a_principal_product2_code'))
+            v_param_insert_biz_opp_detail.append(v_session_user_id)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_insert_biz_opp_detail,v_param_insert_biz_opp_detail)
+            v_sql_insert_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
+                                                                                            history_no,
+                                                                                            biz_opp_name,
+                                                                                            progress1_rate_code,
+                                                                                            progress2_rate_code,
+                                                                                            contract_date,
+                                                                                            essential_achievement_tf,
+                                                                                            create_user)
+                                                                                           VALUES (%s,
+                                                                                                   1,
+                                                                                                   %s,
+                                                                                                   'PRO',
+                                                                                                   %s,
+                                                                                                   %s,
+                                                                                                   %s,
+                                                                                                   %s)"""
+            v_param_insert_biz_opp_history = []
+            v_param_insert_biz_opp_history.append(v_biz_opp_id)
+            v_param_insert_biz_opp_history.append(None if v_body.get('a_biz_opp_name') == '' else v_body.get('a_biz_opp_name'))
+            v_param_insert_biz_opp_history.append(v_body.get('a_progress2_rate_code'))
+            v_param_insert_biz_opp_history.append(v_body.get('a_contract_date'))
+            v_param_insert_biz_opp_history.append(v_body.get('essential_achievement_tf'))
+            v_param_insert_biz_opp_history.append(v_session_user_id)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_insert_biz_opp_history,v_param_insert_biz_opp_history)
+            v_sql_insert_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_history (biz_opp_id,
+                                                                                                          detail_no,
+                                                                                                          history_no,
+                                                                                                          user_id,
+                                                                                                          change_preparation_dept_id,
+                                                                                                          change_preparation_dept_name,
+                                                                                                          last_client_com1_code,
+                                                                                                          last_client_com2_code,
+                                                                                                          sale_com1_code,
+                                                                                                          sale_com2_code,
+                                                                                                          sale_item_no,
+                                                                                                          sale_date,
+                                                                                                          sale_amt,
+                                                                                                          sale_profit,
+                                                                                                          purchase_date,
+                                                                                                          purchase_amt,
+                                                                                                          collect_money_date,
+                                                                                                          biz_section1_code,
+                                                                                                          biz_section2_code,
+                                                                                                          principal_product1_code,
+                                                                                                          principal_product2_code,
+                                                                                                          create_user)
+                                                                                                         VALUES (%s,
+                                                                                                                 1,
+                                                                                                                 1,
+                                                                                                                 %s,
+                                                                                                                 %s,
+                                                                                                                 (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s),
+                                                                                                                 'COR',
+                                                                                                                 %s,
+                                                                                                                 'COR',
+                                                                                                                 %s,
+                                                                                                                 %s,
+                                                                                                                 %s,
+                                                                                                                 %s,
+                                                                                                                 %s,
+                                                                                                                 %s,
+                                                                                                                 %s,
+                                                                                                                 %s,
+                                                                                                                 'BIZ',
+                                                                                                                 %s,
+                                                                                                                 'COR',
+                                                                                                                 %s,
+                                                                                                                 %s)"""
+            v_param_insert_biz_opp_detail_history = []
+            v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)
+            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+               v_param_insert_biz_opp_detail_history.append(v_body.get('a_user_id'))
+            else:
+               v_param_insert_biz_opp_detail_history.append(v_session_user_id)
+            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+               v_param_insert_biz_opp_detail_history.append(v_body.get('a_change_preparation_dept_id'))
+            else:
+               v_param_insert_biz_opp_detail_history.append(v_dept_id)
+            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+               v_param_insert_biz_opp_detail_history.append(v_body.get('a_change_preparation_dept_id'))
+            else:
+               v_param_insert_biz_opp_detail_history.append(v_dept_id)
+            v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_last_client_com2_code') == '' else v_body.get('a_last_client_com2_code'))
+            v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_com2_code'))
+            v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_sale_item_no') == '' else v_body.get('a_sale_item_no'))
+            v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_date'))
+            v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_amt'))
+            v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_profit'))
+            v_param_insert_biz_opp_detail_history.append(v_body.get('a_purchase_date'))
+            v_param_insert_biz_opp_detail_history.append(v_body.get('a_purchase_amt'))
+            v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_collect_money_date') == '' else v_body.get('a_collect_money_date'))
+            v_param_insert_biz_opp_detail_history.append(v_body.get('a_biz_section2_code'))
+            v_param_insert_biz_opp_detail_history.append(v_body.get('a_principal_product2_code'))
+            v_param_insert_biz_opp_detail_history.append(v_session_user_id)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
 
-# def f_insert_biz_opp(request):
-#   if request.method == "POST":
+            v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
+                                                                                              activity_no,
+                                                                                              activity_details,
+                                                                                              activity_date,
+                                                                                              create_user)
+                                                                                             VALUES (%s,
+                                                                                                     1,
+                                                                                                     %s,
+                                                                                                     %s,
+                                                                                                     %s)"""
+            v_param_insert_biz_opp_detail_history = []
+            v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)
+            v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_activity_details') == '' else v_body.get('a_activity_details'))
+            v_param_insert_biz_opp_detail_history.append(v_body.get('a_activate_date'))
+            v_param_insert_biz_opp_detail_history.append(v_session_user_id)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
+
+               v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
+               v_square_bracket_return = [v_return]
+               return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      except DatabaseError:
+         v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      except Exception as E:
+         v_return = {'STATUS':'FAIL','MESSAGE':'오류가 발생했습니다.','ERROR':str(E)}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})

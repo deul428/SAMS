@@ -761,6 +761,13 @@ def f_insert_biz_opp(request):
                v_cursor.execute(v_sql_max)
                v_row1 = v_cursor.fetchone()
                v_biz_opp_id = v_row1[0]
+
+               #test
+               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+               logging.debug(f"f_insert_biz_opp()에서의 v_biz_opp_id : {v_biz_opp_id}")
+               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+
             v_sql_insert_biz_opp = """INSERT INTO ajict_bms_schema.biz_opp (biz_opp_id,
                                                                             biz_opp_name,
                                                                             progress1_rate_code,
@@ -784,6 +791,13 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp.append(v_session_user_id)
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp,v_param_insert_biz_opp)
+
+               #test
+               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+               logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp")
+               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+
             v_sql_insert_biz_opp_detail = """INSERT INTO ajict_bms_schema.biz_opp_detail (biz_opp_id,
                                                                                           detail_no,
                                                                                           user_id,
@@ -854,6 +868,14 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_detail.append(v_session_user_id)
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail,v_param_insert_biz_opp_detail)
+
+
+               #test
+               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+               logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_detail")
+               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+
             v_sql_insert_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
                                                                                             history_no,
                                                                                             biz_opp_name,
@@ -879,6 +901,14 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_history.append(v_session_user_id)
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_history,v_param_insert_biz_opp_history)
+
+
+               #test
+               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+               logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_history")
+               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+
             v_sql_insert_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_history (biz_opp_id,
                                                                                                           detail_no,
                                                                                                           history_no,
@@ -952,6 +982,13 @@ def f_insert_biz_opp(request):
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
 
+
+               #test
+               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+               logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_detail_history")
+               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+
             v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
                                                                                               activity_no,
                                                                                               activity_details,
@@ -962,14 +999,13 @@ def f_insert_biz_opp(request):
                                                                                                      %s,
                                                                                                      %s,
                                                                                                      %s)"""
-            v_param_insert_biz_opp_detail_history = []
-            v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)
-            v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_activity_details') == '' else v_body.get('a_activity_details'))
-            v_param_insert_biz_opp_detail_history.append(v_body.get('a_activate_date'))
-            v_param_insert_biz_opp_detail_history.append(v_session_user_id)
+            v_param_insert_biz_opp_activity = []
+            v_param_insert_biz_opp_activity.append(v_biz_opp_id)
+            v_param_insert_biz_opp_activity.append(None if v_body.get('a_activity_details') == '' else v_body.get('a_activity_details'))
+            v_param_insert_biz_opp_activity.append(v_body.get('a_activate_date'))
+            v_param_insert_biz_opp_activity.append(v_session_user_id)
             with connection.cursor() as v_cursor:
-               v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
-
+               v_cursor.execute(v_sql_insert_biz_opp_activity,v_param_insert_biz_opp_activity)
                v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
                v_square_bracket_return = [v_return]
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})

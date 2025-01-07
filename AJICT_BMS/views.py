@@ -683,7 +683,7 @@ def f_select_popup_biz_opp(request):
    else:
       try:
          v_data = {"search_last_client_com_code":[],"search_biz_section_code":[],"search_principal_product_code":[]}
-         v_sql_last_client_com_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'PRO' ORDER BY small_classi_code"""
+         v_sql_last_client_com_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'COR' ORDER BY small_classi_code"""
          with connection.cursor() as v_cursor_last_client_com_code:
             v_cursor_last_client_com_code.execute(v_sql_last_client_com_code)
             v_columns_last_client_com_code = [v_column[0] for v_column in v_cursor_last_client_com_code.description]

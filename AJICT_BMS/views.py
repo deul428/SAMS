@@ -149,7 +149,7 @@ def f_cipher_change(request):
       return JsonResponse(v_return,safe = False,json_dumps_params={'ensure_ascii':False})
    try:
       with transaction.atomic():
-         v_sql = """UPDATE ajict_bms_schema.aj_user SET cipher = %s,beginning_login_tf = FALSE WHERE user_id = %s"""
+         v_sql = """UPDATE ajict_bms_schema.aj_user SET cipher = %s,beginning_login_tf = FALSE,update_date = TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP WHERE user_id = %s"""
          v_param=[]
          v_param.append(v_new_cipher)
          v_param.append(v_session_user_id)
@@ -712,8 +712,8 @@ def f_select_popup_biz_opp(request):
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
 def f_insert_biz_opp(request):
-   v_session_user_id = ''
-   #v_session_user_id = 'leecj'
+   # v_session_user_id = ''
+   v_session_user_id = 'leecj'
 
    v_body = ''
    if request.method == 'POST':
@@ -759,7 +759,10 @@ def f_insert_biz_opp(request):
             v_dept_id = v_data_session[0]['dept_id']
          v_biz_opp_id = ''
          with transaction.atomic():
-            v_sql_max = """SELECT TO_CHAR(NOW(),'YYYY') || LPAD((MAX(SUBSTRING(biz_opp_id FROM 5 FOR 4)::INTEGER) + 1)::TEXT,4,'0') FROM ajict_bms_schema.biz_opp"""
+            v_sql_max = """SELECT CASE WHEN (SELECT COUNT(*) FROM ajict_bms_schema.biz_opp WHERE SUBSTRING(biz_opp_id FROM 1 FOR 4) = TO_CHAR(NOW(),'YYYY')) > 0
+                                       THEN (SELECT TO_CHAR(NOW(),'YYYY') || LPAD(MAX(SUBSTRING(biz_opp_id FROM 5 FOR 4)::INTEGER + 1)::TEXT,4,'0') FROM ajict_bms_schema.biz_opp WHERE SUBSTRING(biz_opp_id FROM 1 FOR 4) = TO_CHAR(NOW(),'YYYY'))
+                                       ELSE TO_CHAR(NOW(),'YYYY') || '0001'
+                                  END AS biz_opp_id"""
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_max)
                v_row1 = v_cursor.fetchone()
@@ -787,15 +790,25 @@ def f_insert_biz_opp(request):
                                                                                    %s)"""
             v_param_insert_biz_opp = []
             v_param_insert_biz_opp.append(v_biz_opp_id)
-            v_param_insert_biz_opp.append(None if v_body.get('a_biz_opp_name') == '' else v_body.get('a_biz_opp_name'))
-            v_param_insert_biz_opp.append(v_body.get('a_progress2_rate_code'))
-            v_param_insert_biz_opp.append(v_body.get('a_contract_date'))
-            v_param_insert_biz_opp.append(v_body.get('essential_achievement_tf'))
+
+
+            # test
+            # v_param_insert_biz_opp.append(None if v_body.get('a_biz_opp_name') == '' else v_body.get('a_biz_opp_name'))
+            # v_param_insert_biz_opp.append(v_body.get('a_progress2_rate_code'))
+            # v_param_insert_biz_opp.append(v_body.get('a_contract_date'))
+            # v_param_insert_biz_opp.append(v_body.get('essential_achievement_tf'))
+
+            v_param_insert_biz_opp.append('이창주의 사업1')
+            v_param_insert_biz_opp.append('0001')
+            v_param_insert_biz_opp.append('20240107')
+            v_param_insert_biz_opp.append(True)
+
+
             v_param_insert_biz_opp.append(v_session_user_id)
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp,v_param_insert_biz_opp)
 
-               #test
+            #    #test
                logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
                logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp")
                logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
@@ -845,170 +858,191 @@ def f_insert_biz_opp(request):
                                                                                                  %s)"""
             v_param_insert_biz_opp_detail = []
             v_param_insert_biz_opp_detail.append(v_biz_opp_id)
-            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
-               v_param_insert_biz_opp_detail.append(v_body.get('a_user_id'))
-            else:
-               v_param_insert_biz_opp_detail.append(v_session_user_id)
-            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
-               v_param_insert_biz_opp_detail.append(v_body.get('a_change_preparation_dept_id'))
-            else:
-               v_param_insert_biz_opp_detail.append(v_dept_id)
-            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
-               v_param_insert_biz_opp_detail.append(v_body.get('a_change_preparation_dept_id'))
-            else:
-               v_param_insert_biz_opp_detail.append(v_dept_id)
-            v_param_insert_biz_opp_detail.append(None if v_body.get('a_last_client_com2_code') == '' else v_body.get('a_last_client_com2_code'))
-            v_param_insert_biz_opp_detail.append(v_body.get('a_sale_com2_code'))
-            v_param_insert_biz_opp_detail.append(None if v_body.get('a_sale_item_no') == '' else v_body.get('a_sale_item_no'))
-            v_param_insert_biz_opp_detail.append(v_body.get('a_sale_date'))
-            v_param_insert_biz_opp_detail.append(v_body.get('a_sale_amt'))
-            v_param_insert_biz_opp_detail.append(v_body.get('a_sale_profit'))
-            v_param_insert_biz_opp_detail.append(v_body.get('a_purchase_date'))
-            v_param_insert_biz_opp_detail.append(v_body.get('a_purchase_amt'))
-            v_param_insert_biz_opp_detail.append(None if v_body.get('a_collect_money_date') == '' else v_body.get('a_collect_money_date'))
-            v_param_insert_biz_opp_detail.append(v_body.get('a_biz_section2_code'))
-            v_param_insert_biz_opp_detail.append(v_body.get('a_principal_product2_code'))
+
+
+            # test
+            # if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+            #    v_param_insert_biz_opp_detail.append(v_body.get('a_user_id'))
+            # else:
+            #    v_param_insert_biz_opp_detail.append(v_session_user_id)
+            # if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+            #    v_param_insert_biz_opp_detail.append(v_body.get('a_change_preparation_dept_id'))
+            # else:
+            #    v_param_insert_biz_opp_detail.append(v_dept_id)
+            # if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+            #    v_param_insert_biz_opp_detail.append(v_body.get('a_change_preparation_dept_id'))
+            # else:
+            #    v_param_insert_biz_opp_detail.append(v_dept_id)
+            # v_param_insert_biz_opp_detail.append(None if v_body.get('a_last_client_com2_code') == '' else v_body.get('a_last_client_com2_code'))
+            # v_param_insert_biz_opp_detail.append(v_body.get('a_sale_com2_code'))
+            # v_param_insert_biz_opp_detail.append(None if v_body.get('a_sale_item_no') == '' else v_body.get('a_sale_item_no'))
+            # v_param_insert_biz_opp_detail.append(v_body.get('a_sale_date'))
+            # v_param_insert_biz_opp_detail.append(v_body.get('a_sale_amt'))
+            # v_param_insert_biz_opp_detail.append(v_body.get('a_sale_profit'))
+            # v_param_insert_biz_opp_detail.append(v_body.get('a_purchase_date'))
+            # v_param_insert_biz_opp_detail.append(v_body.get('a_purchase_amt'))
+            # v_param_insert_biz_opp_detail.append(None if v_body.get('a_collect_money_date') == '' else v_body.get('a_collect_money_date'))
+            # v_param_insert_biz_opp_detail.append(v_body.get('a_biz_section2_code'))
+            # v_param_insert_biz_opp_detail.append(v_body.get('a_principal_product2_code'))
+            # v_param_insert_biz_opp_detail.append(v_session_user_id)
+
             v_param_insert_biz_opp_detail.append(v_session_user_id)
+            v_param_insert_biz_opp_detail.append(v_dept_id)
+            v_param_insert_biz_opp_detail.append(v_dept_id)
+            v_param_insert_biz_opp_detail.append('0001')
+            v_param_insert_biz_opp_detail.append('0001')
+            v_param_insert_biz_opp_detail.append('testtest')
+            v_param_insert_biz_opp_detail.append(v_body.get('20250101'))
+            v_param_insert_biz_opp_detail.append(v_body.get(500000))
+            v_param_insert_biz_opp_detail.append(v_body.get(50))
+            v_param_insert_biz_opp_detail.append(v_body.get('20250102'))
+            v_param_insert_biz_opp_detail.append(v_body.get(400000))
+            v_param_insert_biz_opp_detail.append('20250103')
+            v_param_insert_biz_opp_detail.append(v_body.get('0003'))
+            v_param_insert_biz_opp_detail.append(v_body.get('0006'))
+            v_param_insert_biz_opp_detail.append(v_session_user_id)
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail,v_param_insert_biz_opp_detail)
-
-
-               #test
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-               logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_detail")
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
-            v_sql_insert_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
-                                                                                            history_no,
-                                                                                            biz_opp_name,
-                                                                                            progress1_rate_code,
-                                                                                            progress2_rate_code,
-                                                                                            contract_date,
-                                                                                            essential_achievement_tf,
-                                                                                            create_user)
-                                                                                           VALUES (%s,
-                                                                                                   1,
-                                                                                                   %s,
-                                                                                                   'PRO',
-                                                                                                   %s,
-                                                                                                   %s,
-                                                                                                   %s,
-                                                                                                   %s)"""
-            v_param_insert_biz_opp_history = []
-            v_param_insert_biz_opp_history.append(v_biz_opp_id)
-            v_param_insert_biz_opp_history.append(None if v_body.get('a_biz_opp_name') == '' else v_body.get('a_biz_opp_name'))
-            v_param_insert_biz_opp_history.append(v_body.get('a_progress2_rate_code'))
-            v_param_insert_biz_opp_history.append(v_body.get('a_contract_date'))
-            v_param_insert_biz_opp_history.append(v_body.get('essential_achievement_tf'))
-            v_param_insert_biz_opp_history.append(v_session_user_id)
-            with connection.cursor() as v_cursor:
-               v_cursor.execute(v_sql_insert_biz_opp_history,v_param_insert_biz_opp_history)
-
-
-               #test
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-               logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_history")
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
-            v_sql_insert_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_history (biz_opp_id,
-                                                                                                          detail_no,
-                                                                                                          history_no,
-                                                                                                          user_id,
-                                                                                                          change_preparation_dept_id,
-                                                                                                          change_preparation_dept_name,
-                                                                                                          last_client_com1_code,
-                                                                                                          last_client_com2_code,
-                                                                                                          sale_com1_code,
-                                                                                                          sale_com2_code,
-                                                                                                          sale_item_no,
-                                                                                                          sale_date,
-                                                                                                          sale_amt,
-                                                                                                          sale_profit,
-                                                                                                          purchase_date,
-                                                                                                          purchase_amt,
-                                                                                                          collect_money_date,
-                                                                                                          biz_section1_code,
-                                                                                                          biz_section2_code,
-                                                                                                          principal_product1_code,
-                                                                                                          principal_product2_code,
-                                                                                                          create_user)
-                                                                                                         VALUES (%s,
-                                                                                                                 1,
-                                                                                                                 1,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s),
-                                                                                                                 'COR',
-                                                                                                                 %s,
-                                                                                                                 'COR',
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 'BIZ',
-                                                                                                                 %s,
-                                                                                                                 'COR',
-                                                                                                                 %s,
-                                                                                                                 %s)"""
-            v_param_insert_biz_opp_detail_history = []
-            v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)
-            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
-               v_param_insert_biz_opp_detail_history.append(v_body.get('a_user_id'))
-            else:
-               v_param_insert_biz_opp_detail_history.append(v_session_user_id)
-            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
-               v_param_insert_biz_opp_detail_history.append(v_body.get('a_change_preparation_dept_id'))
-            else:
-               v_param_insert_biz_opp_detail_history.append(v_dept_id)
-            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
-               v_param_insert_biz_opp_detail_history.append(v_body.get('a_change_preparation_dept_id'))
-            else:
-               v_param_insert_biz_opp_detail_history.append(v_dept_id)
-            v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_last_client_com2_code') == '' else v_body.get('a_last_client_com2_code'))
-            v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_com2_code'))
-            v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_sale_item_no') == '' else v_body.get('a_sale_item_no'))
-            v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_date'))
-            v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_amt'))
-            v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_profit'))
-            v_param_insert_biz_opp_detail_history.append(v_body.get('a_purchase_date'))
-            v_param_insert_biz_opp_detail_history.append(v_body.get('a_purchase_amt'))
-            v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_collect_money_date') == '' else v_body.get('a_collect_money_date'))
-            v_param_insert_biz_opp_detail_history.append(v_body.get('a_biz_section2_code'))
-            v_param_insert_biz_opp_detail_history.append(v_body.get('a_principal_product2_code'))
-            v_param_insert_biz_opp_detail_history.append(v_session_user_id)
-            with connection.cursor() as v_cursor:
-               v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
-
-
-               #test
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-               logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_detail_history")
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
-            v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
-                                                                                              activity_no,
-                                                                                              activity_details,
-                                                                                              activity_date,
-                                                                                              create_user)
-                                                                                             VALUES (%s,
-                                                                                                     1,
-                                                                                                     %s,
-                                                                                                     %s,
-                                                                                                     %s)"""
-            v_param_insert_biz_opp_activity = []
-            v_param_insert_biz_opp_activity.append(v_biz_opp_id)
-            v_param_insert_biz_opp_activity.append(None if v_body.get('a_activity_details') == '' else v_body.get('a_activity_details'))
-            v_param_insert_biz_opp_activity.append(v_body.get('a_activate_date'))
-            v_param_insert_biz_opp_activity.append(v_session_user_id)
-            with connection.cursor() as v_cursor:
-               v_cursor.execute(v_sql_insert_biz_opp_activity,v_param_insert_biz_opp_activity)
+            #
+            #
+            #    #test
+            #    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            #    logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_detail")
+            #    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            #
+            #
+            # v_sql_insert_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
+            #                                                                                 history_no,
+            #                                                                                 biz_opp_name,
+            #                                                                                 progress1_rate_code,
+            #                                                                                 progress2_rate_code,
+            #                                                                                 contract_date,
+            #                                                                                 essential_achievement_tf,
+            #                                                                                 create_user)
+            #                                                                                VALUES (%s,
+            #                                                                                        1,
+            #                                                                                        %s,
+            #                                                                                        'PRO',
+            #                                                                                        %s,
+            #                                                                                        %s,
+            #                                                                                        %s,
+            #                                                                                        %s)"""
+            # v_param_insert_biz_opp_history = []
+            # v_param_insert_biz_opp_history.append(v_biz_opp_id)
+            # v_param_insert_biz_opp_history.append(None if v_body.get('a_biz_opp_name') == '' else v_body.get('a_biz_opp_name'))
+            # v_param_insert_biz_opp_history.append(v_body.get('a_progress2_rate_code'))
+            # v_param_insert_biz_opp_history.append(v_body.get('a_contract_date'))
+            # v_param_insert_biz_opp_history.append(v_body.get('essential_achievement_tf'))
+            # v_param_insert_biz_opp_history.append(v_session_user_id)
+            # with connection.cursor() as v_cursor:
+            #    v_cursor.execute(v_sql_insert_biz_opp_history,v_param_insert_biz_opp_history)
+            #
+            #
+            #    #test
+            #    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            #    logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_history")
+            #    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            #
+            #
+            # v_sql_insert_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_history (biz_opp_id,
+            #                                                                                               detail_no,
+            #                                                                                               history_no,
+            #                                                                                               user_id,
+            #                                                                                               change_preparation_dept_id,
+            #                                                                                               change_preparation_dept_name,
+            #                                                                                               last_client_com1_code,
+            #                                                                                               last_client_com2_code,
+            #                                                                                               sale_com1_code,
+            #                                                                                               sale_com2_code,
+            #                                                                                               sale_item_no,
+            #                                                                                               sale_date,
+            #                                                                                               sale_amt,
+            #                                                                                               sale_profit,
+            #                                                                                               purchase_date,
+            #                                                                                               purchase_amt,
+            #                                                                                               collect_money_date,
+            #                                                                                               biz_section1_code,
+            #                                                                                               biz_section2_code,
+            #                                                                                               principal_product1_code,
+            #                                                                                               principal_product2_code,
+            #                                                                                               create_user)
+            #                                                                                              VALUES (%s,
+            #                                                                                                      1,
+            #                                                                                                      1,
+            #                                                                                                      %s,
+            #                                                                                                      %s,
+            #                                                                                                      (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s),
+            #                                                                                                      'COR',
+            #                                                                                                      %s,
+            #                                                                                                      'COR',
+            #                                                                                                      %s,
+            #                                                                                                      %s,
+            #                                                                                                      %s,
+            #                                                                                                      %s,
+            #                                                                                                      %s,
+            #                                                                                                      %s,
+            #                                                                                                      %s,
+            #                                                                                                      %s,
+            #                                                                                                      'BIZ',
+            #                                                                                                      %s,
+            #                                                                                                      'COR',
+            #                                                                                                      %s,
+            #                                                                                                      %s)"""
+            # v_param_insert_biz_opp_detail_history = []
+            # v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)
+            # if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+            #    v_param_insert_biz_opp_detail_history.append(v_body.get('a_user_id'))
+            # else:
+            #    v_param_insert_biz_opp_detail_history.append(v_session_user_id)
+            # if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+            #    v_param_insert_biz_opp_detail_history.append(v_body.get('a_change_preparation_dept_id'))
+            # else:
+            #    v_param_insert_biz_opp_detail_history.append(v_dept_id)
+            # if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+            #    v_param_insert_biz_opp_detail_history.append(v_body.get('a_change_preparation_dept_id'))
+            # else:
+            #    v_param_insert_biz_opp_detail_history.append(v_dept_id)
+            # v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_last_client_com2_code') == '' else v_body.get('a_last_client_com2_code'))
+            # v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_com2_code'))
+            # v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_sale_item_no') == '' else v_body.get('a_sale_item_no'))
+            # v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_date'))
+            # v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_amt'))
+            # v_param_insert_biz_opp_detail_history.append(v_body.get('a_sale_profit'))
+            # v_param_insert_biz_opp_detail_history.append(v_body.get('a_purchase_date'))
+            # v_param_insert_biz_opp_detail_history.append(v_body.get('a_purchase_amt'))
+            # v_param_insert_biz_opp_detail_history.append(None if v_body.get('a_collect_money_date') == '' else v_body.get('a_collect_money_date'))
+            # v_param_insert_biz_opp_detail_history.append(v_body.get('a_biz_section2_code'))
+            # v_param_insert_biz_opp_detail_history.append(v_body.get('a_principal_product2_code'))
+            # v_param_insert_biz_opp_detail_history.append(v_session_user_id)
+            # with connection.cursor() as v_cursor:
+            #    v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
+            #
+            #
+            #    #test
+            #    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            #    logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_detail_history")
+            #    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            #
+            #
+            # v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
+            #                                                                                   activity_no,
+            #                                                                                   activity_details,
+            #                                                                                   activity_date,
+            #                                                                                   create_user)
+            #                                                                                  VALUES (%s,
+            #                                                                                          1,
+            #                                                                                          %s,
+            #                                                                                          %s,
+            #                                                                                          %s)"""
+            # v_param_insert_biz_opp_activity = []
+            # v_param_insert_biz_opp_activity.append(v_biz_opp_id)
+            # v_param_insert_biz_opp_activity.append(None if v_body.get('a_activity_details') == '' else v_body.get('a_activity_details'))
+            # v_param_insert_biz_opp_activity.append(v_body.get('a_activate_date'))
+            # v_param_insert_biz_opp_activity.append(v_session_user_id)
+            # with connection.cursor() as v_cursor:
+            #    v_cursor.execute(v_sql_insert_biz_opp_activity,v_param_insert_biz_opp_activity)
                v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
                v_square_bracket_return = [v_return]
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})

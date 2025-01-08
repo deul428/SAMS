@@ -818,6 +818,9 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp.append(v_biz_opp_name)
 
+               #test
+               print(f"2번째{v_biz_opp_name}")
+
 
                #test
             logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")

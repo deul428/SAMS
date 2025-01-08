@@ -806,10 +806,10 @@ def f_insert_biz_opp(request):
 
 
             # test
-            # v_biz_opp_name = None if v_body.get('biz_opp',{}).get('a_biz_opp_name') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_name')
-            v_biz_opp_name = v_body.get('biz_opp',{}).get('a_biz_opp_name')
+            v_biz_opp_name = None if v_body.get('biz_opp',{}).get('a_biz_opp_name') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_name')
+            #v_biz_opp_name = v_body.get('biz_opp',{}).get('a_biz_opp_name')
             print(v_biz_opp_name)
-            
+
             if v_biz_opp_name:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'사업 (기회)명' 항목은 필수 입력(선택) 항목입니다!"}
@@ -820,9 +820,9 @@ def f_insert_biz_opp(request):
 
 
                #test
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-               logging.debug(f"f_insert_biz_opp()에서의 v_biz_opp_name : {v_biz_opp_name}")
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            logging.debug(f"f_insert_biz_opp()에서의 v_biz_opp_name : {v_biz_opp_name}")
+            logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 
 
             v_progress2_rate_code = None if v_body.get('biz_opp',{}).get('a_progress2_rate_code') == '' else v_body.get('biz_opp',{}).get('a_progress2_rate_code')

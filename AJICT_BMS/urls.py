@@ -14,11 +14,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include,path
-from .views import f_login,f_logout,f_cipher_change
+from .views import f_login,f_logout,f_update_cipher_change
 from .views import f_select_biz_opp1,f_select_biz_opp2,f_select_popup_biz_opp,f_insert_biz_opp
 urlpatterns = [path('login/',f_login,name='login'),
                path('logout/',f_logout,name='logout'),
-               path('cipher-change/',f_cipher_change,name='cipher-change'),
+               path('update-cipher-change/',f_update_cipher_change,name='update-cipher-change'),
                path('select-biz-opp1/',f_select_biz_opp1,name='select-biz-opp1'),
                path('select-biz-opp2/',f_select_biz_opp2,name='select-biz-opp2'),
                path('select-popup-biz-opp/',f_select_popup_biz_opp,name='select-popup-biz-opp'),

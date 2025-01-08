@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 from pathlib import Path
 
+
 #cci10000(2024-12-12)
 #from django.conf.global_settings import SESSION_COOKIE_AGE,SESSION_ENGINE
 
@@ -22,10 +23,9 @@ SECRET_KEY = "django-insecure-gab36_^a*v$c(!e%_l(%sq=c6xvnq0$%$n75fo8=srep*!_@4r
 DEBUG = True
 
 
-# cci10000(2024-11-21, 2024-12-17)
+#cci10000(2024-11-21, 2024-12-17)
 # ALLOWED_HOSTS = []
-
-#ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
 
 ALLOWED_HOSTS = ["10.0.60.201","localhost","127.0.0.1","*"]
 
@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ["10.0.60.201","localhost","127.0.0.1","*"]
 # Application definition
 
 
-# cci10000(2024-10-23, 2024-11-21, 2024-12-16)
+#cci10000(2024-10-23, 2024-11-21, 2024-12-16)
 # INSTALLED_APPS = [
 #    "django.contrib.admin",
 #    "django.contrib.auth",
@@ -125,7 +125,7 @@ DATABASES = {"default": {"ENGINE":"django.db.backends.postgresql",
                          "USER":"ajict_bms_user",
                          "PASSWORD":"ajictcci4",
                          "HOST":"10.0.60.201",
-#                         "HOST":"10.0.60.201",
+#                         "HOST":"localhost",
                          "PORT":"5432",
                          "CONN_MAX_AGE":6000}}
 
@@ -176,7 +176,6 @@ SESSION_COOKIE_AGE = 172800
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 #CACHE = {'default':{'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
 #                    'LOCATION':'unique-sessions'}}
-
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # SESSION_COOKIE_HTTPONLY = True
 

@@ -810,7 +810,7 @@ def f_insert_biz_opp(request):
             #v_biz_opp_name = v_body.get('biz_opp',{}).get('a_biz_opp_name')
             print(v_biz_opp_name)
 
-            if v_biz_opp_name:
+            if not v_biz_opp_name:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'사업 (기회)명' 항목은 필수 입력(선택) 항목입니다!"}
                v_square_bracket_return = [v_return]

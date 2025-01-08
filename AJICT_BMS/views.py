@@ -791,6 +791,12 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp = []
             v_param_insert_biz_opp.append(v_biz_opp_id)
 
+            #test
+            #v_test = v_body.get('biz_opp',{}).get('a_biz_opp_name')
+            logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            logging.debug(f"f_insert_biz_opp()에서의 v_body : {v_body}")
+            logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
 
             # test
             v_param_insert_biz_opp.append(None if v_body.get('biz_opp',{}).get('a_biz_opp_name') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_name'))

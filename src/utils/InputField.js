@@ -131,13 +131,13 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
             }
             console.log("submit 될 input data\n", input, e);
             const response = await apiMethods[method]('select-biz-opp2/', input);
-            if (response.status.STATUS === 'NONE') {
-                console.log(response.status.STATUS, response.status.MESSAGE);
+            if (response.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
+                console.log(response.status?.STATUS, response.status?.MESSAGE);
                 setRes(null);
                 // v_handlingHtmlNone = response.status.MESSAGE;
                 return;
             } else {
-                console.log('input Field response 송신 완료', endpoint, response);
+                console.log('input Field response 송신 완료', "\nendpoint: ", endpoint, "\nresponse: ", response);
                 setRes(response);
                 return response;
             }
@@ -185,9 +185,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
     const [v_teams, setVTeams] = useState([]);
     const [v_teamByDept, setVTeamByDept] = useState({});
 
-
     const f_teamLinkedDept = () => {
-
         // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
         const f_mapping = data.search_team.reduce((acc, items) => {
             const { high_dept_id } = items;
@@ -266,31 +264,6 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
     
     console.log(currentPath); */
 
-    // 권한별 UI 
-    // Level 1. 권한(AUT) Check 0001admin / 0002guest / 0003none
-    const f_authLevel1 = () => {
-        switch(auth.userAuthCode) {
-            //1. admin
-            case '0001' :
-                setVDepts(data.search_headquarters);
-                setVTeams(data.search_team);
-                f_teamLinkedDept(); 
-                break;
-            // 2. guest
-            case '0002' :
-                console.log(auth.userAuthCode);
-                break;
-            // 3. none
-            case '0003' :
-                f_authLevel2();
-                break;
-            default :
-                alert('권한이 없습니다. 다시 로그인해 주세요.');
-                break;
-        }
-    }
-
-    
     const [v_deptHandling, setVDeptHandling] = useState({
         deptValue: '',
         deptMsg: '-- 본부를 선택하세요 --',
@@ -305,6 +278,32 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
         userValue: '',
         userMsg: '-- 담당자를 선택하세요 --',
     })
+
+    // 권한별 UI 
+    // Level 1. 권한(AUT) Check 0001admin / 0002guest / 0003none
+    const f_authLevel1 = () => {
+        switch(auth.userAuthCode) {
+            //1. admin
+            case '0001' :
+                console.log('admin', data.search_headquarters, data.search_team);
+                setVDepts(data.search_headquarters);
+                setVTeams(data.search_team);
+                f_teamLinkedDept(); 
+                // setVDeptHandling()
+                break;
+            // 2. guest
+            case '0002' :
+                console.log(auth.userAuthCode);
+                break;
+            // 3. none
+            case '0003' :
+                f_authLevel2();
+                break;
+            default :
+                alert('권한이 없습니다. 다시 로그인해 주세요.');
+                break;
+        }
+    }
 
 
     // Level 2. 직책(RES) Check 0001팀원 0002팀장 0003본부장 0004이사
@@ -398,14 +397,14 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
         f_submitData('post', endpoint, input);
         // f_teamLinkedDept();
     }
-    // 디버깅용
+/*     // 디버깅용
     useEffect(()=> {
         console.log(v_teamHandling);
     }, [v_teamHandling]);
 
-
+ */
     useEffect(() => {
-        console.log("=-=-==-=--=data:-=-=-=--=-", data);
+        // console.log("=-=-==-=--=data:-=-=-=--=-", data);
         if (Object.keys(data).length > 0) {
             switch(v_componentName) {
                 case 'bizOpp':

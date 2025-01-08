@@ -95,16 +95,22 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
     setData(v_propsData.data.retrieve_biz_opp);
   }, [v_propsData]);
 
-/*   useEffect(() => {
-    console.log(res.data, res.data.length);
-    if(res.data) {
-      if (res.data.length > 0) {
-        // console.log("res.data: ", res.data, "res: ", res);
-        setData(res?.data);
-      }
-    }
-  }, [res]); */
 
+  // =================== input field에서 넘어온 값(res)에 따라 핸들링 ===================
+  // res obj / res.data arr
+  useEffect(() => {
+    console.log("res---------------------------------------", res);
+    if(res && res.data) {
+      if (res.data.length > 0) {
+        setData(res?.data);
+        // console.log(data.length);
+      } 
+    } else {
+      console.log('데이터 없음');
+      setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
+    }
+  }, [res])
+  // =================== input field에서 넘어온 값(res)에 따라 핸들링 끝 ===================
 
   // =================== pagination jsx ===================
   const renderPagination = () => {
@@ -344,20 +350,7 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
           setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
       }
     }
-
-    // res obj / res.data arr
-    console.log("res---------------------------------------", res);
-    if(res && res.data) {
-      // console.log("res.data:", res.data, res.data.length);
-      if (res.data.length > 0) {
-        setData(res?.data);
-        // console.log(data.length);
-      } else {
-        console.log('데이터 없음');
-        setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
-      }
-    } 
-  }, [v_childComponent, v_componentName, data, page, showModal, res]);
+  }, [v_childComponent, v_componentName, data, page, showModal]);
 
   return (
     <div id="tableArea">

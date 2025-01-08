@@ -10,6 +10,12 @@ import '../styles/_search.scss';
 import { Modal, Button, Form, Row, Col, ListGroup, FloatingLabel } from 'react-bootstrap';
 
 const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData, mode }) => {
+    let updated_v_modalPropsData;
+    if(v_modalPropsData) {
+        updated_v_modalPropsData = Object.fromEntries(
+            Object.entries(v_modalPropsData).map(([key, value]) => [`a_${key}`, value])
+        );
+    }
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
@@ -24,11 +30,13 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         }
     }
     // ================= 사업 기회 조회 테이블부 핸들링 ================= 
+    
+    
     // -------------- 세션 대체용 userId 송신 -------------- 
     const auth = useSelector((state) => state.auth);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
 
-    // ----------------- 1) 등록 및 수정 input 기본값 핸들링 -----------------
+    // ----------------- 1) 등록 및 수정 input 핸들링 -----------------
     // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 ..................... 
     // 250106 전달해야 할 파라미터 키
     /* 1. 'biz_opp' Table
@@ -57,14 +65,14 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     activity_date */
     // 250106 전달해야 할 파라미터 키 끝
 
-    const p_bizopp_insert = {
-        a_session_user_id: auth.userId,
+    const p_bizopp = {
         a_biz_opp_id: '',
         a_biz_opp_name: '',
         a_progress2_rate_code: '',
         a_contract_date: '',
         a_essential_achievement_tf: false,
 
+        a_session_user_id: auth.userId,
         a_change_preparation_dept_id: '',
         a_last_client_com2_code: '',
         a_last_client_com2_name: '',
@@ -85,131 +93,72 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         a_activity_details: '',
         a_activity_date: '',
     }
-
-
-
-    const p_bizopp_update = {
-        a_session_user_id: auth.userId,
-        biz_opp: { 
-            a_biz_opp_id: '',
-            a_biz_opp_name: '',
-            a_progress2_rate_code: '',
-            a_contract_date: '',
-            a_essential_achievement_tf: false,
-        },
-        biz_opp_detail: {
-            a_change_preparation_dept_id: '',
-            a_last_client_com2_code: '',
-            a_sale_com2_code: '',
-            a_sale_item_no: '',
-            a_sale_date: '',
-            a_sale_amt: 0,
-            a_sale_profit: 0,
-            a_purchase_date: '',
-            a_purchase_amt: 0,
-            a_collect_money_date: '',
-            a_biz_section2_code: '',
-            a_principal_product2_code: '',
-        },
-        biz_opp_activity: {
-            a_activity_details: '',
-            a_activity_date: '',
-        }
-    }
-    const [insertInput, setInsertInput] = useState(p_bizopp_update);
+    const [input, setInput] = useState(p_bizopp);
     // 변화 감지 추출
-    const [updateInput, setUpdateInput] = useState([]);
+    const [changeInput, setChangeInput] = useState([]);
 
     // input field 값 input에 저장
-    /*  24.12.26. 기준
+    /*  12.26. 기준
         input: UI 업데이트를 위함. 날짜 및 금액 정규식 들어감.
-        updateInput: 실제로 백엔드에 전송될 데이터. 
-
-        25.01.08. 기준
-        input: insert용. 초기값(빈값 포함)이 들어가 있음. 등록 시 백엔드에 전송될 데이터.
-        updateInput: update용. 초기값이 없기 때문에([]) 변화가 감지된 부분만 저장. 수정 시 백엔드에 전송될 데이터.
+        changeInput: 실제로 백엔드에 전송될 데이터. 
     */
+    // let isComposing = false;
+    const [isComposing, setIsComposing] = useState(false);
     const f_handlingInput = (e) => {
-        const { name, value, type, checked, dataset } = e.target;
-        const tableLevel = dataset.key; 
-        const valueLevel = type === 'checkbox' ? checked : value;
+        const { name, value, type, checked } = e.target;
+        setInput((prevInput) => ({
+            ...prevInput,
+            [name]: type === 'checkbox' ? checked : value, //e.target.name의 값을 키로, e.target.value를 값으로 사용
+        }));
 
-        const updateValue = (setState) => {
-            setState((prevInput) => {
-                const updatedInput = { ...prevInput, a_session_user_id: auth.userId, };
-                if (tableLevel) {
-                    updatedInput[tableLevel] = {
-                        ...updatedInput[tableLevel],
-                        [name]: valueLevel, 
-                    };
-                } else {
-                    // 최상위 키로 업데이트
-                    updatedInput[name] = valueLevel;
-                }
-                console.log("updatedInput: ", updatedInput);
-                return updatedInput; 
-            })
-        }
-        updateValue(setInsertInput);
-        updateValue(setUpdateInput);
+        const id = input.a_biz_opp_id;
+        // 변화 감지 추출
+        setChangeInput((changeInput) => ({
+            ...changeInput,
+            a_biz_opp_id: id,
+            a_session_user_id: auth.userId,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
     };
-    
-    useEffect(()=>{
-        console.log("input: ", insertInput, "\n\nchangeInput: ", updateInput);
-    }, [insertInput, updateInput])
     // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 끝 .....................
     // ----------------- 1) 등록 및 수정 input 핸들링 끝 -----------------
 
     // ----------------- 2) 수정 시 핸들링 -----------------
-    // 1. post용
-    // 키에 접두어 'a_' 삽입, a_v_modalPropsData로 가공 
-    let a_v_modalPropsData;
-    if(v_modalPropsData) {
-        a_v_modalPropsData = Object.fromEntries(
-            Object.entries(v_modalPropsData).map(([key, value]) => [`a_${key}`, value])
-        );
-    }
-    // 2. UI 표현용
     useEffect(() => {
-        // a_v_modalPropsData 데이터 핸들링 후 input 객체에 복사
-        console.log("-------------- 수정 시 --------------");
-        console.log("v_modalPropsData: ", v_modalPropsData);
-        if (v_modalPropsData) {
+        // v_modalPropsData 데이터 핸들링 후 input 객체에 복사
+        // console.log('v_modalPropsData: ', v_modalPropsData);
+        if (updated_v_modalPropsData) {
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD .....................
-            const dateKeys = ['a_sale_date', 'a_collect_money_date', 'a_purchase_date', 'a_contract_date'];
+            const dateKeys = ['sale_date', 'collect_money_date', 'purchase_date', 'contract_date'];
             dateKeys.forEach(key => {
-                if (a_v_modalPropsData[key]) {
-                    return a_v_modalPropsData[key] = a_v_modalPropsData[key].replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+                if (updated_v_modalPropsData[key]) {
+                    return updated_v_modalPropsData[key] = updated_v_modalPropsData[key].replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
                 }
             });
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD 끝 .....................
             // ..................... 숫자 문자열로 변환 후 쉼표 추가 ..................... 
-            const numKeys = ['a_purchase_amt', 'a_sale_amt', 'a_sale_profit'];
+            const numKeys = ['purchase_amt', 'sale_amt', 'sale_profit'];
             numKeys.forEach(key => {
-                if (a_v_modalPropsData[key]) {
-                    return a_v_modalPropsData[key] = a_v_modalPropsData[key].toLocaleString('ko-KR');
+                if (updated_v_modalPropsData[key]) {
+                    return updated_v_modalPropsData[key] = updated_v_modalPropsData[key].toLocaleString('ko-KR');
                 }
             });
             // ..................... 숫자 문자열로 변환 후 쉼표 추가 끝 ..................... 
             
-            // input, changeInput에 a_v_modalPropsData.a_biz_opp_id 추가
-            setInsertInput((prevInput) => {
-                const updatedInput = { ...prevInput, a_session_user_id: auth.userId, };
-                updatedInput.biz_opp = {
-                    ...prevInput.biz_opp,
-                    a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
-                }
-                return updatedInput;
-            });
-            setUpdateInput((prevInput) => {
-                const updatedInput = { ...prevInput, a_session_user_id: auth.userId, };
-                updatedInput.biz_opp = {
-                    ...prevInput.biz_opp,
-                    a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
-                }
-                return updatedInput; 
-            });
+            setInput((prevInput) => ({
+                ...prevInput,
+                ...updated_v_modalPropsData,
+            }));
+
+            const id = updated_v_modalPropsData.a_biz_opp_id;
+
+            // 컴포넌트 호출 시 modal data의 사업 기회 id 복사
+            setChangeInput(() => ({
+                a_session_user_id: auth.userId,
+                a_biz_opp_id: id,
+            }));
         }
+        // console.log('v_modal data 복사 후 input: ', input);
     }, [v_modalPropsData]);
     // ----------------- 2) 수정 시 핸들링 끝 -----------------
     // ================= 사업 기회 조회 테이블부 핸들링 끝 ================= 
@@ -236,7 +185,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     return input[key] = input[key].replace(/,/g, '');
                 }
             });
-
+            // 날짜: 1) to null 가능. 2) from > to일 경우 return
+            if ((input.a_contract_date_from > input.a_contract_date_to) || (input.a_sale_date_from > input.a_sale_date_to)) {
+                alert('일자는 From보다 To가 더 작을 수 없습니다.');
+                return;
+            }
 /*             // 유효값 검사 끝
             if (!msg && input.a_biz_opp_name) {
                 confirmMsg = `${input.a_biz_opp_name}을(를) 등록하시겠습니까?`;
@@ -245,13 +198,14 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 return; 
             } */
         }
+        // console.log('제출될 input(changeInput): ', input);
         // if (window.confirm(confirmMsg) || msg) {
             try {
                 // 송신
-                /* if (endpoint === 'select-popup-biz-opp/' && msg === 'authCheck') {
+                if (endpoint === 'select-popup-biz-opp/' && msg === 'authCheck') {
                     console.log(endpoint, input, e, msg);
-                } */
-                if(e) {console.log("submit 될 input data\n", input, "\ne:", e);}
+                }
+                console.log("submit 될 input data\n", input, e);
                 const response = await apiMethods[method](endpoint, input);
                 if (response?.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
                     if(Array.isArray(response)){
@@ -282,11 +236,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     }
     useEffect(() => {
         if (show) {
-            // console.log(show, onHide);
-            // console.log(userCheck);
+            console.log(show, onHide);
+            console.log(userCheck);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, 'authCheck');
         }
     }, [show]); // show가 변경될 때만 실행되도록 보장
+    
     
     // ================= POST 끝 ================= 
 
@@ -308,10 +263,19 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 return;
             } */
 
-            if(!a_v_modalPropsData && mode === '수정' && !getData) {
+            if(!updated_v_modalPropsData && mode === '수정' && !getData) {
                 console.log('아직인데');
                 return;
+            } /* else if(!v_modalPropsData && mode === '등록') {
+                console.log("mode 있어요", mode);
+
+            } else {
+                console.log("else mode 있어요", v_modalPropsData, mode);
             }
+             */
+            console.log(getData);
+            
+            // if(v_modalPropsData) {
             if (v_modalPropsData || getData) {
                 switch (v_componentName) {
                     case `bizOpp`:
@@ -319,7 +283,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             <Modal size='xl' show={show} onHide={onHide} centered>
                                 <Modal.Header closeButton>
                                     <Modal.Title className='fs-3'>{
-                                        (a_v_modalPropsData ? '사업 (기회) 수정': '사업 (기회) 등록')
+                                        (updated_v_modalPropsData ? '사업 (기회) 수정': '사업 (기회) 등록')
                                     }
                                     </Modal.Title>
                                 </Modal.Header> 
@@ -333,82 +297,68 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Row className='d-flex justify-content-between'>
                                                 <Col xs={12} md={4} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 일련 번호'>
-                                                        <Form.Control size='sm' type='text' className=''
-                                                        name='a_biz_opp_id' 
-                                                        /* data-key='biz_opp' */
+                                                        <Form.Control name='a_biz_opp_id' size='sm' type='text' className=''
                                                         placeholder='사업 일련 번호'
                                                         onChange={f_handlingInput} 
                                                         // value={input.biz_opp_id}
-                                                        defaultValue={a_v_modalPropsData?.a_biz_opp_id || ''} 
+                                                        defaultValue={updated_v_modalPropsData?.a_biz_opp_id || ''} 
                                                         disabled/>
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={8} lg={8} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 (기회) 명'>
-                                                        <Form.Control as='textarea' size='sm' type='text' className=''
-                                                        name='a_biz_opp_name' 
-                                                        data-key='biz_opp'
+                                                        <Form.Control as='textarea' name='a_biz_opp_name' size='sm' type='text' className=''
                                                         placeholder='사업 (기회) 명'
                                                         onChange={f_handlingInput} 
                                                         // value={input.biz_opp_name || ''}
-                                                        defaultValue={a_v_modalPropsData?.a_biz_opp_name || ''} 
+                                                        defaultValue={updated_v_modalPropsData?.a_biz_opp_name || ''} 
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>
-
-                                            {/* props로 받아와야 함!!!!!!!!!!!!!!!!!!!!!!!!! */}
                                             <Row className='d-flex justify-content-between'>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='본부'>
-                                                        <Form.Control size='sm' type='text' className='' placeholder='본부'
-                                                        name='a_high_dept_name' 
-                                                        // data-key='biz_opp_detail'
+                                                        <Form.Control name='a_high_dept_name' size='sm' type='text' className='' placeholder='본부'
                                                         onChange={f_handlingInput}
                                                         // value={input.high_dept_name}
-                                                        defaultValue={a_v_modalPropsData?.a_high_dept_name || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_high_dept_name || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='소속 팀'>
-                                                        <Form.Control size='sm' type='text' className='' placeholder='소속 팀'
-                                                        name='a_dept_name' 
-                                                        data-key='biz_opp_detail'
+                                                        <Form.Control name='a_dept_name' size='sm' type='text' className='' placeholder='소속 팀'
                                                         onChange={f_handlingInput}
                                                         // value={input.dept_name || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_dept_name || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_dept_name || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='영업 담당자'>
-                                                        <Form.Control size='sm' type='text' 
-                                                        className='' placeholder='영업 담당자'
-                                                        name='a_user_name' 
+                                                        <Form.Control name='a_user_name' size='sm' type='text' className='' placeholder='영업 담당자'
                                                         onChange={f_handlingInput} 
                                                         // value={input.user_name || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_user_name || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_user_name || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>
-                                        {/* props로 받아와야 함!!!!!!!!!!!!!!!!!!!!!!!!! */}    
                                             <Row className='d-flex justify-content-between'>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='최종 고객사 (선택)'>
                                                         <Form.Select size='sm' aria-label='selectBox' className='' name='a_last_client_com2_name'
-                                                        data-key='biz_opp_detail'
                                                         placeholder='최종 고객사 (선택)' 
                                                         onChange={f_handlingInput} 
                                                         // value={input.progress2_rate_name || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_last_client_com2_name || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_last_client_com2_name || ''}
                                                         >
                                                             <option 
                                                             value={(
-                                                                a_v_modalPropsData ? 
-                                                                a_v_modalPropsData.a_last_client_com2_name : '선택')}
-                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_last_client_com2_name : '선택')}</option>
+                                                                updated_v_modalPropsData ? 
+                                                                updated_v_modalPropsData.a_last_client_com2_name : '선택')}
+                                                            >{(updated_v_modalPropsData ? updated_v_modalPropsData.a_last_client_com2_name : '선택')}</option>
                                                             {(getData) ? 
                                                                 (
                                                                     getData?.data?.search_last_client_com_code.map((e) => {
@@ -424,17 +374,16 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출처'>
                                                         <Form.Select size='sm' aria-label='selectBox' className='' name='a_sale_com2_name'
-                                                        data-key='biz_opp_detail'
                                                         placeholder='매출처' 
                                                         onChange={f_handlingInput} 
                                                         // value={input.progress2_rate_name || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_sale_com2_name || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_sale_com2_name || ''}
                                                         >
                                                             <option 
                                                             value={(
-                                                                a_v_modalPropsData ? 
-                                                                a_v_modalPropsData.a_sale_com2_name : '선택')}
-                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_sale_com2_name : '선택')}</option>
+                                                                updated_v_modalPropsData ? 
+                                                                updated_v_modalPropsData.a_sale_com2_name : '선택')}
+                                                            >{(updated_v_modalPropsData ? updated_v_modalPropsData.a_sale_com2_name : '선택')}</option>
                                                             {(getData) ? 
                                                                 (
                                                                     getData?.data?.search_last_client_com_code.map((e) => {
@@ -450,10 +399,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <Form.Label htmlFor='inputChck2'>필달 여부</Form.Label>
                                                     <Form.Check type={`checkbox`} id={`inputChck2`} name='a_essential_achievement_tf' 
-                                                    data-key='biz_opp'
                                                     onChange={f_handlingInput}
                                                     // checked={input.essential_achievement_tf || false} 
-                                                    defaultChecked={a_v_modalPropsData?.a_essential_achievement_tf || false}
+                                                    defaultChecked={updated_v_modalPropsData?.a_essential_achievement_tf || false}
                                                     />
                                                 </Col>
                                             </Row>
@@ -461,16 +409,15 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='진행률'>
                                                         <Form.Select size='sm' aria-label='selectBox' className='' name='a_progress2_rate_name' 
-                                                        data-key='biz_opp'
                                                         onChange={f_handlingInput} 
                                                         // value={input.progress2_rate_name || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_progress2_rate_name || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_progress2_rate_name || ''}
                                                         >
                                                             <option 
                                                             value={(
-                                                                a_v_modalPropsData ? 
-                                                                a_v_modalPropsData.a_progress2_rate_name : '선택')}
-                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_progress2_rate_name : '선택')}</option>
+                                                                updated_v_modalPropsData ? 
+                                                                updated_v_modalPropsData.a_progress2_rate_name : '선택')}
+                                                            >{(updated_v_modalPropsData ? updated_v_modalPropsData.a_progress2_rate_name : '선택')}</option>
                                                             <option value='1'>One</option>
                                                             <option value='2'>Two</option>
                                                             <option value='3'>Three</option>
@@ -479,25 +426,19 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='판품 번호'>
-                                                        <Form.Control disabled size='sm' type='text' className=''
-                                                        name='a_sale_item_no' 
-                                                        data-key='biz_opp_detail' 
-                                                        placeholder='판품 번호'
+                                                        <Form.Control disabled name='a_sale_item_no' size='sm' type='text' className='' placeholder='판품 번호'
                                                         onChange={f_handlingInput} 
                                                         // value={input.sale_item_no || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_sale_item_no || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_sale_item_no || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='계약 일자'>
-                                                        <Form.Control size='sm' type='date' className='' 
-                                                        name='a_contract_date' 
-                                                        data-key='biz_opp' 
-                                                        placeholder='계약 일자'
+                                                        <Form.Control name='a_contract_date' size='sm' type='date' className='' placeholder='계약 일자'
                                                         onChange={f_handlingInput}
                                                         // value={input.contract_date || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_contract_date || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_contract_date || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
@@ -506,36 +447,28 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Row className='d-flex justify-content-between'>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 일자'>
-                                                        <Form.Control size='sm' type='date' className='' 
-                                                        name='a_sale_date' 
-                                                        data-key='biz_opp_detail' 
-                                                        placeholder='매출 일자'
+                                                        <Form.Control name='a_sale_date' size='sm' type='date' className='' placeholder='매출 일자'
                                                         onChange={f_handlingInput}
                                                         // value={input.sale_date || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_sale_date || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_sale_date || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매입 일자'>
-                                                        <Form.Control size='sm' type='date' className='' placeholder='매입 일자'
-                                                        name='a_purchase_date' 
-                                                        data-key='biz_opp_detail' 
+                                                        <Form.Control name='a_purchase_date' size='sm' type='date' className='' placeholder='매입 일자'
                                                         onChange={f_handlingInput}
                                                         // value={input.purchase_date || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_purchase_date || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_purchase_date || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='수금 일자 (선택)'>
-                                                        <Form.Control size='sm' type='date' className='' 
-                                                        name='a_collect_money_date' 
-                                                        data-key='biz_opp_detail' 
-                                                        placeholder='수금 일자 (선택)'
+                                                        <Form.Control name='a_collect_money_date' size='sm' type='date' className='' placeholder='수금 일자 (선택)'
                                                         onChange={f_handlingInput}
                                                         // value={input.collect_money_date || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_collect_money_date || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_collect_money_date || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
@@ -543,35 +476,28 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Row className='d-flex justify-content-between'>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 금액'>
-                                                        <Form.Control size='sm' type='text' className='' 
-                                                        name='a_sale_amt' 
-                                                        data-key='biz_opp_detail' 
-                                                        placeholder='매출 금액'
+                                                        <Form.Control name='a_sale_amt' size='sm' type='text' className='' placeholder='매출 금액'
                                                         onChange={f_handlingInput} 
                                                         // value={input.sale_amt || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_sale_amt || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_sale_amt || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매입 금액'>
-                                                        <Form.Control size='sm' type='text' className='' name='a_purchase_amt' 
-                                                        data-key='biz_opp_detail' 
-                                                        placeholder='매입 금액'
+                                                        <Form.Control name='a_purchase_amt' size='sm' type='text' className='' placeholder='매입 금액'
                                                         onChange={f_handlingInput}
                                                         // value={input.a_purchase_amt || ''}
-                                                        defaultValue={a_v_modalPropsData?.a_purchase_amt || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_purchase_amt || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 이익'>
-                                                        <Form.Control size='sm' type='text' className='' name='a_sale_profit' 
-                                                        data-key='biz_opp_detail' 
-                                                        placeholder='매출 이익'
+                                                        <Form.Control name='a_sale_profit' size='sm' type='text' className='' placeholder='매출 이익'
                                                         onChange={f_handlingInput} 
                                                         // value={input.sale_profit || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_sale_profit || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_sale_profit || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
@@ -579,13 +505,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Row className='d-flex justify-content-between'>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 구분'>
-                                                        <Form.Select size='sm' aria-label='사업 구분' className='' name='a_biz_section2_code' 
-                                                        data-key='biz_opp_detail' 
+                                                        <Form.Select size='sm' aria-label='사업 구분' className='' name='a_biz_section2_name' 
                                                         onChange={f_handlingInput} 
                                                         // value={input.biz_section2_name || ''}
-                                                        defaultValue={a_v_modalPropsData?.a_biz_section2_name || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_biz_section2_name || ''}
                                                         >
-                                                            <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_biz_section2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_biz_section2_name : '선택')}</option>
+                                                            <option value={(updated_v_modalPropsData ? updated_v_modalPropsData.a_biz_section2_name : '선택')}>{(updated_v_modalPropsData ? updated_v_modalPropsData.a_biz_section2_name : '선택')}</option>
                                                             {(getData) ? 
                                                                 (
                                                                     getData?.data?.search_biz_section_code.map((e) => {
@@ -603,13 +528,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='제품'>
-                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_principal_product2_code'
-                                                        data-key='biz_opp_detail' 
+                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_product2_name'
                                                         onChange={f_handlingInput} 
                                                         // value={input.product2_name || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_product2_name || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_product2_name || ''}
                                                         >
-                                                            <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_product2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_product2_name : '선택')}</option>
+                                                            <option value={(updated_v_modalPropsData ? updated_v_modalPropsData.a_product2_name : '선택')}>{(updated_v_modalPropsData ? updated_v_modalPropsData.a_product2_name : '선택')}</option>
                                                             {(getData) ? 
                                                                 (
                                                                     getData?.data?.search_principal_product_code.map((e) => {
@@ -627,7 +551,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         <Form.Control as='textarea' name='비고' size='sm' type='text' className='' placeholder='비고 (선택)'
                                                         onChange={f_handlingInput} 
                                                         // value={input.비고 || ''} 
-                                                        defaultValue={a_v_modalPropsData?.비고 || ''}
+                                                        defaultValue={updated_v_modalPropsData?.비고 || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col> */}
@@ -638,13 +562,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <Row className='d-flex justify-content-between'>
                                                 <Col xs={12} md={12} lg={12} className='activity col d-flex align-items-center floating'>
                                                     <FloatingLabel label='활동 내역 신규 입력'>
-                                                        <Form.Control as='textarea'size='sm' type='text' className='' 
-                                                        name='a_activity_details' 
-                                                        data-key='biz_opp_activity'
-                                                        placeholder='활동 내역 신규 입력' 
+                                                        <Form.Control as='textarea' name='a_activity_details' size='sm' type='text' className='' placeholder='활동 내역 신규 입력'
                                                         onChange={f_handlingInput} 
                                                         // value={input.활동 내역 || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_activity_details || ''}
+                                                        defaultValue={updated_v_modalPropsData?.a_activity_details || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
@@ -676,14 +597,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                     </div>
                                 </Modal.Body>
                                 <Modal.Footer className='btnArea justify-content-center'>
-                                    {/* <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', input, e)}>저장</Button> */}
-                                    {(
-                                        v_modalPropsData ? 
-                                        (<Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', updateInput, e)}>수정</Button>)
-                                        : 
-                                        (<Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e)}>등록</Button>)
-                                    )}
-
+                                    <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', changeInput, e)}>저장</Button>
                                     <Button variant='danger' onClick={f_warningMsg}>삭제</Button>
                                     <Button variant='secondary' onClick={onHide}>닫기</Button>
                                 </Modal.Footer>
@@ -699,7 +613,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // }
         };
         updateUI();
-    }, [/* currentPath */, show, onHide, insertInput, getData /* updateInput */, v_modalPropsData, /* mode */]);
+    }, [/* currentPath */, show, onHide, /* input, */getData /* changeInput */, v_modalPropsData, /* mode */]);
 
     return (
         <div id='inputFieldDetail'>

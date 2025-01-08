@@ -1972,7 +1972,6 @@ const BizOpp = () => {
             } else {
                 setData(response);
                 return response;
-
             }
         } catch (error) {
             setErrMsg(`f_handlingData(${method}) error! ${error.message}`);
@@ -1983,7 +1982,6 @@ const BizOpp = () => {
    
     // -------------- 세션 대체용 userId 송신 -------------- 
     const auth = useSelector((state) => state.auth);
-    // console.log(auth);
     const userCheck = {
         a_session_user_id: auth.userId,
     }

@@ -793,7 +793,6 @@ def f_insert_biz_opp(request):
 
 
             # test
-            v_body.get('biz_opp_detail',{}).get("a_session_user_id")
             v_param_insert_biz_opp.append(None if v_body.get('biz_opp',{}).get('a_biz_opp_name') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_name'))
             v_param_insert_biz_opp.append(None if v_body.get('biz_opp',{}).get('a_progress2_rate_code') == '' else v_body.get('biz_opp',{}).get('a_progress2_rate_code'))
             v_param_insert_biz_opp.append(None if v_body.get('biz_opp',{}).get('a_contract_date') == '' else v_body.get('biz_opp',{}).get('a_contract_date'))

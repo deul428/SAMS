@@ -2015,7 +2015,7 @@ const BizOpp = () => {
                         :   
                         (data.length === 0 ? 
                             (<p>데이터를 불러오는 중입니다...</p>) : 
-                            (<DynamicTable v_componentName={'bizOpp'} v_propsData={data} res={res} />)
+                            (<DynamicTable v_componentName={'bizOpp'} v_propsData={data} res={res}/>)
                             // ('')
                         )
                     }

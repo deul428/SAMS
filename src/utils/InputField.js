@@ -9,7 +9,7 @@ import { Button, Form, Row, Col, FloatingLabel } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
 import '../styles/_search.scss';
 
-const InputField = ({ v_componentName, v_propsData, setRes }) => {
+const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
@@ -38,19 +38,9 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
     }        
     // -------------- 세션 대체용 userId 송신 -------------- 
     const auth = useSelector((state) => state.auth);
-    // console.log(auth);
-/*     const userCheck = {
-        a_session_user_id: auth.userId,
-    }
-
-    useEffect(() => {
-        f_submitData('post', endpoint, userCheck);
-    }, [endpoint]);
-     */
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
 
     // post용 객체, input field value 저장해서 이후 서버로 송신
-
     let p_input = null;
 
     const p_bizopp = {
@@ -138,6 +128,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                 return;
             } else {
                 console.log('input Field response 송신 완료', "\nendpoint: ", endpoint, "\nresponse: ", response);
+                console.log(data)
                 setRes(response);
                 return response;
             }
@@ -267,33 +258,61 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
     const [v_deptHandling, setVDeptHandling] = useState({
         deptValue: '',
         deptMsg: '-- 본부를 선택하세요 --',
-        detpDisabled: false,
+        detpDisabled: true,
     })
     const [v_teamHandling, setVTeamHandling] = useState({
         teamValue: '',
         teamMsg: '-- 팀을 선택하세요 --',
-        teamDisabled: false,
+        teamDisabled: true,
     })
     const [v_userHandling, setVUserhandling] = useState({
         userValue: '',
         userMsg: '-- 담당자를 선택하세요 --',
+        userDisabled: true,
     })
 
     // 권한별 UI 
     // Level 1. 권한(AUT) Check 0001admin / 0002guest / 0003none
     const f_authLevel1 = () => {
+        console.log("auth.userAuthCode: ", auth.userAuthCode);
         switch(auth.userAuthCode) {
             //1. admin
             case '0001' :
-                console.log('admin', data.search_headquarters, data.search_team);
+                // console.log('admin', data.search_headquarters, data.search_team);
                 setVDepts(data.search_headquarters);
                 setVTeams(data.search_team);
-                f_teamLinkedDept(); 
+                // f_teamLinkedDept(); 
+                setVDeptHandling((prevDept) => ({
+                    ...prevDept,
+                    detpDisabled: false,
+                }));
+                setVTeamHandling((prevDept) => ({
+                    ...prevDept,
+                    teamDisabled: false,
+                }));
+                setVUserhandling((prevDept) => ({
+                    ...prevDept,
+                    userDisabled: false,
+                }));
                 // setVDeptHandling()
                 break;
             // 2. guest
             case '0002' :
-                console.log(auth.userAuthCode);
+                setVDepts(data.search_headquarters);
+                setVTeams(data.search_team);
+                // f_teamLinkedDept(); 
+                setVDeptHandling((prevDept) => ({
+                    ...prevDept,
+                    detpDisabled: false,
+                }));
+                setVTeamHandling((prevDept) => ({
+                    ...prevDept,
+                    teamDisabled: false,
+                }));
+                setVUserhandling((prevDept) => ({
+                    ...prevDept,
+                    userDisabled: false,
+                }));
                 break;
             // 3. none
             case '0003' :
@@ -309,22 +328,55 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
     // Level 2. 직책(RES) Check 0001팀원 0002팀장 0003본부장 0004이사
     const f_authLevel2 = () => {
         const resCode = auth.userResCode;
+        console.log("auth.userResCode: ", resCode);
         switch(resCode) {
             case '0001' :
-                setVUserhandling({userValue: auth.userName});
-                f_authLevel3();
+                setVUserhandling((prevDept) => ({
+                    ...prevDept,
+                    userValue: auth.userName,
+                }));
+                console.log(input.a_user_name);
+                setInput((prevInput) => ({
+                    ...prevInput,
+                    a_user_name: v_userHandling.userValue
+                }))
+                f_authLevel3('팀원');
                 break;
             case '0002' :
-                setVUserhandling('');
-                f_authLevel3();
+                // setVUserhandling('');
+                f_authLevel3('팀장');
+                setVUserhandling((prevDept) => ({
+                    ...prevDept,
+                    userDisabled: false,
+                }));
                 break;
             case '0003' :
-                setVUserhandling('');
+                // setVUserhandling('');
                 f_authLevel3('본부장');
+                setVUserhandling((prevDept) => ({
+                    ...prevDept,
+                    userDisabled: false,
+                }));
+                setVTeamHandling((prevDept) => ({
+                    ...prevDept,
+                    teamDisabled: false,
+                }));
                 break;
             case '0004' :
-                setVUserhandling('');
+                // setVUserhandling('');
                 f_authLevel3('이사');
+                setVDeptHandling((prevDept) => ({
+                    ...prevDept,
+                    detpDisabled: false,
+                }));
+                setVTeamHandling((prevDept) => ({
+                    ...prevDept,
+                    teamDisabled: false,
+                }));
+                setVUserhandling((prevDept) => ({
+                    ...prevDept,
+                    userDisabled: false,
+                }));
                 break;
             default :
                 console.log(auth.userName);
@@ -345,6 +397,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
     const f_authLevel3 = (userAuth2Data) => {
         let head, team;
         const deptId = auth.userDeptCode;
+        console.log("auth.userDeptCode: ", deptId);
         switch(deptId) {
             case '9201' :
                 head = [data.search_headquarters[1]];
@@ -368,14 +421,14 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
             setVTeamHandling({
                 teamValue: team[0].dept_name,
                 teamMsg: team[0].dept_name,
-                teamDisabled: true
+                teamDisabled: false
             })
         } else {
             setVTeams(team);
             setVTeamHandling({
                 teamValue: team[0].dept_name,
                 teamMsg: team[0].dept_name,
-                teamDisabled: false
+                teamDisabled: true
             })
         }
         if (userAuth2Data === '이사') {
@@ -383,26 +436,32 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
             setVDeptHandling({
                 deptValue : head[0].dept_name, 
                 deptMsg : head[0].dept_name,
-                detpDisabled: true,
+                detpDisabled: false,
             });
         } else {
             setVDeptHandling({
                 deptValue : head[0].dept_name, 
                 deptMsg : head[0].dept_name,
-                detpDisabled: false,
+                detpDisabled: true,
             });
         }
         setVDepts(head);
-        setInput(input, input.a_headquarters_dept_id = team[0].high_dept_id, input.a_dept_id = team[0].dept_id);
+        console.log("a_user_name:", input.a_user_name);
+        setInput((prevInput) => ({
+            ...prevInput,
+            a_headquarters_dept_id: team[0].high_dept_id, 
+            a_dept_id: team[0].dept_id,
+            // a_user_name: v_userHandling.userValue
+        }));
+        console.log("a_user_name:", input.a_user_name);
         f_submitData('post', endpoint, input);
         // f_teamLinkedDept();
     }
-/*     // 디버깅용
+    // 디버깅용
     useEffect(()=> {
-        console.log(v_teamHandling);
-    }, [v_teamHandling]);
+        console.log(input);
+    }, [input]);
 
- */
     useEffect(() => {
         // console.log("=-=-==-=--=data:-=-=-=--=-", data);
         if (Object.keys(data).length > 0) {
@@ -418,7 +477,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                     break;
             }
         }
-    }, [data, input]);
+    }, []);
     // ================= option 1 변경 시 2도 동적으로 변경 끝 ================= 
 
 
@@ -517,7 +576,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                                 <Row className='d-flex justify-content-between'>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='본부'>
-                                            <Form.Select id='select1' size='sm' aria-label='selectBox' value={input?.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept} disabled={!v_deptHandling.detpDisabled}>
+                                            <Form.Select id='select1' size='sm' aria-label='selectBox' value={input?.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept} disabled={v_deptHandling.detpDisabled}>
                                                 <option value={v_deptHandling.deptValue || ''}>{v_deptHandling.deptMsg || '-- 본부를 선택하세요 --'}</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                 (
@@ -535,7 +594,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='팀'>
-                                            <Form.Select id='select2' size='sm' aria-label='selectBox' name='a_dept_id' onChange={f_handlingDept} disabled={!v_teamHandling.teamDisabled}>
+                                            <Form.Select id='select2' size='sm' aria-label='selectBox' name='a_dept_id' onChange={f_handlingDept} disabled={v_teamHandling.teamDisabled}>
                                                 <option value={v_teamHandling.teamValue || ''}>{v_teamHandling.teamMsg || '-- 팀을 선택하세요 --'}</option>
                                                 {v_selectTeam.map((team) => (
                                                     <option key={team.dept_id} value={team.dept_id || ''}>
@@ -547,7 +606,7 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='영업 담당자'>
-                                            <Form.Control size='sm' type='text' id='userName' defaultValue={v_userHandling.userValue || ''} name='a_user_name' onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='text' id='userName' defaultValue={v_userHandling.userValue || ''} name='a_user_name' onChange={f_handlingInput} disabled={v_userHandling.userDisabled}/>
                                         </FloatingLabel>
                                     </Col>
                                 </Row>
@@ -740,7 +799,10 @@ const InputField = ({ v_componentName, v_propsData, setRes }) => {
         };
 
         updateUI();
-    }, [data, input, v_depts, v_teams, v_selectDept, v_selectTeam, v_teamByDept, v_selectProFrom, v_selectProTo]);
+    }, [data, input, v_depts, v_teams, v_selectDept, v_selectTeam, v_teamByDept, v_selectProFrom, v_selectProTo.
+
+        v_deptHandling, v_teamHandling, v_userHandling
+    ]);
 
     return (
         <div id='search' className='wrap'>

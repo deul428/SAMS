@@ -791,11 +791,6 @@ def f_insert_biz_opp(request):
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:
                v_param_insert_biz_opp.append(v_biz_opp_name)
-
-               #test
-            print(f"f_insert_biz_opp()에서의 v_biz_opp_name : {v_biz_opp_name}")
-
-
             v_progress2_rate_code = None if v_body.get('biz_opp',{}).get('a_progress2_rate_code') == '' else v_body.get('biz_opp',{}).get('a_progress2_rate_code')
             if not v_progress2_rate_code:
                transaction.set_rollback(True)
@@ -818,6 +813,13 @@ def f_insert_biz_opp(request):
             # v_param_insert_biz_opp.append('0001')
             # v_param_insert_biz_opp.append('20240107')
             # v_param_insert_biz_opp.append(True)
+
+
+            #test
+            print(f"f_insert_biz_opp()에서의 v_biz_opp_name : {v_biz_opp_name}")
+            print(f"f_insert_biz_opp()에서의 v_progress2_rate_code : {v_progress2_rate_code}")
+            print(f"f_insert_biz_opp()에서의 v_contract_date : {v_contract_date}")
+            print(f"f_insert_biz_opp()에서의 essential_achievement_tf : {v_body.get('biz_opp',{}).get('essential_achievement_tf')}")
 
 
             v_param_insert_biz_opp.append(v_session_user_id)
@@ -980,16 +982,12 @@ def f_insert_biz_opp(request):
             # v_param_insert_biz_opp_detail.append(v_session_user_id)
 
 
+            #test
+            print(f"f_insert_biz_opp()에서의 v_biz_section2_code : {v_biz_section2_code}")
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail,v_param_insert_biz_opp_detail)
-
-
-               #test
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-               logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_detail")
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
             v_sql_insert_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
                                                                                             history_no,
                                                                                             biz_opp_name,
@@ -1172,7 +1170,7 @@ def f_insert_biz_opp(request):
             v_activity_date = None if v_body.get('biz_opp_activity',{}).get('a_activity_date') == '' else v_body.get('biz_opp_activity',{}).get('a_activity_date')
             if not v_activity_date:
                transaction.set_rollback(True)
-               v_return = {'STATUS':'FAIL','MESSAGE':"'활동 내역' 항목은 필수 입력(선택) 항목입니다!"}
+               v_return = {'STATUS':'FAIL','MESSAGE':"'활동 일자' 항목은 필수 입력(선택) 항목입니다!"}
                v_square_bracket_return = [v_return]
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:

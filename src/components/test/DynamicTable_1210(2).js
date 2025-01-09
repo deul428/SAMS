@@ -12,7 +12,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
   const closeModal = () => setShowModal(false);
   const [data, setData] = useState([]);
 
-  const rootsData = roots.bizopp.props;
+  const rootsData = roots.bizoppSelect1.props;
  
   // console.log("+++++++++++++++++++++++++++++++ ", v_propsData);
 

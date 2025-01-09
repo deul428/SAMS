@@ -39,18 +39,18 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
   let rootsData = null;
   switch(v_componentName) {
     case `bizOpp`: 
-      rootsData = roots.bizopp.props;
+      rootsData = roots.bizoppSelect1.props;
       break;
     case `activity`: 
-      rootsData = roots.bizopp.props;
+      rootsData = roots.bizoppSelect1.props;
       break;
     default:
-      rootsData = roots.bizopp.props;
+      rootsData = roots.bizoppSelect1.props;
       break;
   }
 
   const [v_handlingHtml, setVHandlingHtml] = useState(null);
-  // const columns = React.useMemo(() => roots.bizopp?.props || [], []);
+  // const columns = React.useMemo(() => roots.bizoppSelect1?.props || [], []);
   const columns = React.useMemo(() => rootsData || [], []);
   
   // react-table 훅 설정

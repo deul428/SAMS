@@ -12,7 +12,7 @@ function DynamicTable({ v_componentName, v_propsData }) {
   const [data, setData] = useState([]);
 
   // const [v_dynamicTableData, setVDynamicTableData] = useState(null);
-  const rootsData = roots.bizopp.props;
+  const rootsData = roots.bizoppSelect1.props;
  
   // console.log("+++++++++++++++++++++++++++++++ ", v_propsData);
 

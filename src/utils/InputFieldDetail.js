@@ -9,7 +9,7 @@ import '../styles/_customModal.scss';
 import '../styles/_search.scss';
 import { Modal, Button, Form, Row, Col, ListGroup, FloatingLabel } from 'react-bootstrap';
 
-const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData, mode }) => {
+const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData }) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
@@ -154,7 +154,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     };
     
     useEffect(()=>{
-        console.log("input: ", insertInput, "\n\nchangeInput: ", updateInput);
+        // console.log("input: ", insertInput, "\n\nchangeInput: ", updateInput);
     }, [insertInput, updateInput])
     // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 끝 .....................
     // ----------------- 1) 등록 및 수정 input 핸들링 끝 -----------------
@@ -171,8 +171,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // 2. UI 표현용
     useEffect(() => {
         // a_v_modalPropsData 데이터 핸들링 후 input 객체에 복사
-        console.log("-------------- 수정 시 --------------");
-        console.log("v_modalPropsData: ", v_modalPropsData);
+        // console.log("-------------- 수정 시 --------------");
+        // console.log("v_modalPropsData: ", v_modalPropsData);
         if (v_modalPropsData) {
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD .....................
             const dateKeys = ['a_sale_date', 'a_collect_money_date', 'a_purchase_date', 'a_contract_date'];
@@ -334,9 +334,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
                 return;
             } */
-
-            if(!a_v_modalPropsData && mode === '수정' && !getData) {
-                console.log('아직인데');
+            if(!a_v_modalPropsData && !getData) {
                 return;
             }
             if (v_modalPropsData || getData) {

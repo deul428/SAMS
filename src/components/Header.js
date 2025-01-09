@@ -64,7 +64,7 @@ function Header() {
                             <Nav.Link as={NavLink} className='menuItem' to={`/${roots.adminCode.depth1}/${roots.adminCode.depth2}`}>공통 코드 관리</Nav.Link>
                             <Nav.Link as={NavLink} className='menuItem' id='menu02' to={`/${roots.adminProduct.depth1}/${roots.adminProduct.depth2}`}>제품 관리</Nav.Link>
                         </div>
-                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.bizopp.depth1) ? 'active' : ''}`} id='menu03' to={`/${roots.bizopp.depth1}/${roots.bizopp.depth2}`}>
+                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.bizoppSelect1.depth1) ? 'active' : ''}`} id='menu03' to={`/${roots.bizoppSelect1.depth1}/${roots.bizoppSelect1.depth2}`}>
                             사업 (기회) 관리
                         </Nav.Link>
                         <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.activity.depth1) ? 'active' : ''}`} to={`/${roots.activity.depth1}/${roots.activity.depth2}`}>

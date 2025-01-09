@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 import { apiMethods } from '../utils/api.js';
-import { login } from '../index.js';
-import InputField from '../utils/InputField.js';
+
 import DynamicTable from '../utils/DynamicTable.js';
-import { Button } from 'react-bootstrap';
+import InputField from '../utils/InputField.js';
 import BizOppDetail from './BizOppDetail.js';
+import InputFieldDetail from '../utils/InputFieldDetail.js';
+
 import roots from '../utils/datas/Roots.js';
 
-import InputFieldDetail from '../utils/InputFieldDetail.js';
+import { Button } from 'react-bootstrap';
 
 const BizOpp = () => {
     // const location = useLocation();
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-    const endpoint = roots.bizopp.endpoint;
+    const endpoint = roots.bizoppSelect1.endpoint;
     
     const [showModal, setShowModal] = useState(false);
     const openModal = () => setShowModal(true);
@@ -1988,11 +1988,6 @@ const BizOpp = () => {
 
     useEffect(() => {
         f_handlingData('post', endpoint, userCheck);
-        /* f_handlingData('get', endpoint).then(response => {
-            console.log("데이터 로드 완료:", response);
-        }).catch(error => {
-            console.error("데이터 로드 실패:", error);
-        }); */
     }, [endpoint]);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
       
@@ -2005,18 +2000,19 @@ const BizOpp = () => {
             <div className='wrap' id='bizOpp'>
                 <div className='dataPostArea'>
                     <div className='btnArea d-flex justify-content-end'>
+                        {(auth.userAuthCode === '0002') ? 
+                        <></> : 
                         <Button variant='success' className='float-right mb-2' onClick={openModal}>사업 (기회) 등록</Button>
+                        }
                     </div>
                     
-                    {/* <DynamicTabletest v_componentName={'bizOpp'} v_propsData={data}/> */}
-                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data} v_modalPropsData={null}/*  mode={'등록'} *//>
+                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data} v_modalPropsData={null}/>
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   
                         (data.length === 0 ? 
                             (<p>데이터를 불러오는 중입니다...</p>) : 
                             (<DynamicTable v_componentName={'bizOpp'} v_propsData={data} res={res}/>)
-                            // ('')
                         )
                     }
                 </div>

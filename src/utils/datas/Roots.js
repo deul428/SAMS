@@ -10,7 +10,7 @@ const roots = {
     adminUser: {depth1: 'admin', depth2: 'user', component: Home},
     adminCode: {depth1: 'admin', depth2: 'code', component: Home},
     adminProduct: {depth1: 'admin', depth2: 'product', component: Home},
-    bizopp: {depth1: 'biz-opp', depth2: '', endpoint: 'select-biz-opp1/', component: BizOpp, 
+    bizoppSelect1: {depth1: 'biz-opp', depth2: '', endpoint: 'select-biz-opp1/', component: BizOpp, 
         props: [
             { Header: '사업 일련 번호', accessor: 'biz_opp_id'},
             { Header: '본부', accessor: 'high_dept_name' },
@@ -38,6 +38,8 @@ const roots = {
             { Header: '제품 구분', accessor: 'product2_name' },
             { Header: '활동 이력', accessor: 'activity_details'},
         ]
+    },
+    bizoppSelect2: {depth1: 'biz-opp', depth2: '', endpoint: 'select-biz-opp2/', component: BizOpp, 
     },
     bizoppHistory: {depth1: 'biz-opp-history', depth2: '', /* endpoint: 'select-biz-opp1/', */ component: BizOppHistory,
     props: [

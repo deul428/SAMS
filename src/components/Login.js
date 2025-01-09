@@ -76,9 +76,9 @@ const AuthLogin = () => {
                 console.log("user Input: ", pwInput);
 
                 // 유효값 검사
-                const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+                const passwordRegex = /^(?=.*[a-z])(?=.*\d)[a-z\d]{5,}$/;
                 if (!passwordRegex.test(pwInput.a_new_cipher)) {
-                    alert('비밀번호는 영문과 숫자를 조합하여 5자 이상으로 입력해 주십시오.');
+                    alert('비밀번호는 영문 소문자와 숫자를 조합하여 5자 이상으로 입력해 주십시오. (영문 대문자, 특수문자 불가)');
                     return;
                 }
                 if (pwInput.a_new_cipher === "") {
@@ -93,7 +93,7 @@ const AuthLogin = () => {
                     alert(`세션 아이디가 비어 있습니다. (디버깅용)`);
                     return;
                 }
-                const response = await apiMethods[method]('cipher-change/', pwInput);
+                const response = await apiMethods[method]('update-cipher-change/', pwInput);
                 console.log(response);
 
                 await dispatch(login({ userId: auth.userId, userPw: pwInput.a_new_cipher }));
@@ -110,6 +110,12 @@ const AuthLogin = () => {
                 }
                 // API 호출
                 const response = await apiMethods[method](endpoint, input);
+                console.log(response);
+                if(response.length === 1) {
+                    console.log(response);
+                    alert(response[0].MESSAGE);
+                    return;
+                }
                 let res = response[0][0];
                 let resStts = response[1][0];
 
@@ -179,7 +185,7 @@ const AuthLogin = () => {
                             <Form.Control type='password' name='a_cipher' placeholder='Password' id='inputPw' value={input.a_cipher} onChange={f_handlingInput}/>
                         </FloatingLabel>
                         <Form.Text id='passwordHelpBlock' muted>
-                            영문, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 미포함)
+                            영문 소문자, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 불가)
                         </Form.Text>
                     </div>
                     <Button type='submit' variant='primary' onClick={(e) => f_submitData('post', endpoint, input, e, false)}>로그인</Button>
@@ -192,7 +198,7 @@ const AuthLogin = () => {
                     <h4 style={{textAlign: 'center', marginBottom: '1rem'}}>변경할 비밀번호를 입력해 주시기 바랍니다.</h4>
                     <div className='inputFields idField'>
                         <FloatingLabel label='ID' className='mb-3'>
-                            <Form.Control type='id' name='a_user_id' placeholder='id' id='inputPwChangeId' value={pwInput.a_user_id} onChange={(e) => f_handlingInput(e, false)}/>
+                            <Form.Control type='id' name='a_user_id' placeholder='id' id='inputPwChangeId' value={pwInput.a_user_id} onChange={(e) => f_handlingInput(e, false)} disabled/>
                         </FloatingLabel>
                     </div>
                     <div className='inputFields pwField'>
@@ -200,7 +206,7 @@ const AuthLogin = () => {
                             <Form.Control type='password' name='a_new_cipher' placeholder='Password' id='inputPwChangePw' value={pwInput.a_new_cipher} onChange={f_handlingInput}/>
                         </FloatingLabel>
                         <Form.Text id='passwordHelpBlock' muted>
-                            영문, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 미포함)
+                            영문 소문자, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 불가)
                         </Form.Text>
                     </div>
                     <Button type='submit' variant='primary' onClick={(e) => f_submitData('post', endpoint, pwInput, e, true)}>비밀번호 변경</Button>

@@ -104,11 +104,11 @@ const InputField = ({ v_componentName, v_propsData }) => {
         switch(v_componentName) {
             case `bizOpp`: 
                 setData(v_filter); // 상태 업데이트
-                setEndpoint(roots.bizopp.endpoint);
+                setEndpoint(roots.bizoppSelect1.endpoint);
                 break;
             case `activity`: 
                 setData(v_filter); // 상태 업데이트
-                setEndpoint(roots.bizopp.endpoint);
+                setEndpoint(roots.bizoppSelect1.endpoint);
                 
                 break;
             default:

@@ -18,7 +18,7 @@ const BizOpp = () => {
     // data: db data
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-    const endpoint = roots.bizopp.endpoint;
+    const endpoint = roots.bizoppSelect1.endpoint;
 
     // const [content, setContent] = useState(false);
     /*-

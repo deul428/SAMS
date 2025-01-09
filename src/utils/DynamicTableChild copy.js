@@ -21,7 +21,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
       rootsData = roots.bizoppHistory.props;
       break;
     default:
-      rootsData = roots.bizopp.props;
+      rootsData = roots.bizoppSelect1.props;
       break;
   }
 

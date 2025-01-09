@@ -62,7 +62,7 @@ const AuthLogin = () => {
                 }
 
                 // 이전 경로로 리디렉션
-                // const from = location.state?.from?.pathname || `/${roots.bizopp.depth1}/`;
+                // const from = location.state?.from?.pathname || `/${roots.bizoppSelect1.depth1}/`;
                 // console.log('Redirect Path:', from);
                 // setRedirect(from);
             } else if (response.STATUS === 'NONE') {
@@ -94,7 +94,7 @@ const AuthLogin = () => {
     //             await dispatch(login({userId: input.a_user_id, userPw: input.a_cipher}));
             
     //             // 로그인 시 이전 경로로 리디렉션
-    //             const from = location.state?.from?.pathname || `/${roots.bizopp.depth1}/`;
+    //             const from = location.state?.from?.pathname || `/${roots.bizoppSelect1.depth1}/`;
     //             console.log(from);
             
     //             setRedirect(from);

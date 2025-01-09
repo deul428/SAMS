@@ -1,39 +1,27 @@
 import { useState, useEffect } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { apiMethods } from '../utils/api.js';
 
 import DynamicTable from '../utils/DynamicTable';
 import InputField from '../utils/InputField';
 import InputFieldDetail from '../utils/InputFieldDetail.js';
 
-import { useSelector } from 'react-redux';
-import { Button } from 'react-bootstrap';
-import { apiMethods } from '../utils/api.js';
-
 import roots from '../utils/datas/Roots.js';
+
+import { Button } from 'react-bootstrap';
 
 const Activity = () => {
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-    const endpoint = roots.bizopp.endpoint;
-    // const endpoint = roots.bizoppHistory.endpoint;
+    const endpoint = roots.bizoppSelect1.endpoint;
 
     const [showModal, setShowModal] = useState(false);
-    const openModal = () => {console.log(showModal); setShowModal(true)};
+    const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
 
-    const p_activity = {
+    const [returnMsg, setReturnMsg] = useState(null);
 
-    }
-    const [input, setInput] = useState(p_activity);
-    
-/* 
-    const f_handlingInput = (e) => {
-        const { name, value } = e.target;
-        console.log({ name, value }, input);
-        setInput({
-            ...input,
-            [name]: value,
-        });
-    } */
     const f_handlingData = async (method, endpoint, input = null) => {
         try {
             const supportedMethods = ['get', 'post', 'put', 'patch', 'del'];
@@ -55,9 +43,15 @@ const Activity = () => {
             if (isUpdateNeeded) {
                 const updatedData = await apiMethods.get(endpoint);
             } 
-            console.log(`API Get (수신)\nEndpoint: (BizOpp.js) ${endpoint}\nresponse: `, response);
-            setData(response);
-            return response;
+            console.log(`API Get (수신)\nEndpoint: (Activity.js) ${endpoint}\nresponse: `, response);
+            if (Array.isArray(response)) {
+                alert(response[0].MESSAGE || '로그인 필요');
+                setReturnMsg(<Navigate to="/login/"/>);
+                return returnMsg;
+            } else {
+                setData(response);
+                return response;
+            }
         } catch (error) {
             setErrMsg(`f_handlingData(${method}) error! ${error.message}`);
             throw error;
@@ -66,43 +60,38 @@ const Activity = () => {
     };
     // -------------- 세션 대체용 userId 송신 -------------- 
     const auth = useSelector((state) => state.auth);
-    // console.log(auth);
     const userCheck = {
         a_session_user_id: auth.userId,
     }
 
     useEffect(() => {
         f_handlingData('post', endpoint, userCheck);
-        /* f_handlingData('get', endpoint).then(response => {
-            console.log("데이터 로드 완료:", response);
-        }).catch(error => {
-            console.error("데이터 로드 실패:", error);
-        }); */
     }, [endpoint]);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
 
-/*     const currentPath = useSelector((state) => state.location.currentPath); */
+    const [res, setRes] = useState([]);
     return (
         <>
+            {returnMsg || ''}
             <h2>사업 (기회)별 영업 활동 관리</h2>
-            <InputField v_componentName={'activity'} v_propsData={data} />
-            <div className='wrap'>
+            <InputField v_componentName={'activity'} v_propsData={data} setRes={setRes}/>
+            <div className='wrap' id='activity'>
                 <div className='dataPostArea'>
-                    {/* <InputFieldDetail show={showModal} onHide={closeModal} /> */}
-                    <div className='btnArea d-flex justify-content-end mb-2'>
-                        {/* <Button variant='primary' className='me-2' onClick={openModal}>등록</Button> */}
-                        <div>
-                        <Button variant='success' className='me-2' onClick={''}>저장</Button>
-                        <Button variant='danger' className='' onClick={''}>삭제</Button>
+                    <div className='btnArea d-flex justify-content-end'>
+                        {(auth.userAuthCode === '0002') ? 
+                        <></> : 
+                        <div className='mb-2'>
+                            <Button variant='success' className='me-2' onClick={''}>저장</Button>
+                            <Button variant='danger' className='' onClick={''}>삭제</Button>
                         </div>
+                        }
                     </div>
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   
                         (data.length === 0 ? 
                             (<p>데이터를 불러오는 중입니다...</p>) : 
-                            (<DynamicTable v_componentName={'activity'} v_propsData={data} />)
-                            // ('')
+                            (<DynamicTable v_componentName={'activity'} v_propsData={data} res={res}/>)
                         )
                     }
                 </div>

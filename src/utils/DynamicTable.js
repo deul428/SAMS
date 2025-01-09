@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import { useTable, usePagination } from 'react-table';
+import { useSelector } from 'react-redux';
 import { useTable, usePagination, useSortBy } from 'react-table';
 
 import BizOppHistory from '../components/BizOppHistory';
@@ -14,6 +14,8 @@ import '../styles/_table.scss';
 import '../styles/_global.scss';
 
 function DynamicTable({ v_componentName, v_propsData, res }) {
+  const auth = useSelector((state) => state.auth);
+
   const [showModal, setShowModal] = useState(false);
   const [v_modalPropsData, setVModalPropsData] = useState(null);
   const [v_childComponent, setVChildComponent] = useState(null);
@@ -40,18 +42,18 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
   let rootsData = null;
   switch(v_componentName) {
     case `bizOpp`: 
-      rootsData = roots.bizopp.props;
+      rootsData = roots.bizoppSelect1.props;
       break;
     case `activity`: 
-      rootsData = roots.bizopp.props;
+      rootsData = roots.bizoppSelect1.props;
       break;
     default:
-      rootsData = roots.bizopp.props;
+      rootsData = roots.bizoppSelect1.props;
       break;
   }
 
   const [v_handlingHtml, setVHandlingHtml] = useState(null);
-  // const columns = React.useMemo(() => roots.bizopp?.props || [], []);
+  // const columns = React.useMemo(() => root.bizoppSelect1?.props || [], []);
   const columns = React.useMemo(() => rootsData || [], []);
   
   // react-table 훅 설정
@@ -99,15 +101,16 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
   // =================== input field에서 넘어온 값(res)에 따라 핸들링 ===================
   // res obj / res.data arr
   useEffect(() => {
-    console.log("res---------------------------------------", res);
-    if(res && res.data) {
-      if (res.data.length > 0) {
-        setData(res?.data);
-        // console.log(data.length);
-      } 
-    } else {
+    console.log("res---------------------------------------", res, typeof(res));
+    if (!res || Object.keys(res).length === 0 || res.length === 0) {
       console.log('데이터 없음');
       setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
+      return;
+    } else {
+      console.log(res);
+      if (res.data.length > 0) {
+        setData(res?.data);
+      }
     }
   }, [res])
   // =================== input field에서 넘어온 값(res)에 따라 핸들링 끝 ===================
@@ -215,7 +218,7 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
   // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
 
   useEffect(() => {
-    if (!data.length || !columns.length) {
+    if (!data) {
       return <div>Loading...</div>;
     }
 
@@ -254,31 +257,56 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
                   prepareRow(row);
                   const { key, ...restProps } = row.getRowProps();
                   return (
-                    <tr key={key} {...restProps} 
-                    onClick={(e) => {
-                      openModal(e, row.original, null);
-                    }}
-                    >
+                    (auth.userAuthCode === '0002') ? 
+                    (
+                      <tr key={key} {...restProps} 
+                      >
+                        {row.cells.map((cell, index) => {
+                          const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
+                          return (
+                            <td key={key} {...restProps}>
+                              {index === row.cells.length - 1
+                              ? 
+                              (
+                              <Button size="sm" variant="light" onClick={(e) => {
+                                openModal(e, row.original, 'history');
+                              }}>
+                                이력
+                              </Button>)
+                              : 
+                              cell.render('Cell')}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ) : 
+                    (
+                      <tr key={key} {...restProps} 
+                      onClick={(e) => {
+                        openModal(e, row.original, null);
+                      }}
+                      >
 
-                      {row.cells.map((cell, index) => {
-                        const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
-                        return (
-                          <td key={key} {...restProps}>
-                            {index === row.cells.length - 1
-                            ? 
-                            (
-                            <Button size="sm" variant="light" onClick={(e) => {
-                              openModal(e, row.original, 'history');
-                            }}>
-                              이력
-                            </Button>)
-                            : 
-                            cell.render('Cell')}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
+                        {row.cells.map((cell, index) => {
+                          const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
+                          return (
+                            <td key={key} {...restProps}>
+                              {index === row.cells.length - 1
+                              ? 
+                              (
+                              <Button size="sm" variant="light" onClick={(e) => {
+                                openModal(e, row.original, 'history');
+                              }}>
+                                이력
+                              </Button>)
+                              : 
+                              cell.render('Cell')}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    )
+                  )
                 })}
               </tbody>
             </Table>
@@ -291,7 +319,6 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
           setVHandlingHtml(<h1>{v_componentName} Area</h1>);
           break; */ 
         case `activity`: 
-          console.log(data);
           htmlContent = (
             <>
             <Table bordered hover responsive {...getTableProps()}>
@@ -359,7 +386,7 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
       {
         (v_childComponent === 'InputFieldDetail'/*  && v_modalPropsData */) 
         ? 
-        (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_propsData={v_propsData} v_modalPropsData={v_modalPropsData}/*  mode={'수정'} *//> )
+        (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_propsData={v_propsData} v_modalPropsData={v_modalPropsData}/> )
         :
         (<BizOppHistory show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData} />)
       }

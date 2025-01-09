@@ -719,13 +719,6 @@ def f_insert_biz_opp(request):
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
-
-      #test
-      logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-      logging.debug(f"f_insert_biz_opp()에서의 v_session_user_id : {v_session_user_id}")
-      logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -774,14 +767,6 @@ def f_insert_biz_opp(request):
                v_cursor.execute(v_sql_max)
                v_row1 = v_cursor.fetchone()
                v_biz_opp_id = v_row1[0]
-
-
-               #test
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-               logging.debug(f"f_insert_biz_opp()에서의 v_biz_opp_id : {v_biz_opp_id}")
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
             v_sql_insert_biz_opp = """INSERT INTO ajict_bms_schema.biz_opp (biz_opp_id,
                                                                             biz_opp_name,
                                                                             progress1_rate_code,
@@ -806,6 +791,11 @@ def f_insert_biz_opp(request):
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:
                v_param_insert_biz_opp.append(v_biz_opp_name)
+
+               #test
+            print(f"f_insert_biz_opp()에서의 v_biz_opp_name : {v_biz_opp_name}")
+
+
             v_progress2_rate_code = None if v_body.get('biz_opp',{}).get('a_progress2_rate_code') == '' else v_body.get('biz_opp',{}).get('a_progress2_rate_code')
             if not v_progress2_rate_code:
                transaction.set_rollback(True)
@@ -833,13 +823,6 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp.append(v_session_user_id)
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp,v_param_insert_biz_opp)
-
-            #test
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-               logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp")
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
             v_sql_insert_biz_opp_detail = """INSERT INTO ajict_bms_schema.biz_opp_detail (biz_opp_id,
                                                                                           detail_no,
                                                                                           user_id,

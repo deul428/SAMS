@@ -807,7 +807,7 @@ def f_insert_biz_opp(request):
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:
                v_param_insert_biz_opp.append(v_contract_date)
-            v_param_insert_biz_opp.append(v_body.get('biz_opp',{}).get('essential_achievement_tf'))
+            v_param_insert_biz_opp.append(v_body.get('biz_opp',{}).get('a_essential_achievement_tf'))
 
             # v_param_insert_biz_opp.append('이창주의 사업1')
             # v_param_insert_biz_opp.append('0001')
@@ -819,7 +819,7 @@ def f_insert_biz_opp(request):
             print(f"f_insert_biz_opp()에서의 v_biz_opp_name : {v_biz_opp_name}")
             print(f"f_insert_biz_opp()에서의 v_progress2_rate_code : {v_progress2_rate_code}")
             print(f"f_insert_biz_opp()에서의 v_contract_date : {v_contract_date}")
-            print(f"f_insert_biz_opp()에서의 essential_achievement_tf : {v_body.get('biz_opp',{}).get('essential_achievement_tf')}")
+            print(f"f_insert_biz_opp()에서의 essential_achievement_tf : {v_body.get('biz_opp',{}).get('a_essential_achievement_tf')}")
 
 
             v_param_insert_biz_opp.append(v_session_user_id)

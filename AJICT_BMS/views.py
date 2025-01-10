@@ -6,6 +6,8 @@ from django.db import connection
 from django.db import transaction
 from django.http import JsonResponse
 from django.db import DatabaseError
+from django.template.context_processors import request
+
 logging.basicConfig(level=logging.DEBUG)
 def f_login(request):
    request.session.flush()
@@ -15,8 +17,10 @@ def f_login(request):
       v_body = json.loads(request.body)
       v_user_id = None if v_body.get('a_user_id') == '' else v_body.get('a_user_id')
       v_cipher = None if v_body.get('a_cipher') == '' else v_body.get('a_cipher')
-      v_user_id = v_user_id.strip()
-      v_cipher = v_cipher.strip()
+      if v_user_id is not None:
+         v_user_id = v_user_id.strip()
+      if v_cipher is not None:
+         v_cipher = v_cipher.strip()
 
 
       #test
@@ -137,11 +141,14 @@ def f_update_cipher_change(request):
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
-      v_session_user_id = v_session_user_id.strip()
+      if v_session_user_id is not None:
+         v_session_user_id = v_session_user_id.strip()
       v_old_cipher = None if v_body.get('a_old_cipher') == '' else v_body.get('a_old_cipher')
-      v_old_cipher = v_old_cipher.strip()
+      if v_old_cipher is not None:
+         v_old_cipher = v_old_cipher.strip()
       v_new_cipher = None if v_body.get('a_new_cipher') == '' else v_body.get('a_new_cipher')
-      v_new_cipher = v_new_cipher.strip()
+      if v_new_cipher is not None:
+         v_new_cipher = v_new_cipher.strip()
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -422,7 +429,8 @@ def f_select_biz_opp2(request):
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
-      v_session_user_id = v_session_user_id.strip()
+      if v_session_user_id is not None:
+         v_session_user_id = v_session_user_id.strip()
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -465,15 +473,20 @@ def f_select_biz_opp2(request):
             v_responsibility1_code = v_data_session[0]['responsibility1_code']
             v_responsibility2_code = v_data_session[0]['responsibility2_code']
          v_contract_date_from = None if v_body.get('a_contract_date_from') == '' else v_body.get('a_contract_date_from')
-         v_contract_date_from = v_contract_date_from.strip()
+         if v_contract_date_from is not None:
+            v_contract_date_from = v_contract_date_from.strip()
          v_contract_date_to = None if v_body.get('a_contract_date_to') == '' else v_body.get('a_contract_date_to')
-         v_contract_date_to = v_contract_date_to.strip()
+         if v_contract_date_to is not None:
+            v_contract_date_to = v_contract_date_to.strip()
          v_sale_date_from = None if v_body.get('a_sale_date_from') == '' else v_body.get('a_sale_date_from')
-         v_sale_date_from = v_sale_date_from.strip()
+         if v_sale_date_from is not None:
+            v_sale_date_from = v_sale_date_from.strip()
          v_sale_date_to = None if v_body.get('a_sale_date_to') == '' else v_body.get('a_sale_date_to')
-         v_sale_date_to = v_sale_date_to.strip()
+         if v_sale_date_to is not None:
+            v_sale_date_to = v_sale_date_to.strip()
          v_headquarters_dept_id = None if v_body.get('a_headquarters_dept_id') == '' else v_body.get('a_headquarters_dept_id')
-         v_headquarters_dept_id = v_headquarters_dept_id.strip()
+         if v_headquarters_dept_id is not None:
+            v_headquarters_dept_id = v_headquarters_dept_id.strip()
 
          #v_contract_date_from = ''
          #v_contract_date_to = ''
@@ -482,17 +495,21 @@ def f_select_biz_opp2(request):
          #v_headquarters_dept_id = ''
 
          v_team_dept_id = None if v_body.get('a_dept_id') == '' else v_body.get('a_dept_id')
-         v_team_dept_id = v_team_dept_id.strip()
+         if v_team_dept_id is not None:
+            v_team_dept_id = v_team_dept_id.strip()
          #v_team_dept_id = ''
 
          v_user_name = None if v_body.get('a_user_name') == '' else v_body.get('a_user_name')
-         v_user_name = v_user_name.strip()
+         if v_user_name is not None:
+            v_user_name = v_user_name.strip()
          #v_user_name = ''
 
          v_progress_rate_code_from = None if v_body.get('a_progress_rate_code_from') == '' else v_body.get('a_progress_rate_code_from')
-         v_progress_rate_code_from = v_progress_rate_code_from.strip()
+         if v_progress_rate_code_from is not None:
+            v_progress_rate_code_from = v_progress_rate_code_from.strip()
          v_progress_rate_code_to = None if v_body.get('a_progress_rate_code_to') == '' else v_body.get('a_progress_rate_code_to')
-         v_progress_rate_code_to = v_progress_rate_code_to.strip()
+         if v_progress_rate_code_to is not None:
+            v_progress_rate_code_to = v_progress_rate_code_to.strip()
 
          #v_progress_rate_code_from = ''
          #v_progress_rate_code_to = ''
@@ -503,7 +520,6 @@ def f_select_biz_opp2(request):
          #logging.debug(f"################################################################################")
 
          v_essential_achievement_tf = v_body.get('a_essential_achievement_tf')
-         v_essential_achievement_tf = v_essential_achievement_tf.strip()
          #v_essential_achievement_tf = False
 
          v_sql_biz_opp = """SELECT A.biz_opp_id,
@@ -1239,6 +1255,40 @@ def f_insert_biz_opp(request):
                v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
                v_square_bracket_return = [v_return]
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      except DatabaseError as E:
+         v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.','ERROR':str(E)}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      except Exception as E:
+         v_return = {'STATUS':'FAIL','MESSAGE':'오류가 발생했습니다.','ERROR':str(E)}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+def f_delete_biz_opp(request):
+   v_session_user_id = ''
+   #v_session_user_id = 'leecj'
+
+   v_body = ''
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      v_session_user_id = v_session_user_id.strip()
+   if not v_session_user_id:
+      v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   else:
+      try:
+         v_param_delete_biz_opp = []
+         with transaction.atomic():
+            v_sql_delete_biz_opp = """UPDATE ajict_bms_schema.biz_opp SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"""
+            v_param_delete_biz_opp.append(v_session_user_id)
+            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            v_biz_opp_id = v_biz_opp_id.strip()
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql_delete_biz_opp,v_param_delete_biz_opp)
+            v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
+            v_square_bracket_return = [v_return]
+            return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
       except DatabaseError as E:
          v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.','ERROR':str(E)}
          v_square_bracket_return = [v_return]

@@ -15,17 +15,14 @@ def f_login(request):
       v_body = json.loads(request.body)
       v_user_id = None if v_body.get('a_user_id') == '' else v_body.get('a_user_id')
       v_cipher = None if v_body.get('a_cipher') == '' else v_body.get('a_cipher')
-
-
-      #test
-      v_user_id = '   ' + v_user_id
       v_user_id = v_user_id.strip()
+      v_cipher = v_cipher.strip()
 
 
       #test
-      logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-      logging.debug(f"f_login()에서의 v_user_id : {v_user_id}")
-      logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+      #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+      #logging.debug(f"f_login()에서의 v_user_id : {v_user_id}")
+      #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 
 
    try:
@@ -140,8 +137,11 @@ def f_update_cipher_change(request):
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      v_session_user_id = v_session_user_id.strip()
       v_old_cipher = None if v_body.get('a_old_cipher') == '' else v_body.get('a_old_cipher')
+      v_old_cipher = v_old_cipher.strip()
       v_new_cipher = None if v_body.get('a_new_cipher') == '' else v_body.get('a_new_cipher')
+      v_new_cipher = v_new_cipher.strip()
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -181,6 +181,7 @@ def f_select_biz_opp1(request):
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      v_session_user_id = v_session_user_id.strip()
 
    #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
    #logging.debug(f"f_select_biz_opp1()에서의 v_session_user_id : {v_session_user_id}")
@@ -421,6 +422,7 @@ def f_select_biz_opp2(request):
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      v_session_user_id = v_session_user_id.strip()
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -462,12 +464,16 @@ def f_select_biz_opp2(request):
             v_auth2_code = v_data_session[0]['auth2_code']
             v_responsibility1_code = v_data_session[0]['responsibility1_code']
             v_responsibility2_code = v_data_session[0]['responsibility2_code']
-
          v_contract_date_from = None if v_body.get('a_contract_date_from') == '' else v_body.get('a_contract_date_from')
+         v_contract_date_from = v_contract_date_from.strip()
          v_contract_date_to = None if v_body.get('a_contract_date_to') == '' else v_body.get('a_contract_date_to')
+         v_contract_date_to = v_contract_date_to.strip()
          v_sale_date_from = None if v_body.get('a_sale_date_from') == '' else v_body.get('a_sale_date_from')
+         v_sale_date_from = v_sale_date_from.strip()
          v_sale_date_to = None if v_body.get('a_sale_date_to') == '' else v_body.get('a_sale_date_to')
+         v_sale_date_to = v_sale_date_to.strip()
          v_headquarters_dept_id = None if v_body.get('a_headquarters_dept_id') == '' else v_body.get('a_headquarters_dept_id')
+         v_headquarters_dept_id = v_headquarters_dept_id.strip()
 
          #v_contract_date_from = ''
          #v_contract_date_to = ''
@@ -476,13 +482,17 @@ def f_select_biz_opp2(request):
          #v_headquarters_dept_id = ''
 
          v_team_dept_id = None if v_body.get('a_dept_id') == '' else v_body.get('a_dept_id')
+         v_team_dept_id = v_team_dept_id.strip()
          #v_team_dept_id = ''
 
          v_user_name = None if v_body.get('a_user_name') == '' else v_body.get('a_user_name')
+         v_user_name = v_user_name.strip()
          #v_user_name = ''
 
          v_progress_rate_code_from = None if v_body.get('a_progress_rate_code_from') == '' else v_body.get('a_progress_rate_code_from')
+         v_progress_rate_code_from = v_progress_rate_code_from.strip()
          v_progress_rate_code_to = None if v_body.get('a_progress_rate_code_to') == '' else v_body.get('a_progress_rate_code_to')
+         v_progress_rate_code_to = v_progress_rate_code_to.strip()
 
          #v_progress_rate_code_from = ''
          #v_progress_rate_code_to = ''
@@ -493,6 +503,7 @@ def f_select_biz_opp2(request):
          #logging.debug(f"################################################################################")
 
          v_essential_achievement_tf = v_body.get('a_essential_achievement_tf')
+         v_essential_achievement_tf = v_essential_achievement_tf.strip()
          #v_essential_achievement_tf = False
 
          v_sql_biz_opp = """SELECT A.biz_opp_id,
@@ -681,6 +692,7 @@ def f_select_popup_biz_opp(request):
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      v_session_user_id = v_session_user_id.strip()
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -724,6 +736,7 @@ def f_insert_biz_opp(request):
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      v_session_user_id = v_session_user_id.strip()
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -789,6 +802,7 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp = []
             v_param_insert_biz_opp.append(v_biz_opp_id)
             v_biz_opp_name = None if v_body.get('biz_opp',{}).get('a_biz_opp_name') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_name')
+            v_biz_opp_name = v_biz_opp_name.strip()
             if not v_biz_opp_name:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'사업 (기회)명' 항목은 필수 입력(선택) 항목입니다!"}
@@ -797,6 +811,7 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp.append(v_biz_opp_name)
             v_progress2_rate_code = None if v_body.get('biz_opp',{}).get('a_progress2_rate_code') == '' else v_body.get('biz_opp',{}).get('a_progress2_rate_code')
+            v_progress2_rate_code = v_progress2_rate_code.strip()
             if not v_progress2_rate_code:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'진행률' 항목은 필수 입력(선택) 항목입니다!"}
@@ -805,6 +820,7 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp.append(v_progress2_rate_code)
             v_contract_date = None if v_body.get('biz_opp',{}).get('a_contract_date') == '' else v_body.get('biz_opp',{}).get('a_contract_date')
+            v_contract_date = v_contract_date.strip()
             if not v_contract_date:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'계약 일자' 항목은 필수 입력(선택) 항목입니다!"}
@@ -878,6 +894,7 @@ def f_insert_biz_opp(request):
             v_user_id = ''
             if v_auth1_code == 'AUT' and v_auth2_code == '0001':
                v_user_name = None if v_body.get('biz_opp_detail',{}).get('a_user_name') == '' else v_body.get('biz_opp_detail',{}).get('a_user_name')
+               v_user_name = v_user_name.strip()
                if not v_user_name:
                   transaction.set_rollback(True)
                   v_return = {'STATUS':'FAIL','MESSAGE':"'사용자 ID' 항목은 필수 전달 항목입니다!"}
@@ -890,10 +907,19 @@ def f_insert_biz_opp(request):
                      v_row1 = v_cursor.fetchone()
                      v_user_id = v_row1[0]
                      v_param_insert_biz_opp_detail.append(v_user_id)
+
+
+                     #test
+                     print(f"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+                     print(f"v_user_id : {v_user_id}")
+                     print(f"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+
+
             else:
                v_param_insert_biz_opp_detail.append(v_session_user_id)
             if v_auth1_code == 'AUT' and v_auth2_code == '0001':
                v_change_preparation_dept_id = None if v_body.get('biz_opp_detail',{}).get('a_change_preparation_dept_id') == '' else v_body.get('biz_opp_detail',{}).get('a_change_preparation_dept_id')
+               v_change_preparation_dept_id = v_change_preparation_dept_id.strip()
                if not v_change_preparation_dept_id:
                   transaction.set_rollback(True)
                   v_return = {'STATUS':'FAIL','MESSAGE':"'변경 대비용 부서 ID' 항목은 필수 전달 항목입니다!"}
@@ -907,8 +933,11 @@ def f_insert_biz_opp(request):
                v_param_insert_biz_opp_detail.append(v_change_preparation_dept_id)
             else:
                v_param_insert_biz_opp_detail.append(v_dept_id)
-            v_param_insert_biz_opp_detail.append(None if v_body.get('biz_opp_detail',{}).get('a_last_client_com2_code') == '' else v_body.get('biz_opp_detail',{}).get('a_last_client_com2_code'))
+            v_last_client_com2_code = None if v_body.get('biz_opp_detail',{}).get('a_last_client_com2_code') == '' else v_body.get('biz_opp_detail',{}).get('a_last_client_com2_code')
+            v_last_client_com2_code = v_last_client_com2_code.strip()
+            v_param_insert_biz_opp_detail.append(v_last_client_com2_code)
             v_sale_com2_code = None if v_body.get('biz_opp_detail',{}).get('a_sale_com2_code') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_com2_code')
+            v_sale_com2_code = v_sale_com2_code.strip()
             if not v_sale_com2_code:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'매출처2 code' 항목은 필수 전달 항목입니다!"}
@@ -916,8 +945,11 @@ def f_insert_biz_opp(request):
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:
                v_param_insert_biz_opp_detail.append(v_sale_com2_code)
-            v_param_insert_biz_opp_detail.append(None if v_body.get('biz_opp_detail',{}).get('a_sale_item_no') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_item_no'))
+            v_sale_item_no = None if v_body.get('biz_opp_detail',{}).get('a_sale_item_no') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_item_no')
+            v_sale_item_no = v_sale_item_no.strip()
+            v_param_insert_biz_opp_detail.append(v_sale_item_no)
             v_sale_date = None if v_body.get('biz_opp_detail',{}).get('a_sale_date') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_date')
+            v_sale_date = v_sale_date.strip()
             if not v_sale_date:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'매출 일자' 항목은 필수 입력(선택) 항목입니다!"}
@@ -926,6 +958,7 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail.append(v_sale_date)
             v_sale_amt = None if v_body.get('biz_opp_detail',{}).get('a_sale_amt') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_amt')
+            v_sale_amt = v_sale_amt.strip()
             if not v_sale_amt:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'매출 금액' 항목은 필수 입력(선택) 항목입니다!"}
@@ -934,6 +967,7 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail.append(v_sale_amt)
             v_sale_profit = None if v_body.get('biz_opp_detail',{}).get('a_sale_profit') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_profit')
+            v_sale_profit = v_sale_profit.strip()
             if not v_sale_profit:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'매출 이익' 항목은 필수 입력(선택) 항목입니다!"}
@@ -942,6 +976,7 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail.append(v_sale_profit)
             v_purchase_date = None if v_body.get('biz_opp_detail',{}).get('a_purchase_date') == '' else v_body.get('biz_opp_detail',{}).get('a_purchase_date')
+            v_purchase_date = v_purchase_date.strip()
             if not v_purchase_date:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'매입 일자' 항목은 필수 입력(선택) 항목입니다!"}
@@ -950,6 +985,7 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail.append(v_purchase_date)
             v_purchase_amt = None if v_body.get('biz_opp_detail',{}).get('a_purchase_amt') == '' else v_body.get('biz_opp_detail',{}).get('a_purchase_amt')
+            v_purchase_amt = v_purchase_amt.strip()
             if not v_purchase_amt:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'매입 금액' 항목은 필수 입력(선택) 항목입니다!"}
@@ -957,8 +993,11 @@ def f_insert_biz_opp(request):
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:
                v_param_insert_biz_opp_detail.append(v_purchase_amt)
-            v_param_insert_biz_opp_detail.append(None if v_body.get('biz_opp_detail',{}).get('a_collect_money_date') == '' else v_body.get('biz_opp_detail',{}).get('a_collect_money_date'))
+            v_collect_money_date = None if v_body.get('biz_opp_detail',{}).get('a_collect_money_date') == '' else v_body.get('biz_opp_detail',{}).get('a_collect_money_date')
+            v_collect_money_date = v_collect_money_date.strip()
+            v_param_insert_biz_opp_detail.append(v_collect_money_date)
             v_biz_section2_code = None if v_body.get('biz_opp_detail',{}).get('a_biz_section2_code') == '' else v_body.get('biz_opp_detail',{}).get('a_biz_section2_code')
+            v_biz_section2_code = v_biz_section2_code.strip()
             if not v_biz_section2_code:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'사업 구분2 code' 항목은 필수 전달 항목입니다!"}
@@ -967,6 +1006,7 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail.append(v_biz_section2_code)
             v_principal_product2_code = None if v_body.get('biz_opp_detail',{}).get('a_principal_product2_code') == '' else v_body.get('biz_opp_detail',{}).get('a_principal_product2_code')
+            v_principal_product2_code = v_principal_product2_code.strip()
             if not v_principal_product2_code:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'사업 구분2 code' 항목은 필수 전달 항목입니다!"}
@@ -1114,15 +1154,15 @@ def f_insert_biz_opp(request):
                v_param_insert_biz_opp_detail_history.append(v_change_preparation_dept_id)
             else:
                v_param_insert_biz_opp_detail_history.append(v_dept_id)
-            v_param_insert_biz_opp_detail_history.append(None if v_body.get('biz_opp_detail',{}).get('a_last_client_com2_code') == '' else v_body.get('biz_opp_detail',{}).get('a_last_client_com2_code'))
+            v_param_insert_biz_opp_detail_history.append(v_last_client_com2_code)
             v_param_insert_biz_opp_detail_history.append(v_sale_com2_code)
-            v_param_insert_biz_opp_detail_history.append(None if v_body.get('biz_opp_detail',{}).get('a_sale_item_no') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_item_no'))
+            v_param_insert_biz_opp_detail_history.append(v_sale_item_no)
             v_param_insert_biz_opp_detail_history.append(v_sale_date)
             v_param_insert_biz_opp_detail_history.append(v_sale_amt)
             v_param_insert_biz_opp_detail_history.append(v_sale_profit)
             v_param_insert_biz_opp_detail_history.append(v_purchase_date)
             v_param_insert_biz_opp_detail_history.append(v_purchase_amt)
-            v_param_insert_biz_opp_detail_history.append(None if v_body.get('biz_opp_detail',{}).get('a_collect_money_date') == '' else v_body.get('biz_opp_detail',{}).get('a_collect_money_date'))
+            v_param_insert_biz_opp_detail_history.append(v_collect_money_date)
             v_param_insert_biz_opp_detail_history.append(v_biz_section2_code)
             v_param_insert_biz_opp_detail_history.append(v_principal_product2_code)
             v_param_insert_biz_opp_detail_history.append(v_session_user_id)

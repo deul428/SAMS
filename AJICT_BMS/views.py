@@ -188,7 +188,8 @@ def f_select_biz_opp1(request):
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
-      v_session_user_id = v_session_user_id.strip()
+      if v_session_user_id is not None:
+         v_session_user_id = v_session_user_id.strip()
 
    #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
    #logging.debug(f"f_select_biz_opp1()에서의 v_session_user_id : {v_session_user_id}")
@@ -938,9 +939,7 @@ def f_insert_biz_opp(request):
 
 
                      #test
-                     print(f"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-                     print(f"v_user_id : {v_user_id}")
-                     print(f"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+                     print(f"f_insert_biz_opp()에서의 v_user_name : {v_user_name}")
 
 
             else:
@@ -1176,14 +1175,7 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_detail_history = []
             v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)
             if v_auth1_code == 'AUT' and v_auth2_code == '0001':
-               v_user_name = None if v_body.get('biz_opp_detail',{}).get('a_user_name') == '' else v_body.get('biz_opp_detail',{}).get('a_user_name')
-               if not v_user_name:
-                  transaction.set_rollback(True)
-                  v_return = {'STATUS':'FAIL','MESSAGE':"'사용자 ID' 항목은 필수 전달 항목입니다!"}
-                  v_square_bracket_return = [v_return]
-                  return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-               else:
-                  v_param_insert_biz_opp_detail_history.append(v_user_id)
+               v_param_insert_biz_opp_detail_history.append(v_user_id)
             else:
                v_param_insert_biz_opp_detail_history.append(v_session_user_id)
             if v_auth1_code == 'AUT' and v_auth2_code == '0001':
@@ -1295,7 +1287,8 @@ def f_delete_biz_opp(request):
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
-      v_session_user_id = v_session_user_id.strip()
+      if v_session_user_id is not None:
+         v_session_user_id = v_session_user_id.strip()
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -1307,7 +1300,9 @@ def f_delete_biz_opp(request):
             v_sql_delete_biz_opp = """UPDATE ajict_bms_schema.biz_opp SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"""
             v_param_delete_biz_opp.append(v_session_user_id)
             v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
-            v_biz_opp_id = v_biz_opp_id.strip()
+            if v_biz_opp_id is not None:
+               v_biz_opp_id = v_biz_opp_id.strip()
+            v_param_delete_biz_opp.append(v_biz_opp_id)
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_delete_biz_opp,v_param_delete_biz_opp)
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}

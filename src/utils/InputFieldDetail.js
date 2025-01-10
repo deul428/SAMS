@@ -92,6 +92,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         a_session_user_id: auth.userId,
         biz_opp: { 
             // a_biz_opp_id: '',
+            
             a_biz_opp_name: '',
             a_progress2_rate_code: '',
             a_contract_date: '',
@@ -110,6 +111,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_collect_money_date: '',
             a_biz_section2_code: '',
             a_principal_product2_code: '',
+
+            a_user_name: '',
+
         },
         biz_opp_activity: {
             a_activity_details: '',
@@ -133,6 +137,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const { name, value, type, checked, dataset } = e.target;
         const tableLevel = dataset.key; 
         const valueLevel = type === 'checkbox' ? checked : value;
+        console.log(e.target.name, e.target.value);
 
         const updateValue = (setState) => {
             setState((prevInput) => {
@@ -382,7 +387,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                             </Row>
                                             <Row className='d-flex justify-content-between'>
-                                               {/*  <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
+                                                <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='본부'>
                                                         <Form.Control size='sm' type='text' className='' placeholder='본부'
                                                         name='' 
@@ -392,7 +397,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         defaultValue={a_v_modalPropsData?.a_high_dept_name || ''}
                                                         />
                                                     </FloatingLabel>
-                                                </Col> */}
+                                                </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='소속 팀'>
                                                         <Form.Control size='sm' type='text' className='' placeholder='소속 팀'
@@ -406,17 +411,18 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
-                                                {/* <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
+                                                <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='영업 담당자'>
                                                         <Form.Control size='sm' type='text' 
                                                         className='' placeholder='영업 담당자'
                                                         name='a_user_name' 
+                                                        data-key='biz_opp_detail'
                                                         onChange={f_handlingInput} 
                                                         // value={input.user_name || ''} 
                                                         defaultValue={a_v_modalPropsData?.a_user_name || ''}
                                                         />
                                                     </FloatingLabel>
-                                                </Col> */}
+                                                </Col>
                                             </Row>  
                                             <Row className='d-flex justify-content-between'>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>

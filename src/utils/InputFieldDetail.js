@@ -136,7 +136,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const f_handlingInput = (e) => {
         const { name, value, type, checked, dataset } = e.target;
         const tableLevel = dataset.key; 
-        const valueLevel = type === 'checkbox' ? checked : value;
+        const valueLevel = type === 'checkbox' ? checked : value.trim();
         console.log(e.target.name, e.target.value);
 
         const updateValue = (setState) => {

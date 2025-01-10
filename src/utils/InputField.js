@@ -26,7 +26,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
         const { name, value, type, checked } = e.target;
         setInput((prevInput) => ({
             ...prevInput,
-            [name]: type === 'checkbox' ? checked : value, //e.target.name의 값을 키로, e.target.value를 값으로 사용
+            [name]: type === 'checkbox' ? checked : value.trim(), //e.target.name의 값을 키로, e.target.value를 값으로 사용
         }));
         /* const { name, value } = e.target;
         // input 업데이트
@@ -220,7 +220,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
         // console.log(e.target.name, e.target.value);
         if (e.target.name === 'a_headquarters_dept_id') {
             // setVSelectDept(e.target.value);
-            setVSelectTeam(v_teamByDept[e.target.value] || []);
+            setVSelectTeam(v_teamByDept[e.target.value.trim()] || []);
         }
         f_handlingInput(e);
     };

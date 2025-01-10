@@ -1104,7 +1104,7 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_history.append(v_biz_opp_name)
             v_param_insert_biz_opp_history.append(v_progress2_rate_code)
             v_param_insert_biz_opp_history.append(v_contract_date)
-            v_param_insert_biz_opp_history.append(v_body.get('biz_opp',{}).get('essential_achievement_tf'))
+            v_param_insert_biz_opp_history.append(v_body.get('biz_opp',{}).get('a_essential_achievement_tf'))
             v_param_insert_biz_opp_history.append(v_session_user_id)
 
             # v_param_insert_biz_opp_history.append(v_biz_opp_id)

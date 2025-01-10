@@ -31,7 +31,7 @@ const Activity = () => {
         console.log({ name, value }, input);
         setInput({
             ...input,
-            [name]: value,
+            [name]: value.trim(),
         });
     } */
     const f_handlingData = async (method, endpoint, input = null) => {

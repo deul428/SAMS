@@ -156,7 +156,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         // 조합 완료 후 최종 상태 업데이트
         setInput((prevInput) => ({
             ...prevInput,
-            [name]: value,
+            [name]: value.trim(),
         }));
     }; */
     

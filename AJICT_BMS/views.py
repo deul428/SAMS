@@ -19,7 +19,7 @@ def f_login(request):
 
       #test
       v_user_id = '   ' + v_user_id
-      #v_user_id = v_user_id.strip()
+      v_user_id = v_user_id.strip()
 
 
       #test

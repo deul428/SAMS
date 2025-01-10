@@ -415,9 +415,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             : (a_v_modalPropsData?.a_headquarters_name || '')
                                                         }
                                                         // defaultValue={'9801'}
-                                                        value={''}
                                                         >
-                                                            <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_change_preparation_dept_id : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_change_preparation_dept_name : '선택')}</option>
+                                                            <option 
+                                                            value={(
+                                                                a_v_modalPropsData ? 
+                                                                a_v_modalPropsData.a_change_preparation_dept_id : '선택')}
+                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_change_preparation_dept_name : '선택')}</option>
                                                             {(getData) ? 
                                                                 (
                                                                     getData?.data?.search_dept_id.map((e) => {

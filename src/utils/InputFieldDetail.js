@@ -360,15 +360,14 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                 </Modal.Header> 
                                 <Modal.Body>
                                     <div className='inputField modalcntnt'> 
-                                        <div className='searchItem bizoppArea' 
-                                        style={ 
-                                            (auth.userAuthCode === '0002') ? 
-                                            ({"pointerEvents": "none"}) : ({})
-                                        }
-                                        >
+                                        <div className='searchItem bizoppArea'>
                                             <>
                                             <Row className='d-flex justify-content-between'>
-                                                <Col xs={12} md={3} lg={3} className='col d-flex align-items-center floating'>
+                                                <Col xs={12} md={3} lg={3} className='col d-flex align-items-center floating'  
+                                                style={ 
+                                                    (auth.userAuthCode === '0002') ? 
+                                                    ({"pointerEvents": "none"}) : ({})
+                                                }>
                                                     <FloatingLabel label='사업 일련 번호'>
                                                         <Form.Control size='sm' type='text' className=''
                                                         name='a_biz_opp_id' 
@@ -396,7 +395,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>
-                                            <Row className='d-flex justify-content-between'>
+                                            <Row className='d-flex justify-content-between'  
+                                            style={ 
+                                                (auth.userAuthCode === '0002') ? 
+                                                ({"pointerEvents": "none"}) : ({})
+                                            }>
                                                 
                                                 {/* <Col xs={12} md={6} lg={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='본부'>
@@ -508,7 +511,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>  
-                                            <Row className='d-flex justify-content-between'>
+                                            <Row className='d-flex justify-content-between'  
+                                            style={ 
+                                                (auth.userAuthCode === '0002') ? 
+                                                ({"pointerEvents": "none"}) : ({})
+                                            }>
                                                 <Col xs={12} md={6} lg={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출처'>
                                                         <Form.Select size='sm' aria-label='selectBox' className='' name='a_sale_com2_code'
@@ -582,7 +589,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>
-                                            <Row className='d-flex justify-content-between'>
+                                            <Row className='d-flex justify-content-between'
+                                            style={ 
+                                                (auth.userAuthCode === '0002') ? 
+                                                ({"pointerEvents": "none"}) : ({})
+                                            }>
                                                 <Col xs={12} md={6} lg={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 일자'>
                                                         <Form.Control size='sm' type='date' className='' 
@@ -631,7 +642,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>
-                                            <Row className='d-flex justify-content-between'>
+                                            <Row className='d-flex justify-content-between'
+                                            style={ 
+                                                (auth.userAuthCode === '0002') ? 
+                                                ({"pointerEvents": "none"}) : ({})
+                                            }>
                                                 <Col xs={12} md={6} lg={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매입 금액'>
                                                         <Form.Control size='sm' type='text' className='' name='a_purchase_amt' 
@@ -732,7 +747,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </Col>
                                                 </Row>)
                                             }
-                                            <Row className='d-flex justify-content-between'>
+                                            <Row className='d-flex justify-content-between' >
                                                 <h3 style={{"textAlign": "left", "fontSize": "1.1rem", "paddingLeft":"0"}} className='mt-2'>활동 내역 이력 &#40;최근 5건&#41;</h3>
                                                 <ListGroup as='ol' numbered className='col activity '>
                                                     <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
@@ -763,17 +778,28 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         {
                                             (auth.userAuthCode === '0002') ? 
                                             (<></>) : 
-                                            ((a_v_modalPropsData ? (<Button variant='warning'>사업 (기회) 복제</Button>): (<></>)))
+                                            (v_modalPropsData ? 
+                                                (<>
+                                                <Button variant='warning'>사업 (기회) 복제</Button>
+                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', updateInput, e)}>수정</Button>
+                                                <Button variant='danger' onClick={f_warningMsg}>삭제</Button>
+                                                </>) 
+                                                : 
+                                                (<>
+                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e)}>등록</Button> 
+                                                <Button variant='danger' onClick={f_warningMsg}>삭제</Button>
+                                                </>)
+                                            )
                                         }
                                             
-                                    {(
+                                    {/* {(
                                         v_modalPropsData ? 
                                         (<Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', updateInput, e)}>수정</Button>)
                                         : 
                                         (<Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e)}>등록</Button>)
-                                    )}
+                                    )} */}
 
-                                    <Button variant='danger' onClick={f_warningMsg}>삭제</Button>
+                                    {/* <Button variant='danger' onClick={f_warningMsg}>삭제</Button> */}
                                     <Button variant='secondary' onClick={onHide}>닫기</Button>
                                 </Modal.Footer>
                             </Modal>

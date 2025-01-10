@@ -931,8 +931,10 @@ def f_insert_biz_opp(request):
                   return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
                else:
                   v_sql_user = """SELECT user_id FROM aj_user WHERE user_name = %s"""
+                  v_param_select_user = []
+                  v_param_select_user.append(v_user_name)
                   with connection.cursor() as v_cursor:
-                     v_cursor.execute(v_sql_user)
+                     v_cursor.execute(v_sql_user,v_param_select_user)
                      v_row1 = v_cursor.fetchone()
                      v_user_id = v_row1[0]
                      v_param_insert_biz_opp_detail.append(v_user_id)

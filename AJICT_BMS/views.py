@@ -83,16 +83,8 @@ def f_login(request):
          v_data3 = [dict(zip(v_columns,row)) for row in v_rows]
          v_square_bracket_data3 = [v_data3]
          v_session = [f_serialize(row,v_columns) for row in v_rows]
-
-         #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-         #logging.debug(f"f_login()에서의 v_columns : {v_columns}")
-         #logging.debug(f"f_login()에서의 v_rows : {v_rows}")
-         #logging.debug(f"f_login()에서의 v_data3 : {v_data3}")
-         #logging.debug(f"f_login()에서의 v_square_bracket_data3 : {v_square_bracket_data3}")
-         #logging.debug(f"f_login()에서의 v_data3 안에 있는 responsibility2_code : " + v_data3[0]['responsibility2_code'])
-         #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
          request.session['v_global_data'] = v_session
+
 
 #Session의 값 중 일부를 추출할 수 있음.
          #v_global_data = request.session.get('v_global_data',{})
@@ -100,6 +92,7 @@ def f_login(request):
          #logging.debug(f"*******************************************")
          #logging.debug(f"f_login()에서의 user_name : {v_user_name}")
          #logging.debug(f"*******************************************")
+
 
          v_additional_info = {'STATUS':'LOGIN','MESSAGE':'login 했습니다.'}
          v_square_bracket_additional_info = [v_additional_info]
@@ -122,19 +115,6 @@ def f_serialize(a_row,a_columns):
          v_row_dict[v_column] = v_value
    return v_row_dict
 def f_update_cipher_change(request):
-
-   #Session의 값 중 일부를 추출할 수 있음.
-   #v_global_data = request.session.get('v_global_data',{})
-   #v_user_name = v_global_data[0].get('user_name')
-   #logging.debug(f"*******************************************")
-   #logging.debug(f"f_cipher_change()에서의 user_name : {v_user_name}")
-   #logging.debug(f"*******************************************")
-
-   # if 'v_global_data' not in request.session:
-   #    v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 된 상태입니다.'}
-   #    v_square_bracket_return = [v_return]
-   #    return JsonResponse(v_square_bracket_return,safe=False,json_dumps_params = {'ensure_ascii':False})
-   # else:
    v_session_user_id = ''
    v_old_cipher = ''
    v_new_cipher = ''
@@ -190,11 +170,6 @@ def f_select_biz_opp1(request):
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
       if v_session_user_id is not None:
          v_session_user_id = v_session_user_id.strip()
-
-   #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-   #logging.debug(f"f_select_biz_opp1()에서의 v_session_user_id : {v_session_user_id}")
-   #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -232,11 +207,6 @@ def f_select_biz_opp1(request):
             v_columns_session = [v_column[0] for v_column in v_cursor_session.description]
             v_rows_session = v_cursor_session.fetchall()
             v_data_session = [dict(zip(v_columns_session,row)) for row in v_rows_session]
-
-            #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 create_date : " + str(v_data_session[0]['create_date']))
-            #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
             v_auth1_code = v_data_session[0]['auth1_code']
             v_auth2_code = v_data_session[0]['auth2_code']
             v_responsibility1_code = v_data_session[0]['responsibility1_code']
@@ -244,6 +214,8 @@ def f_select_biz_opp1(request):
             v_user_id = v_data_session[0]['user_id']
             v_dept_id = v_data_session[0]['dept_id']
 
+
+#test
             #logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
             #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_auth1_code : " + v_auth1_code)
             #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_auth2_code : " + v_auth2_code)
@@ -252,6 +224,7 @@ def f_select_biz_opp1(request):
             #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_user_id : " + v_user_id)
             #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_dept_id : " + v_dept_id)
             #logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
+
 
          v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp":[]}
          v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 5 ORDER BY dept_id"""
@@ -380,12 +353,6 @@ def f_select_biz_opp1(request):
 #         v_param2.append(v_sale_from_date)
 #         v_sale_to_date = v_contract_to_date
 #         v_param2.append(v_sale_to_date)
-
-#         logging.debug(f")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))")
-#         logging.debug(f"f_select_biz_opp1()에서의 v_contract_from_date : " + v_contract_from_date)
-#         logging.debug(f"f_select_biz_opp1()에서의 v_contract_to_date : " + v_contract_to_date)
-#         logging.debug(f")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))")
-
          if v_auth1_code == 'AUT' and v_auth2_code == '0003':
             if v_responsibility1_code == 'RES' and v_responsibility2_code == '0003':
                v_sql_biz_opp += " AND B.change_preparation_dept_id LIKE SUBSTRING(%s FROM 1 FOR 3) || '%%'"
@@ -398,11 +365,6 @@ def f_select_biz_opp1(request):
                v_param2.append(v_user_id)
          v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
                                      B.detail_no"
-
-         #logging.debug(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-         #logging.debug(f"f_select_biz_opp1()에서의 v_contract_from_date : " + v_sql_biz_opp)
-         #logging.debug(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-
          with connection.cursor() as v_cursor_biz_opp:
             v_cursor_biz_opp.execute(v_sql_biz_opp,v_param2)
             v_columns_biz_opp = [v_column[0] for v_column in v_cursor_biz_opp.description]
@@ -422,10 +384,8 @@ def f_select_biz_opp1(request):
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp2(request):
-
    v_session_user_id = ''
    #v_session_user_id = 'leecj'
-
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
@@ -488,41 +448,19 @@ def f_select_biz_opp2(request):
          v_headquarters_dept_id = None if v_body.get('a_headquarters_dept_id') == '' else v_body.get('a_headquarters_dept_id')
          if v_headquarters_dept_id is not None:
             v_headquarters_dept_id = v_headquarters_dept_id.strip()
-
-         #v_contract_date_from = ''
-         #v_contract_date_to = ''
-         #v_sale_date_from = ''
-         #v_sale_date_to = ''
-         #v_headquarters_dept_id = ''
-
          v_team_dept_id = None if v_body.get('a_dept_id') == '' else v_body.get('a_dept_id')
          if v_team_dept_id is not None:
             v_team_dept_id = v_team_dept_id.strip()
-         #v_team_dept_id = ''
-
          v_user_name = None if v_body.get('a_user_name') == '' else v_body.get('a_user_name')
          if v_user_name is not None:
             v_user_name = v_user_name.strip()
-         #v_user_name = ''
-
          v_progress_rate_code_from = None if v_body.get('a_progress_rate_code_from') == '' else v_body.get('a_progress_rate_code_from')
          if v_progress_rate_code_from is not None:
             v_progress_rate_code_from = v_progress_rate_code_from.strip()
          v_progress_rate_code_to = None if v_body.get('a_progress_rate_code_to') == '' else v_body.get('a_progress_rate_code_to')
          if v_progress_rate_code_to is not None:
             v_progress_rate_code_to = v_progress_rate_code_to.strip()
-
-         #v_progress_rate_code_from = ''
-         #v_progress_rate_code_to = ''
-
-         #logging.debug(f"################################################################################")
-         #logging.debug(f"f_select_biz_opp2()에서의 v_progress_rate_code_from : " + v_progress_rate_code_from)
-         #logging.debug(f"f_select_biz_opp2()에서의 v_progress_rate_code_to : " + v_progress_rate_code_to)
-         #logging.debug(f"################################################################################")
-
          v_essential_achievement_tf = v_body.get('a_essential_achievement_tf')
-         #v_essential_achievement_tf = False
-
          v_sql_biz_opp = """SELECT A.biz_opp_id,
                                    B.detail_no,
                                    A.biz_opp_name,
@@ -662,7 +600,8 @@ def f_select_biz_opp2(request):
          if v_auth1_code == 'AUT' and v_auth2_code == '0003':
             if v_responsibility1_code == 'RES' and v_responsibility2_code == '0003':
                if v_team_dept_id:
-                  v_sql_biz_opp += " AND B.change_preparation_dept_id = %s"
+                  #v_sql_biz_opp += " AND B.change_preparation_dept_id = %s"
+                  v_sql_biz_opp += " AND B.change_preparation_dept_id LIKE SUBSTRING(%s FROM 1 FOR 3) || '%%'"
                   v_param2.append(v_team_dept_id)
                if v_user_name:
                   v_sql_biz_opp += " AND B.user_id IN (SELECT PP.user_id FROM ajict_bms_schema.aj_user PP WHERE PP.user_name LIKE '%%' || %s ||'%%')"
@@ -679,11 +618,6 @@ def f_select_biz_opp2(request):
                v_param2.append(v_session_user_id)
          v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
                                      B.detail_no"
-
-         #logging.debug(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-         #logging.debug(f"f_select_biz_opp2()에서의 v_sql_biz_opp : " + v_sql_biz_opp)
-         #logging.debug(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_biz_opp,v_param2)
             v_columns = [v_column[0] for v_column in v_cursor.description]
@@ -693,7 +627,6 @@ def f_select_biz_opp2(request):
                v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
             else:
                v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
-      # logging.debug(f"v_data : {v_data}")
             return JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})
       except DatabaseError:
          v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
@@ -754,8 +687,6 @@ def f_select_popup_biz_opp(request):
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
 def f_insert_biz_opp(request):
    v_session_user_id = ''
-   #v_session_user_id = 'leecj'
-
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
@@ -857,20 +788,6 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp.append(v_contract_date)
             v_param_insert_biz_opp.append(v_body.get('biz_opp',{}).get('a_essential_achievement_tf'))
-
-            # v_param_insert_biz_opp.append('이창주의 사업1')
-            # v_param_insert_biz_opp.append('0001')
-            # v_param_insert_biz_opp.append('20240107')
-            # v_param_insert_biz_opp.append(True)
-
-
-            #test
-            print(f"f_insert_biz_opp()에서의 v_biz_opp_name : {v_biz_opp_name}")
-            print(f"f_insert_biz_opp()에서의 v_progress2_rate_code : {v_progress2_rate_code}")
-            print(f"f_insert_biz_opp()에서의 v_contract_date : {v_contract_date}")
-            print(f"f_insert_biz_opp()에서의 essential_achievement_tf : {v_body.get('biz_opp',{}).get('a_essential_achievement_tf')}")
-
-
             v_param_insert_biz_opp.append(v_session_user_id)
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp,v_param_insert_biz_opp)
@@ -938,12 +855,6 @@ def f_insert_biz_opp(request):
                      v_row1 = v_cursor.fetchone()
                      v_user_id = v_row1[0]
                      v_param_insert_biz_opp_detail.append(v_user_id)
-
-
-                     #test
-                     print(f"f_insert_biz_opp()에서의 v_user_name : {v_user_name}")
-
-
             else:
                v_param_insert_biz_opp_detail.append(v_session_user_id)
             if v_auth1_code == 'AUT' and v_auth2_code == '0001':
@@ -1056,28 +967,6 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail.append(v_principal_product2_code)
             v_param_insert_biz_opp_detail.append(v_session_user_id)
-
-            # v_param_insert_biz_opp_detail.append(v_session_user_id)
-            # v_param_insert_biz_opp_detail.append(v_dept_id)
-            # v_param_insert_biz_opp_detail.append(v_dept_id)
-            # v_param_insert_biz_opp_detail.append('0001')
-            # v_param_insert_biz_opp_detail.append('0001')
-            # v_param_insert_biz_opp_detail.append('testtest')
-            # v_param_insert_biz_opp_detail.append('20250101')
-            # v_param_insert_biz_opp_detail.append(500000)
-            # v_param_insert_biz_opp_detail.append(50)
-            # v_param_insert_biz_opp_detail.append('20250102')
-            # v_param_insert_biz_opp_detail.append(400000)
-            # v_param_insert_biz_opp_detail.append('20250103')
-            # v_param_insert_biz_opp_detail.append('0003')
-            # v_param_insert_biz_opp_detail.append('0006')
-            # v_param_insert_biz_opp_detail.append(v_session_user_id)
-
-            #test
-            #v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
-            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
-
-
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail,v_param_insert_biz_opp_detail)
             v_sql_insert_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
@@ -1113,23 +1002,8 @@ def f_insert_biz_opp(request):
             # v_param_insert_biz_opp_history.append('20240107')
             # v_param_insert_biz_opp_history.append(True)
             # v_param_insert_biz_opp_history.append(v_session_user_id)
-
-            #test
-            logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-            logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_history : {v_sql_insert_biz_opp_history}")
-            logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_history,v_param_insert_biz_opp_history)
-            #
-            #
-               #test
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-               logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_history")
-               logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
             v_sql_insert_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_history (biz_opp_id,
                                                                                                           detail_no,
                                                                                                           history_no,
@@ -1201,23 +1075,6 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_detail_history.append(v_principal_product2_code)
             v_param_insert_biz_opp_detail_history.append(v_session_user_id)
 
-            # v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)
-            # v_param_insert_biz_opp_detail_history.append(v_session_user_id)
-            # v_param_insert_biz_opp_detail_history.append(v_dept_id)
-            # v_param_insert_biz_opp_detail_history.append(v_dept_id)
-            # v_param_insert_biz_opp_detail_history.append('0001')
-            # v_param_insert_biz_opp_detail_history.append('0001')
-            # v_param_insert_biz_opp_detail_history.append('testtest')
-            # v_param_insert_biz_opp_detail_history.append('20250101')
-            # v_param_insert_biz_opp_detail_history.append(500000)
-            # v_param_insert_biz_opp_detail_history.append(50)
-            # v_param_insert_biz_opp_detail_history.append('20250102')
-            # v_param_insert_biz_opp_detail_history.append(400000)
-            # v_param_insert_biz_opp_detail_history.append('20250103')
-            # v_param_insert_biz_opp_detail_history.append('0003')
-            # v_param_insert_biz_opp_detail_history.append('0006')
-            # v_param_insert_biz_opp_detail_history.append(v_session_user_id)
-
 
             #test
             v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
@@ -1226,10 +1083,6 @@ def f_insert_biz_opp(request):
 
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
-
-
-
-
             v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
                                                                                               activity_no,
                                                                                               activity_details,
@@ -1241,9 +1094,6 @@ def f_insert_biz_opp(request):
                                                                                                      %s,
                                                                                                      %s)"""
             v_param_insert_biz_opp_activity = []
-
-
-            #test
             v_param_insert_biz_opp_activity.append(v_biz_opp_id)
             v_activity_details = None if v_body.get('biz_opp_activity',{}).get('a_activity_details') == '' else v_body.get('biz_opp_activity',{}).get('a_activity_details')
             if not v_activity_details:
@@ -1262,13 +1112,6 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_activity.append(v_activity_date)
             v_param_insert_biz_opp_activity.append(v_session_user_id)
-
-            # v_param_insert_biz_opp_activity.append(v_biz_opp_id)
-            # v_param_insert_biz_opp_activity.append('활동했어요!')
-            # v_param_insert_biz_opp_activity.append('20250115')
-            # v_param_insert_biz_opp_activity.append(v_session_user_id)
-
-
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_activity,v_param_insert_biz_opp_activity)
                v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
@@ -1284,8 +1127,6 @@ def f_insert_biz_opp(request):
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
 def f_delete_biz_opp(request):
    v_session_user_id = ''
-   #v_session_user_id = 'leecj'
-
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)

@@ -6,7 +6,7 @@ import BizOppHistory from '../../components/BizOppHistory';
 import { Button } from 'react-bootstrap';
 
 const roots = {
-    login: {depth1: 'login', depth2: '', component: AuthLogin},
+    login: {depth1: 'login', depth2: '', component: AuthLogin, endpoint: 'login/'},
     adminUser: {depth1: 'admin', depth2: 'user', component: Home},
     adminCode: {depth1: 'admin', depth2: 'code', component: Home},
     adminProduct: {depth1: 'admin', depth2: 'product', component: Home},

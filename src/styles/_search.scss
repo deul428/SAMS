@@ -33,6 +33,39 @@
             // margin-bottom: 1rem;
             margin-bottom: 0.5rem;
             margin-right: -2rem;
+            &.activityArea {
+                &:before {
+                    content: '';
+                    width: $full;
+                    height: 1px;
+                    background: black;
+                    margin: 1rem 0;
+                }
+                .col {
+                    label {
+                    }
+                    &.btnArea {
+                    } 
+                    > div {
+                    }
+                    input, select {
+                    }
+                } 
+                h3 {
+                    padding: 0;
+                    margin: 1rem 0 0.5rem;
+                    text-align: left;
+                }
+                ol.list-group {
+                    li {
+                    }
+                }
+            }
+            &.bizoppArea {
+                .row {
+    
+                }
+            }
             .col {
                 padding: 0;
                 padding-right: 1rem;
@@ -54,10 +87,11 @@
                                 // transform: translateX(0.25rem);
                             }
                         }
-                       /*  input, label {
-                            padding: 0.5rem;
-                            height: calc(3.5rem + calc(var(--bs-border-width) * 2));
-                            min-height: calc(3.5rem + calc(var(--bs-border-width) * 2));
+                        /* label {
+                            padding: 0.5rem 0.2rem !important;
+                        }
+                        input {
+                            padding: 0.5rem 0.2rem !important;
                         } */
                     }
 
@@ -70,7 +104,6 @@
                 > label {
                     width: 6.5rem;
                     margin: 0 0.5rem 0 0;
-                
                 }
                 &.btnArea {
                     margin: 0;
@@ -97,7 +130,7 @@
                 }
             } 
         }
-        &.activityArea {
+/*         &.activityArea {
             width: $full;
             &:before {
                 content: '';
@@ -137,6 +170,6 @@
             .row {
 
             }
-        } 
+        }  */
     }
 }

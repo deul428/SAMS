@@ -1967,7 +1967,7 @@ const BizOpp = () => {
             console.log(`API Get (수신)\nEndpoint: (BizOpp.js) ${endpoint}\nresponse: `, response);
             if (Array.isArray(response)) {
                 alert(response[0].MESSAGE || '로그인 필요');
-                setReturnMsg(<Navigate to="/login/"/>);
+                setReturnMsg(<Navigate to={roots.login.endpoint}/>);
                 return returnMsg;
             } else {
                 setData(response);

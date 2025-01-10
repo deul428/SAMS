@@ -31,7 +31,7 @@ const AuthLogin = () => {
     }
     const [input, setInput] = useState(p_login);
     const [pwInput, setPwInput] = useState(p_changePw);
-    const endpoint = 'login/';
+    const endpoint = roots.login.endpoint;
 
     const f_handlingInput = (e) => {
         const { name, value } = e.target;

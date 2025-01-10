@@ -257,55 +257,30 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
                   prepareRow(row);
                   const { key, ...restProps } = row.getRowProps();
                   return (
-                    (auth.userAuthCode === '0002') ? 
-                    (
-                      <tr key={key} {...restProps} 
-                      >
-                        {row.cells.map((cell, index) => {
-                          const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
-                          return (
-                            <td key={key} {...restProps}>
-                              {index === row.cells.length - 1
-                              ? 
-                              (
-                              <Button size="sm" variant="light" onClick={(e) => {
-                                openModal(e, row.original, 'history');
-                              }}>
-                                이력
-                              </Button>)
-                              : 
-                              cell.render('Cell')}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ) : 
-                    (
-                      <tr key={key} {...restProps} 
-                      onClick={(e) => {
-                        openModal(e, row.original, null);
-                      }}
-                      >
+                    <tr key={key} {...restProps} 
+                    onClick={(e) => {
+                      openModal(e, row.original, null);
+                    }}
+                    >
 
-                        {row.cells.map((cell, index) => {
-                          const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
-                          return (
-                            <td key={key} {...restProps}>
-                              {index === row.cells.length - 1
-                              ? 
-                              (
-                              <Button size="sm" variant="light" onClick={(e) => {
-                                openModal(e, row.original, 'history');
-                              }}>
-                                이력
-                              </Button>)
-                              : 
-                              cell.render('Cell')}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    )
+                      {row.cells.map((cell, index) => {
+                        const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
+                        return (
+                          <td key={key} {...restProps}>
+                            {index === row.cells.length - 1
+                            ? 
+                            (
+                            <Button size="sm" variant="light" onClick={(e) => {
+                              openModal(e, row.original, 'history');
+                            }}>
+                              이력
+                            </Button>)
+                            : 
+                            cell.render('Cell')}
+                          </td>
+                        );
+                      })}
+                    </tr>
                   )
                 })}
               </tbody>

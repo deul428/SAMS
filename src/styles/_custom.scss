@@ -7,8 +7,15 @@
 //   'primary': $point-color,
 // );
 $font-size-base: 2rem;
+.form-floating input[type="date"]::-webkit-calendar-picker-indicator,
+.form-floating input[type="date"]::-webkit-inner-spin-button { font-size: 1.1rem;  }
 
-h1{ font-size: $font-size-base !important; }
+
+/* @media (min-width: 1200px) {
+  .modal-xl {
+    --bs-modal-width: 1400px;
+}
+} */
 $theme-colors: map-merge(
   $theme-colors,
   (

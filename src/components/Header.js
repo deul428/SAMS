@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/reducers/AuthSlice';
 import { useState, useEffect } from 'react';
@@ -8,17 +8,27 @@ import ci from '../assets/img/AJ_ICT.svg';
 import roots from '../utils/datas/Roots';
 
 function Header() {
+    const navigate = useNavigate(); // 페이지 이동에 사용
     // ============== Log-In 처리 ==============
     const auth = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
+    const [redirect, setRedirect] = useState(null);
     function f_logoutConfirm(){
         let v_logoutMsg = window.confirm('정말 로그아웃 하시겠습니까?');
         if(v_logoutMsg === true) {
             dispatch(logout());
+            const from = `/${roots.home.url}`;
+            setRedirect(from);
         }
     }
-    
+    useEffect(() => {
+        // console.log('Redirect Path:', redirect); // 확인
+        if (redirect) {
+            navigate(redirect, { replace: true });
+        }
+    }, [redirect, navigate]);
+
     // ----------------------- Log-In Mapping -----------------------
         // isLoggedIn === true: User Id Text, Logout Button 생성 
         // isLoggedIn === false: User Id Falsy, Login Button 생성 

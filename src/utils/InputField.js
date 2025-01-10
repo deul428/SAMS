@@ -340,16 +340,16 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                 }));
                 setInput((prevInput) => ({
                     ...prevInput,
-                    a_user_name: v_userHandling.userValue
+                    a_user_name: v_userHandling.userValue.trim(),
                 }))
-                f_authLevel3('팀원');
+                // f_authLevel3('팀원');
                 break;
             case '0002' :
                 setVUserhandling((prevDept) => ({
                     ...prevDept,
                     userDisabled: false,
                 }));
-                f_authLevel3('팀장');
+                // f_authLevel3('팀장');
                 break;
             case '0003' :
                 setVUserhandling((prevDept) => ({
@@ -456,8 +456,21 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             team = '';
             console.log('no dept, no team');
         }
+        console.log(dept, team);
 
-        
+        let checkDeptId = deptId.substr(0, 3);
+            switch (checkDeptId) {
+                case '971' :
+                    setVSelectTeam([data.search_team[2], data.search_team[3], data.search_team[4]]);
+                    break;
+                case '972' :
+                    setVSelectTeam([data.search_team[5], data.search_team[6], data.search_team[7]]);
+                    break;
+                default : 
+                    break;
+            }
+            f_teamLinkedDept(); 
+            
         if (resCode === '0002') {
             setVTeamHandling({
                 teamValue: team[0].dept_id,
@@ -470,18 +483,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                 detpDisabled: true,
             });
         } else if (resCode === '0003') {
-            let checkDeptId = deptId.substr(0, 3);
-            switch (checkDeptId) {
-                case '971' :
-                    setVSelectTeam([data.search_team[2], data.search_team[3], data.search_team[4]]);
-                    break;
-                case '972' :
-                    setVSelectTeam([data.search_team[5], data.search_team[6], data.search_team[7]]);
-                    break;
-                default : 
-                    break;
-            }
-            f_teamLinkedDept(); 
             setVDeptHandling({
                 deptValue: dept[0].dept_id,
                 deptMsg: dept[0].dept_name,
@@ -685,9 +686,9 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                         <FloatingLabel label='팀'>
                                             <Form.Select id='select2' size='sm' aria-label='selectBox' value={input?.a_dept_id || ''}  name='a_dept_id' onChange={f_handlingDept} disabled={v_teamHandling.teamDisabled}>
                                                 <option value={v_teamHandling.teamValue || ''}>{v_teamHandling.teamMsg || '-- 팀을 선택하세요 --'}</option>
-                                                {v_selectTeam.map((team) => (
-                                                    <option key={team.dept_id} value={team.dept_id || ''}>
-                                                        {team.dept_name}
+                                                {v_selectTeam.map((item) => (
+                                                    <option key={item.dept_id} value={item.dept_id || ''}>
+                                                        {item.dept_name}
                                                     </option>
                                                 ))}
                                             </Form.Select>

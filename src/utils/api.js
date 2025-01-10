@@ -53,7 +53,7 @@ const api = {
         } catch (error) {
             const status = error.response?.STATUS;
             if (status === 401) { // 인증 실패
-                alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+                alert("세션이 만료되었습니다. 다시 로그인해 주세요.");
                 // 로그아웃 처리 또는 리다이렉트
                 window.location.href = '/login'; // 로그인 페이지로 이동
             } else if (status === 403) { // 권한 부족

@@ -384,7 +384,7 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
       {v_handlingHtml}
       {pagination}
       {
-        (v_childComponent === 'InputFieldDetail'/*  && v_modalPropsData */) 
+        (v_childComponent === 'InputFieldDetail') 
         ? 
         (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_propsData={v_propsData} v_modalPropsData={v_modalPropsData}/> )
         :

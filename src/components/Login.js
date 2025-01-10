@@ -96,11 +96,11 @@ const AuthLogin = () => {
                 const response = await apiMethods[method]('update-cipher-change/', pwInput);
                 console.log(response);
 
-                await dispatch(login({ userId: auth.userId, userPw: pwInput.a_new_cipher }));
+                await dispatch(login({ ...auth, userId: auth.userId, userPw: pwInput.a_new_cipher }));
                 
                 console.log("========= 비밀번호 변경 끝 =========");
                 // 이전 경로로 리디렉션
-                const from = location.state?.from?.pathname || `/${roots[8].url}`;
+                const from = location.state?.from?.pathname || `/${roots.home.url}`;
                 setRedirect(from);
                 return response;
             } else {

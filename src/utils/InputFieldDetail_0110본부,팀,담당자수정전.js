@@ -10,8 +10,7 @@ import '../styles/_search.scss';
 import { Modal, Button, Form, Row, Col, ListGroup, FloatingLabel } from 'react-bootstrap';
 
 const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData, authLevels }) => {
-    // v_propsData: inputField에서 받아오는 list 포함 데이터 / v_modalPropsData: dynamicTable에서 받아오는 테이블 데이터, 사용자가 선택한 행의 데이터만 불러옴
-    // console.log(authLevels);
+    console.log(authLevels);
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
@@ -174,7 +173,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         a_v_modalPropsData = Object.fromEntries(
             Object.entries(v_modalPropsData).map(([key, value]) => [`a_${key}`, value])
         );
-        console.log(v_modalPropsData, a_v_modalPropsData);
     }
     // 2. UI 표현용
     useEffect(() => {
@@ -262,7 +260,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
             if (input.biz_opp_detail) {
                 numKeys.forEach((key) => {
-                    if (input.biz_opp_detail[key] && input.biz_opp_detail[key] instanceof String) {
+                    if (input.biz_opp_detail[key]) {
                         input.biz_opp_detail[key] = Number(
                             input.biz_opp_detail[key].replace(/,/g, '')
                         );
@@ -364,21 +362,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         <div className='searchItem bizoppArea'>
                                             <>
                                             <Row className='d-flex justify-content-between'>
-                                                
-                                                <Col xs={12} md={12} lg={12} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='사업 (기회) 명'>
-                                                        <Form.Control as='textarea' size='sm' type='text' className=''
-                                                        name='a_biz_opp_name' 
-                                                        data-key='biz_opp'
-                                                        placeholder='사업 (기회) 명'
-                                                        onChange={f_handlingInput} 
-                                                        // value={input.biz_opp_name || ''}
-                                                        defaultValue={a_v_modalPropsData?.a_biz_opp_name || ''} 
-                                                        />
-                                                    </FloatingLabel>
-                                                </Col>
-                                            </Row>
-                                            <Row className='d-flex justify-content-start'>
                                                 <Col xs={12} md={4} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 일련 번호'>
                                                         <Form.Control size='sm' type='text' className=''
@@ -391,7 +374,21 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         disabled/>
                                                     </FloatingLabel>
                                                 </Col>
-                                                {/* <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
+                                                <Col xs={12} md={8} lg={8} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='사업 (기회) 명'>
+                                                        <Form.Control as='textarea' size='sm' type='text' className=''
+                                                        name='a_biz_opp_name' 
+                                                        data-key='biz_opp'
+                                                        placeholder='사업 (기회) 명'
+                                                        onChange={f_handlingInput} 
+                                                        // value={input.biz_opp_name || ''}
+                                                        defaultValue={a_v_modalPropsData?.a_biz_opp_name || ''} 
+                                                        />
+                                                    </FloatingLabel>
+                                                </Col>
+                                            </Row>
+                                            <Row className='d-flex justify-content-between'>
+                                                <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='본부'>
                                                         <Form.Control size='sm' type='text' className='' placeholder='본부'
                                                         name='' 
@@ -401,47 +398,18 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         defaultValue={a_v_modalPropsData?.a_high_dept_name || ''}
                                                         />
                                                     </FloatingLabel>
-                                                </Col> */}
+                                                </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='소속 부서'>
-                                                        <Form.Select size='sm' type='text' className='' placeholder='소속 부서'
+                                                    <FloatingLabel label='소속 팀'>
+                                                        <Form.Control size='sm' type='text' className='' placeholder='소속 팀'
                                                         name='a_change_preparation_dept_id' 
                                                         data-key='biz_opp_detail'
                                                         onChange={f_handlingInput}
                                                         // value={input.dept_name || ''} 
-                                                        defaultValue= {(a_v_modalPropsData?.a_dept_name) 
-                                                            ?
-                                                            (a_v_modalPropsData?.a_dept_name || '')
-                                                            : (a_v_modalPropsData?.a_headquarters_name || '')
-                                                        }
+                                                        // defaultValue={a_v_modalPropsData?.a_dept_name || ''}
                                                         // defaultValue={'9801'}
-                                                        value={''}
-                                                        >
-                                                            <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_change_preparation_dept_id : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_change_preparation_dept_name : '선택')}</option>
-                                                            {(getData) ? 
-                                                                (
-                                                                    getData?.data?.search_dept_id.map((e) => {
-                                                                        return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
-                                                                    })
-                                                                )
-                                                                :
-                                                                ('')
-                                                            }
-                                                            {/* <option 
-                                                                value={(
-                                                                    a_v_modalPropsData ? 
-                                                                    a_v_modalPropsData.a_change_preparation_dept_id : '선택')}
-                                                                >{(a_v_modalPropsData ? a_v_modalPropsData.a_change_preparation_dept_name : '선택')}</option>
-                                                                {(v_propsData &&  v_propsData?.data?.search_dept_id? 
-                                                                    (
-                                                                        v_propsData?.data?.search_dept_id.map((e) => {
-                                                                            return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
-                                                                        })
-                                                                    )
-                                                                    :
-                                                                    ('')
-                                                                )} */}
-                                                        </Form.Select>
+                                                        value={'9801'}
+                                                        />
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
@@ -645,7 +613,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>
-                                            <Row className='d-flex justify-content-start'>
+                                            <Row className='d-flex justify-content-between'>
                                                 <Col xs={12} md={6} lg={4} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 구분'>
                                                         <Form.Select size='sm' aria-label='사업 구분' className='' name='a_biz_section2_code' 

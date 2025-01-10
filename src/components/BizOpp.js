@@ -1992,11 +1992,12 @@ const BizOpp = () => {
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
       
     const [res, setRes] = useState([]);
+    const [authLevels, setAuthLevels] = useState();
     return (
         <>
             {returnMsg || ''}
             <h2>사업 (기회) 조회</h2>
-            <InputField v_componentName={'bizOpp'} v_propsData={data} setRes={setRes}/>
+            <InputField v_componentName={'bizOpp'} v_propsData={data} setRes={setRes} setAuthLevels={setAuthLevels}/>
             <div className='wrap' id='bizOpp'>
                 <div className='dataPostArea'>
                     <div className='btnArea d-flex justify-content-end'>
@@ -2006,7 +2007,7 @@ const BizOpp = () => {
                         }
                     </div>
                     
-                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data} v_modalPropsData={null}/>
+                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data} v_modalPropsData={null} authLevels={authLevels}/>
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   

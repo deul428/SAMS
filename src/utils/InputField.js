@@ -9,7 +9,7 @@ import { Button, Form, Row, Col, FloatingLabel } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
 import '../styles/_search.scss';
 
-const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
+const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuthLevels }) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
@@ -277,7 +277,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
     // 권한별 UI 
     // Level 1. 권한(AUT) Check 0001admin / 0002guest / 0003none
     const f_authLevel1 = () => {
-        // console.log(`auth.userAuthCode: ${auth.userAuthCode} \nauth.userResCode: ${auth.userResCode} \nauth.userDeptCode: ${auth.userDeptCode}`);
+        console.log(`auth.userAuthCode: ${auth.userAuthCode} \nauth.userResCode: ${auth.userResCode} \nauth.userDeptCode: ${auth.userDeptCode}`);
         
         switch(auth.userAuthCode) {
             //1. admin
@@ -329,7 +329,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
         }
     }
 
-
     // Level 2. 직책(RES) Check 0001팀원 0002팀장 0003본부장
     const f_authLevel2 = () => {
         const resCode = auth.userResCode;
@@ -380,51 +379,85 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
     9723	전략사업3팀
     9801	신사업추진팀 */
     const f_authLevel3 = (resCode) => {
-        let head, team;
+        let dept, team;
         const deptId = auth.userDeptCode;
-        switch(deptId) {
-            case '9200' :
-                head = [data.search_headquarters[1]];
-                team = [data.search_team[0]];
-                break;
-            case '9509' :
-                head = [data.search_headquarters[2]];
-                team = [data.search_team[1]];
-                break;
-            case '9711' :
-                head = [data.search_headquarters[3]];
-                team = [data.search_team[2]];
-                break;
-            case '9712' :
-                head = [data.search_headquarters[3]];
-                team = [data.search_team[3]];
-                break;
-            case '9713' :
-                head = [data.search_headquarters[3]];
-                team = [data.search_team[4]];
-                break;
-            case '9721' :
-                head = [data.search_headquarters[4]];
-                team = [data.search_team[5]];
-                break;
-            case '9722' :
-                head = [data.search_headquarters[4]];
-                team = [data.search_team[6]];
-                break;
-            case '9723' :
-                head = [data.search_headquarters[4]];
-                team = [data.search_team[7]];
-                break;
-            case '9801' :
-                head = [data.search_headquarters[5]];
-                team = [data.search_team[8]];
-                break;
-            default :
-                head = '';
-                team = '';
-                break;
+        if (deptId.length === 4) {
+            switch(deptId) {
+                case '9200' :
+                    dept = [data.search_headquarters[1]];
+                    team = [data.search_team[0]];
+                    break;
+                case '9509' :
+                    dept = [data.search_headquarters[2]];
+                    team = [data.search_team[1]];
+                    break;
+                case '9711' :
+                    dept = [data.search_headquarters[3]];
+                    team = [data.search_team[2]];
+                    break;
+                case '9712' :
+                    dept = [data.search_headquarters[3]];
+                    team = [data.search_team[3]];
+                    break;
+                case '9713' :
+                    dept = [data.search_headquarters[3]];
+                    team = [data.search_team[4]];
+                    break;
+                case '9721' :
+                    dept = [data.search_headquarters[4]];
+                    team = [data.search_team[5]];
+                    break;
+                case '9722' :
+                    dept = [data.search_headquarters[4]];
+                    team = [data.search_team[6]];
+                    break;
+                case '9723' :
+                    dept = [data.search_headquarters[4]];
+                    team = [data.search_team[7]];
+                    break;
+                case '9801' :
+                    dept = [data.search_headquarters[5]];
+                    team = [data.search_team[8]];
+                    break;
+                default :
+                    break;
+            }
+        } else if (deptId.length === 5) {
+            switch(deptId) {
+                case '91000' :
+                    dept = [data.search_headquarters[0]];
+                    team = '';
+                    break;
+                case '92000' :
+                    dept = [data.search_headquarters[1]];
+                    team = '';
+                    break;
+                case '95000' :
+                    dept = [data.search_headquarters[2]];
+                    team = '';
+                    break;
+                case '97100' :
+                    dept = [data.search_headquarters[3]];
+                    team = '';
+                    break;
+                case '97200' :
+                    dept = [data.search_headquarters[4]];
+                    team = '';
+                    break;
+                case '98000' :
+                    dept = [data.search_headquarters[5]];
+                    team = '';
+                    break;
+                default :
+                    break;
+            } 
+        } else {
+            dept = '';
+            team = '';
+            console.log('no dept, no team');
         }
 
+        
         if (resCode === '0002') {
             setVTeamHandling({
                 teamValue: team[0].dept_id,
@@ -432,8 +465,8 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
                 teamDisabled: true
             })
             setVDeptHandling({
-                deptValue: head[0].dept_id,
-                deptMsg: head[0].dept_name,
+                deptValue: dept[0].dept_id,
+                deptMsg: dept[0].dept_name,
                 detpDisabled: true,
             });
         } else if (resCode === '0003') {
@@ -446,13 +479,12 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
                     setVSelectTeam([data.search_team[5], data.search_team[6], data.search_team[7]]);
                     break;
                 default : 
-                    setVSelectTeam(team);
                     break;
             }
             f_teamLinkedDept(); 
             setVDeptHandling({
-                deptValue: head[0].dept_id,
-                deptMsg: head[0].dept_name,
+                deptValue: dept[0].dept_id,
+                deptMsg: dept[0].dept_name,
                 detpDisabled: true,
             });
         } else {
@@ -462,16 +494,27 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
                 teamDisabled: true
             })
             setVDeptHandling({
-                deptValue: head[0].dept_id,
-                deptMsg: head[0].dept_name,
+                deptValue: dept[0].dept_id,
+                deptMsg: dept[0].dept_name,
                 detpDisabled: true,
             });
         }
-        const updatedInput = {
-            ...input,
-            a_headquarters_dept_id: team[0].high_dept_id,
-            a_dept_id: team[0].dept_id,
-        };
+
+        let updatedInput = {};
+        if (team) {
+            updatedInput = {
+                ...input,
+                a_headquarters_dept_id: team[0].high_dept_id,
+                a_dept_id: team[0].dept_id,
+            };
+        } else {
+            updatedInput = {
+                ...input,
+                a_headquarters_dept_id: dept[0].high_dept_id,
+                a_dept_id: dept[0].dept_id,
+            };
+        }
+        
         setInput(updatedInput);
         f_submitData('post', endpoint, updatedInput);
         
@@ -485,7 +528,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
     }
 
     // 디버깅용
-/*     useEffect(() => {
+    useEffect(() => {
         // if (v_componentName === 'activity') {
             console.log(
             `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
@@ -506,7 +549,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData }) => {
         v_selectTeam,
         v_filteredProTo,
         v_deptHandling, v_teamHandling, v_userHandling
-    ]) */
+    ])
 
     useEffect(() => {
         // console.log("=-=-==-=--=data:-=-=-=--=-", data);

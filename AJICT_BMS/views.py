@@ -1222,13 +1222,11 @@ def f_insert_biz_opp(request):
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
 
-            #
-            #    #test
-            #    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-            #    logging.debug(f"f_insert_biz_opp()에서의 v_sql_insert_biz_opp_detail_history")
-            #    logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-            #
-            #
+
+            #test
+               print(f"f_insert_biz_opp()에서의 v_purchase_amt : {v_purchase_amt}")
+
+
             v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
                                                                                               activity_no,
                                                                                               activity_details,

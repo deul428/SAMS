@@ -18,9 +18,14 @@ def f_login(request):
 
 
       #test
-      #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-      #logging.debug(f"f_login()에서의 v_user_id : {v_user_id}")
-      #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+      v_user_id = '   ' + v_user_id
+      #v_user_id = v_user_id.strip()
+
+
+      #test
+      logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+      logging.debug(f"f_login()에서의 v_user_id : {v_user_id}")
+      logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 
 
    try:
@@ -870,15 +875,21 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_detail = []
             v_param_insert_biz_opp_detail.append(v_biz_opp_id)
             v_change_preparation_dept_id = ''
+            v_user_id = ''
             if v_auth1_code == 'AUT' and v_auth2_code == '0001':
-               v_user_id = None if v_body.get('biz_opp_detail',{}).get('a_user_id') == '' else v_body.get('biz_opp_detail',{}).get('a_user_id')
-               if not v_user_id:
+               v_user_name = None if v_body.get('biz_opp_detail',{}).get('a_user_name') == '' else v_body.get('biz_opp_detail',{}).get('a_user_name')
+               if not v_user_name:
                   transaction.set_rollback(True)
                   v_return = {'STATUS':'FAIL','MESSAGE':"'사용자 ID' 항목은 필수 전달 항목입니다!"}
                   v_square_bracket_return = [v_return]
                   return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
                else:
-                  v_param_insert_biz_opp_detail.append(v_user_id)
+                  v_sql_user = """SELECT user_id FROM aj_user WHERE user_name = %s"""
+                  with connection.cursor() as v_cursor:
+                     v_cursor.execute(v_sql_user)
+                     v_row1 = v_cursor.fetchone()
+                     v_user_id = v_row1[0]
+                     v_param_insert_biz_opp_detail.append(v_user_id)
             else:
                v_param_insert_biz_opp_detail.append(v_session_user_id)
             if v_auth1_code == 'AUT' and v_auth2_code == '0001':
@@ -1085,8 +1096,8 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_detail_history = []
             v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)
             if v_auth1_code == 'AUT' and v_auth2_code == '0001':
-               v_user_id = None if v_body.get('biz_opp_detail',{}).get('a_user_id') == '' else v_body.get('biz_opp_detail',{}).get('a_user_id')
-               if not v_user_id:
+               v_user_name = None if v_body.get('biz_opp_detail',{}).get('a_user_name') == '' else v_body.get('biz_opp_detail',{}).get('a_user_name')
+               if not v_user_name:
                   transaction.set_rollback(True)
                   v_return = {'STATUS':'FAIL','MESSAGE':"'사용자 ID' 항목은 필수 전달 항목입니다!"}
                   v_square_bracket_return = [v_return]

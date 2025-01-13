@@ -1207,7 +1207,7 @@ def f_delete_biz_opp(request):
             v_cursor.execute(v_sql_delete_biz_opp,v_param_delete_biz_opp)
             v_sql_delete_biz_opp_detail = """UPDATE ajict_bms_schema.biz_opp_detail SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_delete_biz_opp_detail.append(v_session_user_id)
-            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
             if v_biz_opp_id is not None:
                v_biz_opp_id = v_biz_opp_id.strip()
             v_param_delete_biz_opp_detail.append(v_biz_opp_id)
@@ -1215,7 +1215,7 @@ def f_delete_biz_opp(request):
             v_cursor.execute(v_sql_delete_biz_opp_detail,v_param_delete_biz_opp_detail)
             v_sql_delete_biz_opp_history = """UPDATE ajict_bms_schema.biz_opp_history SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_delete_biz_opp_history.append(v_session_user_id)
-            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
             if v_biz_opp_id is not None:
                v_biz_opp_id = v_biz_opp_id.strip()
             v_param_delete_biz_opp_history.append(v_biz_opp_id)
@@ -1223,7 +1223,7 @@ def f_delete_biz_opp(request):
             v_cursor.execute(v_sql_delete_biz_opp_history,v_param_delete_biz_opp_history)
             v_sql_delete_biz_opp_detail_history = """UPDATE ajict_bms_schema.biz_opp_detail_history SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_delete_biz_opp_detail_history.append(v_session_user_id)
-            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
             if v_biz_opp_id is not None:
                v_biz_opp_id = v_biz_opp_id.strip()
             v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
@@ -1231,7 +1231,7 @@ def f_delete_biz_opp(request):
             v_cursor.execute(v_sql_delete_biz_opp_detail_history,v_param_delete_biz_opp_detail_history)
             v_sql_delete_biz_opp_activity = """UPDATE ajict_bms_schema.biz_opp_activity SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_delete_biz_opp_activity.append(v_session_user_id)
-            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
             if v_biz_opp_id is not None:
                v_biz_opp_id = v_biz_opp_id.strip()
             v_param_delete_biz_opp_activity.append(v_biz_opp_id)

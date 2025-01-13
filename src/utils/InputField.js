@@ -95,6 +95,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         } 
     } */
 
+    // const [submit, setSubmit] = useState();
     const f_submitData = async (method, endpoint, input = null, e, msg) => {
         if (input) {
             console.log("input============================:\n", input);
@@ -130,6 +131,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             } else {
                 console.log('input Field response 송신 완료', "\nendpoint: ", endpoint, "\nresponse: ", response);
                 setRes(response);
+                // setSubmit(response);
                 return response;
             }
         } catch (error) {
@@ -483,7 +485,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                 detpDisabled: true,
             });
         } else if (resCode === '0003') {
-            if (team) {
+            if (v_teamHandling.teamValue) {
                 setVTeamHandling({
                     teamValue: team[0].dept_id,
                     teamMsg: team[0].dept_name,
@@ -507,6 +509,8 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             });
         }
 
+        // 팀 다른 거 선택했다가 기본값으로 바꿀 시 본부 데이터로 교체해야 되는데 벗겨져 버림
+
         let updatedInput = {};
         if (team) {
             updatedInput = {
@@ -515,13 +519,14 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                 a_dept_id: team[0].dept_id,
             };
         } else {
+            console.log('no team');
             updatedInput = {
                 ...input,
                 // a_headquarters_dept_id: dept[0].high_dept_id,
                 a_dept_id: dept[0].dept_id,
             };
         }
-        
+
         setInput(updatedInput);
         f_submitData('post', endpoint, updatedInput);
         
@@ -538,6 +543,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
     useEffect(() => {
         // if (v_componentName === 'activity') {
             console.log(
+            `input: `, input,
             `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
     
             `\n\n출처: f_teamLinkedDept()\nv_teamByDept: `, v_teamByDept,
@@ -547,11 +553,12 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             `\nv_filteredProTo: `, v_filteredProTo,
             `\n\nv_deptHandling: `, v_deptHandling, `\nv_teamHandling: `, v_teamHandling, `\nv_userHandling: `, v_userHandling
             );
-            v_selectTeam.map((item) => (     
+            /* v_selectTeam.map((item) => (     
                 console.log("\nitem.dept_id: ", item.dept_id, "\nitem.dept_name: ", item.dept_name)
-            ))
+            )) */
         // }
     }, [
+        input,
         v_depts, v_teams, v_teamByDept,
         v_selectTeam,
         v_filteredProTo,
@@ -560,6 +567,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     useEffect(() => {
         // console.log("=-=-==-=--=data:-=-=-=--=-", data);
+        // console.log("submit: ", submit );
         if (Object.keys(data).length > 0) {
             switch(v_componentName) {
                 case 'bizOpp':
@@ -573,7 +581,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     break;
             }
         }
-    }, [data]);
+    }, [data, v_propsData, /* submit */]);
     // ================= option 1 변경 시 2도 동적으로 변경 끝 ================= 
 
 

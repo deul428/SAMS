@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { apiMethods } from '../utils/api.js';
 
@@ -13,6 +13,7 @@ import roots from '../utils/datas/Roots.js';
 import { Button } from 'react-bootstrap';
 
 const BizOpp = () => {
+    const navigate = useNavigate();
     // const location = useLocation();
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
@@ -29,7 +30,6 @@ const BizOpp = () => {
     4. get 함수가 response.data를 그대로 반환.
     -*/
 
-    // const navigate = useNavigate();
     const [returnMsg, setReturnMsg] = useState(null);
     const sampleData = {
         "data": {
@@ -1967,8 +1967,8 @@ const BizOpp = () => {
             console.log(`API Get (수신)\nEndpoint: (BizOpp.js) ${endpoint}\nresponse: `, response);
             if (Array.isArray(response)) {
                 alert(response[0].MESSAGE || '로그인 필요');
-                setReturnMsg(<Navigate to={roots.login.endpoint}/>);
-                return returnMsg;
+                navigate(`/${roots.login.endpoint}`, { replace: true });
+                return;
             } else {
                 setData(response);
                 return response;
@@ -1984,7 +1984,7 @@ const BizOpp = () => {
     const auth = useSelector((state) => state.auth);
     const userCheck = {
         a_session_user_id: auth.userId,
-    }
+    };
 
     useEffect(() => {
         f_handlingData('post', endpoint, userCheck);

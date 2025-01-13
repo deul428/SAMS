@@ -430,11 +430,11 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     break;
                 case '92000' :
                     dept = [data.search_headquarters[1]];
-                    team = '';
+                    team = [data.search_team[0]];
                     break;
                 case '95000' :
                     dept = [data.search_headquarters[2]];
-                    team = '';
+                    team = [data.search_team[1]];
                     break;
                 case '97100' :
                     dept = [data.search_headquarters[3]];
@@ -446,7 +446,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     break;
                 case '98000' :
                     dept = [data.search_headquarters[5]];
-                    team = '';
+                    team = [data.search_team[8]];
                     break;
                 default :
                     break;
@@ -459,17 +459,17 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         console.log(dept, team);
 
         let checkDeptId = deptId.substr(0, 3);
-            switch (checkDeptId) {
-                case '971' :
-                    setVSelectTeam([data.search_team[2], data.search_team[3], data.search_team[4]]);
-                    break;
-                case '972' :
-                    setVSelectTeam([data.search_team[5], data.search_team[6], data.search_team[7]]);
-                    break;
-                default : 
-                    break;
-            }
-            f_teamLinkedDept(); 
+        switch (checkDeptId) {
+            case '971' :
+                setVSelectTeam([data.search_team[2], data.search_team[3], data.search_team[4]]);
+                break;
+            case '972' :
+                setVSelectTeam([data.search_team[5], data.search_team[6], data.search_team[7]]);
+                break;
+            default : 
+                break;
+        }
+        f_teamLinkedDept(); 
             
         if (resCode === '0002') {
             setVTeamHandling({
@@ -483,6 +483,12 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                 detpDisabled: true,
             });
         } else if (resCode === '0003') {
+            if (team) {
+                setVTeamHandling({
+                    teamValue: team[0].dept_id,
+                    teamMsg: team[0].dept_name,
+                })
+            };
             setVDeptHandling({
                 deptValue: dept[0].dept_id,
                 deptMsg: dept[0].dept_name,
@@ -511,7 +517,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         } else {
             updatedInput = {
                 ...input,
-                a_headquarters_dept_id: dept[0].high_dept_id,
+                // a_headquarters_dept_id: dept[0].high_dept_id,
                 a_dept_id: dept[0].dept_id,
             };
         }

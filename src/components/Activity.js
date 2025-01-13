@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { apiMethods } from '../utils/api.js';
 
@@ -12,6 +12,7 @@ import roots from '../utils/datas/Roots.js';
 import { Button } from 'react-bootstrap';
 
 const Activity = () => {
+    const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
     const endpoint = roots.bizoppSelect1.endpoint;
@@ -46,8 +47,8 @@ const Activity = () => {
             console.log(`API Get (수신)\nEndpoint: (Activity.js) ${endpoint}\nresponse: `, response);
             if (Array.isArray(response)) {
                 alert(response[0].MESSAGE || '로그인 필요');
-                setReturnMsg(<Navigate to={roots.login.endpoint}/>);
-                return returnMsg;
+                navigate(`/${roots.login.endpoint}`, { replace: true });
+                return;
             } else {
                 setData(response);
                 return response;

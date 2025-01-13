@@ -30,7 +30,7 @@ def f_login(request):
 
 
    try:
-      v_sql1 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s"""
+      v_sql1 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s AND delete_date IS NULL"""
       v_param1 = []
       v_param1.append(v_user_id)
       with connection.cursor() as v_cursor:
@@ -41,7 +41,7 @@ def f_login(request):
             v_data1 = {'STATUS':'FAIL','MESSAGE':'존재하지 않는 사용자 ID입니다.'}
             v_square_bracket_data1 = [v_data1]
             return JsonResponse(v_square_bracket_data1,safe = False,json_dumps_params={'ensure_ascii':False})
-      v_sql2 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s AND cipher = %s WHERE delete_date IS NULL"""
+      v_sql2 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s AND cipher = %s AND delete_date IS NULL"""
       v_param2=[]
       v_param2.append(v_user_id)
       v_param2.append(v_cipher)
@@ -142,7 +142,7 @@ def f_update_cipher_change(request):
       return JsonResponse(v_return,safe = False,json_dumps_params={'ensure_ascii':False})
    try:
       with transaction.atomic():
-         v_sql = """UPDATE ajict_bms_schema.aj_user SET cipher = %s,beginning_login_tf = FALSE,update_date = CURRENT_TIMESTAMP WHERE user_id = %s WHERE delete_date IS NULL"""
+         v_sql = """UPDATE ajict_bms_schema.aj_user SET cipher = %s,beginning_login_tf = FALSE,update_date = CURRENT_TIMESTAMP WHERE user_id = %s AND delete_date IS NULL"""
          v_param=[]
          v_param.append(v_new_cipher)
          v_param.append(v_session_user_id)
@@ -195,7 +195,8 @@ def f_select_biz_opp1(request):
                                    delete_user,
                                    delete_date
                                  FROM ajict_bms_schema.aj_user
-                                 WHERE user_id = %s"""
+                                 WHERE user_id = %s AND
+                                       delete_date IS NULL"""
          v_param1 = []
          v_param1.append(v_session_user_id)
          v_auth1_code = ''
@@ -228,19 +229,19 @@ def f_select_biz_opp1(request):
 
 
          v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp":[]}
-         v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 5 ORDER BY dept_id"""
+         v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 5 AND delete_date IS NULL ORDER BY dept_id"""
          with connection.cursor() as v_cursor_headquarters:
             v_cursor_headquarters.execute(v_sql_headquarters)
             v_columns_headquarters = [v_column[0] for v_column in v_cursor_headquarters.description]
             v_rows_headquarters = v_cursor_headquarters.fetchall()
             v_data["search_headquarters"] = [dict(zip(v_columns_headquarters,row)) for row in v_rows_headquarters]
-         v_sql_team = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 4 ORDER BY dept_id"""
+         v_sql_team = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 4 AND delete_date IS NULL ORDER BY dept_id"""
          with connection.cursor() as v_cursor_team:
             v_cursor_team.execute(v_sql_team)
             v_columns_team = [v_column[0] for v_column in v_cursor_team.description]
             v_rows_team = v_cursor_team.fetchall()
             v_data["search_team"] = [dict(zip(v_columns_team,row)) for row in v_rows_team]
-         v_sql_commonness_pro = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'PRO' ORDER BY small_classi_code"""
+         v_sql_commonness_pro = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'PRO' AND delete_date IS NULL ORDER BY small_classi_code"""
          with connection.cursor() as v_cursor_commonness_pro:
             v_cursor_commonness_pro.execute(v_sql_commonness_pro)
             v_columns_commonness_pro = [v_column[0] for v_column in v_cursor_commonness_pro.description]
@@ -249,37 +250,43 @@ def f_select_biz_opp1(request):
          v_sql_biz_opp = """SELECT A.biz_opp_id,
                                    A.biz_opp_name,
                                    B.user_id,
-                                   (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = B.user_id) AS user_name,
+                                   (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = B.user_id AND AA.delete_date IS NULL) AS user_name,
                                    B.change_preparation_dept_id,
                                    B.change_preparation_dept_name,
                                    B.last_client_com1_code,
                                    B.last_client_com2_code,
                                    (SELECT DISTINCT BB.great_classi_name
                                     FROM ajict_bms_schema.commonness_code BB
-                                    WHERE BB.great_classi_code = B.last_client_com1_code) AS last_client_com1_name,
+                                    WHERE BB.great_classi_code = B.last_client_com1_code AND
+                                          BB.delete_date IS NULL) AS last_client_com1_name,
                                    (SELECT CC.small_classi_name
                                     FROM ajict_bms_schema.commonness_code CC
                                     WHERE CC.great_classi_code = B.last_client_com1_code AND
-                                          CC.small_classi_code = B.last_client_com2_code) AS last_client_com2_name,
+                                          CC.small_classi_code = B.last_client_com2_code AND
+                                          CC.delete_date IS NULL) AS last_client_com2_name,
                                    B.sale_com1_code,
                                    B.sale_com2_code,
                                    (SELECT DISTINCT DD.great_classi_name
                                     FROM ajict_bms_schema.commonness_code DD
-                                    WHERE DD.great_classi_code = B.sale_com1_code) AS sale_com1_name,
+                                    WHERE DD.great_classi_code = B.sale_com1_code AND
+                                          DD.delete_date IS NULL) AS sale_com1_name,
                                    (SELECT EE.small_classi_name
                                     FROM ajict_bms_schema.commonness_code EE
                                     WHERE EE.great_classi_code = B.sale_com1_code AND
-                                          EE.small_classi_code = B.sale_com2_code) AS sale_com2_name,
+                                          EE.small_classi_code = B.sale_com2_code AND
+                                          EE.delete_date IS NULL) AS sale_com2_name,
                                    A.contract_date,
                                    A.progress1_rate_code,
                                    A.progress2_rate_code,
                                    (SELECT DISTINCT NN.great_classi_name
                                     FROM ajict_bms_schema.commonness_code NN
-                                    WHERE NN.great_classi_code = A.progress1_rate_code) AS progress1_rate_name,
+                                    WHERE NN.great_classi_code = A.progress1_rate_code AND
+                                          NN.delete_date IS NULL) AS progress1_rate_name,
                                    (SELECT OO.small_classi_name
                                     FROM ajict_bms_schema.commonness_code OO
                                     WHERE OO.great_classi_code = A.progress1_rate_code AND
-                                          OO.small_classi_code = A.progress2_rate_code) AS progress2_rate_name,
+                                          OO.small_classi_code = A.progress2_rate_code AND
+                                          OO.delete_date IS NULL) AS progress2_rate_name,
                                    B.sale_item_no,
                                    B.sale_date,
                                    B.sale_amt,
@@ -291,41 +298,53 @@ def f_select_biz_opp1(request):
                                    B.biz_section2_code,
                                    (SELECT DISTINCT FF.great_classi_name
                                     FROM ajict_bms_schema.commonness_code FF
-                                    WHERE FF.great_classi_code = B.biz_section1_code) AS biz_section1_name,
+                                    WHERE FF.great_classi_code = B.biz_section1_code AND
+                                          FF.delete_date IS NULL) AS biz_section1_name,
                                    (SELECT GG.small_classi_name
                                     FROM ajict_bms_schema.commonness_code GG
                                     WHERE GG.great_classi_code = B.biz_section1_code AND
-                                          GG.small_classi_code = B.biz_section2_code) AS biz_section2_name,
+                                          GG.small_classi_code = B.biz_section2_code AND
+                                          GG.delete_date IS NULL) AS biz_section2_name,
                                    A.essential_achievement_tf,
                                    B.principal_product1_code,
                                    B.principal_product2_code,
                                    (SELECT DISTINCT HH.great_classi_name
                                     FROM ajict_bms_schema.commonness_code HH
-                                    WHERE HH.great_classi_code = B.principal_product1_code) AS product1_name,
+                                    WHERE HH.great_classi_code = B.principal_product1_code AND
+                                          HH.delete_date IS NULL) AS product1_name,
                                    (SELECT II.small_classi_name
                                     FROM ajict_bms_schema.commonness_code II
                                     WHERE II.great_classi_code = B.principal_product1_code AND
-                                          II.small_classi_code = B.principal_product2_code) AS product2_name,
+                                          II.small_classi_code = B.principal_product2_code AND
+                                          II.delete_date IS NULL) AS product2_name,
                                    (SELECT JJ.dept_id
                                     FROM ajict_bms_schema.aj_user JJ
-                                    WHERE JJ.user_id = B.user_id) AS dept_id,
+                                    WHERE JJ.user_id = B.user_id AND
+                                          JJ.delete_date IS NULL) AS dept_id,
                                    (SELECT KK.high_dept_id
                                     FROM ajict_bms_schema.dept KK
                                     WHERE KK.dept_id = (SELECT AAA.dept_id
                                                         FROM ajict_bms_schema.aj_user AAA
-                                                        WHERE AAA.user_id = B.user_id)) AS high_dept_id,
+                                                        WHERE AAA.user_id = B.user_id AND
+                                                              AAA.delete_date IS NULL) AND
+                                          KK.delete_date IS NULL) AS high_dept_id,
                                    (SELECT LL.dept_name
                                     FROM ajict_bms_schema.dept LL
                                     WHERE LL.dept_id = (SELECT BBB.dept_id
                                                         FROM ajict_bms_schema.aj_user BBB
-                                                        WHERE BBB.user_id = B.user_id)) AS dept_name,
+                                                        WHERE BBB.user_id = B.user_id AND
+                                                              BBB.delete_date IS NULL) AND
+                                          LL.delete_date IS NULL) AS dept_name,
                                    (SELECT MM.dept_name
                                     FROM ajict_bms_schema.dept MM
                                     WHERE MM.dept_id = (SELECT CCC.high_dept_id
                                                         FROM ajict_bms_schema.dept CCC
                                                         WHERE CCC.dept_id = (SELECT AAAA.dept_id
                                                                              FROM ajict_bms_schema.aj_user AAAA
-                                                                             WHERE AAAA.user_id = B.user_id))) AS high_dept_name,
+                                                                             WHERE AAAA.user_id = B.user_id AND
+                                                                                   AAAA.delete_date IS NULL) AND
+                                                              CCC.delete_date IS NULL) AND
+                                          MM.delete_date IS NULL) AS high_dept_name,
                                    A.create_user AS biz_opp_create_user,
                                    A.create_date AS biz_opp_create_date,
                                    A.update_user AS biz_opp_update_user,
@@ -341,7 +360,9 @@ def f_select_biz_opp1(request):
                             FROM ajict_bms_schema.biz_opp A,
                                  ajict_bms_schema.biz_opp_detail B
                             WHERE 1 = 1 AND
-                                  A.biz_opp_id = B.biz_opp_id"""
+                                  A.biz_opp_id = B.biz_opp_id AND
+                                  A.delete_date IS NULL AND
+                                  B.delete_date IS NULL"""
 #                                  A.contract_date BETWEEN %s AND %s AND
 #                                  B.sale_date BETWEEN %s AND %s"""
          v_param2 = []
@@ -417,7 +438,8 @@ def f_select_biz_opp2(request):
                                    delete_user,
                                    delete_date
                                  FROM ajict_bms_schema.aj_user
-                                 WHERE user_id = %s"""
+                                 WHERE user_id = %s AND
+                                       delete_date IS NULL"""
          v_param1 = []
          v_param1.append(v_session_user_id)
          v_auth1_code = ''
@@ -466,37 +488,43 @@ def f_select_biz_opp2(request):
                                    B.detail_no,
                                    A.biz_opp_name,
                                    B.user_id,
-                                   (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = B.user_id) AS user_name,
+                                   (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = B.user_id AND AA.delete_date IS NULL) AS user_name,
                                    B.change_preparation_dept_id,
                                    B.change_preparation_dept_name,
                                    B.last_client_com1_code,
                                    B.last_client_com2_code,
                                    (SELECT DISTINCT BB.great_classi_name
                                     FROM ajict_bms_schema.commonness_code BB
-                                    WHERE BB.great_classi_code = B.last_client_com1_code) AS last_client_com1_name,
+                                    WHERE BB.great_classi_code = B.last_client_com1_code AND
+                                          BB.delete_date IS NULL) AS last_client_com1_name,
                                    (SELECT CC.small_classi_name
                                     FROM ajict_bms_schema.commonness_code CC
                                     WHERE CC.great_classi_code = B.last_client_com1_code AND
-                                          CC.small_classi_code = B.last_client_com2_code) AS last_client_com2_name,
+                                          CC.small_classi_code = B.last_client_com2_code AND
+                                          CC.delete_date IS NULL) AS last_client_com2_name,
                                    B.sale_com1_code,
                                    B.sale_com2_code,
                                    (SELECT DISTINCT DD.great_classi_name
                                     FROM ajict_bms_schema.commonness_code DD
-                                    WHERE DD.great_classi_code = B.sale_com1_code) AS sale_com1_name,
+                                    WHERE DD.great_classi_code = B.sale_com1_code AND
+                                          DD.delete_date IS NULL) AS sale_com1_name,
                                    (SELECT EE.small_classi_name
                                     FROM ajict_bms_schema.commonness_code EE
                                     WHERE EE.great_classi_code = B.sale_com1_code AND
-                                          EE.small_classi_code = B.sale_com2_code) AS sale_com2_name,
+                                          EE.small_classi_code = B.sale_com2_code AND
+                                          EE.delete_date IS NULL) AS sale_com2_name,
                                    A.contract_date,
                                    A.progress1_rate_code,
                                    A.progress2_rate_code,
                                    (SELECT DISTINCT NN.great_classi_name
                                     FROM ajict_bms_schema.commonness_code NN
-                                    WHERE NN.great_classi_code = A.progress1_rate_code) AS progress1_rate_name,
+                                    WHERE NN.great_classi_code = A.progress1_rate_code AND
+                                          NN.delete_date IS NULL) AS progress1_rate_name,
                                    (SELECT OO.small_classi_name
                                     FROM ajict_bms_schema.commonness_code OO
                                     WHERE OO.great_classi_code = A.progress1_rate_code AND
-                                          OO.small_classi_code = A.progress2_rate_code) AS progress2_rate_name,
+                                          OO.small_classi_code = A.progress2_rate_code AND
+                                          OO.delete_date IS NULL) AS progress2_rate_name,
                                    B.sale_item_no,
                                    B.sale_date,
                                    B.sale_amt,
@@ -508,41 +536,53 @@ def f_select_biz_opp2(request):
                                    B.biz_section2_code,
                                    (SELECT DISTINCT FF.great_classi_name
                                     FROM ajict_bms_schema.commonness_code FF
-                                    WHERE FF.great_classi_code = B.biz_section1_code) AS biz_section1_name,
+                                    WHERE FF.great_classi_code = B.biz_section1_code AND
+                                          FF.delete_date IS NULL) AS biz_section1_name,
                                    (SELECT GG.small_classi_name
                                     FROM ajict_bms_schema.commonness_code GG
                                     WHERE GG.great_classi_code = B.biz_section1_code AND
-                                          GG.small_classi_code = B.biz_section2_code) AS biz_section2_name,
+                                          GG.small_classi_code = B.biz_section2_code AND
+                                          GG.delete_date IS NULL) AS biz_section2_name,
                                    A.essential_achievement_tf,
                                    B.principal_product1_code,
                                    B.principal_product2_code,
                                    (SELECT DISTINCT HH.great_classi_name
                                     FROM ajict_bms_schema.commonness_code HH
-                                    WHERE HH.great_classi_code = B.principal_product1_code) AS product1_name,
+                                    WHERE HH.great_classi_code = B.principal_product1_code AND
+                                          HH.delete_date IS NULL) AS product1_name,
                                    (SELECT II.small_classi_name
                                     FROM ajict_bms_schema.commonness_code II
                                     WHERE II.great_classi_code = B.principal_product1_code AND
-                                          II.small_classi_code = B.principal_product2_code) AS product2_name,
+                                          II.small_classi_code = B.principal_product2_code AND
+                                          II.delete_date IS NULLAS product2_name,
                                    (SELECT JJ.dept_id
                                     FROM ajict_bms_schema.aj_user JJ
-                                    WHERE JJ.user_id = B.user_id) AS dept_id,
+                                    WHERE JJ.user_id = B.user_id AND
+                                          JJ.delete_date IS NULL) AS dept_id,
                                    (SELECT KK.high_dept_id
                                     FROM ajict_bms_schema.dept KK
                                     WHERE KK.dept_id = (SELECT AAA.dept_id
                                                         FROM ajict_bms_schema.aj_user AAA
-                                                        WHERE AAA.user_id = B.user_id)) AS high_dept_id,
+                                                        WHERE AAA.user_id = B.user_id AND
+                                                              AAA.delete_date IS NULL) AND
+                                          KK.delete_date IS NULL) AS high_dept_id,
                                    (SELECT LL.dept_name
                                     FROM ajict_bms_schema.dept LL
                                     WHERE LL.dept_id = (SELECT BBB.dept_id
                                                         FROM ajict_bms_schema.aj_user BBB
-                                                        WHERE BBB.user_id = B.user_id)) AS dept_name,
+                                                        WHERE BBB.user_id = B.user_id AND
+                                                              BBB.delete_date IS NULL) AND
+                                          LL.delete_date IS NULL) AS dept_name,
                                    (SELECT MM.dept_name
                                     FROM ajict_bms_schema.dept MM
                                     WHERE MM.dept_id = (SELECT CCC.high_dept_id
                                                         FROM ajict_bms_schema.dept CCC
                                                         WHERE CCC.dept_id = (SELECT AAAA.dept_id
                                                                              FROM ajict_bms_schema.aj_user AAAA
-                                                                             WHERE AAAA.user_id = B.user_id))) AS high_dept_name,
+                                                                             WHERE AAAA.user_id = B.user_id AND
+                                                                                   AAAA.delete_date IS NULL) AND
+                                                              CCC.delete_date IS NULL) AND
+                                          MM.delete_date IS NULL) AS high_dept_name,
                                    A.create_user AS biz_opp_create_user,
                                    A.create_date AS biz_opp_create_date,
                                    A.update_user AS biz_opp_update_user,
@@ -558,7 +598,9 @@ def f_select_biz_opp2(request):
                             FROM ajict_bms_schema.biz_opp A,
                                  ajict_bms_schema.biz_opp_detail B
                             WHERE 1 = 1 AND
-                                  A.biz_opp_id = B.biz_opp_id"""
+                                  A.biz_opp_id = B.biz_opp_id AND
+                                  A.delete_date IS NULL AND
+                                  B.delete_date IS NULL"""
          v_param2 = []
          if not v_contract_date_from:
             v_contract_date_from = '19500101'
@@ -596,7 +638,7 @@ def f_select_biz_opp2(request):
                v_sql_biz_opp += " AND B.change_preparation_dept_id = %s"
                v_param2.append(v_team_dept_id)
             if v_user_name:
-               v_sql_biz_opp += " AND B.user_id IN (SELECT PP.user_id FROM ajict_bms_schema.aj_user PP WHERE PP.user_name LIKE '%%' || %s ||'%%')"
+               v_sql_biz_opp += " AND B.user_id IN (SELECT PP.user_id FROM ajict_bms_schema.aj_user PP WHERE PP.user_name LIKE '%%' || %s ||'%%' AND PP.delete_date IS NULL)"
                v_param2.append(v_user_name)
          if v_auth1_code == 'AUT' and v_auth2_code == '0003':
             if v_responsibility1_code == 'RES' and v_responsibility2_code == '0003':
@@ -607,14 +649,14 @@ def f_select_biz_opp2(request):
                   v_sql_biz_opp += " AND B.change_preparation_dept_id = %s"
                   v_param2.append(v_team_dept_id)
                if v_user_name:
-                  v_sql_biz_opp += " AND B.user_id IN (SELECT PP.user_id FROM ajict_bms_schema.aj_user PP WHERE PP.user_name LIKE '%%' || %s ||'%%')"
+                  v_sql_biz_opp += " AND B.user_id IN (SELECT PP.user_id FROM ajict_bms_schema.aj_user PP WHERE PP.user_name LIKE '%%' || %s ||'%%' AND PP.delete_date IS NULL)"
                   v_param2.append(v_user_name)
             if v_responsibility1_code == 'RES' and v_responsibility2_code == '0002':
                if v_team_dept_id:
                   v_sql_biz_opp += " AND B.change_preparation_dept_id = %s"
                   v_param2.append(v_team_dept_id)
                if v_user_name:
-                  v_sql_biz_opp += " AND B.user_id IN (SELECT PP.user_id FROM ajict_bms_schema.aj_user PP WHERE PP.user_name LIKE '%%' || %s ||'%%')"
+                  v_sql_biz_opp += " AND B.user_id IN (SELECT PP.user_id FROM ajict_bms_schema.aj_user PP WHERE PP.user_name LIKE '%%' || %s ||'%%' AND PP.delete_date IS NULL)"
                   v_param2.append(v_user_name)
             if v_responsibility1_code == 'RES' and v_responsibility2_code == '0001':
                v_sql_biz_opp += " AND B.user_id = %s"
@@ -654,19 +696,19 @@ def f_select_popup_biz_opp(request):
    else:
       try:
          v_data = {"search_last_client_com_code":[],"search_biz_section_code":[],"search_principal_product_code":[],"search_dept_id":[]}
-         v_sql_last_client_com_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'COR' ORDER BY small_classi_code"""
+         v_sql_last_client_com_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'COR' AND delete_date IS NULL ORDER BY small_classi_code"""
          with connection.cursor() as v_cursor_last_client_com_code:
             v_cursor_last_client_com_code.execute(v_sql_last_client_com_code)
             v_columns_last_client_com_code = [v_column[0] for v_column in v_cursor_last_client_com_code.description]
             v_rows_last_client_com_code = v_cursor_last_client_com_code.fetchall()
             v_data["search_last_client_com_code"] = [dict(zip(v_columns_last_client_com_code,row)) for row in v_rows_last_client_com_code]
-         v_sql_biz_section_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'BIZ' ORDER BY small_classi_code"""
+         v_sql_biz_section_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'BIZ' AND delete_date IS NULL ORDER BY small_classi_code"""
          with connection.cursor() as v_cursor_biz_section_code:
             v_cursor_biz_section_code.execute(v_sql_biz_section_code)
             v_columns_biz_section_code = [v_column[0] for v_column in v_cursor_biz_section_code.description]
             v_rows_biz_section_code = v_cursor_biz_section_code.fetchall()
             v_data["search_biz_section_code"] = [dict(zip(v_columns_biz_section_code,row)) for row in v_rows_biz_section_code]
-         v_sql_principal_product_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'PRI' ORDER BY small_classi_code"""
+         v_sql_principal_product_code = """SELECT * FROM ajict_bms_schema.commonness_code WHERE great_classi_code = 'PRI' AND delete_date IS NULL ORDER BY small_classi_code"""
          with connection.cursor() as v_cursor_principal_product_code:
             v_cursor_principal_product_code.execute(v_sql_principal_product_code)
             v_columns_principal_product_code = [v_column[0] for v_column in v_cursor_principal_product_code.description]
@@ -720,7 +762,8 @@ def f_insert_biz_opp(request):
                                    delete_user,
                                    delete_date
                                    FROM ajict_bms_schema.aj_user
-                                   WHERE user_id = %s"""
+                                   WHERE user_id = %s AND
+                                         delete_date IS NULL"""
          v_param1 = []
          v_param1.append(v_session_user_id)
          v_auth1_code = ''
@@ -736,8 +779,8 @@ def f_insert_biz_opp(request):
             v_dept_id = v_data_session[0]['dept_id']
          v_biz_opp_id = ''
          with transaction.atomic():
-            v_sql_max = """SELECT CASE WHEN (SELECT COUNT(*) FROM ajict_bms_schema.biz_opp WHERE SUBSTRING(biz_opp_id FROM 1 FOR 4) = TO_CHAR(NOW(),'YYYY')) > 0
-                                       THEN (SELECT TO_CHAR(NOW(),'YYYY') || LPAD(MAX(SUBSTRING(biz_opp_id FROM 5 FOR 4)::INTEGER + 1)::TEXT,4,'0') FROM ajict_bms_schema.biz_opp WHERE SUBSTRING(biz_opp_id FROM 1 FOR 4) = TO_CHAR(NOW(),'YYYY'))
+            v_sql_max = """SELECT CASE WHEN (SELECT COUNT(*) FROM ajict_bms_schema.biz_opp WHERE SUBSTRING(biz_opp_id FROM 1 FOR 4) = TO_CHAR(NOW(),'YYYY') AND delete_date IS NULL) > 0
+                                       THEN (SELECT TO_CHAR(NOW(),'YYYY') || LPAD(MAX(SUBSTRING(biz_opp_id FROM 5 FOR 4)::INTEGER + 1)::TEXT,4,'0') FROM ajict_bms_schema.biz_opp WHERE SUBSTRING(biz_opp_id FROM 1 FOR 4) = TO_CHAR(NOW(),'YYYY') AND delete_date IS NULL)
                                        ELSE TO_CHAR(NOW(),'YYYY') || '0001'
                                   END AS biz_opp_id"""
             with connection.cursor() as v_cursor:
@@ -850,7 +893,7 @@ def f_insert_biz_opp(request):
                   v_square_bracket_return = [v_return]
                   return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
                else:
-                  v_sql_user = """SELECT user_id FROM ajict_bms_schema.aj_user WHERE user_name = %s"""
+                  v_sql_user = """SELECT user_id FROM ajict_bms_schema.aj_user WHERE user_name = %s AND delete_date IS NULL"""
                   v_param_select_user = []
                   v_param_select_user.append(v_user_name)
                   with connection.cursor() as v_cursor:
@@ -1034,7 +1077,7 @@ def f_insert_biz_opp(request):
                                                                                                                  1,
                                                                                                                  %s,
                                                                                                                  %s,
-                                                                                                                 (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s),
+                                                                                                                 (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s AND A.delete_date IS NULL),
                                                                                                                  'COR',
                                                                                                                  %s,
                                                                                                                  'COR',
@@ -1144,7 +1187,7 @@ def f_delete_biz_opp(request):
       try:
          v_param_delete_biz_opp = []
          with transaction.atomic():
-            v_sql_delete_biz_opp = """UPDATE ajict_bms_schema.biz_opp SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"""
+            v_sql_delete_biz_opp = """UPDATE ajict_bms_schema.biz_opp SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_delete_biz_opp.append(v_session_user_id)
             v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
             if v_biz_opp_id is not None:

@@ -665,8 +665,8 @@ def f_select_biz_opp2(request):
                                      B.detail_no"
 
          #test
-         v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
-         print(f"f_select_biz_opp2()에서의 v_formatted_sql : {v_formatted_sql}")
+         #v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
+         #print(f"f_select_biz_opp2()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:
@@ -1199,7 +1199,7 @@ def f_delete_biz_opp(request):
          with transaction.atomic():
             v_sql_delete_biz_opp = """UPDATE ajict_bms_schema.biz_opp SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_delete_biz_opp.append(v_session_user_id)
-            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
             if v_biz_opp_id is not None:
                v_biz_opp_id = v_biz_opp_id.strip()
             v_param_delete_biz_opp.append(v_biz_opp_id)

@@ -1186,6 +1186,10 @@ def f_delete_biz_opp(request):
    else:
       try:
          v_param_delete_biz_opp = []
+         v_param_delete_biz_opp_detail = []
+         v_param_delete_biz_opp_history = []
+         v_param_delete_biz_opp_detail_history = []
+         v_param_delete_biz_opp_activity = []
          with transaction.atomic():
             v_sql_delete_biz_opp = """UPDATE ajict_bms_schema.biz_opp SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_delete_biz_opp.append(v_session_user_id)
@@ -1195,6 +1199,38 @@ def f_delete_biz_opp(request):
             v_param_delete_biz_opp.append(v_biz_opp_id)
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_delete_biz_opp,v_param_delete_biz_opp)
+            v_sql_delete_biz_opp_detail = """UPDATE ajict_bms_schema.biz_opp_detail SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
+            v_param_delete_biz_opp_detail.append(v_session_user_id)
+            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            if v_biz_opp_id is not None:
+               v_biz_opp_id = v_biz_opp_id.strip()
+            v_param_delete_biz_opp_detail.append(v_biz_opp_id)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql_delete_biz_opp_detail,v_param_delete_biz_opp_detail)
+            v_sql_delete_biz_opp_history = """UPDATE ajict_bms_schema.biz_opp_history SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
+            v_param_delete_biz_opp_history.append(v_session_user_id)
+            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            if v_biz_opp_id is not None:
+               v_biz_opp_id = v_biz_opp_id.strip()
+            v_param_delete_biz_opp_history.append(v_biz_opp_id)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql_delete_biz_opp_history,v_param_delete_biz_opp_history)
+            v_sql_delete_biz_opp_detail_history = """UPDATE ajict_bms_schema.biz_opp_detail_history SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
+            v_param_delete_biz_opp_detail_history.append(v_session_user_id)
+            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            if v_biz_opp_id is not None:
+               v_biz_opp_id = v_biz_opp_id.strip()
+            v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql_delete_biz_opp_detail_history,v_param_delete_biz_opp_detail_history)
+            v_sql_delete_biz_opp_activity = """UPDATE ajict_bms_schema.biz_opp_activity SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
+            v_param_delete_biz_opp_activity.append(v_session_user_id)
+            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            if v_biz_opp_id is not None:
+               v_biz_opp_id = v_biz_opp_id.strip()
+            v_param_delete_biz_opp_activity.append(v_biz_opp_id)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql_delete_biz_opp_activity,v_param_delete_biz_opp_activity)
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
             v_square_bracket_return = [v_return]
             return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})

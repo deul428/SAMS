@@ -210,7 +210,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         acc[high_dept_id].push(items);
             return acc;
         }, {});
-        // console.log("mappingTeamByDept: ", mappingTeamByDept);
 
         setVTeamByDept(mappingTeamByDept);
     }
@@ -219,7 +218,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
     const [v_selectTeam, setVSelectTeam] = useState([]);
     // 본부 선택 핸들러
     const f_handlingDept = (e) => {
-        // console.log(e.target.name, e.target.value);
         if (e.target.name === 'a_headquarters_dept_id') {
             // setVSelectDept(e.target.value);
             setVSelectTeam(v_teamByDept[e.target.value.trim()] || []);
@@ -547,24 +545,17 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     // 디버깅용
     useEffect(() => {
-        // if (v_componentName === 'activity') {
-            console.log(
-                v_teamHandling,
-                v_deptHandling
-            /* `input: `, input,
-            `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
-    
-            `\n\n출처: f_teamLinkedDept()\nv_teamByDept: `, v_teamByDept,
-            
-            `\nv_selectTeam: `, v_selectTeam,
-    
-            `\nv_filteredProTo: `, v_filteredProTo,
-            `\n\nv_deptHandling: `, v_deptHandling, `\nv_teamHandling: `, v_teamHandling, `\nv_userHandling: `, v_userHandling */
-            );
-            /* v_selectTeam.map((item) => (     
-                console.log("\nitem.dept_id: ", item.dept_id, "\nitem.dept_name: ", item.dept_name)
-            )) */
-        // }
+        console.log(
+        `input: `, input,
+        `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
+
+        `\n\n출처: f_teamLinkedDept()\nv_teamByDept: `, v_teamByDept,
+        
+        `\nv_selectTeam: `, v_selectTeam,
+
+        `\nv_filteredProTo: `, v_filteredProTo,
+        `\n\nv_deptHandling: `, v_deptHandling, `\nv_teamHandling: `, v_teamHandling, `\nv_userHandling: `, v_userHandling
+        );
     }, [
         input,
         v_depts, v_teams, v_teamByDept,

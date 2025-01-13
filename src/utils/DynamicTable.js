@@ -21,7 +21,6 @@ function DynamicTable({ v_componentName, v_propsData, res }) {
   const [v_childComponent, setVChildComponent] = useState(null);
 
   const openModal = (e, handling, isHistory) => {
-    // console.log('e: ', e, '\nhandling: ', handling);
     if (isHistory === null) {
       setVChildComponent('InputFieldDetail');
     } else {

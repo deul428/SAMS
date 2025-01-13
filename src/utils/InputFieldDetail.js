@@ -11,20 +11,13 @@ import { Modal, Button, Form, Row, Col, ListGroup, FloatingLabel } from 'react-b
 
 const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData, authLevels }) => {
     // v_propsData: inputField에서 받아오는 list 포함 데이터 / v_modalPropsData: dynamicTable에서 받아오는 테이블 데이터, 사용자가 선택한 행의 데이터만 불러옴
-    // console.log(authLevels);
+    console.log(authLevels);
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = useSelector((state) => state.location.currentPath);
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
     const [endpoint, setEndpoint] = useState(null);
     
-    // 삭제 누를 시 confirm 
-    const f_warningMsg = () => {
-        if (window.confirm('정말 삭제하시겠습니까?')){
-            alert('정상적으로 삭제되었습니다.');
-            onHide(true);
-        }
-    }
     // ================= 사업 기회 조회 테이블부 핸들링 ================= 
     // -------------- 세션 대체용 userId 송신 -------------- 
     const auth = useSelector((state) => state.auth);
@@ -87,8 +80,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         a_activity_details: '',
         a_activity_date: '',
     }
-
-
 
     const p_bizopp_update = {
         a_session_user_id: auth.userId,
@@ -223,6 +214,26 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // ================= POST ================= 
     const [getData, setGetData] = useState(null);
     const f_handlingData = async (method, endpoint, input = null, e, msg) => {
+        if (msg === '삭제' && a_v_modalPropsData) {
+            // 삭제 누를 시 confirm 
+            const f_warningMsg = () => {
+                input = {
+                    a_session_user_id: input.a_session_user_id,
+                    biz_opp: {
+                        a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id
+                    }
+                };
+                console.log('delete mode', updateInput.a_session_user_id, a_v_modalPropsData.a_biz_opp_id, input);
+                if (window.confirm(`정말 ${a_v_modalPropsData.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`)){
+                    alert('정상적으로 삭제되었습니다.');
+                    onHide(true);
+                    return input;
+                } else {
+                    return;
+                }
+            }
+            f_warningMsg();
+        }
         let confirmMsg;
         console.log("-----------------input--------------", input);
         if (input && e) {
@@ -782,12 +793,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 (<>
                                                 <Button variant='warning'>사업 (기회) 복제</Button>
                                                 <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', updateInput, e)}>수정</Button>
-                                                <Button variant='danger' onClick={f_warningMsg}>삭제</Button>
+                                                <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp/', updateInput, e, '삭제')}>삭제</Button>
                                                 </>) 
                                                 : 
                                                 (<>
                                                 <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e)}>등록</Button> 
-                                                <Button variant='danger' onClick={f_warningMsg}>삭제</Button>
+                                                {/* <Button variant='danger' onClick={f_warningMsg}>삭제</Button> */}
                                                 </>)
                                             )
                                         }

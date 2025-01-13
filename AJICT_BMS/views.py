@@ -41,7 +41,7 @@ def f_login(request):
             v_data1 = {'STATUS':'FAIL','MESSAGE':'존재하지 않는 사용자 ID입니다.'}
             v_square_bracket_data1 = [v_data1]
             return JsonResponse(v_square_bracket_data1,safe = False,json_dumps_params={'ensure_ascii':False})
-      v_sql2 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s AND cipher = %s"""
+      v_sql2 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s AND cipher = %s WHERE delete_date IS NULL"""
       v_param2=[]
       v_param2.append(v_user_id)
       v_param2.append(v_cipher)
@@ -72,7 +72,8 @@ def f_login(request):
                          delete_date
                   FROM ajict_bms_schema.aj_user
                   WHERE user_id = %s AND
-                        cipher = %s"""
+                        cipher = %s AND
+                        delete_date IS NULL"""
       v_param3 = []
       v_param3.append(v_user_id)
       v_param3.append(v_cipher)
@@ -141,7 +142,7 @@ def f_update_cipher_change(request):
       return JsonResponse(v_return,safe = False,json_dumps_params={'ensure_ascii':False})
    try:
       with transaction.atomic():
-         v_sql = """UPDATE ajict_bms_schema.aj_user SET cipher = %s,beginning_login_tf = FALSE,update_date = CURRENT_TIMESTAMP WHERE user_id = %s"""
+         v_sql = """UPDATE ajict_bms_schema.aj_user SET cipher = %s,beginning_login_tf = FALSE,update_date = CURRENT_TIMESTAMP WHERE user_id = %s WHERE delete_date IS NULL"""
          v_param=[]
          v_param.append(v_new_cipher)
          v_param.append(v_session_user_id)
@@ -599,8 +600,10 @@ def f_select_biz_opp2(request):
                v_param2.append(v_user_name)
          if v_auth1_code == 'AUT' and v_auth2_code == '0003':
             if v_responsibility1_code == 'RES' and v_responsibility2_code == '0003':
-               if v_team_dept_id:
-                  #v_sql_biz_opp += " AND B.change_preparation_dept_id = %s"
+               if v_headquarters_dept_id and not v_team_dept_id:
+                  v_sql_biz_opp += " AND B.change_preparation_dept_id LIKE SUBSTRING(%s FROM 1 FOR 3) || '%%'"
+                  v_param2.append(v_headquarters_dept_id)
+               if v_headquarters_dept_id and v_team_dept_id:
                   v_sql_biz_opp += " AND B.change_preparation_dept_id LIKE SUBSTRING(%s FROM 1 FOR 3) || '%%'"
                   v_param2.append(v_team_dept_id)
                if v_user_name:

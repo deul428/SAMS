@@ -554,7 +554,7 @@ def f_select_biz_opp2(request):
                                     FROM ajict_bms_schema.commonness_code II
                                     WHERE II.great_classi_code = B.principal_product1_code AND
                                           II.small_classi_code = B.principal_product2_code AND
-                                          II.delete_date IS NULLAS product2_name,
+                                          II.delete_date IS NULL) AS product2_name,
                                    (SELECT JJ.dept_id
                                     FROM ajict_bms_schema.aj_user JJ
                                     WHERE JJ.user_id = B.user_id AND

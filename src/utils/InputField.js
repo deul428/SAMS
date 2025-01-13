@@ -490,7 +490,13 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     teamValue: team[0].dept_id,
                     teamMsg: team[0].dept_name,
                 })
-            };
+            } else {
+                setVTeamHandling((team) => ({
+                    ...team,
+                    teamValue: dept[0].dept_id,
+                    // teamMsg: dept[0].dept_name,
+                }))
+            }
             setVDeptHandling({
                 deptValue: dept[0].dept_id,
                 deptMsg: dept[0].dept_name,
@@ -543,7 +549,9 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
     useEffect(() => {
         // if (v_componentName === 'activity') {
             console.log(
-            `input: `, input,
+                v_teamHandling,
+                v_deptHandling
+            /* `input: `, input,
             `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
     
             `\n\n출처: f_teamLinkedDept()\nv_teamByDept: `, v_teamByDept,
@@ -551,7 +559,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             `\nv_selectTeam: `, v_selectTeam,
     
             `\nv_filteredProTo: `, v_filteredProTo,
-            `\n\nv_deptHandling: `, v_deptHandling, `\nv_teamHandling: `, v_teamHandling, `\nv_userHandling: `, v_userHandling
+            `\n\nv_deptHandling: `, v_deptHandling, `\nv_teamHandling: `, v_teamHandling, `\nv_userHandling: `, v_userHandling */
             );
             /* v_selectTeam.map((item) => (     
                 console.log("\nitem.dept_id: ", item.dept_id, "\nitem.dept_name: ", item.dept_name)

@@ -604,7 +604,7 @@ def f_select_biz_opp2(request):
                   v_sql_biz_opp += " AND B.change_preparation_dept_id LIKE SUBSTRING(%s FROM 1 FOR 3) || '%%'"
                   v_param2.append(v_headquarters_dept_id)
                if v_headquarters_dept_id and v_team_dept_id:
-                  v_sql_biz_opp += " AND B.change_preparation_dept_id LIKE SUBSTRING(%s FROM 1 FOR 3) || '%%'"
+                  v_sql_biz_opp += " AND B.change_preparation_dept_id = %s"
                   v_param2.append(v_team_dept_id)
                if v_user_name:
                   v_sql_biz_opp += " AND B.user_id IN (SELECT PP.user_id FROM ajict_bms_schema.aj_user PP WHERE PP.user_name LIKE '%%' || %s ||'%%')"

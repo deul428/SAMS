@@ -393,10 +393,16 @@ def f_select_biz_opp1(request):
          print(f"f_select_biz_opp1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
-         with connection.cursor() as v_cursor_biz_opp:
-            v_cursor_biz_opp.execute(v_sql_biz_opp,v_param2)
-            v_columns_biz_opp = [v_column[0] for v_column in v_cursor_biz_opp.description]
-            v_rows_biz_opp = v_cursor_biz_opp.fetchall()
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql_biz_opp,v_param2)
+            v_columns_biz_opp = [v_column[0] for v_column in v_cursor.description]
+            v_rows_biz_opp = v_cursor.fetchall()
+
+
+#test
+            print(f"f_select_biz_opp1()에서의 v_rows_biz_opp : {v_rows_biz_opp}")
+
+
             v_data["retrieve_biz_opp"] = [dict(zip(v_columns_biz_opp,row)) for row in v_rows_biz_opp]
             if not v_data["retrieve_biz_opp"]:
                v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}

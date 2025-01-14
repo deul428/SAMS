@@ -104,10 +104,10 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   const [v_handlingHtml, setVHandlingHtml] = useState(null);
   // =================== input field에서 넘어온 값(res)에 따라 핸들링 ===================
   // res obj / res.data arr
-  console.log("res---------------------------------------\n", res);
   useEffect(() => {
+    console.log("res---------------------------------------\n", res);
     if (v_componentName === 'bizOpp') {
-      if ((!res) || (Object.keys(res).length === 0) || (res.length === 0)) {
+      if ((!res) || (Object.keys(res).length === 0) || (Array.isArray(res) && res.length > 0)) {
         setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
         return;
       } else {
@@ -317,7 +317,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
           setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
       }
     }
-  }, [v_childComponent, v_componentName, page, showModal]);
+  }, [v_childComponent, v_componentName, page, showModal, res]);
 
   return (
     <div id="tableArea">

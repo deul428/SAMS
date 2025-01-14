@@ -457,7 +457,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                 team = '';
                 // console.log('no dept, no team');
             }
-            console.log(dept, team);
+            // console.log(dept, team);
     
             let checkDeptId = deptId.substr(0, 3);
             switch (checkDeptId) {
@@ -563,7 +563,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     // setAuthLevels(authCheck());
     // 디버깅용
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(
         `input: `, input,
         `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
@@ -581,10 +581,10 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         v_selectTeam,
         v_filteredProTo,
         v_deptHandling, v_teamHandling, v_userHandling
-    ])
+    ]) */
 
     useEffect(() => {
-        console.log("=-=-==-=--=data:-=-=-=--=-", data);
+        // console.log("=-=-==-=--=data:-=-=-=--=-", data);
         if (Object.keys(data).length > 0) {
             switch(v_componentName) {
                 case 'bizOpp':

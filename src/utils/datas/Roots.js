@@ -76,7 +76,30 @@ const roots = {
         { Header: '활동 이력', accessor: 'activity_details'},
     ]
     },
-    activity: {depth1: 'activity', depth2: '', endpoint: 'activity/', component: Activity},
+    activity: {depth1: 'activity', depth2: '', endpoint: 'activity/', component: Activity,
+        props: [
+            { Header: '본부', accessor: 'high_dept_name' },
+            { Header: '팀', accessor: 'dept_name' },
+            { Header: '영업 담당자', accessor: 'user_name' },
+
+            { Header: '사업 일련 번호', accessor: 'biz_opp_id'},
+            { Header: '사업 (기회) 명', accessor: 'biz_opp_name' },
+            { Header: '계약 일자', accessor: 'contract_date',
+            Cell: ({value}) => v_handlingDate(value) },
+            { Header: '매출 일자', accessor: 'sale_date',
+            Cell: ({value}) => v_handlingDate(value) },
+            { Header: '매출 금액', accessor: 'sale_amt', 
+            Cell: ({value}) => v_handlingNum(value) },
+            { Header: '매출 이익', accessor: 'sale_profit', 
+            Cell: ({value}) => v_handlingNum(value) },
+            { Header: '사업 구분', accessor: 'biz_section2_name' },
+            { Header: '제품 구분', accessor: 'product2_name' },
+
+            { Header: '업데이트 일자', accessor: 'activity_date', 
+            Cell: ({value}) => v_handlingNum(value) },
+            { Header: '활동 내역', accessor: 'activity_details'},
+        ]
+    },
     aimManage: {depth1: 'aim', depth2: 'manage', component: Home},
     aimacheive: {depth1: 'aim', depth2: 'achievement', component: Home},
     home: {depth1: 'home', depth2: '', url: 'home/', component: Home}, 

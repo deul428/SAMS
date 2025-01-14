@@ -72,9 +72,6 @@ const AuthLogin = () => {
         try {
             // 최초 로그인 비밀번호 변경 로직
             if (firstLoggedIn) {
-                console.log("========= 비밀번호 변경 =========");
-                console.log("user Input: ", pwInput);
-
                 // 유효값 검사
                 const passwordRegex = /^(?=.*[a-z])(?=.*\d)[a-z\d]{5,}$/;
                 if (!passwordRegex.test(pwInput.a_new_cipher)) {
@@ -98,7 +95,10 @@ const AuthLogin = () => {
 
                 await dispatch(login({ ...auth, userId: auth.userId, userPw: pwInput.a_new_cipher }));
                 
-                console.log("========= 비밀번호 변경 끝 =========");
+                console.log(`
+                ========= 비밀번호 변경 =========
+                \n${JSON.stringify(response, null, 2)}
+                \n======= 비밀번호 변경 끝 =========`);
                 // 이전 경로로 리디렉션
                 const from = location.state?.from?.pathname || `/${roots.home.url}`;
                 setRedirect(from);
@@ -110,9 +110,7 @@ const AuthLogin = () => {
                 }
                 // API 호출
                 const response = await apiMethods[method](endpoint, input);
-                console.log(response);
                 if(response.length === 1) {
-                    console.log(response);
                     alert(response[0].MESSAGE);
                     return;
                 }
@@ -121,7 +119,7 @@ const AuthLogin = () => {
 
                 // 로그인 성공 시 객체 length 2. (데이터부, 상태부)
                 if (response.length === 2) {
-                    console.log("로그인 성공.", "\nresponse[0][0] (data): ", res, "\nresponse[1][0] (msg): ", resStts);
+                    console.log("로그인 성공.", "\nresponse (data): ", res, "\nresponse (msg): ", resStts);
                     if (resStts.STATUS === 'LOGIN') {
                         // Redux에 로그인 정보 저장
                         await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher, userName: res.user_name, userResCode: res.responsibility2_code, userDeptCode: res.dept_id, userAuthCode: res.auth2_code }));

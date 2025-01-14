@@ -97,9 +97,9 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     // const [submit, setSubmit] = useState();
     const f_submitData = async (method, endpoint, input = null, e, msg) => {
-        if (input) {
+        /* if (input) {
             console.log("input============================:\n", input);
-        }
+        } */
         if (e && e !== 'cancel') {
             e.preventDefault(); // submit 방지
         } 
@@ -122,14 +122,14 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     return;
                 }
             }
-            console.log("submit 될 input data\n", input, e);
+            console.log("submit 될 input data\n", input, "\ne: ", e);
 
             const response = await apiMethods[method](endpoint, input);
             if (response.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
                 setRes([]);
                 return;
             } else {
-                console.log('input Field response 송신 완료', "\nendpoint: ", endpoint, "\nresponse: ", response);
+                console.log(`API Get (수신)\nEndpoint: (inputField.js) ${endpoint}\nresponse: `, response);
                 setRes(response);
                 // setSubmit(response);
                 return response;
@@ -278,7 +278,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         // 권한별 UI 
         // Level 1. 권한(AUT) Check 0001admin / 0002guest / 0003none
         const f_authLevel1 = () => {
-            console.log(`auth.userAuthCode: ${auth.userAuthCode} \nauth.userResCode: ${auth.userResCode} \nauth.userDeptCode: ${auth.userDeptCode}`);
+            // console.log(`auth.userAuthCode: ${auth.userAuthCode} \nauth.userResCode: ${auth.userResCode} \nauth.userDeptCode: ${auth.userDeptCode}`);
             
             switch(auth.userAuthCode) {
                 //1. admin
@@ -455,9 +455,9 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             } else {
                 dept = '';
                 team = '';
-                console.log('no dept, no team');
+                // console.log('no dept, no team');
             }
-            console.log(dept, team);
+            // console.log(dept, team);
     
             let checkDeptId = deptId.substr(0, 3);
             switch (checkDeptId) {
@@ -523,7 +523,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     a_dept_id: team[0].dept_id,
                 };
             } else {
-                console.log('no team');
+                // console.log('no team');
                 updatedInput = {
                     ...input,
                     // a_headquarters_dept_id: dept[0].high_dept_id,
@@ -532,7 +532,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             }
     
             setInput(updatedInput);
-            f_submitData('post', endpoint, updatedInput);
             
             // setInput((prevInput) => ({
             //     ...prevInput,
@@ -548,7 +547,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     // setAuthLevels(authCheck());
     // 디버깅용
-    useEffect(() => {
+/*     useEffect(() => {
         console.log(
         `input: `, input,
         `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
@@ -566,11 +565,10 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         v_selectTeam,
         v_filteredProTo,
         v_deptHandling, v_teamHandling, v_userHandling
-    ])
+    ]) */
 
     useEffect(() => {
         // console.log("=-=-==-=--=data:-=-=-=--=-", data);
-        // console.log("submit: ", submit );
         if (Object.keys(data).length > 0) {
             switch(v_componentName) {
                 case 'bizOpp':

@@ -30,7 +30,6 @@ const apiUrl = axios.create({
 const api = {
     request: async (method, url, data = null) => {
         try {
-            console.log('api 부\n출처: ', url);
             /* if (method === 'post') {
                 console.log(data);
                 // if (Object.values(data).some(e => !e)){
@@ -45,7 +44,7 @@ const api = {
             // console.log(cookies, test);
             
             if (method !== 'get') {
-                console.log(`API Post/Patch/Put/Del (송신)\nEndpoint: ${url}\nData:`, data);
+                console.log(`API Post/Patch/Put/Del (송신)\nEndpoint (출처): ${url}\nData:`, data);
             } /* else {
                 console.log(`API Get (수신)\nEndpoint:\nresponse: `, response);
             } */

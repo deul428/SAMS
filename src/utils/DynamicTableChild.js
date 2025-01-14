@@ -16,6 +16,18 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
 
   // 테이블 헤더 키 값 갖고 오기
   let rootsData = null;
+  if(roots.bizoppHistory.props) {
+    // rootsData = roots.bizoppHistory.props.map(([accessor]) => [`u_${accessor}`])
+    
+    rootsData = Object.fromEntries(
+      Object.entries(roots.bizoppHistory.props).map(([accessor, e]) => roots.bizoppHistory.props[`u_${accessor}`])
+    ); 
+    /* rootsData = Object.fromEntries(
+      Object.entries(roots.bizoppHistory.props).map(([accessor]) => [`u_${accessor}`])
+    );  */
+    console.log("rootsData: ",rootsData, typeof(rootsData))
+  }
+
   switch(v_componentName) {
     case `bizOppHistory`: 
       rootsData = roots.bizoppHistory.props;

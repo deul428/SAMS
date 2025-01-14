@@ -15,7 +15,8 @@ const Activity = () => {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
-    const endpoint = roots.bizoppSelect1.endpoint;
+    const endpoint = 'select-biz-opp-activity1/';
+    // const endpoint = roots.bizoppSelect1.endpoint;
 
     const [showModal, setShowModal] = useState(false);
     const openModal = () => setShowModal(true);
@@ -92,7 +93,7 @@ const Activity = () => {
                         :   
                         (data.length === 0 ? 
                             (<p>데이터를 불러오는 중입니다...</p>) : 
-                            (<DynamicTable v_componentName={'activity'} v_propsData={data} res={res}/>)
+                            (<DynamicTable v_componentName={'activity'} tableData={data.data.retrieve_biz_opp_activity} tableColumns={roots.activity.props} v_propsData={data} res={res}/>)
                         )
                     }
                 </div>

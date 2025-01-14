@@ -79,7 +79,13 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     useSortBy, usePagination
   );
   
-  let activityRow;
+/*   console.log(
+    `
+    pageCount: ${pageCount}
+    pageIndex: ${pageIndex}
+    pageSize: ${pageSize}
+    `
+  ) */
   // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
   useEffect(() => {
     if (!v_propsData || Object.keys(v_propsData).length === 0) {
@@ -93,8 +99,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         break;
       case 'activity':
         setData(v_propsData.data.retrieve_biz_opp_activity);
-        activityRow = [...v_propsData.data.retrieve_biz_opp_activity]; 
-        console.log("activityRow: ", activityRow);
         break;
       default: break;
     }
@@ -301,12 +305,85 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
           htmlContent = (
             <>
             <Table bordered hover responsive {...getTableProps()}>
-              <th>{}</th>
-              <td>test</td>
-              <th>test2</th>
-              <td>test2</td>
-              <th>test3</th>
-              <td>test3</td>
+              <thead>
+                {headerGroups.map((headerGroup) => {
+                  const { key, ...restProps } = headerGroup.getHeaderGroupProps();
+                  return (
+                    <tr key={key} {...restProps}>
+                      {headerGroup.headers.map((column) => {
+                        const { key, ...restProps } = column.getHeaderProps(column.getSortByToggleProps());
+                        return (
+                          <>
+                          <th key={key} {...restProps}>
+                            {
+                              (key === 'header_high_dept_name' || key === 'header_dept_name' || key === 'header_user_name') ? 
+                              <span>{column.render('Header')}</span>
+                              : 
+                              ('')
+                            }
+                            
+                            <span className='ms-1'>
+                              {column.isSorted ? (column.isSortedDesc ? <CaretDown /> : <CaretUp />) : ''}
+                            </span>
+                          </th>
+                          </>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+                {headerGroups.map((headerGroup) => {
+                  const { key, ...restProps } = headerGroup.getHeaderGroupProps();
+                  return (
+                    <tr key={key} {...restProps}>
+                      {headerGroup.headers.map((column) => {
+                        const { key, ...restProps } = column.getHeaderProps(column.getSortByToggleProps());
+                        return (
+                          <>
+                          <th key={key} {...restProps}>
+                            {
+                              (key !== 'header_high_dept_name' || key !== 'header_dept_name' || key !== 'header_user_name') ? 
+                              <span>{column.render('Header')}</span>
+                              : 
+                              ('')
+                              /* restProps.colSpan = 10
+                              :
+                              ('') */
+                            }
+                            
+                            <span className='ms-1'>
+                              {column.isSorted ? (column.isSortedDesc ? <CaretDown /> : <CaretUp />) : ''}
+                            </span>
+                          </th>
+                          </>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {page.map(row => {
+                  prepareRow(row);
+                  const { key, ...restProps } = row.getRowProps();
+                  return (
+                    <tr key={key} {...restProps}>
+                      {row.cells.map((cell, index) => {
+                        const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
+                        return (
+                          <td key={key} {...restProps}>
+                            {(index === row.cells.length - 1) ? 
+                            (<Button size="sm" variant="light" onClick={(e) => {openModal();}}>이력</Button>)
+                            : 
+                            cell.render('Cell')
+                            }
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
             </Table>
             </>
           )

@@ -7,7 +7,6 @@ import '../styles/_home.scss';
 export default function Home() {
     const auth = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-    console.log(`AuthHome.js: ${JSON.stringify(auth)}`);
     return (
         <div id='home' className='wrap'>
             {auth.isLoggedIn ?

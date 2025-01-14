@@ -387,6 +387,12 @@ def f_select_biz_opp1(request):
                v_param2.append(v_user_id)
          v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
                                      B.detail_no"
+
+         #test
+         v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
+         print(f"f_select_biz_opp1()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
          with connection.cursor() as v_cursor_biz_opp:
             v_cursor_biz_opp.execute(v_sql_biz_opp,v_param2)
             v_columns_biz_opp = [v_column[0] for v_column in v_cursor_biz_opp.description]
@@ -1313,7 +1319,7 @@ def f_select_biz_opp_activity1(request):
             #logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
 
 
-         v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp":[]}
+         v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp_activity":[]}
          v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 5 AND delete_date IS NULL ORDER BY dept_id"""
          with connection.cursor() as v_cursor_headquarters:
             v_cursor_headquarters.execute(v_sql_headquarters)
@@ -1482,8 +1488,8 @@ def f_select_biz_opp_activity1(request):
             v_cursor_biz_opp.execute(v_sql_biz_opp_activity,v_param2)
             v_columns_biz_opp = [v_column[0] for v_column in v_cursor_biz_opp.description]
             v_rows_biz_opp = v_cursor_biz_opp.fetchall()
-            v_data["retrieve_biz_opp"] = [dict(zip(v_columns_biz_opp,row)) for row in v_rows_biz_opp]
-            if not v_data["retrieve_biz_opp"]:
+            v_data["retrieve_biz_opp_activity"] = [dict(zip(v_columns_biz_opp,row)) for row in v_rows_biz_opp]
+            if not v_data["retrieve_biz_opp_activity"]:
                v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
             else:
                v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}

@@ -84,7 +84,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   useEffect(() => {
     if (!v_propsData || Object.keys(v_propsData).length === 0) {
       console.warn("v_propsData가 비어 있습니다.");
-      setData([]); // 기본값으로 빈 배열 설정
+      // setData([]); // 기본값으로 빈 배열 설정
       return;
     }  
     switch (v_componentName){
@@ -104,17 +104,17 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   const [v_handlingHtml, setVHandlingHtml] = useState(null);
   // =================== input field에서 넘어온 값(res)에 따라 핸들링 ===================
   // res obj / res.data arr
+  console.log("res---------------------------------------\n", res);
   useEffect(() => {
     if (v_componentName === 'bizOpp') {
-      if (!res || Object.keys(res).length === 0 || res.length === 0) {
-        console.log('데이터 없음');
+      if ((!res) || (Object.keys(res).length === 0) || (res.length === 0)) {
         setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
         return;
       } else {
-        console.log("res---------------------------------------\n", res/* , typeof(res) */);
         // console.log(res);
         if (res.data.length > 0) {
-          setData(res?.data);
+          console.log("res.data.length: ", res.data.length);
+          setData(res.data);
         }
       }
     } else if (v_componentName === 'activity') {
@@ -207,7 +207,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     </Pagination>
   )
   // =================== pagination 끝 ===================
-
   // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
   const [sortStyle, setSortStyle] = useState({"opacity":"0.3"});
 
@@ -226,12 +225,14 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
 
   useEffect(() => {
-    if (!data) {
+/*     if (data === null || (typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length === 0) || (Array.isArray(data) && data.length === 0)) {
+      return <div>Loading...</div>;
+    } */
+    if (!data && (Array.isArray(res) && res.length === 0)) {
       return <div>Loading...</div>;
     }
-
     let htmlContent = null;
-    if (data.length > 0 || data) {
+    if ((typeof(data) === 'object' && data) || (Array.isArray(data) && data.length > 0)) {
       switch (v_componentName) {
         case `bizOpp`: 
           htmlContent = (

@@ -457,7 +457,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                 team = '';
                 // console.log('no dept, no team');
             }
-            // console.log(dept, team);
+            console.log(dept, team);
     
             let checkDeptId = deptId.substr(0, 3);
             switch (checkDeptId) {
@@ -483,7 +483,23 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     deptDisabled: true,
                 });
             } else if (resCode === '0003') {
-                if (v_teamHandling.teamValue) {
+                if (dept && team) {
+                    if (v_selectTeam.length > 0) {
+                        setVTeamHandling({
+                            teamDisabled: false,
+                            teamValue: team[0].dept_id,
+                            teamMsg: team[0].dept_name,
+                        })
+                    } else {
+                        setVTeamHandling({
+                            teamDisabled: false,
+                            teamValue: team[0].dept_id,
+                            teamMsg: team[0].dept_name,
+                        })
+                    }
+                }
+                
+                /*  if (v_teamHandling.teamValue) {
                     setVTeamHandling({
                         teamValue: team[0].dept_id,
                         teamMsg: team[0].dept_name,
@@ -492,9 +508,9 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     setVTeamHandling((team) => ({
                         ...team,
                         teamValue: dept[0].dept_id,
-                        // teamMsg: dept[0].dept_name,
+                        teamMsg: dept[0].dept_name,
                     }))
-                }
+                } */
                 setVDeptHandling({
                     deptValue: dept[0].dept_id,
                     deptMsg: dept[0].dept_name,
@@ -526,7 +542,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                 // console.log('no team');
                 updatedInput = {
                     ...input,
-                    // a_headquarters_dept_id: dept[0].high_dept_id,
+                    a_headquarters_dept_id: dept[0].dept_id,
                     a_dept_id: dept[0].dept_id,
                 };
             }
@@ -547,7 +563,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     // setAuthLevels(authCheck());
     // 디버깅용
-/*     useEffect(() => {
+    useEffect(() => {
         console.log(
         `input: `, input,
         `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
@@ -565,10 +581,10 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         v_selectTeam,
         v_filteredProTo,
         v_deptHandling, v_teamHandling, v_userHandling
-    ]) */
+    ])
 
     useEffect(() => {
-        // console.log("=-=-==-=--=data:-=-=-=--=-", data);
+        console.log("=-=-==-=--=data:-=-=-=--=-", data);
         if (Object.keys(data).length > 0) {
             switch(v_componentName) {
                 case 'bizOpp':

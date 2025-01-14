@@ -404,6 +404,12 @@ def f_select_biz_opp1(request):
 
 
             v_data["retrieve_biz_opp"] = [dict(zip(v_columns_biz_opp,row)) for row in v_rows_biz_opp]
+
+
+#test
+            print(f"f_select_biz_opp1()에서의 v_rows_biz_opp : {v_data["retrieve_biz_opp"]}")
+
+
             if not v_data["retrieve_biz_opp"]:
                v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
             else:

@@ -272,8 +272,10 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                     }}
                     >
 
-                      {row.cells.map((cell, index) => {
+                      {row.cells.map((cell, index, num = 0) => {
                         const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
+                        num += 1;
+                        // console.log(row.index)
                         return (
                           <td key={key} {...restProps}>
                             {index === row.cells.length - 1
@@ -285,7 +287,10 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                               이력
                             </Button>)
                             : 
-                            cell.render('Cell')}
+                            (index === 0 ? 
+                              (<span>{row.index + 1}</span>) 
+                              : cell.render('Cell'))
+                            }
                           </td>
                         );
                       })}
@@ -301,23 +306,56 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         case `activity`: 
           htmlContent = (
             <>
-            <Table bordered hover responsive {...getTableProps()}>
-              <th>{}</th>
-              <td>test</td>
-              <th>test2</th>
-              <td>test2</td>
-              <th>test3</th>
-              <td>test3</td>
-            </Table>
+              {activityRow ?
+                (activityRow.map((e, key) => {
+                  return (
+                    <Table>
+                      <thead>
+                        <tr>
+                          <th>소속 본부</th>
+                          <td>{e.high_dept_name}</td>
+                          <th>팀</th>
+                          <td>{e.dept_name}</td>
+                          <th>영업 담당자</th>
+                          <td>{e.user_name}</td>
+                        </tr>
+                      </thead>
+                      <thead>
+                        <tr>
+                          <th>사업 일련 번호</th>
+                          <td>{e.biz_opp_id}</td>
+                          <th>사업명</th>
+                          <td>{e.biz_opp_name}</td>
+                          <th>계약 일자</th>
+                          <td>{e.contract_date}</td>
+                          <th>매출 일자</th>
+                          <td>{e.sale_date}</td>
+                          <th>매출 금액</th>
+                          <td>{e.sale_amt}</td>
+                          <th>매출 이익</th>
+                          <td>{e.sale_profit}</td>
+                          <th>사업 구분</th>
+                          <td>{e.biz_section2_name}</td>
+                          <th>제품 구분</th>
+                          <td>{e.product2_name}</td>
+                        </tr>
+                      </thead>
+                    </Table>
+                  )})
+                )
+                : ('')
+              }
+              
             </>
           )
           setVHandlingHtml(htmlContent);
           break;
         default:
           setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
+          break;
       }
     }
-  }, [v_childComponent, v_componentName, page, showModal, res]);
+  }, [v_childComponent, v_componentName, page, showModal, res,]);
 
   return (
     <div id="tableArea">
@@ -329,8 +367,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_propsData={v_propsData} v_modalPropsData={v_modalPropsData}/> )
         :
         (<BizOppHistory show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData} />)
-        
-
       }
     </div>
   )

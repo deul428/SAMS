@@ -1,3 +1,6 @@
+#tableArea {
+    width: 100%;
+}
 table {
     font-size: 0.8rem;
     thead {
@@ -9,40 +12,37 @@ table {
             }
         }
     }
-    tbody {
-        tr {
-            td {
-                position: relative;
-                vertical-align: middle;
-                padding: 0.3rem 0.6rem !important;
-                &.table-cell {
-                    min-width: 80px;
-                    max-width: 250px; /* 최대 너비 */
-                    overflow: hidden; /* 넘친 내용 숨김 */
-                    white-space: nowrap; /* 텍스트를 한 줄로 표시 */
-                    text-overflow: ellipsis; /* 말줄임표 추가 */
-                    min-height: 32px;
-                    padding: 1rem 0.5rem;
-                    &:nth-child(2), &:nth-child(3) {
-                        min-width: 104px;
-                    }
-                }
-                button {
-                    width: 100%;
-                }
-                &:last-child {
-                    padding: 0 !important;
-                }
-                  
-            }
-            th, td {
+    tr {
+        > th, td {
+            min-width: 80px;
+            max-width: 250px; /* 최대 너비 */
+            overflow: hidden; /* 넘친 내용 숨김 */
+            white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+            text-overflow: ellipsis; /* 말줄임표 추가 */
+            min-height: 32px;
+            padding: 1rem 0.5rem;
+            &:nth-child(2), &:nth-child(3) {
+                min-width: 104px;
             }
         }
-        
-        
-        button.btn.light {
-            // font-size: 0.75rem;
+        td {
+            position: relative;
+            vertical-align: middle;
+            padding: 0.3rem 0.6rem !important;
+            
+            button {
+                width: 100%;
+            }
+            &:last-child {
+                padding: 0 !important;
+            }
+                
         }
+    }
+    
+    
+    button.btn.light {
+        // font-size: 0.75rem;
     }
     
 }

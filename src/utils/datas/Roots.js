@@ -12,7 +12,9 @@ const roots = {
     adminProduct: {depth1: 'admin', depth2: 'product', component: Home},
     bizoppSelect1: {depth1: 'biz-opp', depth2: '', endpoint: 'select-biz-opp1/', component: BizOpp, 
         props: [
+            { Header: '행 번호', accessor: ''},
             { Header: '사업 일련 번호', accessor: 'biz_opp_id'},
+            { Header: '사업 복제 번호', accessor: 'detail_no'},
             { Header: '본부', accessor: 'high_dept_name' },
             { Header: '팀', accessor: 'dept_name' },
             { Header: '영업 담당자', accessor: 'user_name' },

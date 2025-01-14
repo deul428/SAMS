@@ -240,7 +240,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             team = '';
             console.log('no dept, no team');
         }
-        console.log(dept, team);
+        console.log("dept: ", dept, "team: ", team);
 
         const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
             const { high_dept_id } = items;
@@ -251,7 +251,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             return acc;
         }, {});
 
-        console.log(mappingTeamByDept);
+        console.log("mappingTeamByDept: ", mappingTeamByDept);
         setVTeamByDept(mappingTeamByDept);
 
         switch(auth.userAuthCode) {
@@ -260,8 +260,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 console.log(getData);
                 if (getData) {
                     setVDepts(getData.data.search_dept_id);
-                } else {
-                    return;
                 }
                 setVDeptHandling((prevDept) => ({
                     ...prevDept,
@@ -323,8 +321,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         break;
                     case '0003':
                         // f_teamLinkedDept();
-                        setVDepts(mappingTeamByDept[auth.userDeptCode])
-                        if (v_teamHandling.teamValue) {
+                        const myTeam = mappingTeamByDept[auth.userDeptCode];
+                        // console.log("mappingTeamByDept[auth.userDeptCode]: ", mappingTeamByDept[auth.userDeptCode]);
+                        setVDepts(myTeam);
+                        if (team) {
                             setVTeamHandling({
                                 teamValue: team[0].dept_id,
                                 teamMsg: team[0].dept_name,
@@ -690,18 +690,20 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                                     v_teamHandling.teamMsg : v_deptHandling.deptMsg
                                                                 )}
                                                             </option>
+                                                            {(v_deptHandling.deptValue) ? 
+                                                                <option value={v_deptHandling.deptValue}>{v_deptHandling.deptMsg}</option>
+                                                                : '' 
+                                                            }
                                                             {(v_depts) ? 
-                                                                (
-                                                                    v_depts.map((e) => {
-                                                                        return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
-                                                                    })
-                                                                    /* getData?.data?.search_dept_id.map((e) => {
-                                                                        return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
-                                                                    }) */
-                                                                )
+                                                                v_depts.map((e) => {
+                                                                    return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
+                                                                })
                                                                 :
                                                                 ('')
                                                             }
+                                                            {/* getData?.data?.search_dept_id.map((e) => {
+                                                                return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
+                                                            }) */}
                                                             {/* <option 
                                                                 value={(
                                                                     a_v_modalPropsData ? 
@@ -1079,7 +1081,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         {
                                             (auth.userAuthCode === '0002') ? 
                                             (<></>) : 
-                                            (v_modalPropsData ? 
+                                            (a_v_modalPropsData ? 
                                                 (<>
                                                 <Button variant='warning'>사업 (기회) 복제</Button>
                                                 <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', updateInput, e)}>수정</Button>
@@ -1115,7 +1117,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // }
         };
         updateUI();
-    }, [/* currentPath */, show, onHide, insertInput, getData /* updateInput */, v_modalPropsData, v_propsData, /* deptData */]);
+    }, [/* currentPath */, show, onHide, insertInput, getData /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling]);
 
     return (
         <div id='inputFieldDetail'>

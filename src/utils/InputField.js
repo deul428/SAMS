@@ -70,8 +70,8 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
     }
     // 초기값 동적으로 설정
     const getInitialInput = () => {
-        // if (v_componentName === 'bizOpp') return { ...p_bizopp };
-        // if (v_componentName === 'activity') return { ...p_activity };
+        if (v_componentName === 'bizOpp') return { ...p_bizopp };
+        if (v_componentName === 'activity') return { ...p_activity };
         return { ...p_bizopp };
         
         return {};
@@ -165,7 +165,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     break;
                 case `activity`: 
                     setData(v_filter); // 상태 업데이트
-                    setEndpoint(roots.bizoppSelect2.endpoint);
+                    setEndpoint(roots.activitySelect2.endpoint);
                     break;
                 default:
                     // console.log(v_componentName);

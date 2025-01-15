@@ -77,7 +77,7 @@ function Header() {
                         <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.bizoppSelect1.depth1) ? 'active' : ''}`} id='menu03' to={`/${roots.bizoppSelect1.depth1}/${roots.bizoppSelect1.depth2}`}>
                             사업 (기회) 관리
                         </Nav.Link>
-                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.activity.depth1) ? 'active' : ''}`} to={`/${roots.activity.depth1}/${roots.activity.depth2}`}>
+                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.activitySelect1.depth1) ? 'active' : ''}`} to={`/${roots.activitySelect1.depth1}/${roots.activitySelect1.depth2}`}>
                             영업 활동 관리
                         </Nav.Link>
 

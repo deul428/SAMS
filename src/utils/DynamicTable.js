@@ -45,7 +45,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       rootsData = roots.bizoppSelect1.props;
       break;
     case `activity`: 
-      rootsData = roots.activity.props;
+      rootsData = roots.activitySelect1.props;
       break;
     default:
       rootsData = roots.bizoppSelect1.props;
@@ -79,7 +79,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     useSortBy, usePagination
   );
   
-  let activityRow;
+  const [activityRow, setActivityRow] = useState([]);
   // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
   useEffect(() => {
     if (!v_propsData || Object.keys(v_propsData).length === 0) {
@@ -93,7 +93,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         break;
       case 'activity':
         setData(v_propsData.data.retrieve_biz_opp_activity);
-        activityRow = [...v_propsData.data.retrieve_biz_opp_activity]; 
+        setActivityRow([...v_propsData.data.retrieve_biz_opp_activity]);
         console.log("activityRow: ", activityRow);
         break;
       default: break;
@@ -105,20 +105,15 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // =================== input field에서 넘어온 값(res)에 따라 핸들링 ===================
   // res obj / res.data arr
   useEffect(() => {
-    console.log("res---------------------------------------\n", res);
-    if (v_componentName === 'bizOpp') {
-      if ((!res) || (Object.keys(res).length === 0) || (Array.isArray(res) && res.length > 0)) {
-        setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
-        return;
-      } else {
-        // console.log(res);
-        if (res.data.length > 0) {
-          console.log("res.data.length: ", res.data.length);
-          setData(res.data);
-        }
+    if ((!res) || (Object.keys(res).length === 0) || (Array.isArray(res) && res.length === 0)) {
+      console.log("res---------------------------------------\n", res);
+      setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
+      return;
+    } else {
+      if (res.data.length > 0) {
+        console.log("res.data.length: ", res.data.length);
+        setData(res.data);
       }
-    } else if (v_componentName === 'activity') {
-      
     }
   }, [res])
   // =================== input field에서 넘어온 값(res)에 따라 핸들링 끝 ===================
@@ -233,6 +228,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     }
     let htmlContent = null;
     if ((typeof(data) === 'object' && data) || (Array.isArray(data) && data.length > 0)) {
+      console.log(data, res);
       switch (v_componentName) {
         case `bizOpp`: 
           htmlContent = (
@@ -301,52 +297,63 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
             </Table>
             </>
           )
-          setVHandlingHtml (htmlContent);
+          setVHandlingHtml(htmlContent);
           break;
         case `activity`: 
           htmlContent = (
             <>
-              {activityRow ?
-                (activityRow.map((e, key) => {
-                  return (
-                    <Table>
-                      <thead>
-                        <tr>
-                          <th>소속 본부</th>
-                          <td>{e.high_dept_name}</td>
-                          <th>팀</th>
-                          <td>{e.dept_name}</td>
-                          <th>영업 담당자</th>
-                          <td>{e.user_name}</td>
-                        </tr>
-                      </thead>
-                      <thead>
-                        <tr>
-                          <th>사업 일련 번호</th>
-                          <td>{e.biz_opp_id}</td>
-                          <th>사업명</th>
-                          <td>{e.biz_opp_name}</td>
-                          <th>계약 일자</th>
-                          <td>{e.contract_date}</td>
-                          <th>매출 일자</th>
-                          <td>{e.sale_date}</td>
-                          <th>매출 금액</th>
-                          <td>{e.sale_amt}</td>
-                          <th>매출 이익</th>
-                          <td>{e.sale_profit}</td>
-                          <th>사업 구분</th>
-                          <td>{e.biz_section2_name}</td>
-                          <th>제품 구분</th>
-                          <td>{e.product2_name}</td>
-                        </tr>
-                      </thead>
-                    </Table>
-                  )})
-                )
-                : ('')
-              }
-              
-            </>
+            <Table>
+              {activityRow ? (
+                <>
+                  {page.map((row, key) => {
+                    prepareRow(row);
+                    const rowData = row.original; // 원본 데이터, accessor에 접근 안 하고 사용하기 위해
+                    return (
+                      <div key={key} className='mb-4' style={{"border": "1px solid #dee2e6"}}/* <></>의 축약X 버전, key 적을 시 사용 */>
+                        <thead>
+                          <tr>
+                            <th>소속 본부</th>
+                            <td>{rowData.high_dept_name}</td>
+                            <th>팀</th>
+                            <td>{rowData.dept_name}</td>
+                            <th>영업 담당자</th>
+                            <td>{rowData.user_name}</td>
+                            <th>사업 일련 번호</th>
+                            <td>{rowData.biz_opp_id}</td>
+                            <th>사업명</th>
+                            <td colspan={3}>{rowData.biz_opp_name}</td>
+                          </tr>
+                        </thead>
+
+                        <thead>
+                          <tr>
+                            <th>계약 일자</th>
+                            <td>{rowData.contract_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                            <th>매출 일자</th>
+                            <td>{rowData.sale_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                            <th>매출 금액</th>
+                            <td>{rowData.sale_amt.toLocaleString('ko-KR')}</td>
+                            <th>매출 이익</th>
+                            <td>{rowData.sale_profit.toLocaleString('ko-KR')}</td>
+                            <th>사업 구분</th>
+                            <td>{rowData.biz_section2_name}</td>
+                            <th>제품 구분</th>
+                            <td>{rowData.product2_name}</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className='fullRow'>
+                            <td>{rowData.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                            <td colSpan={11}>{rowData.activity_details}</td>
+                          </tr>
+                        </tbody>
+                      </div>
+                    );
+                  })}
+                </>
+              ) : ('')}
+            </Table>
+            </>  
           )
           setVHandlingHtml(htmlContent);
           break;

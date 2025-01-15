@@ -43,7 +43,7 @@ const roots = {
     },
     bizoppSelect2: {depth1: 'biz-opp', depth2: '', endpoint: 'select-biz-opp2/', component: BizOpp, 
     },
-    bizoppHistory: {depth1: 'biz-opp-history', depth2: '', /* endpoint: 'select-biz-opp1/', */ component: BizOppHistory,
+    bizoppHistory: {depth1: 'biz-opp-history', depth2: '', endpoint: 'select-biz-opp-history1/', component: BizOppHistory,
     props: [
         { Header: '업데이트 일시', accessor: 'update_date' },
         { Header: '구분', accessor: '' },
@@ -78,7 +78,7 @@ const roots = {
         { Header: '활동 이력', accessor: 'activity_details'},
     ]
     },
-    activity: {depth1: 'activity', depth2: '', endpoint: 'activity/', component: Activity,
+    activitySelect1: {depth1: 'activity', depth2: '', endpoint: 'select-biz-opp-activity1/', component: Activity,
         props: [
             { Header: '본부', accessor: 'high_dept_name' },
             { Header: '팀', accessor: 'dept_name' },
@@ -101,6 +101,8 @@ const roots = {
             Cell: ({value}) => v_handlingNum(value) },
             { Header: '활동 내역', accessor: 'activity_details'},
         ]
+    },
+    activitySelect2: {depth1: 'activity', depth2: '', endpoint: 'select-biz-opp-activity2/', component: Activity, 
     },
     aimManage: {depth1: 'aim', depth2: 'manage', component: Home},
     aimacheive: {depth1: 'aim', depth2: 'achievement', component: Home},

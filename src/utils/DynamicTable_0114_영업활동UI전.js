@@ -45,7 +45,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       rootsData = roots.bizoppSelect1.props;
       break;
     case `activity`: 
-      rootsData = roots.activity.props;
+      rootsData = roots.activitySelect1.props;
       break;
     default:
       rootsData = roots.bizoppSelect1.props;

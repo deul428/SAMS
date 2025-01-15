@@ -8,6 +8,7 @@ import { Modal, Button, Form, Row, Col } from
 "react-bootstrap";
 import '../styles/_search.scss';
 import '../styles/_customModal.scss';
+import roots from "../utils/datas/Roots.js";
 
 const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
     // console.log("v_modalPropsData: ", v_modalPropsData);
@@ -15,7 +16,7 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
     const [errMsg, setErrMsg] = useState('');
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
     // const endpoint = 'select-biz-opp2/'
-    const endpoint = 'select-biz-opp1/'
+    const endpoint = roots.bizoppHistory.endpoint;
 
     // ================= get ================= 
     const f_handlingData = async (method, endpoint, input = null) => {

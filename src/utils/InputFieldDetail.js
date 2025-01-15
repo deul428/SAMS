@@ -162,7 +162,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
     const authCheck = () => {
         console.log("v_modalPropsData: ", v_modalPropsData, "v_propsData", v_propsData);
-        
         let dept, team;
         const deptId = auth.userDeptCode;
         if (deptId.length === 4) {
@@ -257,7 +256,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         switch(auth.userAuthCode) {
             //1. admin
             case '0001' :
-                console.log(getData);
                 if (getData) {
                     setVDepts(getData.data.search_dept_id);
                 }
@@ -277,7 +275,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 break;
             // 2. guest
             case '0002' :
-                setVDepts(getData.data.search_dept_id);
+                if (getData) {
+                    setVDepts(getData.data.search_dept_id);
+                }
                 setVDeptHandling((prevDept) => ({
                     ...prevDept,
                     deptDisabled: false,
@@ -566,7 +566,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             authCheck();
         }
     }, [show]); // show가 변경될 때만 실행되도록 보장
-    
+    useEffect(() => {
+        if (getData) {
+            authCheck();
+        }
+    }, [getData])
     // ================= POST 끝 ================= 
 
 /*     // Redux와 React Router 동기화
@@ -586,9 +590,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
                 return;
             } */
-            if(!a_v_modalPropsData && !getData) {
+            /* if(!a_v_modalPropsData && !getData) {
                 return;
-            }
+            } */
             if (v_modalPropsData || getData) {
                 switch (v_componentName) {
                     case `bizOpp`:
@@ -1117,7 +1121,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // }
         };
         updateUI();
-    }, [/* currentPath */, show, onHide, insertInput, getData /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling]);
+    }, [/* currentPath */, show, onHide, insertInput, getData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling]);
 
     return (
         <div id='inputFieldDetail'>

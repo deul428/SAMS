@@ -16,7 +16,7 @@ from django.contrib import admin
 from django.urls import include,path
 from .views import f_login,f_logout,f_update_cipher_change
 from .views import f_select_biz_opp1,f_select_biz_opp2,f_select_popup_biz_opp,f_insert_biz_opp,f_delete_biz_opp
-from .views import f_select_biz_opp_activity1
+from .views import f_select_biz_opp_activity1,f_select_biz_opp_activity2,f_select_biz_opp_history1,f_select_biz_opp_history2
 urlpatterns = [path('login/',f_login,name='login'),
                path('logout/',f_logout,name='logout'),
                path('update-cipher-change/',f_update_cipher_change,name='update-cipher-change'),
@@ -25,4 +25,7 @@ urlpatterns = [path('login/',f_login,name='login'),
                path('select-popup-biz-opp/',f_select_popup_biz_opp,name='select-popup-biz-opp'),
                path('insert-biz-opp/',f_insert_biz_opp,name='insert-biz-opp'),
                path('delete-biz-opp/',f_delete_biz_opp,name='delete-biz-opp'),
-               path('select-biz-opp-activity1/',f_select_biz_opp_activity1,name='select-biz-opp-activity1')]
+               path('select-biz-opp-activity1/',f_select_biz_opp_activity1,name='select-biz-opp-activity1'),
+               path('select-biz-opp-activity2/',f_select_biz_opp_activity2,name='select-biz-opp-activity2'),
+               path('select-biz-opp-history1/',f_select_biz_opp_history1,name = 'select-biz-opp-history1'),
+               path('select-biz-opp-history2/',f_select_biz_opp_history2,name = 'select-biz-opp-history2')]

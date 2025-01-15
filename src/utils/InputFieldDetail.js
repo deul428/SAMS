@@ -364,7 +364,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const { name, value, type, checked, dataset } = e.target;
         const tableLevel = dataset.key; 
         const valueLevel = type === 'checkbox' ? checked : value.trim();
-        console.log(e.target.name, e.target.value);
+    
         if (e.target.name === 'a_progress2_rate_code' && (e.target.value === '0005' || e.target.value === '0006')) {
             console.log('진행률 바뀜!');
             setProToSaleNo(false);
@@ -427,6 +427,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         // a_v_modalPropsData 데이터 핸들링 후 input 객체에 복사
         // console.log("-------------- 수정 시 --------------");
         if (v_modalPropsData) {
+            if (v_modalPropsData.progress2_rate_code === '0005' || v_modalPropsData.progress2_rate_code === '0006') {
+                console.log('진행률 바뀜!');
+                setProToSaleNo(false);
+            } else {
+                setProToSaleNo(true);
+            }
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD .....................
             const dateKeys = ['a_sale_date', 'a_collect_money_date', 'a_purchase_date', 'a_contract_date'];
             dateKeys.forEach(key => {
@@ -640,7 +646,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // UI 업데이트
     const [proToSaleNo, setProToSaleNo] = useState(true);
     useEffect(() => {
-        console.log("proToSaleNo:", proToSaleNo);
         const updateUI = () => {
             /* if (!currentPath || currentPath === '/login') {
                 setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
@@ -833,17 +838,18 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='판품 번호'>
+                                                    <FloatingLabel label='판품 번호 (진행률 90% 이상일 시 기입)'>
                                                         <Form.Control size='sm' type='text' className=''
                                                         name='a_sale_item_no' 
                                                         data-key='biz_opp_detail' 
-                                                        placeholder='판품 번호'
+                                                        placeholder='판품 번호 (진행률 90% 이상일 시 기입)'
                                                         onChange={f_handlingInput} 
                                                         // value={input.sale_item_no || ''} 
                                                         defaultValue={a_v_modalPropsData?.a_sale_item_no || ''}
                                                         disabled={
-                                                            (auth.userAuthCode === '0002') ? 
-                                                            (false) : (proToSaleNo === true ? true: false)
+                                                            (proToSaleNo === true ? true : false /* 
+                                                                (auth.userAuthCode === '0002') ? 
+                                                                (false) : fal */)
                                                         }/>
                                                     </FloatingLabel>
                                                 </Col>

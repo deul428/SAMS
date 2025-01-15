@@ -824,6 +824,12 @@ def f_insert_biz_opp(request):
                v_param_insert_biz_opp.append(v_contract_date)
             v_param_insert_biz_opp.append(v_body.get('biz_opp',{}).get('a_essential_achievement_tf'))
             v_param_insert_biz_opp.append(v_session_user_id)
+
+            #test
+            v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
+            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp,v_param_insert_biz_opp)
             v_sql_insert_biz_opp_detail = """INSERT INTO ajict_bms_schema.biz_opp_detail (biz_opp_id,
@@ -1004,6 +1010,13 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_detail.append(v_session_user_id)
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail,v_param_insert_biz_opp_detail)
+
+
+               #test
+               v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
+               print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
             v_sql_insert_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
                                                                                             history_no,
                                                                                             biz_opp_name,
@@ -1027,6 +1040,13 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_history.append(v_contract_date)
             v_param_insert_biz_opp_history.append(v_body.get('biz_opp',{}).get('a_essential_achievement_tf'))
             v_param_insert_biz_opp_history.append(v_session_user_id)
+
+
+            #test
+            v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
+            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_history,v_param_insert_biz_opp_history)
             v_sql_insert_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_history (biz_opp_id,
@@ -1099,6 +1119,13 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_detail_history.append(v_biz_section2_code)
             v_param_insert_biz_opp_detail_history.append(v_principal_product2_code)
             v_param_insert_biz_opp_detail_history.append(v_session_user_id)
+
+
+            #test
+            v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
+            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
             v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
@@ -1130,6 +1157,13 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_activity.append(v_activity_date)
             v_param_insert_biz_opp_activity.append(v_session_user_id)
+
+
+            #test
+            v_formatted_sql = v_sql_insert_biz_opp_activity % tuple(map(repr,v_param_insert_biz_opp_activity))
+            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_activity,v_param_insert_biz_opp_activity)
                v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}

@@ -257,7 +257,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             //1. admin
             case '0001' :
                 if (getData) {
-                    setVDepts(getData.data.search_dept_id);
+                    setVDepts(getData?.data?.search_dept_id);
                 }
                 setVDeptHandling((prevDept) => ({
                     ...prevDept,
@@ -276,7 +276,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // 2. guest
             case '0002' :
                 if (getData) {
-                    setVDepts(getData.data.search_dept_id);
+                    setVDepts(getData?.data?.search_dept_id);
                 }
                 setVDeptHandling((prevDept) => ({
                     ...prevDept,
@@ -365,6 +365,28 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const tableLevel = dataset.key; 
         const valueLevel = type === 'checkbox' ? checked : value.trim();
         console.log(e.target.name, e.target.value);
+        if (e.target.name === 'a_progress2_rate_code' && (e.target.value === '0005' || e.target.value === '0006')) {
+            console.log('진행률 바뀜!');
+            setProToSaleNo(false);
+        } else {
+            setProToSaleNo(true);
+        }
+
+        /* if (
+            (updateInput?.biz_opp_detail?.a_progress2_rate_code && 
+            (
+                (updateInput?.biz_opp_detail.a_progress2_rate_code === '0005')
+                || (updateInput?.biz_opp_detail.a_progress2_rate_code === '0006')
+            )) || 
+            (insertInput?.biz_opp_detail?.a_progress2_rate_code && 
+                (
+                (insertInput?.biz_opp_detail.a_progress2_rate_code === '0005')
+                || (insertInput?.biz_opp_detail.a_progress2_rate_code === '0006')
+            ))
+        ) {
+            console.log('진행률 바뀜!');
+            setProToSaleNo(true);
+        } */
 
         const updateValue = (setState) => {
             setState((prevInput) => {
@@ -570,8 +592,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     return;
                 } else {
                     console.log('사업 (기회) 등록/수정 response 송신 완료', "\nendpoint: ", endpoint, "\nresponse: ", response);
-                    if (e && msg === '등록') { alert('정상적으로 등록되었습니다.'); }
-                    // onHide(true);
+                    if (e && msg === '등록') { 
+                        alert('정상적으로 등록되었습니다.'); 
+                        onHide(true);
+                    }
                     setGetData(response);
                     return response;
                 }
@@ -614,7 +638,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         syncPath();
     }, [currentPath, location.pathname, dispatch]); */
     // UI 업데이트
+    const [proToSaleNo, setProToSaleNo] = useState(true);
     useEffect(() => {
+        console.log("proToSaleNo:", proToSaleNo);
         const updateUI = () => {
             /* if (!currentPath || currentPath === '/login') {
                 setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
@@ -817,7 +843,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         defaultValue={a_v_modalPropsData?.a_sale_item_no || ''}
                                                         disabled={
                                                             (auth.userAuthCode === '0002') ? 
-                                                            (false) : (true)
+                                                            (false) : (proToSaleNo === true ? true: false)
                                                         }/>
                                                     </FloatingLabel>
                                                 </Col>
@@ -1084,29 +1110,33 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </Col>
                                                 </Row>)
                                             }
-                                            <Row className='d-flex justify-content-between' >
-                                                <h3 style={{"textAlign": "left", "fontSize": "1.1rem", "paddingLeft":"0"}} className='mt-2'>활동 내역 이력 &#40;최근 5건&#41;</h3>
-                                                <ListGroup as='ol' numbered className='col activity '>
-                                                    <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
-                                                        <div className='ms-2 me-auto'>
-                                                        <div className='fw-bold'>Subheading</div>
-                                                        Cras justo odio
-                                                        </div>
-                                                    </ListGroup.Item>
-                                                    <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
-                                                        <div className='ms-2 me-auto'>
-                                                        <div className='fw-bold'>Subheading</div>
-                                                        Cras justo odio
-                                                        </div>
-                                                    </ListGroup.Item>
-                                                    <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
-                                                        <div className='ms-2 me-auto'>
-                                                        <div className='fw-bold'>Subheading</div>
-                                                        Cras justo odio
-                                                        </div>
-                                                    </ListGroup.Item>
-                                                </ListGroup>
-                                            </Row>
+                                            {(
+                                                a_v_modalPropsData ? 
+                                                    (<Row className='d-flex justify-content-between' >
+                                                    <h3 style={{"textAlign": "left", "fontSize": "1.1rem", "paddingLeft":"0"}} className='mt-2'>활동 내역 이력 &#40;최근 5건&#41;</h3>
+                                                    <ListGroup as='ol' numbered className='col activity '>
+                                                        <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
+                                                            <div className='ms-2 me-auto'>
+                                                            <div className='fw-bold'>Subheading</div>
+                                                            Cras justo odio
+                                                            </div>
+                                                        </ListGroup.Item>
+                                                        <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
+                                                            <div className='ms-2 me-auto'>
+                                                            <div className='fw-bold'>Subheading</div>
+                                                            Cras justo odio
+                                                            </div>
+                                                        </ListGroup.Item>
+                                                        <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
+                                                            <div className='ms-2 me-auto'>
+                                                            <div className='fw-bold'>Subheading</div>
+                                                            Cras justo odio
+                                                            </div>
+                                                        </ListGroup.Item>
+                                                    </ListGroup>
+                                                </Row>)
+                                                : ('')
+                                            )}
                                             </>
                                         </div>
                                     </div>
@@ -1151,7 +1181,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // }
         };
         updateUI();
-    }, [/* currentPath */, show, onHide, insertInput, getData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling]);
+    }, [/* currentPath */, show, onHide, insertInput, getData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling, proToSaleNo]);
 
     return (
         <div id='inputFieldDetail'>

@@ -43,7 +43,7 @@ const roots = {
     },
     bizoppSelect2: {depth1: 'biz-opp', depth2: '', endpoint: 'select-biz-opp2/', component: BizOpp, 
     },
-    bizoppHistory: {depth1: 'biz-opp-history', depth2: '', endpoint: 'select-biz-opp-history1/', component: BizOppHistory,
+    bizoppHistory: {depth1: 'biz-opp-history', depth2: '', endpoint: 'select-biz-opp1/', component: BizOppHistory,
     props: [
         { Header: '업데이트 일시', accessor: 'update_date' },
         { Header: '구분', accessor: '' },

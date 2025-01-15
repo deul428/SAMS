@@ -15,7 +15,7 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
-    // const endpoint = 'select-biz-opp2/'
+    // const endpoint = 'select-biz-opp1/'
     const endpoint = roots.bizoppHistory.endpoint;
 
     // ================= get ================= 

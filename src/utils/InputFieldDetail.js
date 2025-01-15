@@ -514,16 +514,46 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             }
             
             
+            // 유효값 검사 끝
 
-/*             // 유효값 검사 끝
-            if (!msg && input.a_biz_opp_name) {
-                confirmMsg = `${input.a_biz_opp_name}을(를) 등록하시겠습니까?`;
-            } else {
-                alert('필수값을 모두 기입하십시오.');
-                return; 
-            } */
+            if (msg === '등록') {
+                if (
+                    input.biz_opp.a_biz_opp_name.trim() !== '' && // 문자열 검사
+                    input.biz_opp.a_progress2_rate_code.trim() !== '' && // 문자열 검사
+                    input.biz_opp.a_contract_date.trim() !== '' && // 문자열 검사
+                    input.biz_opp.a_essential_achievement_tf !== null && // boolean 값 검사
+    
+                    input.biz_opp_detail.a_change_preparation_dept_id.trim() !== '' && // 문자열 검사
+                    input.biz_opp_detail.a_sale_com2_code.trim() !== '' && // 문자열 검사
+                    input.biz_opp_detail.a_sale_date.trim() !== '' && // 문자열 검사
+                    input.biz_opp_detail.a_sale_amt >= 0 && // 숫자 검사
+                    input.biz_opp_detail.a_sale_profit >= 0 && // 숫자 검사
+                    input.biz_opp_detail.a_purchase_date.trim() !== '' && // 문자열 검사
+                    input.biz_opp_detail.a_purchase_amt >= 0 && // 숫자 검사
+                    input.biz_opp_detail.a_biz_section2_code.trim() !== '' && // 문자열 검사
+                    input.biz_opp_detail.a_principal_product2_code.trim() !== '' && // 문자열 검사
+                    input.biz_opp_detail.a_user_name.trim() !== '' && // 문자열 검사
+    
+                    input.biz_opp_activity.a_activity_details.trim() !== '' && // 문자열 검사
+                    input.biz_opp_activity.a_activity_date.trim() !== '' // 문자열 검사
+                ) {
+                    confirmMsg = `사업 (기회) 명 ${input.biz_opp.a_biz_opp_name}을(를) 등록하시겠습니까?`;
+                } else {
+                    console.log("msg : ", msg);
+                    alert('필수값을 모두 기입하십시오.');
+                    return; 
+                }
+            } else if (msg === '수정') {
+                if (input.biz_opp.a_biz_opp_name.trim() !== '') {
+                    confirmMsg = `사업 (기회)명 ${input.biz_opp.a_biz_opp_name}을(를) 수정하시겠습니까?`;
+                } else {
+                    console.log("msg : ", msg);
+                    alert('사업 (기회) 명을 기입하십시오.');
+                    return; 
+                }
+            }
         }
-        // if (window.confirm(confirmMsg) || msg) {
+        if ((confirmMsg && window.confirm(confirmMsg)) || (msg === '삭제') || (msg === '조회')) {
             try {
                 // 송신
                 /* if (endpoint === 'select-popup-biz-opp/' && msg === 'authCheck') {
@@ -540,7 +570,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     return;
                 } else {
                     console.log('사업 (기회) 등록/수정 response 송신 완료', "\nendpoint: ", endpoint, "\nresponse: ", response);
-                    if (e && !msg) { alert('정상적으로 등록되었습니다.'); }
+                    if (e && msg === '등록') { alert('정상적으로 등록되었습니다.'); }
                     // onHide(true);
                     setGetData(response);
                     return response;
@@ -551,9 +581,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
                 alert('오류가 발생했습니다. 관리자에게 문의하세요.', error);
             }
-        /* } else {
+        } else {
             return;
-        } */
+        }
     }
     const userCheck = {
         a_session_user_id: auth.userId,
@@ -562,7 +592,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         if (show) {
             console.log(show, onHide);
             // console.log(userCheck);
-            f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, 'authCheck');
+            f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
         }
     }, [show]); // show가 변경될 때만 실행되도록 보장
@@ -1088,12 +1118,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             (a_v_modalPropsData ? 
                                                 (<>
                                                 <Button variant='warning'>사업 (기회) 복제</Button>
-                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', updateInput, e)}>수정</Button>
+                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', updateInput, e, '수정')}>수정</Button>
                                                 <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp/', updateInput, e, '삭제')}>삭제</Button>
                                                 </>) 
                                                 : 
                                                 (<>
-                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e)}>등록</Button> 
+                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e, '등록')}>등록</Button> 
                                                 {/* <Button variant='danger' onClick={f_warningMsg}>삭제</Button> */}
                                                 </>)
                                             )

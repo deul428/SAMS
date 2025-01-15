@@ -105,8 +105,8 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // =================== input field에서 넘어온 값(res)에 따라 핸들링 ===================
   // res obj / res.data arr
   useEffect(() => {
+    console.log("res---------------------------------------(inputField에서 검색했을 때 나오는 데이터)\n", res);
     if ((!res) || (Object.keys(res).length === 0) || (Array.isArray(res) && res.length === 0)) {
-      console.log("res---------------------------------------\n", res);
       setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
       return;
     } else {
@@ -228,7 +228,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     }
     let htmlContent = null;
     if ((typeof(data) === 'object' && data) || (Array.isArray(data) && data.length > 0)) {
-      console.log(data, res);
+      // console.log("data: ", data, "res: ", res);
       switch (v_componentName) {
         case `bizOpp`: 
           htmlContent = (
@@ -373,7 +373,9 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         ? 
         (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_propsData={v_propsData} v_modalPropsData={v_modalPropsData}/> )
         :
+        (v_componentName === 'bizOpp') ?
         (<BizOppHistory show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData} />)
+        : ('')
       }
     </div>
   )

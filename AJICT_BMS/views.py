@@ -7,7 +7,6 @@ from django.db import transaction
 from django.http import JsonResponse
 from django.db import DatabaseError
 from django.template.context_processors import request
-
 logging.basicConfig(level=logging.DEBUG)
 def f_login(request):
    request.session.flush()
@@ -21,14 +20,6 @@ def f_login(request):
          v_user_id = v_user_id.strip()
       if v_cipher is not None:
          v_cipher = v_cipher.strip()
-
-
-      #test
-      #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-      #logging.debug(f"f_login()에서의 v_user_id : {v_user_id}")
-      #logging.debug(f"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
    try:
       v_sql1 = """SELECT COUNT(*) AS count FROM ajict_bms_schema.aj_user WHERE user_id = %s AND delete_date IS NULL"""
       v_param1 = []
@@ -215,19 +206,6 @@ def f_select_biz_opp1(request):
             v_responsibility2_code = v_data_session[0]['responsibility2_code']
             v_user_id = v_data_session[0]['user_id']
             v_dept_id = v_data_session[0]['dept_id']
-
-
-#test
-            #logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_auth1_code : " + v_auth1_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_auth2_code : " + v_auth2_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_responsibility1_code : " + v_responsibility1_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_responsibility2_code : " + v_responsibility2_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_user_id : " + v_user_id)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_dept_id : " + v_dept_id)
-            #logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
-
-
          v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp":[]}
          v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 5 AND delete_date IS NULL ORDER BY dept_id"""
          with connection.cursor() as v_cursor:
@@ -249,6 +227,7 @@ def f_select_biz_opp1(request):
             v_data["search_commonness_pro"] = [dict(zip(v_columns,row)) for row in v_rows]
          v_sql_biz_opp = """SELECT A.biz_opp_id,
                                    A.biz_opp_name,
+                                   B.detail_no,
                                    B.user_id,
                                    (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = B.user_id AND AA.delete_date IS NULL) AS user_name,
                                    B.change_preparation_dept_id,
@@ -397,12 +376,6 @@ def f_select_biz_opp1(request):
             v_cursor.execute(v_sql_biz_opp,v_param2)
             v_columns = [v_column[0] for v_column in v_cursor.description]
             v_rows = v_cursor.fetchall()
-
-
-#test
-            #print(f"f_select_biz_opp1()에서의 v_rows_biz_opp : {v_rows_biz_opp}")
-
-
             v_data["retrieve_biz_opp"] = [dict(zip(v_columns,row)) for row in v_rows]
 
 
@@ -425,7 +398,6 @@ def f_select_biz_opp1(request):
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp2(request):
    v_session_user_id = ''
-   #v_session_user_id = 'leecj'
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
@@ -464,7 +436,6 @@ def f_select_biz_opp2(request):
          v_auth2_code = ''
          v_responsibility1_code = ''
          v_responsibility2_code = ''
-         v_user_id = ''
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_session,v_param1)
             v_columns = [v_column[0] for v_column in v_cursor.description]
@@ -681,12 +652,6 @@ def f_select_biz_opp2(request):
                v_param2.append(v_session_user_id)
          v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
                                      B.detail_no"
-
-         #test
-         #v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
-         #print(f"f_select_biz_opp2()에서의 v_formatted_sql : {v_formatted_sql}")
-
-
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_biz_opp,v_param2)
             v_columns = [v_column[0] for v_column in v_cursor.description]
@@ -1056,9 +1021,6 @@ def f_insert_biz_opp(request):
                                                                                                    %s,
                                                                                                    %s)"""
             v_param_insert_biz_opp_history = []
-
-
-            # test
             v_param_insert_biz_opp_history.append(v_biz_opp_id)
             v_param_insert_biz_opp_history.append(v_biz_opp_name)
             v_param_insert_biz_opp_history.append(v_progress2_rate_code)
@@ -1137,13 +1099,6 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_detail_history.append(v_biz_section2_code)
             v_param_insert_biz_opp_detail_history.append(v_principal_product2_code)
             v_param_insert_biz_opp_detail_history.append(v_session_user_id)
-
-
-            #test
-            #v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
-            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
-
-
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
             v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
@@ -1310,19 +1265,6 @@ def f_select_biz_opp_activity1(request):
             v_responsibility2_code = v_data_session[0]['responsibility2_code']
             v_user_id = v_data_session[0]['user_id']
             v_dept_id = v_data_session[0]['dept_id']
-
-
-#test
-            #logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_auth1_code : " + v_auth1_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_auth2_code : " + v_auth2_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_responsibility1_code : " + v_responsibility1_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_responsibility2_code : " + v_responsibility2_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_user_id : " + v_user_id)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_dept_id : " + v_dept_id)
-            #logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
-
-
          v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp_activity":[]}
          v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 5 AND delete_date IS NULL ORDER BY dept_id"""
          with connection.cursor() as v_cursor:
@@ -1508,7 +1450,6 @@ def f_select_biz_opp_activity1(request):
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp_activity2(request):
    v_session_user_id = ''
-   #v_session_user_id = 'leecj'
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
@@ -1547,7 +1488,6 @@ def f_select_biz_opp_activity2(request):
          v_auth2_code = ''
          v_responsibility1_code = ''
          v_responsibility2_code = ''
-         v_user_id = ''
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_session,v_param1)
             v_columns = [v_column[0] for v_column in v_cursor.description]
@@ -1757,12 +1697,6 @@ def f_select_biz_opp_activity2(request):
                v_param2.append(v_session_user_id)
          v_sql_biz_opp_activity += " ORDER BY A.biz_opp_id,\
                                      C.activity_no"
-
-         #test
-         #v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
-         #print(f"f_select_biz_opp2()에서의 v_formatted_sql : {v_formatted_sql}")
-
-
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_biz_opp_activity,v_param2)
             v_columns = [v_column[0] for v_column in v_cursor.description]
@@ -1832,19 +1766,6 @@ def f_select_biz_opp_history1(request):
             v_responsibility2_code = v_data_session[0]['responsibility2_code']
             v_user_id = v_data_session[0]['user_id']
             v_dept_id = v_data_session[0]['dept_id']
-
-
-#test
-            #logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_auth1_code : " + v_auth1_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_auth2_code : " + v_auth2_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_responsibility1_code : " + v_responsibility1_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_responsibility2_code : " + v_responsibility2_code)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_user_id : " + v_user_id)
-            #logging.debug(f"f_select_biz_opp1()에서의 v_data_session 안에 있는 v_dept_id : " + v_dept_id)
-            #logging.debug(f"((((((((((((((((((((((((((((((((((((((((((((((((((((((")
-
-
          v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp_history":[]}
          v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 5 AND delete_date IS NULL ORDER BY dept_id"""
          with connection.cursor() as v_cursor:
@@ -2035,7 +1956,6 @@ def f_select_biz_opp_history1(request):
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp_history2(request):
    v_session_user_id = ''
-   #v_session_user_id = 'leecj'
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
@@ -2074,7 +1994,6 @@ def f_select_biz_opp_history2(request):
          v_auth2_code = ''
          v_responsibility1_code = ''
          v_responsibility2_code = ''
-         v_user_id = ''
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_session,v_param1)
             v_columns = [v_column[0] for v_column in v_cursor.description]
@@ -2289,13 +2208,6 @@ def f_select_biz_opp_history2(request):
          v_sql_biz_opp_history += " ORDER BY A.biz_opp_id,\
                                              B.detail_no,\
                                              B.history_no"
-
-
-         #test
-         #v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
-         #print(f"f_select_biz_opp2()에서의 v_formatted_sql : {v_formatted_sql}")
-
-
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_biz_opp_history,v_param2)
             v_columns = [v_column[0] for v_column in v_cursor.description]

@@ -793,6 +793,8 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp = []
             v_param_insert_biz_opp.append(v_biz_opp_id)
             v_biz_opp_name = None if v_body.get('biz_opp',{}).get('a_biz_opp_name') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_name')
+
+            v_biz_opp_name = None if v_body.get('biz_opp') == '' else v_body.get('biz_opp')
             if v_biz_opp_name is not None:
                v_biz_opp_name = v_biz_opp_name.strip()
             if not v_biz_opp_name:
@@ -826,8 +828,8 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp.append(v_session_user_id)
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            #v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
+            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1179,6 +1181,9 @@ def f_insert_biz_opp(request):
          v_return = {'STATUS':'FAIL','MESSAGE':'오류가 발생했습니다.','ERROR':str(E)}
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+
+def f_renewal_biz_opp(request)
+
 def f_delete_biz_opp(request):
    v_session_user_id = ''
    v_body = ''
@@ -1468,6 +1473,13 @@ def f_select_biz_opp_activity1(request):
          v_sql_biz_opp_activity += " ORDER BY A.biz_opp_id,\
                                               C.detail_no,\
                                               C.activity_no"
+
+
+         #test
+         v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
+         print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_biz_opp_activity,v_param2)
             v_columns = [v_column[0] for v_column in v_cursor.description]
@@ -1885,18 +1897,8 @@ def f_select_biz_opp_history(request):
                                                                                            AAAA.delete_date IS NULL) AND
                                                                       CCC.delete_date IS NULL) AND
                                                   MM.delete_date IS NULL) AS high_dept_name,
-                                           A.create_user AS biz_opp_history_create_user,
-                                           A.create_date AS biz_opp_history_create_date,
-                                           A.update_user AS biz_opp_history_update_user,
-                                           A.update_date AS biz_opp_history_update_date,
-                                           A.delete_user AS biz_opp_history_delete_user,
-                                           A.delete_date AS biz_opp_history_delete_date,
-                                           B.create_user AS biz_opp_detail_history_create_user,
-                                           B.create_date AS biz_opp_detail_history_create_date,
-                                           B.update_user AS biz_opp_detail_history_update_user,
-                                           B.update_date AS biz_opp_detail_history_update_date,
-                                           B.delete_user AS biz_opp_detail_history_delete_user,
-                                           B.delete_date AS biz_opp_detail_history_delete_date
+                                           A.create_user AS biz_opp_create_user,
+                                           A.create_user AS biz_opp_detail_create_user
                                     FROM ajict_bms_schema.biz_opp_history A,
                                          ajict_bms_schema.biz_opp_detail_history B
                                     WHERE 1 = 1 AND

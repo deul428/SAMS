@@ -1299,7 +1299,7 @@ def f_select_biz_opp_activity1(request):
             v_responsibility2_code = v_data_session[0]['responsibility2_code']
             v_user_id = v_data_session[0]['user_id']
             v_dept_id = v_data_session[0]['dept_id']
-         v_data = {"search_headquarters":[],"search_team":[],"search_commonness_pro":[],"retrieve_biz_opp_activity":[]}
+         v_data = {"search_headquarters":[],"search_team":[],"retrieve_biz_opp_activity":[]}
          v_sql_headquarters = """SELECT * FROM ajict_bms_schema.dept WHERE LENGTH(dept_id) = 5 AND delete_date IS NULL ORDER BY dept_id"""
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_headquarters)
@@ -1438,8 +1438,10 @@ def f_select_biz_opp_activity1(request):
                                      WHERE 1 = 1 AND
                                            A.biz_opp_id = B.biz_opp_id AND
                                            A.biz_opp_id = C.biz_opp_id AND
+                                           B.detail_no = C.detail_no AND
                                            A.delete_date IS NULL AND
-                                           B.delete_date IS NULL"""
+                                           B.delete_date IS NULL AND
+                                           C.delete_date IS NULL"""
 #                                  A.contract_date BETWEEN %s AND %s AND
 #                                  B.sale_date BETWEEN %s AND %s"""
          v_param2 = []

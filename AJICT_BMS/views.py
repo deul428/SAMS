@@ -1182,7 +1182,7 @@ def f_insert_biz_opp(request):
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
 
-def f_renewal_biz_opp(request)
+#def f_renewal_biz_opp(request)
 
 def f_delete_biz_opp(request):
    v_session_user_id = ''

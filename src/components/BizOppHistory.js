@@ -4,18 +4,16 @@ import { apiMethods } from '../utils/api.js';
 
 import DynamicTableChild from '../utils/DynamicTableChild.js';
 
-import { Modal, Button, Form, Row, Col } from 
-"react-bootstrap";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import '../styles/_search.scss';
 import '../styles/_customModal.scss';
 import roots from "../utils/datas/Roots.js";
 
 const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
-    // console.log("v_modalPropsData: ", v_modalPropsData);
     const [data, setData] = useState([]);
     const [errMsg, setErrMsg] = useState('');
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
-    // const endpoint = 'select-biz-opp1/'
+    // const endpoint = 'select-biz-opp1'
     const endpoint = roots.bizoppHistory.endpoint;
 
     // ================= get ================= 
@@ -26,9 +24,16 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
 
             const response = await apiMethods[method](endpoint, input);
             // const response = await apiMethods.get(endpoint);
-            console.log(`API Get (수신)\nEndpoint: (BizOppHistory.js) ${endpoint}\nresponse: `, response);
-            setData(response);
-            return response;
+            
+            console.log(`API Get (수신)\nEndpoint: (BizOpp.js) ${endpoint}\nresponse: `, response);
+            if (response.status.STATUS === 'FAIL' || response.status.STATUS === 'NONE') {
+                onHide(true);
+                alert(response.status.MESSAGE);
+                return;
+            } else {
+                setData(response);
+                return response;
+            }
         } catch (error) {
             setErrMsg(`f_handlingData(${method}) error! ${error.message}`);
             throw error;
@@ -44,27 +49,34 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
     // -------------- 세션 대체용 userId 송신 -------------- 
     const auth = useSelector((state) => state.auth);
     // console.log(auth);
-    const userCheck = {
+    let userCheck = {
         a_session_user_id: auth.userId,
     }
 
     useEffect(() => {
-        f_handlingData('post', endpoint, userCheck);
+        if(v_modalPropsData) {
+            console.log("show: ", show, "onHide: ", onHide, "v_modalPropsData: ", v_modalPropsData);
+            userCheck = {
+                a_session_user_id: auth.userId,
+                a_biz_opp_id: v_modalPropsData.biz_opp_id
+            }
+            f_handlingData('post', endpoint, userCheck);
+        }
         
         /* f_handlingData('get', endpoint).then(response => {
             console.log("데이터 로드 완료:", response);
         }).catch(error => {
             console.error("데이터 로드 실패:", error);
         }); */
-    }, [endpoint]);
+    }, [/* show, endpoint */v_modalPropsData]);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
 
 
     useEffect(() => {
-        const updateUI = () => {        
-            if (!data.data?.retrieve_biz_opp?.length > 0) {
-                return <div>Loading...</div>;
-            } else {
+        const updateUI = () => {     
+            if ((typeof(data) === 'object' ? !data : data.length === 0)
+            || (!data.data?.retrieve_biz_opp_history?.length > 0)) { return <div>Loading...</div>; }
+            else {
                 setVHandlingHtml(
                     <Modal size='xl' fullscreen show={show} onHide={onHide} id='bizOppHistory'>
                         <Modal.Header closeButton>
@@ -94,7 +106,9 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
 
                                 </div>
                                 <div className='bizoppHistoryArea mt-4'>
-                                    <DynamicTableChild v_componentName={'bizOppHistory'} v_propsData={data}/>
+                                    {<DynamicTableChild v_componentName={'bizOppHistory'} v_propsData={
+                                        v_modalPropsData.biz_opp_id === data.data.retrieve_biz_opp_history[0].biz_opp_id ?
+                                        data : null}/>}
                                 </div>
                             </div>
                         </Modal.Body>

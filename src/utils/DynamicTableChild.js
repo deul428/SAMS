@@ -1,54 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { useTable, usePagination } from 'react-table';
+import { useTable, usePagination, useSortBy } from 'react-table';
 import { apiMethods } from './api';
+
 import roots from './datas/Roots';
+
 import { Table, Button, Pagination } from 'react-bootstrap';
+import { CaretUp, CaretDown } from 'react-bootstrap-icons';
 
 import '../styles/_table.scss'; 
 import '../styles/_global.scss';
 
 // level 2 테이블 (ex. 사업 (기회) 이력 조회)
 function DynamicTableChild({ v_componentName, v_propsData }) {
-  // console.log("dynamicTableChild:", v_componentName, v_propsData)
-
-  const [data, setData] = useState(v_propsData?.data?.retrieve_biz_opp || []);
-
+  const [data, setData] = useState([]);
+  // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
+  useEffect(() => {
+    console.log("v_propsData: ", v_propsData);
+    if (!v_propsData /* || Object.keys(v_propsData).length === 0 || !v_propsData.data.retrieve_biz_opp_history */) {
+      console.warn("v_propsData가 비어 있습니다.");
+      setData([]); // 기본값으로 빈 배열 설정
+      return;
+    }
+    if (v_propsData.data.retrieve_biz_opp_history) {
+      console.log('here',v_propsData.data.retrieve_biz_opp_history)
+      setData(v_propsData.data.retrieve_biz_opp_history);
+    }
+  }, [v_propsData]);
 
   // 테이블 헤더 키 값 갖고 오기
   let rootsData = null;
   if(roots.bizoppHistory.props) {
-    // rootsData = roots.bizoppHistory.props.map(([accessor]) => [`u_${accessor}`])
-    
-    rootsData = Object.fromEntries(
-      Object.entries(roots.bizoppHistory.props).map(([accessor, e]) => roots.bizoppHistory.props[`u_${accessor}`])
-    ); 
-    /* rootsData = Object.fromEntries(
-      Object.entries(roots.bizoppHistory.props).map(([accessor]) => [`u_${accessor}`])
-    );  */
-    console.log("rootsData: ",rootsData, typeof(rootsData))
+    rootsData = roots.bizoppHistory.props;
+    switch(v_componentName) {
+      case `bizOppHistory`: 
+        rootsData = roots.bizoppHistory.props;
+        break;
+      default:
+        rootsData = roots.bizoppSelect1.props;
+        break;
+    }
   }
+  const columns = React.useMemo(() => roots.bizoppHistory?.props || [], []);
 
-  switch(v_componentName) {
-    case `bizOppHistory`: 
-      rootsData = roots.bizoppHistory.props;
-      break;
-    default:
-      rootsData = roots.bizoppSelect1.props;
-      break;
-  }
-
-
-  const [v_handlingHtml, setVHandlingHtml] = useState(null);
-  // const columns = React.useMemo(() => roots.bizoppHistory?.props || [], []);
-  const columns = React.useMemo(() => rootsData || [], []);
-  
-  // @tanstack/react-table 훅 설정
+  // react-table 훅 설정
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     page, // 페이지 단위로 렌더링되는 데이터
     prepareRow,
+    rows,
     nextPage,
     previousPage,
     canNextPage,
@@ -61,20 +62,12 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 10 }, // 초기 페이지 설정
+      initialState: { pageIndex: 0, pageSize: 15, 
+        sortBy: [ {id: 'history_no', desc: true} ] 
+      }, // 초기 페이지 설정
     },
-    usePagination
+    useSortBy, usePagination
   );
-
-  // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
-  useEffect(() => {
-    if (!v_propsData || Object.keys(v_propsData).length === 0 || !v_propsData.data?.retrieve_biz_opp) {
-      console.warn("v_propsData가 비어 있습니다.");
-      setData([]); // 기본값으로 빈 배열 설정
-      return;
-    }
-    setData(v_propsData.data.retrieve_biz_opp);
-  }, [v_propsData]);
 
   // =================== pagination jsx ===================
   const renderPagination = () => {
@@ -160,33 +153,40 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
     </Pagination>
   )
   
+  const [v_handlingHtml, setVHandlingHtml] = useState(null);
   // =================== pagination 끝 ===================
   useEffect(() => {
-    if (!data.length || !columns.length) {
-      return <div>Loading...</div>;
-    }
+    if (
+      (typeof(data) === 'object' ? !data : data.length === 0) ||
+      (typeof(columns) === 'object' ? !columns : columns.length === 0)
+    ) { return <div>Loading...</div>; }
     
-    if (data.length > 0) {
+    if (data.length > 0 || data) {
       let htmlContent = null;
       switch (v_componentName) {
         case `bizOppHistory`: 
           htmlContent = (
             <>
-            <h1>jsx는 dynamicTableChild에 있어요</h1>
             <Table bordered hover responsive {...getTableProps()}>
-              <thead>
+            <thead>
                 {headerGroups.map((headerGroup) => {
                   const { key, ...restProps } = headerGroup.getHeaderGroupProps();
                   return (
                     <tr key={key} {...restProps}>
                       {headerGroup.headers.map((column) => {
-                        const { key, ...restProps } = column.getHeaderProps();
+                        const { key, ...restProps } = column.getHeaderProps(column.getSortByToggleProps());
                         return (
                           <th key={key} {...restProps}>
                             {column.render('Header')}
+                            <span className='ms-1' /* style={sortStyle} onClick={(e) => f_sortStyle(e, column)} */>
+                              {/* test */}
+                              {column.isSorted ? (column.isSortedDesc ? <CaretDown /> : <CaretUp />) : ''}
+                              {/* {column.isSorted ? (column.isSortedDesc ? " ⬇︎" : " ⬆︎") : "⬇︎"} */}
+                            </span>
                           </th>
                         );
                       })}
+                      
                     </tr>
                   );
                 })}

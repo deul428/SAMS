@@ -220,12 +220,14 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
 
   useEffect(() => {
-/*     if (data === null || (typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length === 0) || (Array.isArray(data) && data.length === 0)) {
+    if (
+      (typeof(data) === 'object' ? !data : data.length === 0) ||
+      (typeof(res) === 'object' ? !res : res.length === 0)
+    ) { return <div>Loading...</div>; }
+
+/*     if (!data && (Array.isArray(res) && res.length === 0)) {
       return <div>Loading...</div>;
     } */
-    if (!data && (Array.isArray(res) && res.length === 0)) {
-      return <div>Loading...</div>;
-    }
     let htmlContent = null;
     if ((typeof(data) === 'object' && data) || (Array.isArray(data) && data.length > 0)) {
       // console.log("data: ", data, "res: ", res);

@@ -1015,8 +1015,8 @@ def f_insert_biz_opp(request):
 
 
                #test
-               v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
-               print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+               #v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
+               #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             v_sql_insert_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
@@ -1026,6 +1026,7 @@ def f_insert_biz_opp(request):
                                                                                             progress2_rate_code,
                                                                                             contract_date,
                                                                                             essential_achievement_tf,
+                                                                                            renewal_code,
                                                                                             create_user)
                                                                                            VALUES (%s,
                                                                                                    1,
@@ -1034,6 +1035,7 @@ def f_insert_biz_opp(request):
                                                                                                    %s,
                                                                                                    %s,
                                                                                                    %s,
+                                                                                                   'I',
                                                                                                    %s)"""
             v_param_insert_biz_opp_history = []
             v_param_insert_biz_opp_history.append(v_biz_opp_id)
@@ -1045,8 +1047,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            #v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
+            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1124,8 +1126,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            #v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
+            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1393,13 +1395,7 @@ def f_select_biz_opp_activity1(request):
                                              FROM ajict_bms_schema.aj_user JJ
                                              WHERE JJ.user_id = B.user_id AND
                                                    JJ.delete_date IS NULL) AS dept_id,
-                                            (SELECT KK.high_dept_id
-                                             FROM ajict_bms_schema.dept KK
-                                             WHERE KK.dept_id = (SELECT AAA.dept_id
-                                                                 FROM ajict_bms_schema.aj_user AAA
-                                                                 WHERE AAA.user_id = B.user_id AND
-                                                                       AAA.delete_date IS NULL) AND
-                                                   KK.delete_date IS NULL) AS high_dept_id,
+                                            (SELECT KK.high_dept_id FROM ajict_bms_schema.dept KK WHERE KK.dept_id = B.change_preparation_dept_id AND KK.delete_date IS NULL) AS high_dept_id,
                                             (SELECT LL.dept_name
                                              FROM ajict_bms_schema.dept LL
                                              WHERE LL.dept_id = (SELECT BBB.dept_id
@@ -1411,12 +1407,8 @@ def f_select_biz_opp_activity1(request):
                                              FROM ajict_bms_schema.dept MM
                                              WHERE MM.dept_id = (SELECT CCC.high_dept_id
                                                                  FROM ajict_bms_schema.dept CCC
-                                                                 WHERE CCC.dept_id = (SELECT AAAA.dept_id
-                                                                                      FROM ajict_bms_schema.aj_user AAAA
-                                                                                      WHERE AAAA.user_id = B.user_id AND
-                                                                                            AAAA.delete_date IS NULL) AND
-                                                                       CCC.delete_date IS NULL) AND
-                                                   MM.delete_date IS NULL) AS high_dept_name,
+                                                                 WHERE CCC.dept_id = B.change_preparation_dept_id AND
+                                                                       CCC.delete_date IS NULL) AS high_dept_name,
                                             C.activity_no,
                                             C.activity_details,
                                             C.activity_date,
@@ -1642,13 +1634,7 @@ def f_select_biz_opp_activity2(request):
                                              FROM ajict_bms_schema.aj_user JJ
                                              WHERE JJ.user_id = B.user_id AND
                                                    JJ.delete_date IS NULL) AS dept_id,
-                                            (SELECT KK.high_dept_id
-                                             FROM ajict_bms_schema.dept KK
-                                             WHERE KK.dept_id = (SELECT AAA.dept_id
-                                                                 FROM ajict_bms_schema.aj_user AAA
-                                                                 WHERE AAA.user_id = B.user_id AND
-                                                                       AAA.delete_date IS NULL) AND
-                                                   KK.delete_date IS NULL) AS high_dept_id,
+                                            (SELECT KK.high_dept_id FROM ajict_bms_schema.dept KK WHERE KK.dept_id = B.change_preparation_dept_id AND KK.delete_date IS NULL) AS high_dept_id,
                                             (SELECT LL.dept_name
                                              FROM ajict_bms_schema.dept LL
                                              WHERE LL.dept_id = (SELECT BBB.dept_id
@@ -1660,12 +1646,8 @@ def f_select_biz_opp_activity2(request):
                                              FROM ajict_bms_schema.dept MM
                                              WHERE MM.dept_id = (SELECT CCC.high_dept_id
                                                                  FROM ajict_bms_schema.dept CCC
-                                                                 WHERE CCC.dept_id = (SELECT AAAA.dept_id
-                                                                                      FROM ajict_bms_schema.aj_user AAAA
-                                                                                      WHERE AAAA.user_id = B.user_id AND
-                                                                                            AAAA.delete_date IS NULL) AND
-                                                                       CCC.delete_date IS NULL) AND
-                                                   MM.delete_date IS NULL) AS high_dept_name,
+                                                                 WHERE CCC.dept_id = B.change_preparation_dept_id AND
+                                                                       CCC.delete_date IS NULL) AS high_dept_name,
                                             C.activity_no,
                                             C.activity_details,
                                             C.activity_date,
@@ -1897,8 +1879,15 @@ def f_select_biz_opp_history(request):
                                                                                            AAAA.delete_date IS NULL) AND
                                                                       CCC.delete_date IS NULL) AND
                                                   MM.delete_date IS NULL) AS high_dept_name,
-                                           A.create_user AS biz_opp_create_user,
-                                           A.create_user AS biz_opp_detail_create_user
+                                           A.renewal_code,
+                                           CASE WHEN A.renewal_code = 'I'
+                                                THEN (SELECT PP.create_date FROM ajict_bms_schema.biz_opp PP WHERE PP.biz_opp_id = A.biz_opp_id)
+                                                WHEN A.renewal_code = 'U'
+                                                THEN (SELECT QQ.update_date FROM ajict_bms_schema.biz_opp QQ WHERE QQ.biz_opp_id = A.biz_opp_id)
+                                                WHEN A.renewal_code = 'D'
+                                                THEN (SELECT RR.delete_date FROM ajict_bms_schema.biz_opp RR WHERE RR.biz_opp_id = A.biz_opp_id)
+                                                ELSE NULL
+                                            END AS renewal_date
                                     FROM ajict_bms_schema.biz_opp_history A,
                                          ajict_bms_schema.biz_opp_detail_history B
                                     WHERE 1 = 1 AND

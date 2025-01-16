@@ -1129,11 +1129,13 @@ def f_insert_biz_opp(request):
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_detail_history,v_param_insert_biz_opp_detail_history)
             v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
+                                                                                              detail_no,
                                                                                               activity_no,
                                                                                               activity_details,
                                                                                               activity_date,
                                                                                               create_user)
                                                                                              VALUES (%s,
+                                                                                                     1,
                                                                                                      1,
                                                                                                      %s,
                                                                                                      %s,
@@ -1680,8 +1682,10 @@ def f_select_biz_opp_activity2(request):
                                               WHERE 1 = 1 AND
                                                     A.biz_opp_id = B.biz_opp_id AND
                                                     A.biz_opp_id = C.biz_opp_id AND
+                                                    B.detail_no = C.detail_no AND
                                                     A.delete_date IS NULL AND
-                                                    B.delete_date IS NULL"""
+                                                    B.delete_date IS NULL AND
+                                                    C.delete_date IS NULL"""
          v_param2 = []
          if not v_contract_date_from:
             v_contract_date_from = '19500101'

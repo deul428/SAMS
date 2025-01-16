@@ -161,7 +161,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     })
 
     const authCheck = () => {
-        console.log("v_modalPropsData: ", v_modalPropsData, "v_propsData", v_propsData);
         let dept, team;
         const deptId = auth.userDeptCode;
         if (deptId.length === 4) {
@@ -239,7 +238,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             team = '';
             console.log('no dept, no team');
         }
-        console.log("dept: ", dept, "team: ", team);
+        // console.log("dept: ", dept, "team: ", team);
 
         const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
             const { high_dept_id } = items;
@@ -250,7 +249,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             return acc;
         }, {});
 
-        console.log("mappingTeamByDept: ", mappingTeamByDept);
+        // console.log("mappingTeamByDept: ", mappingTeamByDept);
         setVTeamByDept(mappingTeamByDept);
 
         switch(auth.userAuthCode) {
@@ -295,7 +294,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             case '0003' :
                 switch(auth.userResCode) {
                     case '0001':
-                        console.log('here');
                         setVTeamHandling({
                             teamValue: team[0].dept_id,
                             teamMsg: team[0].dept_name,
@@ -366,10 +364,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const valueLevel = type === 'checkbox' ? checked : value.trim();
     
         if (e.target.name === 'a_progress2_rate_code' && (e.target.value === '0005' || e.target.value === '0006')) {
-            console.log('진행률 바뀜!');
+            // console.log('진행률 바뀜!');
             setProToSaleNo(false);
-        } else {
-            setProToSaleNo(true);
         }
 
         /* if (
@@ -408,7 +404,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     };
     
     useEffect(() => {
-        // console.log("input: ", insertInput, "\n\nchangeInput: ", updateInput);
+        console.log("input: ", insertInput, "\n\nchangeInput: ", updateInput);
     }, [insertInput, updateInput])
     // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 끝 .....................
     // ----------------- 1) 등록 및 수정 input 핸들링 끝 -----------------
@@ -425,10 +421,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // 2. UI 표현용
     useEffect(() => {
         // a_v_modalPropsData 데이터 핸들링 후 input 객체에 복사
-        // console.log("-------------- 수정 시 --------------");
         if (v_modalPropsData) {
+            // 판품번호 disabled 제어
+            console.log(v_modalPropsData);
             if (v_modalPropsData.progress2_rate_code === '0005' || v_modalPropsData.progress2_rate_code === '0006') {
-                console.log('진행률 바뀜!');
+                // console.log('진행률 바뀜!');
                 setProToSaleNo(false);
             } else {
                 setProToSaleNo(true);
@@ -567,7 +564,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 ) {
                     confirmMsg = `사업 (기회) 명 ${input.biz_opp.a_biz_opp_name}을(를) 등록하시겠습니까?`;
                 } else {
-                    console.log("msg : ", msg);
                     alert('필수값을 모두 기입하십시오.');
                     return; 
                 }
@@ -575,7 +571,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 if (input.biz_opp.a_biz_opp_name.trim() !== '') {
                     confirmMsg = `사업 (기회)명 ${input.biz_opp.a_biz_opp_name}을(를) 수정하시겠습니까?`;
                 } else {
-                    console.log("msg : ", msg);
                     alert('사업 (기회) 명을 기입하십시오.');
                     return; 
                 }
@@ -620,7 +615,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     }
     useEffect(() => {
         if (show) {
-            console.log(show, onHide);
+            // console.log(show, onHide);
             // console.log(userCheck);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
@@ -658,7 +653,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 switch (v_componentName) {
                     case `bizOpp`:
                         setVHandlingHtml(
-                            <Modal size='xl' show={show} onHide={onHide} scrollable>
+                            <Modal size='xl' show={show} onHide={onHide} scrollable /* centered */>
                                 <Modal.Header closeButton>
                                     <Modal.Title className='fs-3'>
                                         {
@@ -729,7 +724,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         data-key='biz_opp_detail'
                                                         onChange={f_handlingInput} 
                                                         // value={input.dept_name || ''} 
-                                                        value={
+                                                        defaultValue={
                                                             a_v_modalPropsData?.a_dept_name ? 
                                                             a_v_modalPropsData?.a_dept_name : (
                                                                 a_v_modalPropsData?.a_headquarters_name ?

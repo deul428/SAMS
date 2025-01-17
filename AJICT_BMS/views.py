@@ -652,13 +652,26 @@ def f_select_biz_opp2(request):
                v_param2.append(v_session_user_id)
          v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
                                      B.detail_no"
+
+
+         #test
+         v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
+         print(f"f_select_biz_opp2()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_biz_opp,v_param2)
             v_columns = [v_column[0] for v_column in v_cursor.description]
             v_rows = v_cursor.fetchall()
             v_data = [dict(zip(v_columns,row)) for row in v_rows]
+
+
+            #test
+            print(f"f_select_biz_opp2()에서의 v_data : {v_data}")
+
+
             if not v_data:
-               v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
+               v_status = {'STATUS':'NONE','MESSAGE':'Data가 존재하지 않습니다.'}
             else:
                v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
             return JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})
@@ -1492,10 +1505,10 @@ def f_select_biz_opp_activity2(request):
 
 
    #test
-   print(f"??????????????????????????????????????????")
-   logging.debug(f"*******************************************")
-   logging.debug(f"test")
-   logging.debug(f"*******************************************")
+   #print(f"??????????????????????????????????????????")
+   #logging.debug(f"*******************************************")
+   #logging.debug(f"test")
+   #logging.debug(f"*******************************************")
 
 
    v_session_user_id = ''
@@ -1504,7 +1517,7 @@ def f_select_biz_opp_activity2(request):
 
 
       #test
-      print(f"yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
+      #print(f"yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
 
 
       v_body = json.loads(request.body)
@@ -1514,16 +1527,16 @@ def f_select_biz_opp_activity2(request):
 
 
          #test
-         print(f"ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
+         #print(f"ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
 
 
    if not v_session_user_id:
-      
-      
+
+
       #test
-      print(f"ㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐ")
-      
-      
+      #print(f"ㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐ")
+
+
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
       return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
@@ -1532,7 +1545,7 @@ def f_select_biz_opp_activity2(request):
 
 
          #test
-         print(f"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+         #print(f"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 
          v_sql_session = """SELECT user_id,
@@ -1593,7 +1606,7 @@ def f_select_biz_opp_activity2(request):
             v_user_name = v_user_name.strip()
 
          #test
-         print(f"뭐지?")
+         #print(f"뭐지?")
 
 
          v_sql_biz_opp_activity = """SELECT A.biz_opp_id,
@@ -1770,8 +1783,8 @@ def f_select_biz_opp_activity2(request):
 
 
          #test
-         v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
-         print(f"f_select_biz_opp_activity2()에서의 v_formatted_sql : {v_formatted_sql}")
+         #v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
+         #print(f"f_select_biz_opp_activity2()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:

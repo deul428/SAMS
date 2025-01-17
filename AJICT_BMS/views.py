@@ -1501,6 +1501,12 @@ def f_select_biz_opp_activity2(request):
    v_session_user_id = ''
    v_body = ''
    if request.method == 'POST':
+
+
+      #test
+      print(f"yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
+
+
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
       if v_session_user_id is not None:

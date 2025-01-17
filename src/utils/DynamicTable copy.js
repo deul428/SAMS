@@ -314,16 +314,16 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                       <div key={key} className='mb-4' style={{"border": "1px solid #dee2e6"}}/* <></>의 축약X 버전, key 적을 시 사용 */>
                         <thead>
                           <tr>
+                            <th>소속 본부</th>
+                            <td>{rowData.high_dept_name}</td>
+                            <th>팀</th>
+                            <td>{rowData.dept_name}</td>
+                            <th>영업 담당자</th>
+                            <td>{rowData.user_name}</td>
                             <th>사업 일련 번호</th>
                             <td>{rowData.biz_opp_id}</td>
                             <th>사업명</th>
                             <td colspan={3}>{rowData.biz_opp_name}</td>
-                            <th>소속 본부</th>
-                            <td>{rowData.high_dept_name}</td>
-                            <th>팀</th>
-                            <td>{rowData.change_preparation_dept_name}</td>
-                            <th>영업 담당자</th>
-                            <td>{rowData.user_name}</td>
                           </tr>
                         </thead>
 

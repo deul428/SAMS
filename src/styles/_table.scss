@@ -4,6 +4,7 @@
 table {
     font-size: 0.8rem;
     > div {
+        border: none;
         thead, tbody { 
             tr {
                 width: 100%;
@@ -12,10 +13,7 @@ table {
                 td {
                 }
                 th, td {
-                    width: 8.33333% !important;
-                    min-width: 8.33333% !important;
-                    max-width: none;
-                    
+                    width: 8.333333% !important;
                 }
             }
         }
@@ -31,10 +29,11 @@ table {
     }
     tr {
         th, td {
+            border: 1px solid #dee2e6;
             min-width: 80px;
-            max-width: 250px; /* 최대 너비 */
-            overflow: hidden; /* 넘친 내용 숨김 */
-            white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+            max-width: 250px;
+            overflow: hidden; 
+            white-space: nowrap; 
             text-overflow: ellipsis; /* 말줄임표 추가 */
             min-height: 32px;
             // padding: 1rem 0.5rem;
@@ -45,14 +44,11 @@ table {
         }
         &.fullRow {
             td {
-                    background: pink;
                     &:first-child {
-                    border: 1px solid #dee2e6;
                 }
             }
         }
         td {
-            background: pink;
             position: relative;
             vertical-align: middle;
             padding: 0.3rem 0.6rem !important;

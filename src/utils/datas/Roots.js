@@ -46,8 +46,8 @@ const roots = {
     bizoppHistory: {depth1: 'biz-opp-history', depth2: '', endpoint: 'select-biz-opp-history/', component: BizOppHistory,
     props: [
         { Header: '이력 번호', accessor: 'history_no' },
-        { Header: '업데이트 일시', accessor: 'update_date' },
-        { Header: '구분', accessor: '' },
+        { Header: '갱신 일시', accessor: '' },
+        { Header: '갱신 구분', accessor: '' },
         // { Header: '구분', accessor: '' },
         // { Header: '사업 일련 번호', accessor: 'biz_opp_id' },
         // { Header: '본부', accessor: 'high_dept_name' },
@@ -75,8 +75,8 @@ const roots = {
         Cell: ({value}) => v_handlingNum(value) },
         { Header: '사업 구분', accessor: 'biz_section2_name' },
         { Header: '제품 구분', accessor: 'product2_name' },
-        { Header: '활동 일자', accessor: 'activity_date'},
-        { Header: '활동 이력', accessor: 'activity_details'},
+        // { Header: '활동 일자', accessor: 'activity_date'},
+        // { Header: '활동 이력', accessor: 'activity_details'},
     ]
     },
     activitySelect1: {depth1: 'activity', depth2: '', endpoint: 'select-biz-opp-activity1/', component: Activity,

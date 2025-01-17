@@ -413,10 +413,64 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // 1. post용
     // 키에 접두어 'a_' 삽입, a_v_modalPropsData로 가공 
     let a_v_modalPropsData;
+    /* const [p_bizopp_delete, setPBizoppDelete] = useState({
+        a_biz_opp_id: '',
+        a_biz_opp_name: '',
+        a_progress1_rate_code: '',
+        a_progress2_rate_code: '',
+        a_contract_date: '',
+        a_essential_achievement_tf: '',
+        a_detail_no: '',
+        a_user_id: '',
+        a_change_preparation_dept_id: '',
+        a_change_preparation_dept_name: '',
+        a_last_client_com1_code: '',
+        a_last_client_com2_code: '',
+        a_sale_com1_code: '',
+        a_sale_com2_code: '',
+        a_sale_item_no: '',
+        a_sale_date: '',
+        a_sale_amt: '',
+        a_sale_profit: '',
+        a_purchase_date: '',
+        a_purchase_amt: '',
+        a_collect_money_date: '',
+        a_biz_section1_code: '',
+        a_biz_section2_code: '',
+        a_principal_product1_code: '',
+        a_principal_product2_code: '',
+    }); */
     if(v_modalPropsData) {
         a_v_modalPropsData = Object.fromEntries(
             Object.entries(v_modalPropsData).map(([key, value]) => [`a_${key}`, value])
         );
+        const a = a_v_modalPropsData;
+        
+        var p_bizopp_delete = {a_biz_opp_id: a.a_biz_opp_id,
+            a_biz_opp_name: a.a_biz_opp_name,
+            a_progress1_rate_code: a.a_progress1_rate_code,
+            a_progress2_rate_code: a.a_progress2_rate_code,
+            a_contract_date: a.a_contract_date,
+            a_essential_achievement_tf: a.a_essential_achievement_tf,
+            a_detail_no: a.a_detail_no,
+            a_user_id: a.a_user_id,
+            a_change_preparation_dept_id: a.a_change_preparation_dept_id,
+            a_change_preparation_dept_name: a.a_change_preparation_dept_name,
+            a_last_client_com1_code: a.a_last_client_com1_code,
+            a_last_client_com2_code: a.a_last_client_com2_code,
+            a_sale_com1_code: a.a_sale_com1_code,
+            a_sale_com2_code: a.a_sale_com2_code,
+            a_sale_item_no: a.a_sale_item_no,
+            a_sale_date: a.a_sale_date,
+            a_sale_amt: a.a_sale_amt,
+            a_sale_profit: a.a_sale_profit,
+            a_purchase_date: a.a_purchase_date,
+            a_purchase_amt: a.a_purchase_amt,
+            a_collect_money_date: a.a_collect_money_date,
+            a_biz_section1_code: a.a_biz_section1_code,
+            a_biz_section2_code: a.a_biz_section2_code,
+            a_principal_product1_code: a.a_principal_product1_code,
+            a_principal_product2_code: a.a_principal_product2_code,}
     }
     // 2. UI 표현용
     useEffect(() => {
@@ -437,6 +491,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     return a_v_modalPropsData[key] = a_v_modalPropsData[key].replace(/(\d{3})(\d{2})(\d{2})/, '$1-$2-$3');
                 }
             });
+            console.log(a_v_modalPropsData, "a_v_modalPropsData");
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD 끝 .....................
             // ..................... 숫자 문자열로 변환 후 쉼표 추가 ..................... 
             const numKeys = ['a_purchase_amt', 'a_sale_amt', 'a_sale_profit'];
@@ -477,12 +532,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             const f_warningMsg = () => {
                 input = {
                     a_session_user_id: input.a_session_user_id,
-                    biz_opp: {
-                        a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id
-                    }
+                    ...p_bizopp_delete,
                 };
-                console.log('delete mode', updateInput.a_session_user_id, a_v_modalPropsData.a_biz_opp_id, input);
-                if (window.confirm(`정말 ${a_v_modalPropsData.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`)){
+                console.log('delete mode', input);
+                if (window.confirm(`정말 ${p_bizopp_delete.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`)){
                     alert('정상적으로 삭제되었습니다.');
                     onHide(true);
                     return input;
@@ -586,7 +639,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 const response = await apiMethods[method](endpoint, input);
                 if (response?.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
                     if(Array.isArray(response)){
-                        console.log(response[0].STATUS, response[0].MESSAGE);
+                        console.log(response, response[0].STATUS, response[0].MESSAGE);
                     } else {
                         console.log(response.status.STATUS, response.status.MESSAGE);
                     }

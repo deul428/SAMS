@@ -1528,6 +1528,13 @@ def f_select_biz_opp_activity2(request):
          v_auth2_code = ''
          v_responsibility1_code = ''
          v_responsibility2_code = ''
+
+
+         #test
+         v_formatted_sql = v_sql_session % tuple(map(repr,v_param1))
+         print(f"f_select_biz_opp_activity2()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_session,v_param1)
             v_columns = [v_column[0] for v_column in v_cursor.description]

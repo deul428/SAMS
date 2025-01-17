@@ -681,8 +681,14 @@ def f_select_biz_opp2(request):
                print(f"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
 
-               v_data = [{"Row": "0"}]
+               #v_data = [{"Row": "0"}]
                v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
+
+
+#test
+               print(f"v_status : {v_status}")
+               print(f"v_status : {JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})}")
+               print(f"v_status : {v_data,v_status}")
 
 
             #test

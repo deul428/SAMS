@@ -674,7 +674,7 @@ def f_select_biz_opp2(request):
             if len(v_data) == 0:
                v_status = {'STATUS':'NONE','MESSAGE':'Data가 존재하지 않습니다.'}
             else:
-               v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
+               v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다!!!"}
             return JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})
       except DatabaseError:
          v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}

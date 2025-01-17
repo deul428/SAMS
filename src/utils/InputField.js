@@ -57,6 +57,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         a_user_name: '',
     }
     const p_activity = {
+        a_session_user_id: auth.userId,
         a_contract_date_from: '',
         a_contract_date_to: '',
         a_sale_date_from: '',

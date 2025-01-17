@@ -871,7 +871,7 @@ def f_insert_biz_opp(request):
                                                                                                  %s,
                                                                                                  'BIZ',
                                                                                                  %s,
-                                                                                                 'COR',
+                                                                                                 'PRI',
                                                                                                  %s,
                                                                                                  %s)"""
             v_param_insert_biz_opp_detail = []
@@ -1092,7 +1092,7 @@ def f_insert_biz_opp(request):
                                                                                                                  %s,
                                                                                                                  'BIZ',
                                                                                                                  %s,
-                                                                                                                 'COR',
+                                                                                                                 'PRI',
                                                                                                                  %s,
                                                                                                                  %s)"""
             v_param_insert_biz_opp_detail_history = []
@@ -1406,7 +1406,7 @@ def f_select_biz_opp_activity1(request):
                                              WHERE MM.dept_id = (SELECT CCC.high_dept_id
                                                                  FROM ajict_bms_schema.dept CCC
                                                                  WHERE CCC.dept_id = B.change_preparation_dept_id AND
-                                                                       CCC.delete_date IS NULL) AS high_dept_name,
+                                                                       CCC.delete_date IS NULL)) AS high_dept_name,
                                             C.activity_no,
                                             C.activity_details,
                                             C.activity_date,
@@ -1843,12 +1843,12 @@ def f_select_biz_opp_history(request):
                                            (SELECT DISTINCT HH.great_classi_name
                                             FROM ajict_bms_schema.commonness_code HH
                                             WHERE HH.great_classi_code = B.principal_product1_code AND
-                                                  HH.delete_date IS NULL) AS product1_name,
+                                                  HH.delete_date IS NULL) AS principal_product1_name,
                                            (SELECT II.small_classi_name
                                             FROM ajict_bms_schema.commonness_code II
                                             WHERE II.great_classi_code = B.principal_product1_code AND
                                                   II.small_classi_code = B.principal_product2_code AND
-                                                  II.delete_date IS NULL) AS product2_name,
+                                                  II.delete_date IS NULL) AS principal_product2_name,
                                            (SELECT JJ.dept_id
                                             FROM ajict_bms_schema.aj_user JJ
                                             WHERE JJ.user_id = B.user_id AND

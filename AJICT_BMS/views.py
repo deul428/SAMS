@@ -1513,6 +1513,8 @@ def f_select_biz_opp_activity2(request):
          v_session_user_id = v_session_user_id.strip()
    if 'a_session_user_id' not in v_body:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id 자체가 JSON에 없습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]

@@ -672,10 +672,10 @@ def f_select_biz_opp2(request):
 
 
             v_status = ''
-            if not v_data:
-               v_status = {'STATUS':'NONE','MESSAGE':'Data가 존재하지 않습니다.'}
+            if v_data:
+               v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
             else:
-               v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다!!!"}
+               v_status = {'STATUS':'NONE','MESSAGE':'Data가 존재하지 않습니다.'}
 
 
             #test

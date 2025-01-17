@@ -1511,11 +1511,19 @@ def f_select_biz_opp_activity2(request):
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
       if v_session_user_id is not None:
          v_session_user_id = v_session_user_id.strip()
-   if 'a_headquarters_dept_id' in v_body:
-      v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id 자체가 JSON에 없습니다.'}
-      v_square_bracket_return = [v_return]
-      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+
+
+         #test
+         print(f"ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
+
+
    if not v_session_user_id:
+      
+      
+      #test
+      print(f"ㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐ")
+      
+      
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
       return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})

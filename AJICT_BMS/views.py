@@ -1517,6 +1517,12 @@ def f_select_biz_opp_activity2(request):
       return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
    else:
       try:
+
+
+         #test
+         print(f"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+
+
          v_sql_session = """SELECT user_id,
                                    user_name,
                                    cipher,

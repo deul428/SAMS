@@ -8,7 +8,7 @@ import InputFieldDetail from './InputFieldDetail';
 import { apiMethods } from './api';
 import roots from './datas/Roots';
 
-import { Table, Button, Pagination, Row, Col } from 'react-bootstrap';
+import { Table, Button, Pagination, Row, Col, ModalBody, Modal} from 'react-bootstrap';
 import { CaretUp, CaretDown } from 'react-bootstrap-icons';
 import '../styles/_table.scss';
 import '../styles/_global.scss';
@@ -22,12 +22,15 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   const [v_modalPropsData, setVModalPropsData] = useState(null);
   const [v_childComponent, setVChildComponent] = useState(null);
 
-  const openModal = (e, handling, isHistory) => {
-    if (isHistory === null) {
-      setVChildComponent('InputFieldDetail');
-    } else {
+  const openModal = (e, handling, view) => {
+    if (view === 'history') {
       setVChildComponent('BizOppHistory');
       e.stopPropagation(); //이벤트 전파 방지
+    } else if (view === 'inputDetail') {
+      setVChildComponent('InputFieldDetail');
+    } else {
+      console.log("openModal() e: ", e, handling);
+      // return;
     }
     setVModalPropsData(handling);
     setShowModal(true);
@@ -109,9 +112,12 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
       return;
     } else {
-      if (res.data.length > 0) {
+      if (res.row.length > 0) {
+        console.log("res.row.length: ", res.row.length);
+        setData(res.row);
+      /* if (res.data.length > 0) {
         console.log("res.data.length: ", res.data.length);
-        setData(res.data);
+        setData(res.data); */
       }
     }
   }, [res])
@@ -265,7 +271,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                   return (
                     <tr key={key} {...restProps} 
                     onClick={(e) => {
-                      openModal(e, row.original, null);
+                      openModal(e, row.original, 'inputDetail');
                     }}
                     >
 
@@ -303,14 +309,14 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         case `activity`: 
           htmlContent = (
             <>
-            <Table responsive='sm'>
+            <Table hover responsive>
               {activityRow ? (
                 <>
                   {page.map((row, key) => {
                     prepareRow(row);
                     const rowData = row.original; // 원본 데이터, accessor에 접근 안 하고 사용하기 위해
                     return (
-                      <div key={key} className='mb-2'>
+                      <div key={key} className='mb-2'  onClick={(e) => openModal(e, row.original)}>
                         <thead>
                           <tr>
                             <th>사업 일련 번호</th>
@@ -326,7 +332,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                           </tr>
                         </thead>
                         <thead>
-                          <tr>
+                           <tr>
                             <th>계약 일자</th>
                             <td>{rowData.contract_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                             <th>매출 일자</th>
@@ -342,7 +348,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className='fullRow'>
+                          <tr>
                             <td>{rowData.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                             <td colSpan={11}>{rowData.activity_details}</td>
                           </tr>
@@ -353,6 +359,13 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                 </>
               ) : ('')}
             </Table>
+            <Modal show={showModal} onHide={closeModal}>
+              {console.log(v_modalPropsData)}
+              {v_modalPropsData? 
+              <ModalBody>테스트입니다{v_modalPropsData.biz_opp_id}</ModalBody>
+              : ''
+              }
+            </Modal>
             </>  
           )
           setVHandlingHtml(htmlContent);

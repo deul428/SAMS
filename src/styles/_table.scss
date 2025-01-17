@@ -12,15 +12,14 @@ table {
             display: table; /* 테이블 컨텍스트를 유지 */
             table-layout: fixed; /* 테이블의 고정 레이아웃 */
             tr {
-                width: 100%;
+                // width: 100%;
                 display: table-row; /* 테이블 행으로 설정 */
+                overflow-x: scroll; 
                 th {
                 }
                 td {
                 }
                 th, td {
-                    text-align: left;
-                    vertical-align: middle;
                     width: auto; /* 기본 너비 유지 */
                 }
             }

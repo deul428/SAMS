@@ -290,40 +290,22 @@ def f_select_biz_opp1(request):
                                    (SELECT DISTINCT HH.great_classi_name
                                     FROM ajict_bms_schema.commonness_code HH
                                     WHERE HH.great_classi_code = B.principal_product1_code AND
-                                          HH.delete_date IS NULL) AS product1_name,
+                                          HH.delete_date IS NULL) AS principal_product1_name,
                                    (SELECT II.small_classi_name
                                     FROM ajict_bms_schema.commonness_code II
                                     WHERE II.great_classi_code = B.principal_product1_code AND
                                           II.small_classi_code = B.principal_product2_code AND
-                                          II.delete_date IS NULL) AS product2_name,
-                                   (SELECT JJ.dept_id
-                                    FROM ajict_bms_schema.aj_user JJ
-                                    WHERE JJ.user_id = B.user_id AND
-                                          JJ.delete_date IS NULL) AS dept_id,
+                                          II.delete_date IS NULL) AS principal_product2_name,
                                    (SELECT KK.high_dept_id
-                                    FROM ajict_bms_schema.dept KK
-                                    WHERE KK.dept_id = (SELECT AAA.dept_id
-                                                        FROM ajict_bms_schema.aj_user AAA
-                                                        WHERE AAA.user_id = B.user_id AND
-                                                              AAA.delete_date IS NULL) AND
-                                          KK.delete_date IS NULL) AS high_dept_id,
-                                   (SELECT LL.dept_name
-                                    FROM ajict_bms_schema.dept LL
-                                    WHERE LL.dept_id = (SELECT BBB.dept_id
-                                                        FROM ajict_bms_schema.aj_user BBB
-                                                        WHERE BBB.user_id = B.user_id AND
-                                                              BBB.delete_date IS NULL) AND
-                                          LL.delete_date IS NULL) AS dept_name,
-                                   (SELECT MM.dept_name
-                                    FROM ajict_bms_schema.dept MM
-                                    WHERE MM.dept_id = (SELECT CCC.high_dept_id
-                                                        FROM ajict_bms_schema.dept CCC
-                                                        WHERE CCC.dept_id = (SELECT AAAA.dept_id
-                                                                             FROM ajict_bms_schema.aj_user AAAA
-                                                                             WHERE AAAA.user_id = B.user_id AND
-                                                                                   AAAA.delete_date IS NULL) AND
-                                                              CCC.delete_date IS NULL) AND
-                                          MM.delete_date IS NULL) AS high_dept_name,
+                                             FROM ajict_bms_schema.dept KK
+                                             WHERE KK.dept_id = B.change_preparation_dept_id AND
+                                                   KK.delete_date IS NULL) AS change_preparation_high_dept_id,
+                                            (SELECT MM.dept_name
+                                             FROM ajict_bms_schema.dept MM
+                                             WHERE MM.dept_id = (SELECT CCC.high_dept_id
+                                                                 FROM ajict_bms_schema.dept CCC
+                                                                 WHERE CCC.dept_id = B.change_preparation_dept_id AND
+                                                                       CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
                                    A.create_user AS biz_opp_create_user,
                                    A.create_date AS biz_opp_create_date,
                                    A.update_user AS biz_opp_update_user,
@@ -538,40 +520,22 @@ def f_select_biz_opp2(request):
                                    (SELECT DISTINCT HH.great_classi_name
                                     FROM ajict_bms_schema.commonness_code HH
                                     WHERE HH.great_classi_code = B.principal_product1_code AND
-                                          HH.delete_date IS NULL) AS product1_name,
+                                          HH.delete_date IS NULL) AS principal_product1_name,
                                    (SELECT II.small_classi_name
                                     FROM ajict_bms_schema.commonness_code II
                                     WHERE II.great_classi_code = B.principal_product1_code AND
                                           II.small_classi_code = B.principal_product2_code AND
-                                          II.delete_date IS NULL) AS product2_name,
-                                   (SELECT JJ.dept_id
-                                    FROM ajict_bms_schema.aj_user JJ
-                                    WHERE JJ.user_id = B.user_id AND
-                                          JJ.delete_date IS NULL) AS dept_id,
+                                          II.delete_date IS NULL) AS principal_product2_name,
                                    (SELECT KK.high_dept_id
-                                    FROM ajict_bms_schema.dept KK
-                                    WHERE KK.dept_id = (SELECT AAA.dept_id
-                                                        FROM ajict_bms_schema.aj_user AAA
-                                                        WHERE AAA.user_id = B.user_id AND
-                                                              AAA.delete_date IS NULL) AND
-                                          KK.delete_date IS NULL) AS high_dept_id,
-                                   (SELECT LL.dept_name
-                                    FROM ajict_bms_schema.dept LL
-                                    WHERE LL.dept_id = (SELECT BBB.dept_id
-                                                        FROM ajict_bms_schema.aj_user BBB
-                                                        WHERE BBB.user_id = B.user_id AND
-                                                              BBB.delete_date IS NULL) AND
-                                          LL.delete_date IS NULL) AS dept_name,
-                                   (SELECT MM.dept_name
-                                    FROM ajict_bms_schema.dept MM
-                                    WHERE MM.dept_id = (SELECT CCC.high_dept_id
-                                                        FROM ajict_bms_schema.dept CCC
-                                                        WHERE CCC.dept_id = (SELECT AAAA.dept_id
-                                                                             FROM ajict_bms_schema.aj_user AAAA
-                                                                             WHERE AAAA.user_id = B.user_id AND
-                                                                                   AAAA.delete_date IS NULL) AND
-                                                              CCC.delete_date IS NULL) AND
-                                          MM.delete_date IS NULL) AS high_dept_name,
+                                             FROM ajict_bms_schema.dept KK
+                                             WHERE KK.dept_id = B.change_preparation_dept_id AND
+                                                   KK.delete_date IS NULL) AS change_preparation_high_dept_id,
+                                            (SELECT MM.dept_name
+                                             FROM ajict_bms_schema.dept MM
+                                             WHERE MM.dept_id = (SELECT CCC.high_dept_id
+                                                                 FROM ajict_bms_schema.dept CCC
+                                                                 WHERE CCC.dept_id = B.change_preparation_dept_id AND
+                                                                       CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
                                    A.create_user AS biz_opp_create_user,
                                    A.create_date AS biz_opp_create_date,
                                    A.update_user AS biz_opp_update_user,
@@ -1417,30 +1381,22 @@ def f_select_biz_opp_activity1(request):
                                             (SELECT DISTINCT HH.great_classi_name
                                              FROM ajict_bms_schema.commonness_code HH
                                              WHERE HH.great_classi_code = B.principal_product1_code AND
-                                                   HH.delete_date IS NULL) AS product1_name,
+                                                   HH.delete_date IS NULL) AS principal_product1_name,
                                             (SELECT II.small_classi_name
                                              FROM ajict_bms_schema.commonness_code II
                                              WHERE II.great_classi_code = B.principal_product1_code AND
                                                    II.small_classi_code = B.principal_product2_code AND
-                                                   II.delete_date IS NULL) AS product2_name,
-                                            (SELECT JJ.dept_id
-                                             FROM ajict_bms_schema.aj_user JJ
-                                             WHERE JJ.user_id = B.user_id AND
-                                                   JJ.delete_date IS NULL) AS dept_id,
-                                            (SELECT KK.high_dept_id FROM ajict_bms_schema.dept KK WHERE KK.dept_id = B.change_preparation_dept_id AND KK.delete_date IS NULL) AS high_dept_id,
-                                            (SELECT LL.dept_name
-                                             FROM ajict_bms_schema.dept LL
-                                             WHERE LL.dept_id = (SELECT BBB.dept_id
-                                                                 FROM ajict_bms_schema.aj_user BBB
-                                                                 WHERE BBB.user_id = B.user_id AND
-                                                                       BBB.delete_date IS NULL) AND
-                                                  LL.delete_date IS NULL) AS dept_name,
+                                                   II.delete_date IS NULL) AS principal_product2_name,
+                                            (SELECT KK.high_dept_id
+                                             FROM ajict_bms_schema.dept KK
+                                             WHERE KK.dept_id = B.change_preparation_dept_id AND
+                                                   KK.delete_date IS NULL) AS change_preparation_high_dept_id,
                                             (SELECT MM.dept_name
                                              FROM ajict_bms_schema.dept MM
                                              WHERE MM.dept_id = (SELECT CCC.high_dept_id
                                                                  FROM ajict_bms_schema.dept CCC
                                                                  WHERE CCC.dept_id = B.change_preparation_dept_id AND
-                                                                       CCC.delete_date IS NULL)) AS high_dept_name,
+                                                                       CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
                                             C.activity_no,
                                             C.activity_details,
                                             C.activity_date,
@@ -1694,30 +1650,22 @@ def f_select_biz_opp_activity2(request):
                                             (SELECT DISTINCT HH.great_classi_name
                                              FROM ajict_bms_schema.commonness_code HH
                                              WHERE HH.great_classi_code = B.principal_product1_code AND
-                                                   HH.delete_date IS NULL) AS product1_name,
+                                                   HH.delete_date IS NULL) AS principal_product1_name,
                                             (SELECT II.small_classi_name
                                              FROM ajict_bms_schema.commonness_code II
                                              WHERE II.great_classi_code = B.principal_product1_code AND
                                                    II.small_classi_code = B.principal_product2_code AND
-                                                   II.delete_date IS NULL) AS product2_name,
-                                            (SELECT JJ.dept_id
-                                             FROM ajict_bms_schema.aj_user JJ
-                                             WHERE JJ.user_id = B.user_id AND
-                                                   JJ.delete_date IS NULL) AS dept_id,
-                                            (SELECT KK.high_dept_id FROM ajict_bms_schema.dept KK WHERE KK.dept_id = B.change_preparation_dept_id AND KK.delete_date IS NULL) AS high_dept_id,
-                                            (SELECT LL.dept_name
-                                             FROM ajict_bms_schema.dept LL
-                                             WHERE LL.dept_id = (SELECT BBB.dept_id
-                                                                 FROM ajict_bms_schema.aj_user BBB
-                                                                 WHERE BBB.user_id = B.user_id AND
-                                                                       BBB.delete_date IS NULL) AND
-                                                   LL.delete_date IS NULL) AS dept_name,
+                                                   II.delete_date IS NULL) AS principal_product2_name,
+                                            (SELECT KK.high_dept_id
+                                             FROM ajict_bms_schema.dept KK
+                                             WHERE KK.dept_id = B.change_preparation_dept_id AND
+                                                   KK.delete_date IS NULL) AS change_preparation_high_dept_id,
                                             (SELECT MM.dept_name
                                              FROM ajict_bms_schema.dept MM
                                              WHERE MM.dept_id = (SELECT CCC.high_dept_id
                                                                  FROM ajict_bms_schema.dept CCC
                                                                  WHERE CCC.dept_id = B.change_preparation_dept_id AND
-                                                                       CCC.delete_date IS NULL)) AS high_dept_name,
+                                                                       CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
                                             C.activity_no,
                                             C.activity_details,
                                             C.activity_date,
@@ -1928,34 +1876,16 @@ def f_select_biz_opp_history(request):
                                             WHERE II.great_classi_code = B.principal_product1_code AND
                                                   II.small_classi_code = B.principal_product2_code AND
                                                   II.delete_date IS NULL) AS principal_product2_name,
-                                           (SELECT JJ.dept_id
-                                            FROM ajict_bms_schema.aj_user JJ
-                                            WHERE JJ.user_id = B.user_id AND
-                                                  JJ.delete_date IS NULL) AS dept_id,
                                            (SELECT KK.high_dept_id
                                             FROM ajict_bms_schema.dept KK
-                                            WHERE KK.dept_id = (SELECT AAA.dept_id
-                                                                FROM ajict_bms_schema.aj_user AAA
-                                                                WHERE AAA.user_id = B.user_id AND
-                                                                      AAA.delete_date IS NULL) AND
-                                                  KK.delete_date IS NULL) AS high_dept_id,
-                                           (SELECT LL.dept_name
-                                            FROM ajict_bms_schema.dept LL
-                                            WHERE LL.dept_id = (SELECT BBB.dept_id
-                                                                FROM ajict_bms_schema.aj_user BBB
-                                                                WHERE BBB.user_id = B.user_id AND
-                                                                      BBB.delete_date IS NULL) AND
-                                                 LL.delete_date IS NULL) AS dept_name,
+                                            WHERE KK.dept_id = B.change_preparation_dept_id AND
+                                                  KK.delete_date IS NULL) AS change_preparation_high_dept_id,      
                                            (SELECT MM.dept_name
-                                            FROM ajict_bms_schema.dept MM
-                                            WHERE MM.dept_id = (SELECT CCC.high_dept_id
-                                                                FROM ajict_bms_schema.dept CCC
-                                                                WHERE CCC.dept_id = (SELECT AAAA.dept_id
-                                                                                     FROM ajict_bms_schema.aj_user AAAA
-                                                                                     WHERE AAAA.user_id = B.user_id AND
-                                                                                           AAAA.delete_date IS NULL) AND
-                                                                      CCC.delete_date IS NULL) AND
-                                                  MM.delete_date IS NULL) AS high_dept_name,
+                                             FROM ajict_bms_schema.dept MM
+                                             WHERE MM.dept_id = (SELECT CCC.high_dept_id
+                                                                 FROM ajict_bms_schema.dept CCC
+                                                                 WHERE CCC.dept_id = B.change_preparation_dept_id AND
+                                                                       CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
                                            A.renewal_code,
                                            CASE WHEN A.renewal_code = 'I'
                                                 THEN (SELECT PP.create_date FROM ajict_bms_schema.biz_opp PP WHERE PP.biz_opp_id = A.biz_opp_id)

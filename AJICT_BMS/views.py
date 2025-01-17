@@ -671,7 +671,7 @@ def f_select_biz_opp2(request):
             print(f"f_select_biz_opp2()에서의 v_data의 type : {type(v_data)}")
 
 
-            if v_data == []:
+            if len(v_data) == 0:
                v_status = {'STATUS':'NONE','MESSAGE':'Data가 존재하지 않습니다.'}
             else:
                v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}

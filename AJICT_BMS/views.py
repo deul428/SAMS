@@ -1466,8 +1466,8 @@ def f_select_biz_opp_activity1(request):
 
 
          #test
-         v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
-         print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+         #v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
+         #print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:
@@ -1489,6 +1489,12 @@ def f_select_biz_opp_activity1(request):
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp_activity2(request):
+
+
+   #test
+   print(f"??????????????????????????????????????????")
+
+   
    v_session_user_id = ''
    v_body = ''
    if request.method == 'POST':
@@ -1528,13 +1534,6 @@ def f_select_biz_opp_activity2(request):
          v_auth2_code = ''
          v_responsibility1_code = ''
          v_responsibility2_code = ''
-
-
-         #test
-         v_formatted_sql = v_sql_session % tuple(map(repr,v_param1))
-         print(f"f_select_biz_opp_activity2()에서의 v_formatted_sql : {v_formatted_sql}")
-
-
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_session,v_param1)
             v_columns = [v_column[0] for v_column in v_cursor.description]

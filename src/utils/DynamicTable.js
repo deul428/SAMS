@@ -80,7 +80,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     },
     useSortBy, usePagination
   );
-  
   const [activityRow, setActivityRow] = useState([]);
   // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
   useEffect(() => {
@@ -108,9 +107,10 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // res obj / res.data arr
   useEffect(() => {
     console.log("res---------------------------------------(inputField에서 검색했을 때 나오는 데이터)\n", res);
-    if ((!res) || (Object.keys(res).length === 0) || (Array.isArray(res) && res.length === 0)) {
+    if ((!res) || (Object.keys(res).length === 0) || (res.length === 0)) {
+      console.log('hrere');
       setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
-      return;
+      // return;
     } else {
       if (res.data.length > 0) {
         console.log("res.data.length: ", res.data.length);
@@ -222,15 +222,17 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
 
   useEffect(() => {
+    console.log("v_handlingHtml: ");
+  }, v_handlingHtml)
+  useEffect(() => {
+    let htmlContent = null;
     if (
       (typeof(data) === 'object' ? !data : data.length === 0) ||
       (typeof(res) === 'object' ? !res : res.length === 0)
     ) { return <div>Loading...</div>; }
-
 /*     if (!data && (Array.isArray(res) && res.length === 0)) {
       return <div>Loading...</div>;
     } */
-    let htmlContent = null;
     if ((typeof(data) === 'object' && data) || (Array.isArray(data) && data.length > 0)) {
       // console.log("data: ", data, "res: ", res);
       switch (v_componentName) {
@@ -319,7 +321,11 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             <th>사업 일련 번호</th>
                             <td>{rowData.biz_opp_id}</td>
                             <th>사업명</th>
-                            <td colspan={3}>{rowData.biz_opp_name}</td>
+                            <td colspan={8}>{rowData.biz_opp_name}</td>
+                          </tr>
+                        </thead>
+                        <thead>
+                          <tr>
                             <th>소속 본부</th>
                             <td>{rowData.high_dept_name}</td>
                             <th>팀</th>
@@ -357,7 +363,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
               ) : ('')}
             </Table>
             <Modal show={showModal} onHide={closeModal}>
-              {console.log(v_modalPropsData)}
+              {/* {console.log(v_modalPropsData)} */}
               {v_modalPropsData? 
               <ModalBody>테스트입니다{v_modalPropsData.biz_opp_id}</ModalBody>
               : ''
@@ -372,7 +378,13 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
           break;
       }
     }
-  }, [v_childComponent, v_componentName, page, showModal, res,]);
+    if ((!res) || (Object.keys(res).length === 0) || (res.length === 0)) {
+      // console.log('hrere');
+      htmlContent = <div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>;
+      setVHandlingHtml(htmlContent);
+      // return;
+    } 
+  }, [v_childComponent, v_componentName, page, showModal, res]);
 
   return (
     <div id="tableArea">

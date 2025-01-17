@@ -127,6 +127,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
             const response = await apiMethods[method](endpoint, input);
             if (response.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
+                // alert(response.status.MESSAGE);
                 setRes([]);
                 return;
             } else {

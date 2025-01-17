@@ -30,6 +30,7 @@ const BizOpp = () => {
     4. get 함수가 response.data를 그대로 반환.
     -*/
 
+    const [isRefresh, setIsRefresh] = useState(false);
     const [returnMsg, setReturnMsg] = useState(null);
     const sampleData = {
         "data": {
@@ -1987,8 +1988,11 @@ const BizOpp = () => {
     };
 
     useEffect(() => {
-        f_handlingData('post', endpoint, userCheck);
-    }, [endpoint]);
+        console.log(isRefresh);
+        if(isRefresh === true || endpoint) {
+            f_handlingData('post', endpoint, userCheck);
+        }
+    }, [endpoint, isRefresh]);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
       
     const [res, setRes] = useState([]);
@@ -2007,13 +2011,13 @@ const BizOpp = () => {
                         }
                     </div>
                     
-                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data} v_modalPropsData={null} authLevels={authLevels}/>
+                    <InputFieldDetail show={showModal} onHide={closeModal} v_componentName={'bizOpp'} v_propsData={data} v_modalPropsData={null} authLevels={authLevels} setIsRefresh={setIsRefresh}/>
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   
                         (data.length === 0 ? 
                             (<p>데이터를 불러오는 중입니다...</p>) : 
-                            (<DynamicTable v_componentName={'bizOpp'} v_propsData={data} res={res}/>)
+                            (<DynamicTable v_componentName={'bizOpp'} v_propsData={data} res={res} setIsRefresh={setIsRefresh}/>)
                         )
                     }
                 </div>

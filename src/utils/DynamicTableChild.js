@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTable, usePagination, useSortBy } from 'react-table';
+import moment from 'moment';
 import { apiMethods } from './api';
 
 import roots from './datas/Roots';
@@ -21,8 +22,8 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
       setData([]); // 기본값으로 빈 배열 설정
       return;
     }
+
     if (v_propsData.data.retrieve_biz_opp_history) {
-      console.log('here',v_propsData.data.retrieve_biz_opp_history)
       setData(v_propsData.data.retrieve_biz_opp_history);
     }
   }, [v_propsData]);
@@ -162,6 +163,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
     ) { return <div>Loading...</div>; }
     
     if (data.length > 0 || data) {
+      console.log("data: ", data, "page: ", page);
       let htmlContent = null;
       switch (v_componentName) {
         case `bizOppHistory`: 
@@ -212,7 +214,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
             </Table>
             </>
           )
-          setVHandlingHtml (htmlContent);
+          setVHandlingHtml(htmlContent);
           break;
         default:
           setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);

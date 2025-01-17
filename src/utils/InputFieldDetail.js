@@ -10,7 +10,7 @@ import '../styles/_search.scss';
 import { Modal, Button, Form, Row, Col, ListGroup, FloatingLabel } from 'react-bootstrap';
 import { FileArrowDownFill } from 'react-bootstrap-icons';
 
-const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData, authLevels }) => {
+const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData, authLevel, setIsRefresh}) => {
     // v_propsData: inputField에서 받아오는 list 포함 데이터 / v_modalPropsData: dynamicTable에서 받아오는 테이블 데이터, 사용자가 선택한 행의 데이터만 불러옴
     const dispatch = useDispatch();
     const location = useLocation();
@@ -413,38 +413,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // 1. post용
     // 키에 접두어 'a_' 삽입, a_v_modalPropsData로 가공 
     let a_v_modalPropsData;
-    /* const [p_bizopp_delete, setPBizoppDelete] = useState({
-        a_biz_opp_id: '',
-        a_biz_opp_name: '',
-        a_progress1_rate_code: '',
-        a_progress2_rate_code: '',
-        a_contract_date: '',
-        a_essential_achievement_tf: '',
-        a_detail_no: '',
-        a_user_id: '',
-        a_change_preparation_dept_id: '',
-        a_change_preparation_dept_name: '',
-        a_last_client_com1_code: '',
-        a_last_client_com2_code: '',
-        a_sale_com1_code: '',
-        a_sale_com2_code: '',
-        a_sale_item_no: '',
-        a_sale_date: '',
-        a_sale_amt: '',
-        a_sale_profit: '',
-        a_purchase_date: '',
-        a_purchase_amt: '',
-        a_collect_money_date: '',
-        a_biz_section1_code: '',
-        a_biz_section2_code: '',
-        a_principal_product1_code: '',
-        a_principal_product2_code: '',
-    }); */
     if(v_modalPropsData) {
         a_v_modalPropsData = Object.fromEntries(
             Object.entries(v_modalPropsData).map(([key, value]) => [`a_${key}`, value])
         );
         const a = a_v_modalPropsData;
+        console.log( "a_v_modalPropsData", a_v_modalPropsData);
         
         var p_bizopp_delete = {a_biz_opp_id: a.a_biz_opp_id,
             a_biz_opp_name: a.a_biz_opp_name,
@@ -477,7 +451,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         // a_v_modalPropsData 데이터 핸들링 후 input 객체에 복사
         if (v_modalPropsData) {
             // 판품번호 disabled 제어
-            console.log(v_modalPropsData);
             if (v_modalPropsData.progress2_rate_code === '0005' || v_modalPropsData.progress2_rate_code === '0006') {
                 // console.log('진행률 바뀜!');
                 setProToSaleNo(false);
@@ -488,10 +461,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             const dateKeys = ['a_sale_date', 'a_collect_money_date', 'a_purchase_date', 'a_contract_date'];
             dateKeys.forEach(key => {
                 if (a_v_modalPropsData[key]) {
-                    return a_v_modalPropsData[key] = a_v_modalPropsData[key].replace(/(\d{3})(\d{2})(\d{2})/, '$1-$2-$3');
+                    return a_v_modalPropsData[key] = a_v_modalPropsData[key].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3');
                 }
             });
-            console.log(a_v_modalPropsData, "a_v_modalPropsData");
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD 끝 .....................
             // ..................... 숫자 문자열로 변환 후 쉼표 추가 ..................... 
             const numKeys = ['a_purchase_amt', 'a_sale_amt', 'a_sale_profit'];
@@ -620,11 +592,56 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     alert('필수값을 모두 기입하십시오.');
                     return; 
                 }
-            } else if (msg === '수정') {
-                if (input.biz_opp.a_biz_opp_name.trim() !== '') {
-                    confirmMsg = `사업 (기회)명 ${input.biz_opp.a_biz_opp_name}을(를) 수정하시겠습니까?`;
+            } else if (msg === '수정' && a_v_modalPropsData) {
+                console.log(input);
+                if (
+                    ((input.biz_opp.a_biz_opp_name && input.biz_opp.a_biz_opp_name.trim() !== '') || 
+                    (a_v_modalPropsData.a_biz_opp_name && a_v_modalPropsData.a_biz_opp_name.trim() !== '')) &&
+
+                    ((input.biz_opp.a_progress2_rate_code && input.biz_opp.a_progress2_rate_code.trim() !== '') || 
+                    (a_v_modalPropsData.a_progress2_rate_code && a_v_modalPropsData.a_progress2_rate_code.trim() !== '')) &&
+                   
+                   ((input.biz_opp.a_contract_date && input.biz_opp.a_contract_date.trim() !== '') || 
+                    (a_v_modalPropsData.a_contract_date && a_v_modalPropsData.a_contract_date.trim() !== '')) &&
+                   
+                   ((input.biz_opp.a_essential_achievement_tf !== null) || 
+                    (a_v_modalPropsData.a_essential_achievement_tf !== null)) &&
+                   
+                   ((input.biz_opp_detail.a_sale_com2_code && input.biz_opp_detail.a_sale_com2_code.trim() !== '') || 
+                    (a_v_modalPropsData.a_sale_com2_code && a_v_modalPropsData.a_sale_com2_code.trim() !== '')) &&
+                   
+                   ((input.biz_opp_detail.a_sale_date && input.biz_opp_detail.a_sale_date.trim() !== '') || 
+                    (a_v_modalPropsData.a_sale_date && a_v_modalPropsData.a_sale_date.trim() !== '')) &&
+                   
+                   ((input.biz_opp_detail.a_sale_amt !== undefined && input.biz_opp_detail.a_sale_amt >= 0) || 
+                    (a_v_modalPropsData.a_sale_amt !== undefined && a_v_modalPropsData.a_sale_amt >= 0)) &&
+                   
+                   ((input.biz_opp_detail.a_sale_profit !== undefined && input.biz_opp_detail.a_sale_profit >= 0) || 
+                    (a_v_modalPropsData.a_sale_profit !== undefined && a_v_modalPropsData.a_sale_profit >= 0)) &&
+                   
+                   ((input.biz_opp_detail.a_purchase_date && input.biz_opp_detail.a_purchase_date.trim() !== '') || 
+                    (a_v_modalPropsData.a_purchase_date && a_v_modalPropsData.a_purchase_date.trim() !== '')) &&
+                   
+                   ((input.biz_opp_detail.a_purchase_amt !== undefined && input.biz_opp_detail.a_purchase_amt >= 0) || 
+                    (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) &&
+                   
+                   ((input.biz_opp_detail.a_biz_section2_code && input.biz_opp_detail.a_biz_section2_code.trim() !== '') || 
+                    (a_v_modalPropsData.a_biz_section2_code && a_v_modalPropsData.a_biz_section2_code.trim() !== '')) &&
+                   
+                   ((input.biz_opp_detail.a_principal_product2_code && input.biz_opp_detail.a_principal_product2_code.trim() !== '') || 
+                    (a_v_modalPropsData.a_principal_product2_code && a_v_modalPropsData.a_principal_product2_code.trim() !== '')) &&
+                   
+                   ((input.biz_opp_detail.a_user_name && input.biz_opp_detail.a_user_name.trim() !== '') || 
+                    (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== '')) /* &&
+                   
+                   (input.biz_opp_activity.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') &&
+                   
+                   (input.biz_opp_activity.a_activity_date && input.biz_opp_activity.a_activity_date.trim() !== '') */
+                   
+                ) {
+                    confirmMsg = `사업 (기회) 일련 번호 ${a_v_modalPropsData.a_biz_opp_id}을(를) 수정하시겠습니까?`;
                 } else {
-                    alert('사업 (기회) 명을 기입하십시오.');
+                    alert('필수값을 모두 기입하십시오.');
                     return; 
                 }
             }
@@ -649,6 +666,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     if (e && msg === '등록') { 
                         alert('정상적으로 등록되었습니다.'); 
                         onHide(true);
+                        setIsRefresh(true);
                     }
                     setGetData(response);
                     return response;
@@ -670,6 +688,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         if (show) {
             // console.log(show, onHide);
             // console.log(userCheck);
+            console.log(setIsRefresh);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
         }
@@ -1054,7 +1073,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         placeholder='매출 금액'
                                                         onChange={f_handlingInput} 
                                                         // value={input.sale_amt || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_sale_amt || ''}
+                                                        defaultValue={a_v_modalPropsData?.a_sale_amt || 0}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
@@ -1071,7 +1090,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         placeholder='매입 금액'
                                                         onChange={f_handlingInput}
                                                         // value={input.a_purchase_amt || ''}
-                                                        defaultValue={a_v_modalPropsData?.a_purchase_amt || ''}
+                                                        defaultValue={a_v_modalPropsData?.a_purchase_amt || 0}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
@@ -1082,7 +1101,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         placeholder='매출 이익'
                                                         onChange={f_handlingInput} 
                                                         // value={input.sale_profit || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_sale_profit || ''}
+                                                        defaultValue={a_v_modalPropsData?.a_sale_profit || 0}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>

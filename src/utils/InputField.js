@@ -198,7 +198,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
     v_selectProTo: 진행률 to value 값 저장. 필요 없을 듯.
     v_filterdProTo: data.search_commonness_pro의 값을 받아서 From보다 큰 숫자만 받아옴. UI에서도 이 변수를 사용하여 UI 반영.
     */
-   console.log(data, "data");
 
     const [v_teamByDept, setVTeamByDept] = useState({});
     // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성

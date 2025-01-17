@@ -15,8 +15,7 @@ import '../styles/_global.scss';
 import { useMemo } from 'react';
 import { transposeData } from './TransposeTable';
 
-function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColumns }) {
-
+function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColumns, setIsRefresh }) {
   const auth = useSelector((state) => state.auth);
 
   const [showModal, setShowModal] = useState(false);
@@ -373,7 +372,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       {
         (v_childComponent === 'InputFieldDetail') 
         ? 
-        (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_propsData={v_propsData} v_modalPropsData={v_modalPropsData}/> )
+        (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_propsData={v_propsData} v_modalPropsData={v_modalPropsData} setIsRefresh={setIsRefresh}/> )
         :
         (v_componentName === 'bizOpp') ?
         (<BizOppHistory show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData} />)

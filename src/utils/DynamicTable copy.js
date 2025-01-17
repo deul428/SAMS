@@ -15,8 +15,7 @@ import '../styles/_global.scss';
 import { useMemo } from 'react';
 import { transposeData } from './TransposeTable';
 
-function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColumns }) {
-
+function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColumns, setIsRefresh }) {
   const auth = useSelector((state) => state.auth);
 
   const [showModal, setShowModal] = useState(false);
@@ -74,7 +73,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 15 }, // 초기 페이지 설정
+      initialState: { pageIndex: 0, pageSize: 10 }, // 초기 페이지 설정
     },
     useSortBy, usePagination
   );
@@ -311,19 +310,19 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                     prepareRow(row);
                     const rowData = row.original; // 원본 데이터, accessor에 접근 안 하고 사용하기 위해
                     return (
-                      <div key={key} className='mb-4' style={{"border": "1px solid #dee2e6"}}/* <></>의 축약X 버전, key 적을 시 사용 */>
+                      <div key={key} className='mb-2'>
                         <thead>
                           <tr>
-                            <th>소속 본부</th>
-                            <td>{rowData.high_dept_name}</td>
-                            <th>팀</th>
-                            <td>{rowData.dept_name}</td>
-                            <th>영업 담당자</th>
-                            <td>{rowData.user_name}</td>
                             <th>사업 일련 번호</th>
                             <td>{rowData.biz_opp_id}</td>
                             <th>사업명</th>
                             <td colspan={3}>{rowData.biz_opp_name}</td>
+                            <th>소속 본부</th>
+                            <td>{rowData.high_dept_name}</td>
+                            <th>팀</th>
+                            <td>{rowData.change_preparation_dept_name}</td>
+                            <th>영업 담당자</th>
+                            <td>{rowData.user_name}</td>
                           </tr>
                         </thead>
 
@@ -373,7 +372,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       {
         (v_childComponent === 'InputFieldDetail') 
         ? 
-        (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_propsData={v_propsData} v_modalPropsData={v_modalPropsData}/> )
+        (<InputFieldDetail v_componentName={'bizOpp'} show={showModal} onHide={closeModal} v_propsData={v_propsData} v_modalPropsData={v_modalPropsData} setIsRefresh={setIsRefresh}/> )
         :
         (v_componentName === 'bizOpp') ?
         (<BizOppHistory show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData} />)

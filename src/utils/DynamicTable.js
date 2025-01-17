@@ -8,7 +8,7 @@ import InputFieldDetail from './InputFieldDetail';
 import { apiMethods } from './api';
 import roots from './datas/Roots';
 
-import { Table, Button, Pagination } from 'react-bootstrap';
+import { Table, Button, Pagination, Row, Col } from 'react-bootstrap';
 import { CaretUp, CaretDown } from 'react-bootstrap-icons';
 import '../styles/_table.scss';
 import '../styles/_global.scss';
@@ -73,7 +73,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 15 }, // 초기 페이지 설정
+      initialState: { pageIndex: 0, pageSize: 10 }, // 초기 페이지 설정
     },
     useSortBy, usePagination
   );
@@ -303,14 +303,14 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         case `activity`: 
           htmlContent = (
             <>
-            <Table>
+            <Table responsive='sm'>
               {activityRow ? (
                 <>
                   {page.map((row, key) => {
                     prepareRow(row);
                     const rowData = row.original; // 원본 데이터, accessor에 접근 안 하고 사용하기 위해
                     return (
-                      <div key={key} className='mb-4' style={{"border": "1px solid #dee2e6"}}/* <></>의 축약X 버전, key 적을 시 사용 */>
+                      <div key={key} className='mb-2'>
                         <thead>
                           <tr>
                             <th>사업 일련 번호</th>
@@ -325,7 +325,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             <td>{rowData.user_name}</td>
                           </tr>
                         </thead>
-
                         <thead>
                           <tr>
                             <th>계약 일자</th>

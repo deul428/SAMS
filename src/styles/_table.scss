@@ -2,18 +2,26 @@
     width: 100%;
 }
 table {
+    width: 100%;
     font-size: 0.8rem;
     > div {
+        width: 100%;
         border: none;
         thead, tbody { 
+            width: 100%;
+            display: table; /* 테이블 컨텍스트를 유지 */
+            table-layout: fixed; /* 테이블의 고정 레이아웃 */
             tr {
                 width: 100%;
+                display: table-row; /* 테이블 행으로 설정 */
                 th {
                 }
                 td {
                 }
                 th, td {
-                    width: 8.333333% !important;
+                    text-align: left;
+                    vertical-align: middle;
+                    width: auto; /* 기본 너비 유지 */
                 }
             }
         }
@@ -30,8 +38,8 @@ table {
     tr {
         th, td {
             border: 1px solid #dee2e6;
-            min-width: 80px;
-            max-width: 250px;
+            /* min-width: 80px;
+            max-width: 250px; */
             overflow: hidden; 
             white-space: nowrap; 
             text-overflow: ellipsis; /* 말줄임표 추가 */

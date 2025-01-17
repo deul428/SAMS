@@ -1466,8 +1466,8 @@ def f_select_biz_opp_activity1(request):
 
 
          #test
-         #v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
-         #print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+         v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
+         print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:

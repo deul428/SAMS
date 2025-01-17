@@ -668,6 +668,7 @@ def f_select_biz_opp2(request):
 
             #test
             print(f"f_select_biz_opp2()에서의 v_data : {v_data}")
+            print(f"f_select_biz_opp2()에서의 v_data의 type : {type(v_data)}")
 
 
             if not v_data or not isinstance(v_data,list):

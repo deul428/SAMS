@@ -1558,6 +1558,11 @@ def f_select_biz_opp_activity2(request):
          v_user_name = None if v_body.get('a_user_name') == '' else v_body.get('a_user_name')
          if v_user_name is not None:
             v_user_name = v_user_name.strip()
+
+         #test
+         print(f"뭐지?")
+
+
          v_sql_biz_opp_activity = """SELECT A.biz_opp_id,
                                             A.biz_opp_name,
                                             B.user_id,
@@ -1733,7 +1738,7 @@ def f_select_biz_opp_activity2(request):
 
          #test
          v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
-         print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+         print(f"f_select_biz_opp_activity2()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:

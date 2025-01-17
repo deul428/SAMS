@@ -1645,7 +1645,7 @@ def f_select_biz_opp_activity2(request):
                                              WHERE MM.dept_id = (SELECT CCC.high_dept_id
                                                                  FROM ajict_bms_schema.dept CCC
                                                                  WHERE CCC.dept_id = B.change_preparation_dept_id AND
-                                                                       CCC.delete_date IS NULL) AS high_dept_name,
+                                                                       CCC.delete_date IS NULL)) AS high_dept_name,
                                             C.activity_no,
                                             C.activity_details,
                                             C.activity_date,

@@ -112,12 +112,9 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
       return;
     } else {
-      if (res.row.length > 0) {
-        console.log("res.row.length: ", res.row.length);
-        setData(res.row);
-      /* if (res.data.length > 0) {
+      if (res.data.length > 0) {
         console.log("res.data.length: ", res.data.length);
-        setData(res.data); */
+        setData(res.data);
       }
     }
   }, [res])

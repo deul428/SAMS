@@ -667,8 +667,8 @@ def f_select_biz_opp2(request):
 
 
             #test
-            print(f"f_select_biz_opp2()에서의 v_data : {v_data}")
-            print(f"f_select_biz_opp2()에서의 v_data의 type : {type(v_data)}")
+            #print(f"f_select_biz_opp2()에서의 v_data : {v_data}")
+            #print(f"f_select_biz_opp2()에서의 v_data의 type : {type(v_data)}")
 
 
             v_status = ''
@@ -678,7 +678,7 @@ def f_select_biz_opp2(request):
 
 
                #test
-               print(f"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+               #print(f"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
 
                #v_data = [{"Row": "0"}]
@@ -686,13 +686,13 @@ def f_select_biz_opp2(request):
 
 
 #test
-               print(f"v_status : {v_status}")
-               print(f"v_status : {JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})}")
-               print(f"v_status : {v_data,v_status}")
+               #print(f"v_status : {v_status}")
+               #print(f"v_status : {JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})}")
+               #print(f"v_status : {v_data,v_status}")
 
 
             #test
-            print(f"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
+            #print(f"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
 
 
             return JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})

@@ -43,8 +43,8 @@ const BizOpp = () => {
     사업 구분1 code	biz_section1_code
     사업 구분2 code	biz_section2_code
     필달 여부	essential_achievement_tf
-    제품1 code	product1_code
-    제품2 code	product2_code
+    제품1 code	principal_product1_code
+    제품2 code	principal_product2_code
     등록자 ID	create_user
     등록 일시	create_date
     수정자 ID	update_user
@@ -88,14 +88,14 @@ const BizOpp = () => {
         biz_section1_name: '',
         biz_section2_name: '',
         essential_achievement_tf: false,
-        product1_code: '',
-        product2_code: '',
-        product1_name: '',
-        product2_name: '',
-        dept_id: '',
-        high_dept_id: '',
-        dept_name: '',
-        high_dept_name: '',
+        principal_product1_code: '',
+        principal_product2_code: '',
+        principal_product1_name: '',
+        principal_product2_name: '',
+        change_preparation_dept_id: '',
+        change_preparation_high_dept_id: '',
+        change_preparation_dept_name: '',
+        change_preparation_high_dept_name: '',
         create_user: '',
         create_date: '',
         update_user: null,

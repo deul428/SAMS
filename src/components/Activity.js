@@ -79,15 +79,15 @@ const Activity = () => {
             <InputField v_componentName={'activity'} v_propsData={data} setRes={setRes}/>
             <div className='wrap' id='activity'>
                 <div className='dataPostArea'>
-                    <div className='btnArea d-flex justify-content-end'>
+                    <h4 style={{textAlign:"center"}} className='mb-3'>영업 활동 등록은 사업 (기회) 관리 - 사업 (기회) 등록에서 진행해 주시기 바랍니다.</h4>
+                    {/* <div className='btnArea d-flex justify-content-end'>
                         {(auth.userAuthCode === '0002') ? 
                         <></> : 
                         <div className='mb-2'>
-                            <Button variant='success' className='me-2' onClick={''}>저장</Button>
-                            <Button variant='danger' className='' onClick={''}>삭제</Button>
+                            <Button variant='success' className='me-2' onClick={''}>영업 활동 등록</Button>
                         </div>
                         }
-                    </div>
+                    </div> */}
                     {errMsg ? 
                         (<p>{errMsg}</p>) 
                         :   

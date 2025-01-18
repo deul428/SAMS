@@ -20,6 +20,9 @@
                     .d-flex {
                         > * {}
                     }
+                    textarea.activityDetails {
+                        height: calc(7rem + calc(var(--bs-border-width) * 2)) !important;
+                    }
                 }
             }
             .modal-footer {

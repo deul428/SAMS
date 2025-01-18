@@ -102,7 +102,7 @@ const authCheck = ({ data,
         f_authLevel3(resCode);
     }
     
-    // Level 3. 부서(dept 테이블의 dept_id)
+    // Level 3. 부서(dept 테이블의 change_preparation_dept_id)
     /* 9201	경영관리팀
     9509	운영팀
     9711	영업1팀
@@ -206,42 +206,42 @@ const authCheck = ({ data,
         f_teamLinkedDept(); 
         if (resCode === '0002') {
             setVTeamHandling({
-                teamValue: team[0].dept_id,
-                teamMsg: team[0].dept_name,
+                teamValue: team[0].change_preparation_dept_id,
+                teamMsg: team[0].change_preparation_dept_name,
                 teamDisabled: true
             })
             setVDeptHandling({
-                deptValue: dept[0].dept_id,
-                deptMsg: dept[0].dept_name,
+                deptValue: dept[0].change_preparation_dept_id,
+                deptMsg: dept[0].change_preparation_dept_name,
                 detpDisabled: true,
             });
         } else if (resCode === '0003') {
             if (v_teamHandling.teamValue) {
                 setVTeamHandling({
-                    teamValue: team[0].dept_id,
-                    teamMsg: team[0].dept_name,
+                    teamValue: team[0].change_preparation_dept_id,
+                    teamMsg: team[0].change_preparation_dept_name,
                 })
             } else {
                 setVTeamHandling((team) => ({
                     ...team,
-                    teamValue: dept[0].dept_id,
-                    // teamMsg: dept[0].dept_name,
+                    teamValue: dept[0].change_preparation_dept_id,
+                    // teamMsg: dept[0].change_preparation_dept_name,
                 }))
             }
             setVDeptHandling({
-                deptValue: dept[0].dept_id,
-                deptMsg: dept[0].dept_name,
+                deptValue: dept[0].change_preparation_dept_id,
+                deptMsg: dept[0].change_preparation_dept_name,
                 detpDisabled: true,
             });
         } else {
             setVTeamHandling({
-                teamValue: team[0].dept_id,
-                teamMsg: team[0].dept_name,
+                teamValue: team[0].change_preparation_dept_id,
+                teamMsg: team[0].change_preparation_dept_name,
                 teamDisabled: true
             })
             setVDeptHandling({
-                deptValue: dept[0].dept_id,
-                deptMsg: dept[0].dept_name,
+                deptValue: dept[0].change_preparation_dept_id,
+                deptMsg: dept[0].change_preparation_dept_name,
                 detpDisabled: true,
             });
         }
@@ -252,15 +252,15 @@ const authCheck = ({ data,
         if (team) {
             updatedInput = {
                 ...input,
-                a_headquarters_dept_id: team[0].high_dept_id,
-                a_dept_id: team[0].dept_id,
+                a_headquarters_dept_id: team[0].change_preparation_high_dept_id,
+                a_change_preparation_dept_id: team[0].change_preparation_dept_id,
             };
         } else {
             console.log('no team');
             updatedInput = {
                 ...input,
-                // a_headquarters_dept_id: dept[0].high_dept_id,
-                a_dept_id: dept[0].dept_id,
+                // a_headquarters_dept_id: dept[0].change_preparation_high_dept_id,
+                a_change_preparation_dept_id: dept[0].change_preparation_dept_id,
             };
         }
 
@@ -269,8 +269,8 @@ const authCheck = ({ data,
         
         // setInput((prevInput) => ({
         //     ...prevInput,
-        //     a_headquarters_dept_id: team[0].high_dept_id, 
-        //     a_dept_id: team[0].dept_id,
+        //     a_headquarters_dept_id: team[0].change_preparation_high_dept_id, 
+        //     a_change_preparation_dept_id: team[0].change_preparation_dept_id,
         //     // a_user_name: v_userHandling.userValue
         // }));
         

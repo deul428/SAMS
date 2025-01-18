@@ -93,11 +93,11 @@ const InputField = ({ v_componentName, v_propsData }) => {
 
         // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
         const mapping = dataOfTeam.reduce((acc, items) => {
-            const { high_dept_id } = items;
-            if (!acc[high_dept_id]) {
-                acc[high_dept_id] = [];
+            const { change_preparation_high_dept_id } = items;
+            if (!acc[change_preparation_high_dept_id]) {
+                acc[change_preparation_high_dept_id] = [];
             }
-            acc[high_dept_id].push(items);
+            acc[change_preparation_high_dept_id].push(items);
             return acc;
         }, {});
 
@@ -251,8 +251,8 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                                 {(data.length > 0 ? 
                                                 (
                                                     depts.map((dept) => (
-                                                    <option key={dept.dept_id} value={dept.dept_id}>
-                                                        {dept.dept_name}
+                                                    <option key={dept.change_preparation_dept_id} value={dept.change_preparation_dept_id}>
+                                                        {dept.change_preparation_dept_name}
                                                     </option>
                                                     ))
                                                 )
@@ -262,7 +262,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                                 {/* {(data.length > 0 ? 
                                                     (
                                                         data[0].map((e) => {
-                                                            return <option value={e.dept_id}>{e.dept_name}</option>
+                                                            return <option value={e.change_preparation_dept_id}>{e.change_preparation_dept_name}</option>
                                                         })
                                                     )
                                                     :
@@ -282,8 +282,8 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                             <Form.Select id='select2' size='sm'  /* value={option2} onChange={handleSelect2Change} aria-label='selectBox' disabled={options.length === 0}   */disabled={!selectTeam.length}>
                                                 <option value="">-- 팀을 선택하세요 --</option>
                                                 {selectTeam.map((team) => (
-                                                    <option key={team.dept_id} value={team.dept_id}>
-                                                        {team.dept_name}
+                                                    <option key={team.change_preparation_dept_id} value={team.change_preparation_dept_id}>
+                                                        {team.change_preparation_dept_name}
                                                     </option>
                                                 ))}
                                             </Form.Select>

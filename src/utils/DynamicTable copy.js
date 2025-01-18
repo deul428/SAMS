@@ -8,7 +8,7 @@ import InputFieldDetail from './InputFieldDetail';
 import { apiMethods } from './api';
 import roots from './datas/Roots';
 
-import { Table, Button, Pagination } from 'react-bootstrap';
+import { Table, Button, Pagination, Row, Col, ModalBody, Modal, FloatingLabel, Form } from 'react-bootstrap';
 import { CaretUp, CaretDown } from 'react-bootstrap-icons';
 import '../styles/_table.scss';
 import '../styles/_global.scss';
@@ -22,12 +22,15 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   const [v_modalPropsData, setVModalPropsData] = useState(null);
   const [v_childComponent, setVChildComponent] = useState(null);
 
-  const openModal = (e, handling, isHistory) => {
-    if (isHistory === null) {
-      setVChildComponent('InputFieldDetail');
-    } else {
+  const openModal = (e, handling, view) => {
+    if (view === 'history') {
       setVChildComponent('BizOppHistory');
       e.stopPropagation(); //이벤트 전파 방지
+    } else if (view === 'inputDetail') {
+      setVChildComponent('InputFieldDetail');
+    } else if (view === 'activity') {
+      console.log("openModal() e: ", e, handling);
+      // return;
     }
     setVModalPropsData(handling);
     setShowModal(true);
@@ -73,11 +76,10 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 10 }, // 초기 페이지 설정
+      initialState: { pageIndex: 0, pageSize: 2 }, // 초기 페이지 설정
     },
     useSortBy, usePagination
   );
-  
   const [activityRow, setActivityRow] = useState([]);
   // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
   useEffect(() => {
@@ -105,9 +107,9 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // res obj / res.data arr
   useEffect(() => {
     console.log("res---------------------------------------(inputField에서 검색했을 때 나오는 데이터)\n", res);
-    if ((!res) || (Object.keys(res).length === 0) || (Array.isArray(res) && res.length === 0)) {
+    if ((!res) || (Object.keys(res).length === 0) || (res.length === 0)) {
       setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
-      return;
+      // return;
     } else {
       if (res.data.length > 0) {
         console.log("res.data.length: ", res.data.length);
@@ -118,8 +120,9 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // =================== input field에서 넘어온 값(res)에 따라 핸들링 끝 ===================
 
   // =================== pagination jsx ===================
+
   const renderPagination = () => {
-    const range = 10; // 현재 페이지 앞뒤 몇 개를 표시할지 설정
+    const range = 2; // 현재 페이지 앞뒤 몇 개를 표시할지 설정
     const items = [];
   
     // 첫 페이지 항상 표시
@@ -199,7 +202,8 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         </select>
       </div>
     </Pagination>
-  )
+  )  
+
   // =================== pagination 끝 ===================
   // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
   const [sortStyle, setSortStyle] = useState({"opacity":"0.3"});
@@ -216,18 +220,41 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       // setSortStyle({"opacity":"0.3"});
     }
   } 
-  // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
 
+  
+  // activity용 변수 선언
+  function groupByBizOppId(data) {
+    return data.reduce((acc, item) => {
+      const { biz_opp_id } = item;
+      if (!acc[biz_opp_id]) {
+        acc[biz_opp_id] = []; // 그룹 초기화
+      }
+      acc[biz_opp_id].push(item); // 그룹에 데이터 추가
+      return acc;
+    }, {});
+  }
+  const groupedData = groupByBizOppId(data); // 데이터 그룹화  
+  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
+  const paginatedData = Object.entries(groupedData).slice(
+    currentPage * pageSize,
+    (currentPage + 1) * pageSize
+  );
+  const totalPages = Math.ceil(Object.keys(groupedData).length / pageSize);
+
+  // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
   useEffect(() => {
+    console.log("page:" ,page)
+    let htmlContent = null;
+    console.log('useEffect 실행됨');
+    console.log('currentPage:', currentPage, 'pageSize:', pageSize, 'paginatedData: ', paginatedData);
+  
     if (
       (typeof(data) === 'object' ? !data : data.length === 0) ||
       (typeof(res) === 'object' ? !res : res.length === 0)
     ) { return <div>Loading...</div>; }
-
 /*     if (!data && (Array.isArray(res) && res.length === 0)) {
       return <div>Loading...</div>;
     } */
-    let htmlContent = null;
     if ((typeof(data) === 'object' && data) || (Array.isArray(data) && data.length > 0)) {
       // console.log("data: ", data, "res: ", res);
       switch (v_componentName) {
@@ -265,7 +292,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                   return (
                     <tr key={key} {...restProps} 
                     onClick={(e) => {
-                      openModal(e, row.original, null);
+                      openModal(e, row.original, 'inputDetail');
                     }}
                     >
 
@@ -303,57 +330,78 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         case `activity`: 
           htmlContent = (
             <>
-            <Table>
-              {activityRow ? (
-                <>
-                  {page.map((row, key) => {
-                    prepareRow(row);
-                    const rowData = row.original; // 원본 데이터, accessor에 접근 안 하고 사용하기 위해
-                    return (
-                      <div key={key} className='mb-2'>
-                        <thead>
-                          <tr>
-                            <th>사업 일련 번호</th>
-                            <td>{rowData.biz_opp_id}</td>
-                            <th>사업명</th>
-                            <td colspan={3}>{rowData.biz_opp_name}</td>
-                            <th>소속 본부</th>
-                            <td>{rowData.high_dept_name}</td>
-                            <th>팀</th>
-                            <td>{rowData.change_preparation_dept_name}</td>
-                            <th>영업 담당자</th>
-                            <td>{rowData.user_name}</td>
-                          </tr>
-                        </thead>
+            <Table hover responsive>
+              {console.log(paginatedData)}
+              {paginatedData.map(([biz_opp_id, group], groupIndex) => {
+                const commonInfo = group[0];
+                return (
+                  <div key={groupIndex} className='mb-4'>
+                    {/* 공통 정보 */}
+                    <thead>
+                      <tr>
+                        <th>사업 일련 번호</th>
+                        <td>{commonInfo.biz_opp_id}</td>
+                        <th>사업명</th>
+                        <td colSpan={9}>{commonInfo.biz_opp_name}</td>
+                      </tr>
+                    </thead>
+                    <thead>
+                      <tr>
+                        <th>소속 본부</th>
+                        <td colSpan={3}>{commonInfo.change_preparation_high_dept_name}</td>
+                        <th>팀</th>
+                        <td colSpan={3}>{commonInfo.change_preparation_dept_name}</td>
+                        <th>영업 담당자</th>
+                        <td colSpan={3}>{commonInfo.user_name}</td>
+                      </tr>
+                    </thead>
+                    <thead>
+                      <tr>
+                        <th>계약 일자</th>
+                        <td>{commonInfo.contract_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                        <th>매출 일자</th>
+                        <td>{commonInfo.sale_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                        <th>매출 금액</th>
+                        <td>{commonInfo.sale_amt.toLocaleString('ko-KR')}</td>
+                        <th>매출 이익</th>
+                        <td>{commonInfo.sale_profit.toLocaleString('ko-KR')}</td>
+                        <th>사업 구분</th>
+                        <td>{commonInfo.biz_section2_name}</td>
+                        <th>제품 구분</th>
+                        <td>{commonInfo.principal_product2_name}</td>
+                      </tr>
+                    </thead>
 
-                        <thead>
-                          <tr>
-                            <th>계약 일자</th>
-                            <td>{rowData.contract_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                            <th>매출 일자</th>
-                            <td>{rowData.sale_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                            <th>매출 금액</th>
-                            <td>{rowData.sale_amt.toLocaleString('ko-KR')}</td>
-                            <th>매출 이익</th>
-                            <td>{rowData.sale_profit.toLocaleString('ko-KR')}</td>
-                            <th>사업 구분</th>
-                            <td>{rowData.biz_section2_name}</td>
-                            <th>제품 구분</th>
-                            <td>{rowData.product2_name}</td>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr className='fullRow'>
-                            <td>{rowData.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                            <td colSpan={11}>{rowData.activity_details}</td>
-                          </tr>
-                        </tbody>
-                      </div>
-                    );
-                  })}
-                </>
-              ) : ('')}
+                    {/* 활동 내역 */}
+                    <tbody>
+                      <>
+                      {/* {page.map((item, index) => (
+                        <>
+                        {console.log(index, item.original)}
+                        <tr key={index} onClick={(e) => openModal(e, item.original, 'activity')}>
+                          <td>{item.original.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                          <td colSpan={11}>{item.original.activity_details}</td>
+                        </tr>
+                        </>
+                      ))}
+                       */}
+                      {group.map((item, index) => (
+                        <>
+                        {console.log(group)}
+                        <tr key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
+                        <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                        <td colSpan={11}>{item.activity_details}</td>
+                      </tr>
+                        </>
+                      ))}
+                      </>
+                    
+                    </tbody>
+                  </div>
+                );
+              })}
             </Table>
+
             </>  
           )
           setVHandlingHtml(htmlContent);
@@ -363,7 +411,13 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
           break;
       }
     }
-  }, [v_childComponent, v_componentName, page, showModal, res,]);
+    /* if ((!res) || (Object.keys(res).length === 0) || (res.length === 0)) {
+      // console.log('hrere');
+      htmlContent = <div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>;
+      setVHandlingHtml(htmlContent);
+      // return;
+    }  */
+  }, [v_childComponent, v_componentName, page, showModal, res, currentPage, pageSize]);
 
   return (
     <div id="tableArea">
@@ -376,7 +430,8 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         :
         (v_componentName === 'bizOpp') ?
         (<BizOppHistory show={showModal} onHide={closeModal} v_modalPropsData={v_modalPropsData} />)
-        : ('')
+        : 
+        (<InputFieldDetail v_componentName={'activity'} show={showModal} onHide={closeModal} v_propsData={v_propsData} v_modalPropsData={v_modalPropsData} setIsRefresh={setIsRefresh}/> )
       }
     </div>
   )

@@ -210,7 +210,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                                 {/* {(data.length > 0 ? 
                                                     (
                                                         data[0].map((e, index) => {
-                                                            return <option value={e.dept_id}>{e.dept_name}</option>
+                                                            return <option value={e.change_preparation_dept_id}>{e.change_preparation_dept_name}</option>
                                                         })
                                                     )
                                                     :
@@ -232,7 +232,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                                 {/* {(data.length > 0 ? 
                                                     (
                                                         data[1].map((e) => {
-                                                            return <option value={e.dept_id}>{e.dept_name}</option>
+                                                            return <option value={e.change_preparation_dept_id}>{e.change_preparation_dept_name}</option>
                                                         })
                                                     )
                                                     :

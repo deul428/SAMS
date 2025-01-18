@@ -122,11 +122,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
     const f_teamLinkedDept = () => {
         const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
-            const { high_dept_id } = items;
-            if (!acc[high_dept_id]) {
-                acc[high_dept_id] = [];
+            const { change_preparation_high_dept_id } = items;
+            if (!acc[change_preparation_high_dept_id]) {
+                acc[change_preparation_high_dept_id] = [];
             }
-        acc[high_dept_id].push(items);
+        acc[change_preparation_high_dept_id].push(items);
             return acc;
         }, {});
 
@@ -241,11 +241,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         // console.log("dept: ", dept, "team: ", team);
 
         const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
-            const { high_dept_id } = items;
-            if (!acc[high_dept_id]) {
-                acc[high_dept_id] = [];
+            const { change_preparation_high_dept_id } = items;
+            if (!acc[change_preparation_high_dept_id]) {
+                acc[change_preparation_high_dept_id] = [];
             }
-        acc[high_dept_id].push(items);
+        acc[change_preparation_high_dept_id].push(items);
             return acc;
         }, {});
 
@@ -295,25 +295,25 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 switch(auth.userResCode) {
                     case '0001':
                         setVTeamHandling({
-                            teamValue: team[0].dept_id,
-                            teamMsg: team[0].dept_name,
+                            teamValue: team[0].change_preparation_dept_id,
+                            teamMsg: team[0].change_preparation_dept_name,
                             teamDisabled: true
                         })
                         setVDeptHandling({
-                            deptValue: dept[0].dept_id,
-                            deptMsg: dept[0].dept_name,
+                            deptValue: dept[0].change_preparation_dept_id,
+                            deptMsg: dept[0].change_preparation_dept_name,
                             deptDisabled: true,
                         });
                         break;
                     case '0002': 
                         setVTeamHandling({
-                            teamValue: team[0].dept_id,
-                            teamMsg: team[0].dept_name,
+                            teamValue: team[0].change_preparation_dept_id,
+                            teamMsg: team[0].change_preparation_dept_name,
                             teamDisabled: true
                         })
                         setVDeptHandling({
-                            deptValue: dept[0].dept_id,
-                            deptMsg: dept[0].dept_name,
+                            deptValue: dept[0].change_preparation_dept_id,
+                            deptMsg: dept[0].change_preparation_dept_name,
                             deptDisabled: true,
                         });
                         break;
@@ -324,19 +324,19 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         setVDepts(myTeam);
                         if (team) {
                             setVTeamHandling({
-                                teamValue: team[0].dept_id,
-                                teamMsg: team[0].dept_name,
+                                teamValue: team[0].change_preparation_dept_id,
+                                teamMsg: team[0].change_preparation_dept_name,
                             })
                         } else {
                             setVTeamHandling((team) => ({
                                 ...team,
-                                teamValue: dept[0].dept_id,
-                                // teamMsg: dept[0].dept_name,
+                                teamValue: dept[0].change_preparation_dept_id,
+                                // teamMsg: dept[0].change_preparation_dept_name,
                             }))
                         }
                         setVDeptHandling({
-                            deptValue: dept[0].dept_id,
-                            deptMsg: dept[0].dept_name,
+                            deptValue: dept[0].change_preparation_dept_id,
+                            deptMsg: dept[0].change_preparation_dept_name,
                         });
                         break;
                     default :
@@ -565,84 +565,103 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             
             
             // 유효값 검사 끝
-
-            if (msg === '등록') {
-                if (
-                    input.biz_opp.a_biz_opp_name.trim() !== '' && // 문자열 검사
-                    input.biz_opp.a_progress2_rate_code.trim() !== '' && // 문자열 검사
-                    input.biz_opp.a_contract_date.trim() !== '' && // 문자열 검사
-                    input.biz_opp.a_essential_achievement_tf !== null && // boolean 값 검사
+            if (v_componentName === 'bizOpp') {
+                if (msg === '등록') {
+                    if (
+                        input.biz_opp.a_biz_opp_name.trim() !== '' && // 문자열 검사
+                        input.biz_opp.a_progress2_rate_code.trim() !== '' && // 문자열 검사
+                        input.biz_opp.a_contract_date.trim() !== '' && // 문자열 검사
+                        input.biz_opp.a_essential_achievement_tf !== null && // boolean 값 검사
+        
+                        input.biz_opp_detail.a_change_preparation_dept_id.trim() !== '' && // 문자열 검사
+                        input.biz_opp_detail.a_sale_com2_code.trim() !== '' && // 문자열 검사
+                        input.biz_opp_detail.a_sale_date.trim() !== '' && // 문자열 검사
+                        input.biz_opp_detail.a_sale_amt >= 0 && // 숫자 검사
+                        input.biz_opp_detail.a_sale_profit >= 0 && // 숫자 검사
+                        input.biz_opp_detail.a_purchase_date.trim() !== '' && // 문자열 검사
+                        input.biz_opp_detail.a_purchase_amt >= 0 && // 숫자 검사
+                        input.biz_opp_detail.a_biz_section2_code.trim() !== '' && // 문자열 검사
+                        input.biz_opp_detail.a_principal_product2_code.trim() !== '' && // 문자열 검사
+                        input.biz_opp_detail.a_user_name.trim() !== '' && // 문자열 검사
+        
+                        input.biz_opp_activity.a_activity_details.trim() !== '' && // 문자열 검사
+                        input.biz_opp_activity.a_activity_date.trim() !== '' // 문자열 검사
+                    ) {
+                        confirmMsg = `사업 (기회) 명 ${input.biz_opp.a_biz_opp_name}을(를) 등록하시겠습니까?`;
+                    } else {
+                        alert('필수값을 모두 기입하십시오.');
+                        return; 
+                    }
+                } else if (msg === '수정' && a_v_modalPropsData) {
+                    if (
+                        ((input.biz_opp.a_biz_opp_name && input.biz_opp.a_biz_opp_name.trim() !== '') || 
+                        (a_v_modalPropsData.a_biz_opp_name && a_v_modalPropsData.a_biz_opp_name.trim() !== '')) &&
     
-                    input.biz_opp_detail.a_change_preparation_dept_id.trim() !== '' && // 문자열 검사
-                    input.biz_opp_detail.a_sale_com2_code.trim() !== '' && // 문자열 검사
-                    input.biz_opp_detail.a_sale_date.trim() !== '' && // 문자열 검사
-                    input.biz_opp_detail.a_sale_amt >= 0 && // 숫자 검사
-                    input.biz_opp_detail.a_sale_profit >= 0 && // 숫자 검사
-                    input.biz_opp_detail.a_purchase_date.trim() !== '' && // 문자열 검사
-                    input.biz_opp_detail.a_purchase_amt >= 0 && // 숫자 검사
-                    input.biz_opp_detail.a_biz_section2_code.trim() !== '' && // 문자열 검사
-                    input.biz_opp_detail.a_principal_product2_code.trim() !== '' && // 문자열 검사
-                    input.biz_opp_detail.a_user_name.trim() !== '' && // 문자열 검사
-    
-                    input.biz_opp_activity.a_activity_details.trim() !== '' && // 문자열 검사
-                    input.biz_opp_activity.a_activity_date.trim() !== '' // 문자열 검사
-                ) {
-                    confirmMsg = `사업 (기회) 명 ${input.biz_opp.a_biz_opp_name}을(를) 등록하시겠습니까?`;
-                } else {
-                    alert('필수값을 모두 기입하십시오.');
-                    return; 
+                        ((input.biz_opp.a_progress2_rate_code && input.biz_opp.a_progress2_rate_code.trim() !== '') || 
+                        (a_v_modalPropsData.a_progress2_rate_code && a_v_modalPropsData.a_progress2_rate_code.trim() !== '')) &&
+                       
+                       ((input.biz_opp.a_contract_date && input.biz_opp.a_contract_date.trim() !== '') || 
+                        (a_v_modalPropsData.a_contract_date && a_v_modalPropsData.a_contract_date.trim() !== '')) &&
+                       
+                       ((input.biz_opp.a_essential_achievement_tf !== null) || 
+                        (a_v_modalPropsData.a_essential_achievement_tf !== null)) &&
+                       
+                       ((input.biz_opp_detail.a_sale_com2_code && input.biz_opp_detail.a_sale_com2_code.trim() !== '') || 
+                        (a_v_modalPropsData.a_sale_com2_code && a_v_modalPropsData.a_sale_com2_code.trim() !== '')) &&
+                       
+                       ((input.biz_opp_detail.a_sale_date && input.biz_opp_detail.a_sale_date.trim() !== '') || 
+                        (a_v_modalPropsData.a_sale_date && a_v_modalPropsData.a_sale_date.trim() !== '')) &&
+                       
+                       ((input.biz_opp_detail.a_sale_amt !== undefined && input.biz_opp_detail.a_sale_amt >= 0) || 
+                        (a_v_modalPropsData.a_sale_amt !== undefined && a_v_modalPropsData.a_sale_amt >= 0)) &&
+                       
+                       ((input.biz_opp_detail.a_sale_profit !== undefined && input.biz_opp_detail.a_sale_profit >= 0) || 
+                        (a_v_modalPropsData.a_sale_profit !== undefined && a_v_modalPropsData.a_sale_profit >= 0)) &&
+                       
+                       ((input.biz_opp_detail.a_purchase_date && input.biz_opp_detail.a_purchase_date.trim() !== '') || 
+                        (a_v_modalPropsData.a_purchase_date && a_v_modalPropsData.a_purchase_date.trim() !== '')) &&
+                       
+                       ((input.biz_opp_detail.a_purchase_amt !== undefined && input.biz_opp_detail.a_purchase_amt >= 0) || 
+                        (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) &&
+                       
+                       ((input.biz_opp_detail.a_biz_section2_code && input.biz_opp_detail.a_biz_section2_code.trim() !== '') || 
+                        (a_v_modalPropsData.a_biz_section2_code && a_v_modalPropsData.a_biz_section2_code.trim() !== '')) &&
+                       
+                       ((input.biz_opp_detail.a_principal_product2_code && input.biz_opp_detail.a_principal_product2_code.trim() !== '') || 
+                        (a_v_modalPropsData.a_principal_product2_code && a_v_modalPropsData.a_principal_product2_code.trim() !== '')) &&
+                       
+                       ((input.biz_opp_detail.a_user_name && input.biz_opp_detail.a_user_name.trim() !== '') || 
+                        (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== '')) /* &&
+                       
+                       (input.biz_opp_activity.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') &&
+                       
+                       (input.biz_opp_activity.a_activity_date && input.biz_opp_activity.a_activity_date.trim() !== '') */
+                       
+                    ) {
+                        confirmMsg = `사업 (기회) 일련 번호 ${a_v_modalPropsData.a_biz_opp_id}을(를) 수정하시겠습니까?`;
+                    } else {
+                        alert('필수값을 모두 기입하십시오.');
+                        return; 
+                    }
                 }
-            } else if (msg === '수정' && a_v_modalPropsData) {
-                console.log(input);
-                if (
-                    ((input.biz_opp.a_biz_opp_name && input.biz_opp.a_biz_opp_name.trim() !== '') || 
-                    (a_v_modalPropsData.a_biz_opp_name && a_v_modalPropsData.a_biz_opp_name.trim() !== '')) &&
-
-                    ((input.biz_opp.a_progress2_rate_code && input.biz_opp.a_progress2_rate_code.trim() !== '') || 
-                    (a_v_modalPropsData.a_progress2_rate_code && a_v_modalPropsData.a_progress2_rate_code.trim() !== '')) &&
-                   
-                   ((input.biz_opp.a_contract_date && input.biz_opp.a_contract_date.trim() !== '') || 
-                    (a_v_modalPropsData.a_contract_date && a_v_modalPropsData.a_contract_date.trim() !== '')) &&
-                   
-                   ((input.biz_opp.a_essential_achievement_tf !== null) || 
-                    (a_v_modalPropsData.a_essential_achievement_tf !== null)) &&
-                   
-                   ((input.biz_opp_detail.a_sale_com2_code && input.biz_opp_detail.a_sale_com2_code.trim() !== '') || 
-                    (a_v_modalPropsData.a_sale_com2_code && a_v_modalPropsData.a_sale_com2_code.trim() !== '')) &&
-                   
-                   ((input.biz_opp_detail.a_sale_date && input.biz_opp_detail.a_sale_date.trim() !== '') || 
-                    (a_v_modalPropsData.a_sale_date && a_v_modalPropsData.a_sale_date.trim() !== '')) &&
-                   
-                   ((input.biz_opp_detail.a_sale_amt !== undefined && input.biz_opp_detail.a_sale_amt >= 0) || 
-                    (a_v_modalPropsData.a_sale_amt !== undefined && a_v_modalPropsData.a_sale_amt >= 0)) &&
-                   
-                   ((input.biz_opp_detail.a_sale_profit !== undefined && input.biz_opp_detail.a_sale_profit >= 0) || 
-                    (a_v_modalPropsData.a_sale_profit !== undefined && a_v_modalPropsData.a_sale_profit >= 0)) &&
-                   
-                   ((input.biz_opp_detail.a_purchase_date && input.biz_opp_detail.a_purchase_date.trim() !== '') || 
-                    (a_v_modalPropsData.a_purchase_date && a_v_modalPropsData.a_purchase_date.trim() !== '')) &&
-                   
-                   ((input.biz_opp_detail.a_purchase_amt !== undefined && input.biz_opp_detail.a_purchase_amt >= 0) || 
-                    (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) &&
-                   
-                   ((input.biz_opp_detail.a_biz_section2_code && input.biz_opp_detail.a_biz_section2_code.trim() !== '') || 
-                    (a_v_modalPropsData.a_biz_section2_code && a_v_modalPropsData.a_biz_section2_code.trim() !== '')) &&
-                   
-                   ((input.biz_opp_detail.a_principal_product2_code && input.biz_opp_detail.a_principal_product2_code.trim() !== '') || 
-                    (a_v_modalPropsData.a_principal_product2_code && a_v_modalPropsData.a_principal_product2_code.trim() !== '')) &&
-                   
-                   ((input.biz_opp_detail.a_user_name && input.biz_opp_detail.a_user_name.trim() !== '') || 
-                    (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== '')) /* &&
-                   
-                   (input.biz_opp_activity.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') &&
-                   
-                   (input.biz_opp_activity.a_activity_date && input.biz_opp_activity.a_activity_date.trim() !== '') */
-                   
-                ) {
-                    confirmMsg = `사업 (기회) 일련 번호 ${a_v_modalPropsData.a_biz_opp_id}을(를) 수정하시겠습니까?`;
-                } else {
-                    alert('필수값을 모두 기입하십시오.');
-                    return; 
+            } else if (v_componentName === 'activity') {
+                if (msg === '수정' && a_v_modalPropsData) {
+                    console.log(a_v_modalPropsData, input);
+                    if (
+                        (
+                            (input.biz_opp_activity?.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') || 
+                            (a_v_modalPropsData.a_activity_details && a_v_modalPropsData.a_activity_details.trim() !== '')
+                        ) &&
+                        (
+                            (input.biz_opp_activity?.a_activity_date && input.biz_opp_activity.a_activity_date.trim() !== '') || 
+                            (a_v_modalPropsData.a_activity_date && a_v_modalPropsData.a_activity_date.trim() !== '')
+                        )
+                    ) {
+                        confirmMsg = `사업 (기회) 일련 번호 ${a_v_modalPropsData.a_biz_opp_id}의 영업 활동을 수정하시겠습니까?`;
+                    } else {
+                        alert('필수값을 모두 기입하십시오.');
+                        return; 
+                    }
                 }
             }
         }
@@ -710,6 +729,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
         syncPath();
     }, [currentPath, location.pathname, dispatch]); */
+
+    useEffect(()=> {
+        console.log("v_teamHandling: ", v_teamHandling, "\nv_deptHandling: ", v_deptHandling)
+    }, [v_teamHandling, v_deptHandling])
     // UI 업데이트
     const [proToSaleNo, setProToSaleNo] = useState(true);
     useEffect(() => {
@@ -745,11 +768,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     (auth.userAuthCode === '0002') ? 
                                                     ({"pointerEvents": "none"}) : ({})
                                                 }>
-                                                    <FloatingLabel label='사업 일련 번호'>
+                                                    <FloatingLabel label='사업 (기회) 일련 번호'>
                                                         <Form.Control size='sm' type='text' className=''
                                                         name='a_biz_opp_id' 
                                                         /* data-key='biz_opp' */
-                                                        placeholder='사업 일련 번호'
+                                                        placeholder='사업 (기회) 일련 번호'
                                                         onChange={f_handlingInput} 
                                                         // value={input.biz_opp_id}
                                                         defaultValue={a_v_modalPropsData?.a_biz_opp_id || ''} 
@@ -784,8 +807,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         name='' 
                                                         // data-key='biz_opp_detail'
                                                         onChange={f_handlingInput}
-                                                        // value={input.high_dept_name}
-                                                        defaultValue={a_v_modalPropsData?.a_high_dept_name || ''}
+                                                        // value={input.change_preparation_high_dept_name}
+                                                        defaultValue={a_v_modalPropsData?.a_change_preparation_high_dept_name || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col> */}
@@ -795,14 +818,14 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         name='a_change_preparation_dept_id' 
                                                         data-key='biz_opp_detail'
                                                         onChange={f_handlingInput} 
-                                                        // value={input.dept_name || ''} 
+                                                        // value={input.change_preparation_dept_name || ''} 
                                                         defaultValue={
-                                                            a_v_modalPropsData?.a_dept_name ? 
-                                                            a_v_modalPropsData?.a_dept_name : (
+                                                            a_v_modalPropsData?.a_change_preparation_dept_name ? 
+                                                            a_v_modalPropsData?.a_change_preparation_dept_name : (
                                                                 a_v_modalPropsData?.a_headquarters_name ?
                                                                 a_v_modalPropsData?.a_headquarters_name  : (
-                                                                    v_teamHandling.teamValue ? 
-                                                                    v_teamHandling.teamValue : v_teamHandling.deptValue
+                                                                    v_teamHandling.teamMsg ? 
+                                                                    v_teamHandling.teamMsg : v_teamHandling.deptMsg
                                                                 )
                                                             )
                                                         }
@@ -828,68 +851,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             }
                                                             {(v_depts) ? 
                                                                 v_depts.map((e) => {
-                                                                    return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
+                                                                    return <option key={e.change_preparation_dept_id} value={e.change_preparation_dept_id || ''}>{e.change_preparation_dept_name}</option>
                                                                 })
                                                                 :
                                                                 ('')
                                                             }
-                                                            {/* getData?.data?.search_dept_id.map((e) => {
-                                                                return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
-                                                            }) */}
-                                                            {/* <option 
-                                                                value={(
-                                                                    a_v_modalPropsData ? 
-                                                                    a_v_modalPropsData.a_change_preparation_dept_id : '선택')}
-                                                                >{(a_v_modalPropsData ? a_v_modalPropsData.a_change_preparation_dept_name : '선택')}</option>
-                                                                {(v_propsData &&  v_propsData?.data?.search_dept_id? 
-                                                                    (
-                                                                        v_propsData?.data?.search_dept_id.map((e) => {
-                                                                            return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
-                                                                        })
-                                                                    )
-                                                                    :
-                                                                    ('')
-                                                                )} */}
                                                         </Form.Select>
-                                                        {/* <Form.Select size='sm' type='text' className='' placeholder='소속 부서'
-                                                        name='a_change_preparation_dept_id' 
-                                                        data-key='biz_opp_detail'
-                                                        onChange={f_handlingInput} 
-                                                        // value={input.dept_name || ''} 
-                                                        defaultValue={
-                                                            (deptData ? 
-                                                                deptData :
-                                                                (a_v_modalPropsData?.a_dept_name ?
-                                                                a_v_modalPropsData?.a_dept_name 
-                                                                : a_v_modalPropsData?.a_headquarters_name 
-                                                                )
-                                                            )
-                                                        }
-                                                        >
-                                                            <option 
-                                                            value={(
-                                                                deptData ? 
-                                                                deptData : 
-                                                                (
-                                                                a_v_modalPropsData ? 
-                                                                a_v_modalPropsData.a_change_preparation_dept_id : deptData
-                                                                )
-                                                            )}>
-                                                                {(
-                                                                    a_v_modalPropsData ? 
-                                                                    a_v_modalPropsData.a_change_preparation_dept_name : deptData
-                                                                    )}
-                                                            </option>
-                                                            {(getData) ? 
-                                                                (
-                                                                    getData?.data?.search_dept_id.map((e) => {
-                                                                        return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
-                                                                    })
-                                                                )
-                                                                :
-                                                                ('')
-                                                            }
-                                                        </Form.Select> */}
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={3} className='col d-flex align-items-center floating'>
@@ -1134,10 +1101,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         <Form.Select size='sm' aria-label='selectBox' className='' name='a_principal_product2_code'
                                                         data-key='biz_opp_detail' 
                                                         onChange={f_handlingInput} 
-                                                        // value={input.product2_name || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_product2_name || ''}
+                                                        // value={input.principal_product2_name || ''} 
+                                                        defaultValue={a_v_modalPropsData?.a_principal_product2_name || ''}
                                                         >
-                                                            <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_product2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_product2_name : '선택')}</option>
+                                                            <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_principal_product2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_principal_product2_name : '선택')}</option>
                                                             {(getData) ? 
                                                                 (
                                                                     getData?.data?.search_principal_product_code.map((e) => {
@@ -1227,26 +1194,108 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 : 
                                                 (<>
                                                 <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e, '등록')}>등록</Button> 
-                                                {/* <Button variant='danger' onClick={f_warningMsg}>삭제</Button> */}
                                                 </>)
                                             )
                                         }
-                                            
-                                    {/* {(
-                                        v_modalPropsData ? 
-                                        (<Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', updateInput, e)}>수정</Button>)
-                                        : 
-                                        (<Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e)}>등록</Button>)
-                                    )} */}
-
-                                    {/* <Button variant='danger' onClick={f_warningMsg}>삭제</Button> */}
                                     <Button variant='secondary' onClick={onHide}>닫기</Button>
                                 </Modal.Footer>
                             </Modal>
                         );
                         break;
+                    
+                    case `activity`: 
+                        setVHandlingHtml(
+                        <Modal size='xl' show={show} onHide={onHide} scrollable centered>
+                            <Modal.Header closeButton>
+                            <Modal.Title className='fs-3'>
+                                {
+                                (auth.userAuthCode === '0002') ? 
+                                '영업 활동 상세 조회' : '영업 활동 수정'
+                                }
+                            </Modal.Title>
+                            </Modal.Header> 
+                            <Modal.Body>
+                            {
+                                (v_modalPropsData && auth.userAuthCode === '0002') ? 
+                                (<></>) : 
+                                (
+                                    <>
+                                    <Row className='d-flex justify-content-between mb-2'>
+                                        <Col xs={12} md={3} lg={3} className=''>
+                                            <FloatingLabel label='사업 일련 번호' disabled>
+                                                <Form.Control size='sm' type='text' className='' 
+                                                name='a_biz_opp_id' 
+                                                data-key='biz_opp' 
+                                                placeholder='사업 일련 번호'
+                                                onChange={f_handlingInput}
+                                                defaultValue={a_v_modalPropsData?.a_biz_opp_id || ''}
+                                                disabled
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                        <Col xs={12} md={6} lg={6} className=''>
+                                            <FloatingLabel label='사업 (기회) 명'>
+                                                <Form.Control as='textarea' size='sm' type='text' className=''
+                                                name='a_biz_opp_name' 
+                                                data-key='biz_opp'
+                                                placeholder='사업 (기회) 명'
+                                                onChange={f_handlingInput} 
+                                                // value={input.biz_opp_name || ''}
+                                                defaultValue={a_v_modalPropsData?.a_biz_opp_name || ''} 
+                                                disabled
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                        <Col xs={12} md={3} lg={3} className=''>
+                                            <FloatingLabel label='활동 일자'>
+                                                <Form.Control size='sm' type='date' className='' 
+                                                name='a_activity_date' 
+                                                data-key='biz_opp_activity' 
+                                                placeholder='활동 일자'
+                                                onChange={f_handlingInput}
+                                                defaultValue={a_v_modalPropsData?.a_contract_date || ''}
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                    </Row>
+                                    <Row className='d-flex justify-content-between'>
+                                        <Col xs={12} md={12} lg={12} className=''>
+                                            <FloatingLabel label='활동 내역' >
+                                                <Form.Control as='textarea' size='sm' type='text' className='activityDetails' 
+                                                name='a_activity_details' 
+                                                data-key='biz_opp_activity'
+                                                placeholder='활동 내역' 
+                                                onChange={f_handlingInput} 
+                                                defaultValue={a_v_modalPropsData?.a_activity_details || ''}
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                    </Row>
+                                    </>
+                                )
+                            }
+                            </Modal.Body>
+                                <Modal.Footer className='btnArea justify-content-center'>
+                                        {
+                                            (auth.userAuthCode === '0002') ? 
+                                            (<></>) : 
+                                            (a_v_modalPropsData ? 
+                                                (<>
+                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp-activity/', updateInput, e, '수정')}>수정</Button>
+                                                <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp-activity/', updateInput, e, '삭제')}>삭제</Button>
+                                                </>) 
+                                                : 
+                                                ('')
+                                            )
+                                        }
+                                    <Button variant='secondary' onClick={onHide}>닫기</Button>
+                                </Modal.Footer>
+                        </Modal>
+                        );
+                        break;
                     default:
                         setVHandlingHtml(<h1>안녕하세요 InputFieldDetail.js 작업 중입니다.</h1>);
+                        break;
                 }
 
             }

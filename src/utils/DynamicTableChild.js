@@ -163,11 +163,11 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
     ) { return <div>Loading...</div>; }
     
     if (data.length > 0 || data) {
-      console.log("data: ", data, "page: ", page);
+      console.log("data: ", ...data, "page: ", ...page);
       let htmlContent = null;
       switch (v_componentName) {
         case `bizOppHistory`: 
-          htmlContent = (
+        htmlContent = (
             <>
             <Table bordered hover responsive {...getTableProps()}>
             <thead>
@@ -200,11 +200,13 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
                     return (
                         <tr key={key} {...restProps}>
                             {row.cells.map((cell, index) => {
-                                const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
+                                const { key, ...restProps } = cell.getCellProps({ className: 'table-cell historyCell' });
                                 return (
-                                    <td key={key} {...restProps}>
-                                        {cell.render('Cell')}
-                                    </td>
+                                  <td key={key} {...restProps} style={{
+                                    backgroundColor: cell.column.id.startsWith('u_') && cell.value ? 'red' : 'white', // 조건부 스타일
+                                  }}>
+                                    {cell.render('Cell')}
+                                  </td> 
                                 );
                             })}
                         </tr>

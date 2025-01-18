@@ -81,6 +81,7 @@
                             height: calc(3.2rem + calc(var(--bs-border-width) * 2));
                             min-height: calc(3.2rem + calc(var(--bs-border-width) * 2));
                         }
+                        
                         select {
                             width: inherit;
                             padding-left: 0.75rem;
@@ -94,6 +95,7 @@
                         input {
                             padding: 0.5rem 0.2rem !important;
                         } */
+                        
                     }
 
                 }
@@ -131,46 +133,5 @@
                 }
             } 
         }
-/*         &.activityArea {
-            width: $full;
-            &:before {
-                content: '';
-                width: $full;
-                height: 1px;
-                background: black;
-                margin: 1rem 0;
-            }
-            .row {
-                width: inherit;
-                .col {
-                
-                    // width: calc(100% - 3rem);
-                    label {
-                    }
-                    &.btnArea {
-                    } 
-                    > div {
-                    }
-                    input, select {
-                        width: calc(100% - (6.5rem + 0.5rem));
-                    }
-                } 
-                h3 {
-                    padding: 0;
-                    margin: 1rem 0 0.5rem;
-                    text-align: left;
-                }
-                ol.list-group {
-                    li {
-
-                    }
-                }
-            }
-        }
-        &.bizoppArea {
-            .row {
-
-            }
-        }  */
     }
 }

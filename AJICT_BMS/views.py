@@ -349,6 +349,7 @@ def f_select_biz_opp1(request):
          v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
                                      B.detail_no"
 
+
          #test
          #v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
          #print(f"f_select_biz_opp1()에서의 v_formatted_sql : {v_formatted_sql}")
@@ -1905,6 +1906,13 @@ def f_select_biz_opp_history(request):
          v_sql_biz_opp_history += " ORDER BY A.biz_opp_id,\
                                               B.detail_no,\
                                               B.history_no"
+
+
+         #test
+         v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
+         print(f"f_select_biz_opp1()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_biz_opp_history,v_param)
             v_columns = [v_column[0] for v_column in v_cursor.description]

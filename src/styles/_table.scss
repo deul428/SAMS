@@ -63,20 +63,31 @@ table {
             border: 1px solid #aaa !important;
             width: 100%;
             border: none;
-            div.collapseArea {
-                padding: 0;
-                div.collapseItem {
-                    padding: 0;
-                    tbody {
-                        tr {
-            
-                        }
-                        td {
-            
+                tbody {
+                    div.collapseArea {
+                        padding: 0;
+                        div {
+                            padding: 0;
+                            &.collapseItem {
+                                tr {
+                                    
+                                }
+                                td {
+                    
+                                }
+                            }
+                            tr {
+                                    
+                            }
+                            td {
+                                padding: 0.3rem 0.6rem !important;
+                                border: 1px solid $base-color;
+                                &.activityDetails {
+                                    width: 100%;
+                                }
+                            }
                         }
                     }
-    
-                }
                 button.collapseController {
                     background-color: $point-color;
                     width: 100%;

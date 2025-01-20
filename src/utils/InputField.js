@@ -662,21 +662,21 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                 <Row className='d-flex justify-content-between'>
                                     <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='계약 일자 From'>
-                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input?.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
+                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' defaultValue={input?.a_contract_date_from || ''} onChange={f_handlingInput}
                                             />
                                         </FloatingLabel>
                                         <span style={{margin: '0 10px'}}>~</span>
                                         <FloatingLabel label='계약 일자 To'>
-                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' defaultValue={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='매출 일자 From'>
-                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' defaultValue={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                             <span style={{margin: '0 10px'}}>~</span>
                                         <FloatingLabel label='매출 일자 To'>
-                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input?.a_sale_date_to || ''} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' defaultValue={input?.a_sale_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={2} lg={4} className='btnArea col d-flex justify-content-end floating'>
@@ -775,21 +775,21 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                 <Row className='d-flex justify-content-between'>
                                     <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='계약 일자 From'>
-                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input?.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
+                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' defaultValue={input?.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
                                             />
                                         </FloatingLabel>
                                         <span style={{margin: '0 10px'}}>~</span>
                                         <FloatingLabel label='계약 일자 To'>
-                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' defaultValue={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='매출 일자 From'>
-                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' defaultValue={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                             <span style={{margin: '0 10px'}}>~</span>
                                         <FloatingLabel label='매출 일자 To'>
-                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input?.a_sale_date_to || ''} onChange={f_handlingInput}/>
+                                            <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' defaultValue={input?.a_sale_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={2} lg={4} className='btnArea col d-flex justify-content-end floating'>

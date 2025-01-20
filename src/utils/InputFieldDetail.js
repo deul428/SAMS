@@ -418,7 +418,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             Object.entries(v_modalPropsData).map(([key, value]) => [`a_${key}`, value])
         );
         const a = a_v_modalPropsData;
-        console.log( "a_v_modalPropsData", a_v_modalPropsData);
+        // console.log( "a_v_modalPropsData", a_v_modalPropsData);
         
         var p_bizopp_delete = {a_biz_opp_id: a.a_biz_opp_id,
             a_biz_opp_name: a.a_biz_opp_name,

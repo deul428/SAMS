@@ -321,24 +321,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         case `activity`: 
           htmlContent = (
             <>
-            <div>
-              <Button
-                onClick={() => setOpen(!open)}
-                aria-controls="example-collapse-text"
-                aria-expanded={open}
-              >
-                {open ? "접기" : "펼치기"}
-              </Button>
-              <Collapse in={open}>
-                <div id="example-collapse-text">
-                  <Card style={{ marginTop: "10px" }}>
-                    <Card.Body>
-                      여기에 원하는 내용을 작성하세요. 버튼을 눌러 이 내용을 펼치거나 접을 수 있습니다.
-                    </Card.Body>
-                  </Card>
-                </div>
-              </Collapse>
-            </div>
             <Table hover responsive>
               {Object.entries(groupedData).map(([biz_opp_id, group], groupIndex) => {
                   const commonInfo = group[0]; // 그룹의 첫 번째 데이터를 공통 정보로 사용
@@ -380,7 +362,25 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             <td>{commonInfo.principal_product2_name}</td>
                           </tr>
                         </thead>
-                        <tbody>
+                        <div>
+              <Button
+                onClick={() => setOpen(!open)}
+                // aria-controls="example-collapse-text"
+                aria-expanded={open}
+              >
+                {open ? "접기" : "펼치기"}
+              </Button>
+              <Collapse in={open}>
+                <div id="example-collapse-text">
+                  <Card style={{ marginTop: "10px" }}>
+                    <Card.Body>
+                      여기에 원하는 내용을 작성하세요. 버튼을 눌러 이 내용을 펼치거나 접을 수 있습니다.
+                    </Card.Body>
+                  </Card>
+                </div>
+              </Collapse>
+            </div>
+                        <tbody style={{backgroundColor: "pink"}}>
                           {group.map((item, index) => (
                             <>
                             {console.log(group.length)}

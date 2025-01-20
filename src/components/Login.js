@@ -122,7 +122,7 @@ const AuthLogin = () => {
                     console.log("로그인 성공.", "\nresponse (data): ", res, "\nresponse (msg): ", resStts);
                     if (resStts.STATUS === 'LOGIN') {
                         // Redux에 로그인 정보 저장
-                        await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher, userName: res.user_name, userResCode: res.responsibility2_code, /* userDeptCode: res.change_preparation_dept_id */ userDeptCode: res.dept_id, userAuthCode: res.auth2_code }));
+                        await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher, userName: res.user_name, userResCode: res.responsibility2_code, userDeptCode: res.dept_id, userAuthCode: res.auth2_code }));
 
                         if (res.beginning_login_tf) {
                             if (window.confirm('최초 로그인 시 비밀번호를 변경해야 합니다. 지금 변경하시겠습니까?')) {

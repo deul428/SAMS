@@ -20,7 +20,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     // input field 값 input에 저장
     const f_handlingInput = (e) => {
-        console.log(e.target.name, e.target.value);
         /* if (e.target.name === 'a_essential_achievement_tf') {
             e.target.checked ? e.target.value = true : e.target.value = false;
         } */
@@ -37,8 +36,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             return newState;
         }); */
     }        
-
-    
     // -------------- 세션 대체용 userId 송신 -------------- 
     const auth = useSelector((state) => state.auth);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
@@ -56,7 +53,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         a_progress_rate_code_to: '',
         a_essential_achievement_tf: false,
         a_headquarters_dept_id: '',
-        a_dept_id: '',
+        a_change_preparation_dept_id: '',
         a_user_name: '',
     }
     const p_activity = {
@@ -69,7 +66,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         a_progress_rate_code_to: '',
         a_essential_achievement_tf: false, */
         a_headquarters_dept_id: '',
-        a_dept_id: '',
+        a_change_preparation_dept_id: '',
         a_user_name: '',
     }
     // 초기값 동적으로 설정
@@ -129,12 +126,12 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             console.log("submit 될 input data\n", input, "\ne: ", e);
 
             const response = await apiMethods[method](endpoint, input);
-            console.log(`API Get (수신)\nEndpoint: (inputField.js) ${endpoint}\nresponse: `, response);
             if (response.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
                 // alert(response.status.MESSAGE);
                 setRes([]);
                 return;
             } else {
+                console.log(`API Get (수신)\nEndpoint: (inputField.js) ${endpoint}\nresponse: `, response);
                 setRes(response);
                 // setSubmit(response);
                 return response;
@@ -208,11 +205,11 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
     // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
     const f_teamLinkedDept = () => {
         const mappingTeamByDept = data.search_team.reduce((acc, items) => {
-            const { high_dept_id } = items;
-            if (!acc[high_dept_id]) {
-                acc[high_dept_id] = [];
+            const { change_preparation_high_dept_id } = items;
+            if (!acc[change_preparation_high_dept_id]) {
+                acc[change_preparation_high_dept_id] = [];
             }
-        acc[high_dept_id].push(items);
+        acc[change_preparation_high_dept_id].push(items);
             return acc;
         }, {});
 
@@ -222,25 +219,12 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
     // const [v_selectDept, setVSelectDept] = useState('');
     const [v_selectTeam, setVSelectTeam] = useState([]);
     // 본부 선택 핸들러
-    const f_handlingDeptOrigin = (e) => {
+    const f_handlingDept = (e) => {
         if (e.target.name === 'a_headquarters_dept_id') {
             // setVSelectDept(e.target.value);
             setVSelectTeam(v_teamByDept[e.target.value.trim()] || []);
         }
         f_handlingInput(e);
-    };
-
-    const f_handlingDept = (e) => {
-        if (e.target.name === 'a_headquarters_dept_id') {
-            setInput((prevInput) => ({
-                ...prevInput,
-                a_headquarters_dept_id: '', // 본부 선택 초기화
-                a_dept_id: '', // 팀도 초기화
-            }));
-            setVSelectTeam(v_teamByDept[e.target.value.trim()] || []);
-            // setVSelectTeam([]); // 팀 옵션도 초기화
-        }
-        f_handlingInput(e); // 다른 로직 유지
     };
     // --------- 본부별 팀 매핑 끝 --------- 
 
@@ -387,7 +371,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             f_authLevel3(resCode);
         }
         
-        // Level 3. 부서(dept 테이블의 dept_id)
+        // Level 3. 부서(dept 테이블의 change_preparation_dept_id)
         /* 9201	경영관리팀
         9509	운영팀
         9711	영업1팀
@@ -493,13 +477,13 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                 console.log(team, dept);
                 if (dept && team) {
                     setVTeamHandling({
-                        teamValue: team[0].dept_id,
-                        teamMsg: team[0].dept_name,
+                        teamValue: team[0].change_preparation_dept_id,
+                        teamMsg: team[0].change_preparation_dept_name,
                         teamDisabled: true
                     })
                     setVDeptHandling({
-                        deptValue: dept[0].dept_id,
-                        deptMsg: dept[0].dept_name,
+                        deptValue: dept[0].change_preparation_dept_id,
+                        deptMsg: dept[0].change_preparation_dept_name,
                         deptDisabled: true,
                     });
                 }
@@ -508,44 +492,44 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     if (v_selectTeam.length > 0) {
                         setVTeamHandling({
                             teamDisabled: false,
-                            teamValue: team[0].dept_id,
-                            teamMsg: team[0].dept_name,
+                            teamValue: team[0].change_preparation_dept_id,
+                            teamMsg: team[0].change_preparation_dept_name,
                         })
                     } else {
                         setVTeamHandling({
                             teamDisabled: false,
-                            teamValue: team[0].dept_id,
-                            teamMsg: team[0].dept_name,
+                            teamValue: team[0].change_preparation_dept_id,
+                            teamMsg: team[0].change_preparation_dept_name,
                         })
                     }
                 }
                 
                 /*  if (v_teamHandling.teamValue) {
                     setVTeamHandling({
-                        teamValue: team[0].dept_id,
-                        teamMsg: team[0].dept_name,
+                        teamValue: team[0].change_preparation_dept_id,
+                        teamMsg: team[0].change_preparation_dept_name,
                     })
                 } else {
                     setVTeamHandling((team) => ({
                         ...team,
-                        teamValue: dept[0].dept_id,
-                        teamMsg: dept[0].dept_name,
+                        teamValue: dept[0].change_preparation_dept_id,
+                        teamMsg: dept[0].change_preparation_dept_name,
                     }))
                 } */
                 setVDeptHandling({
-                    deptValue: dept[0].dept_id,
-                    deptMsg: dept[0].dept_name,
+                    deptValue: dept[0].change_preparation_dept_id,
+                    deptMsg: dept[0].change_preparation_dept_name,
                     deptDisabled: true,
                 });
             } else {
                 setVTeamHandling({
-                    teamValue: team[0].dept_id,
-                    teamMsg: team[0].dept_name,
+                    teamValue: team[0].change_preparation_dept_id,
+                    teamMsg: team[0].change_preparation_dept_name,
                     teamDisabled: true
                 })
                 setVDeptHandling({
-                    deptValue: dept[0].dept_id,
-                    deptMsg: dept[0].dept_name,
+                    deptValue: dept[0].change_preparation_dept_id,
+                    deptMsg: dept[0].change_preparation_dept_name,
                     deptDisabled: true,
                 });
             }
@@ -556,32 +540,26 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             if (team) {
                 updatedInput = {
                     ...input,
-                    a_headquarters_dept_id: team[0].high_dept_id,
-                    a_dept_id: team[0].dept_id,
+                    a_headquarters_dept_id: team[0].change_preparation_high_dept_id,
+                    a_change_preparation_dept_id: team[0].change_preparation_dept_id,
                 };
             } else {
                 // console.log('no team');
                 if (dept) {
                     updatedInput = {
                         ...input,
-                        a_headquarters_dept_id: dept[0].dept_id,
-                        a_dept_id: dept[0].dept_id,
+                        a_headquarters_dept_id: dept[0].change_preparation_dept_id,
+                        a_change_preparation_dept_id: dept[0].change_preparation_dept_id,
                     };
-                } /* else {
-                    updatedInput = {
-                        ...input,
-                        a_headquarters_dept_id: '',
-                        a_dept_id: '',
-                    };
-                } */
+                }
             }
     
             setInput(updatedInput);
             
             // setInput((prevInput) => ({
             //     ...prevInput,
-            //     a_headquarters_dept_id: team[0].high_dept_id, 
-            //     a_dept_id: team[0].dept_id,
+            //     a_headquarters_dept_id: team[0].change_preparation_high_dept_id, 
+            //     a_change_preparation_dept_id: team[0].change_preparation_dept_id,
             //     // a_user_name: v_userHandling.userValue
             // }));
             
@@ -592,7 +570,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     // setAuthLevels(authCheck());
     // 디버깅용
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(
         `input: `, input,
         `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
@@ -610,7 +588,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         v_selectTeam,
         v_filteredProTo,
         v_deptHandling, v_teamHandling, v_userHandling
-    ])
+    ]) */
 
     useEffect(() => {
         // console.log("=-=-==-=--=data:-=-=-=--=-", data);
@@ -727,12 +705,12 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='본부'>
                                             <Form.Select id='select1' size='sm' aria-label='selectBox' value={input?.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept} disabled={v_deptHandling.deptDisabled}>
-                                                <option value={v_deptHandling.deptValue || ''} onChange={f_handlingDept} >{v_deptHandling.deptMsg || '-- 본부를 선택하세요 --'}</option>
+                                                <option value={v_deptHandling.deptValue || ''}>{v_deptHandling.deptMsg || '-- 본부를 선택하세요 --'}</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                 (
                                                     v_depts.map((dept) => (
-                                                    <option key={dept.dept_id} value={dept.dept_id}>
-                                                        {dept.dept_name}
+                                                    <option key={dept.change_preparation_dept_id} value={dept.change_preparation_dept_id}>
+                                                        {dept.change_preparation_dept_name}
                                                     </option>
                                                     ))
                                                 )
@@ -744,11 +722,11 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='팀'>
-                                            <Form.Select id='select2' size='sm' aria-label='selectBox' value={input?.a_dept_id || ''}  name='a_dept_id' onChange={f_handlingDept} disabled={v_teamHandling.teamDisabled}>
+                                            <Form.Select id='select2' size='sm' aria-label='selectBox' value={input?.a_change_preparation_dept_id || ''}  name='a_change_preparation_dept_id' onChange={f_handlingDept} disabled={v_teamHandling.teamDisabled}>
                                                 <option value={v_teamHandling.teamValue || ''}>{v_teamHandling.teamMsg || '-- 팀을 선택하세요 --'}</option>
                                                 {v_selectTeam.map((item) => (
-                                                    <option key={item.dept_id} value={item.dept_id || ''}>
-                                                        {item.dept_name}
+                                                    <option key={item.change_preparation_dept_id} value={item.change_preparation_dept_id || ''}>
+                                                        {item.change_preparation_dept_name}
                                                     </option>
                                                 ))}
                                             </Form.Select>
@@ -801,12 +779,12 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='본부'>
                                             <Form.Select id='select1' size='sm' aria-label='selectBox' value={input?.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept} disabled={v_deptHandling.deptDisabled}>
-                                                <option value={/* v_deptHandling.deptValue ||  */''}>{v_deptHandling.deptMsg || '-- 본부를 선택하세요 --'}</option>
+                                                <option value={v_deptHandling.deptValue || ''}>{v_deptHandling.deptMsg || '-- 본부를 선택하세요 --'}</option>
                                                 {(Object.keys(data).length > 0 ? 
                                                 (
                                                     v_depts.map((dept) => (
-                                                    <option key={dept.dept_id} value={dept.dept_id}>
-                                                        {dept.dept_name}
+                                                    <option key={dept.change_preparation_dept_id} value={dept.change_preparation_dept_id}>
+                                                        {dept.change_preparation_dept_name}
                                                     </option>
                                                     ))
                                                 )
@@ -818,11 +796,11 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='팀'>
-                                            <Form.Select id='select2' size='sm' aria-label='selectBox' value={input?.a_dept_id || ''}  name='a_dept_id' onChange={f_handlingDept} disabled={v_teamHandling.teamDisabled}>
-                                                <option value={/* v_teamHandling.teamValue ||  */''}>{v_teamHandling.teamMsg || '-- 팀을 선택하세요 --'}</option>
+                                            <Form.Select id='select2' size='sm' aria-label='selectBox' value={input?.a_change_preparation_dept_id || ''}  name='a_change_preparation_dept_id' onChange={f_handlingDept} disabled={v_teamHandling.teamDisabled}>
+                                                <option value={v_teamHandling.teamValue || ''}>{v_teamHandling.teamMsg || '-- 팀을 선택하세요 --'}</option>
                                                 {v_selectTeam.map((team) => (
-                                                    <option key={team.dept_id} value={team.dept_id || ''}>
-                                                        {team.dept_name}
+                                                    <option key={team.change_preparation_dept_id} value={team.change_preparation_dept_id || ''}>
+                                                        {team.change_preparation_dept_name}
                                                     </option>
                                                 ))}
                                             </Form.Select>

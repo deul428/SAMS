@@ -58,7 +58,9 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
             // console.log("show: ", show, "onHide: ", onHide, "v_modalPropsData: ", v_modalPropsData);
             userCheck = {
                 a_session_user_id: auth.userId,
-                a_biz_opp_id: v_modalPropsData.biz_opp_id
+                a_biz_opp_id: v_modalPropsData.biz_opp_id,
+                a_detail_no: v_modalPropsData.detail_no,
+
             }
             f_handlingData('post', endpoint, userCheck);
         }

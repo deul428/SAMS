@@ -112,7 +112,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       // return;
     } else {
       if (res.data.length > 0) {
-        console.log("res.data.length: ", res.data.length);
+        // console.log("res.data.length: ", res.data.length);
         setData(res.data);
       }
     }
@@ -408,13 +408,14 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
           break;
       }
     }
-    /* if ((!res) || (Object.keys(res).length === 0) || (res.length === 0)) {
+    /* 
+    if ((!data && !res) || (!data && Object.keys(res).length === 0) || (!data && res.length === 0)) {
       // console.log('hrere');
       htmlContent = <div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>;
       setVHandlingHtml(htmlContent);
       // return;
     }  */
-  }, [v_childComponent, v_componentName, page, showModal, res, open]);
+  }, [v_childComponent, v_componentName, page, showModal, open]);
 
   return (
     <div id="tableArea">

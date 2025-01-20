@@ -92,7 +92,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_essential_achievement_tf: false,
         },
         biz_opp_detail: {
-            a_change_preparation_dept_id: '9801',
+            a_change_preparation_dept_id: '',
             a_last_client_com2_code: '',
             a_sale_com2_code: '',
             a_sale_item_no: '',

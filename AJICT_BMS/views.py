@@ -1791,6 +1791,7 @@ def f_select_biz_opp_history(request):
       try:
          v_data = {"retrieve_biz_opp_history":[]}
          v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+         v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
          v_sql_biz_opp_history = """SELECT A.biz_opp_id,
                                            A.history_no,
                                            A.biz_opp_name,
@@ -1900,17 +1901,20 @@ def f_select_biz_opp_history(request):
                                          ajict_bms_schema.biz_opp_detail_history B
                                     WHERE 1 = 1 AND
                                           A.biz_opp_id = B.biz_opp_id AND
-                                          A.biz_opp_id = %s"""
+                                          A.history_no = B.history_no AND
+                                          A.biz_opp_id = %s AND
+                                          B.detail_no = %s"""
          v_param = []
          v_param.append(v_biz_opp_id)
+         v_param.append(v_detail_no)
          v_sql_biz_opp_history += " ORDER BY A.biz_opp_id,\
                                               B.detail_no,\
                                               B.history_no"
 
 
          #test
-         v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
-         print(f"f_select_biz_opp1()에서의 v_formatted_sql : {v_formatted_sql}")
+         #v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
+         #print(f"f_select_biz_opp1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:

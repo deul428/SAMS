@@ -1197,50 +1197,131 @@ def f_delete_biz_opp(request):
       return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
    else:
       try:
-         v_param_delete_biz_opp = []
-         v_param_delete_biz_opp_detail = []
-         v_param_delete_biz_opp_history = []
-         v_param_delete_biz_opp_detail_history = []
-         v_param_delete_biz_opp_activity = []
          with transaction.atomic():
-            v_sql_delete_biz_opp = """UPDATE ajict_bms_schema.biz_opp SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
-            v_param_delete_biz_opp.append(v_session_user_id)
+            v_param_count = []
+            v_param_delete_biz_opp = []
+            v_param_delete_biz_opp_detail = []
+            v_param_delete_biz_opp_history = []
+            v_param_delete_biz_opp_detail_history = []
+            v_param_delete_biz_opp_activity = []
             v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
-            if v_biz_opp_id is not None:
-               v_biz_opp_id = v_biz_opp_id.strip()
-            v_param_delete_biz_opp.append(v_biz_opp_id)
-         with connection.cursor() as v_cursor:
-            v_cursor.execute(v_sql_delete_biz_opp,v_param_delete_biz_opp)
-            v_sql_delete_biz_opp_detail = """UPDATE ajict_bms_schema.biz_opp_detail SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
+            v_detail_no = None if v_body.get('biz_opp',{}).get('a_detail_no') == '' else v_body.get('biz_opp',{}).get('a_detail_no')
+            v_sql_count = """SELECT COUNT(*) AS count FROM ajict_bms_schema.bi_opp_detail WHERE biz_opp_id = %s AND delete_date IS NULL"""
+            v_param_count.append(v_biz_opp_id)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_count,v_param_count)
+               v_row1 = v_cursor.fetchone()
+               v_count1 = v_row1[0]
+               if v_count1 == 1:
+                  v_sql_delete_biz_opp = """UPDATE ajict_bms_schema.biz_opp SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
+                  v_param_delete_biz_opp.append(v_session_user_id)
+                  if v_biz_opp_id is not None:
+                     v_biz_opp_id = v_biz_opp_id.strip()
+                  v_param_delete_biz_opp.append(v_biz_opp_id)
+                  with connection.cursor() as v_cursor_delete_biz_opp:
+                     v_cursor_delete_biz_opp.execute(v_sql_delete_biz_opp,v_param_delete_biz_opp)
+            v_sql_delete_biz_opp_detail = """UPDATE ajict_bms_schema.biz_opp_detail
+                                             SET delete_user = %s,
+                                                 delete_date = CURRENT_TIMESTAMP
+                                             WHERE biz_opp_id = %s AND
+                                                   detail_no = %s AND
+                                                   delete_date IS NULL"""
             v_param_delete_biz_opp_detail.append(v_session_user_id)
-            v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
             if v_biz_opp_id is not None:
                v_biz_opp_id = v_biz_opp_id.strip()
             v_param_delete_biz_opp_detail.append(v_biz_opp_id)
-         with connection.cursor() as v_cursor:
-            v_cursor.execute(v_sql_delete_biz_opp_detail,v_param_delete_biz_opp_detail)
-            v_sql_delete_biz_opp_history = """UPDATE ajict_bms_schema.biz_opp_history SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
-            v_param_delete_biz_opp_history.append(v_session_user_id)
-            v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
-            if v_biz_opp_id is not None:
-               v_biz_opp_id = v_biz_opp_id.strip()
+            v_param_delete_biz_opp_detail.append(v_detail_no)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_delete_biz_opp_detail,v_param_delete_biz_opp_detail)
+            v_sql_delete_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
+                                                                                            history_no,
+                                                                                            biz_opp_name,
+                                                                                            progress1_rate_code,
+                                                                                            progress2_rate_code,
+                                                                                            contract_date,
+                                                                                            essential_achievement_tf,
+                                                                                            create_user)
+                                              SELECT %s,
+                                                     (SELECT MAX(AA.history_no) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
+                                                     A.biz_opp_name,
+                                                     A.progress1_rate_code,
+                                                     A.progress2_rate_code,
+                                                     A.contract_date,
+                                                     A.essential_achievement_tf,
+                                                     %s
+                                              FROM ajict_bms_schema.biz_opp A
+                                              WHERE A.biz_opp_id = %s"""
             v_param_delete_biz_opp_history.append(v_biz_opp_id)
-         with connection.cursor() as v_cursor:
-            v_cursor.execute(v_sql_delete_biz_opp_history,v_param_delete_biz_opp_history)
-            v_sql_delete_biz_opp_detail_history = """UPDATE ajict_bms_schema.biz_opp_detail_history SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
-            v_param_delete_biz_opp_detail_history.append(v_session_user_id)
-            v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
-            if v_biz_opp_id is not None:
-               v_biz_opp_id = v_biz_opp_id.strip()
+            v_param_delete_biz_opp_history.append(v_biz_opp_id)
+            v_param_delete_biz_opp_history.append(v_session_user_id)
+            v_param_delete_biz_opp_history.append(v_biz_opp_id)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_delete_biz_opp_history,v_param_delete_biz_opp_history)
+            v_sql_delete_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
+                                                                                                   detail_no,
+                                                                                                   history_no,
+                                                                                                   user_id,
+                                                                                                   change_preparation_dept_id,
+                                                                                                   change_preparation_dept_name,
+                                                                                                   last_client_com1_code,
+                                                                                                   last_client_com2_code,
+                                                                                                   sale_com1_code,
+                                                                                                   sale_com2_code,
+                                                                                                   sale_item_no,
+                                                                                                   sale_date,
+                                                                                                   sale_amt,
+                                                                                                   sale_profit,
+                                                                                                   purchase_date,
+                                                                                                   purchase_amt,
+                                                                                                   collect_money_date,
+                                                                                                   biz_section1_code,
+                                                                                                   biz_section2_code,
+                                                                                                   principal_product1_code,
+                                                                                                   principal_product2_code,
+                                                                                                   renewal_code,
+                                                                                                   create_user)
+                                                     SELECT %s,
+                                                            1,
+                                                            (SELECT MAX(AA.history_no) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
+                                                            A.user_id,
+                                                            A.change_preparation_dept_id,
+                                                            A.change_preparation_dept_name,
+                                                            A.last_client_com1_code,
+                                                            A.last_client_com2_code,
+                                                            A.sale_com1_code,
+                                                            A.sale_com2_code,
+                                                            A.sale_item_no,
+                                                            A.sale_date,
+                                                            A.sale_amt,
+                                                            A.sale_profit,
+                                                            A.purchase_date,
+                                                            A.purchase_amt,
+                                                            A.collect_money_date,
+                                                            A.biz_section1_code,
+                                                            A.biz_section2_code,
+                                                            A.principal_product1_code,
+                                                            A.principal_product2_code,
+                                                            'D',
+                                                            %s
+                                                     FROM ajict_bms_schema.biz_opp_detail A
+                                                          WHERE A.biz_opp_id = %s AND
+                                                                A.detail_no = %s"""
             v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
-         with connection.cursor() as v_cursor:
-            v_cursor.execute(v_sql_delete_biz_opp_detail_history,v_param_delete_biz_opp_detail_history)
-            v_sql_delete_biz_opp_activity = """UPDATE ajict_bms_schema.biz_opp_activity SET delete_user = %s,delete_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s AND delete_date IS NULL"""
+            v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
+            v_param_delete_biz_opp_detail_history.append(v_session_user_id)
+            v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
+            v_param_delete_biz_opp_detail_history.append(v_detail_no)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_delete_biz_opp_detail_history,v_param_delete_biz_opp_detail_history)
+            v_sql_delete_biz_opp_activity = """UPDATE ajict_bms_schema.biz_opp_activity
+                                               SET delete_user = %s,
+                                                   delete_date = CURRENT_TIMESTAMP
+                                                   WHERE biz_opp_id = %s AND
+                                                         detail_no = %s AND
+                                                   delete_date IS NULL"""
             v_param_delete_biz_opp_activity.append(v_session_user_id)
-            v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
-            if v_biz_opp_id is not None:
-               v_biz_opp_id = v_biz_opp_id.strip()
             v_param_delete_biz_opp_activity.append(v_biz_opp_id)
+            v_param_delete_biz_opp_detail_history.append(v_detail_no)
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_delete_biz_opp_activity,v_param_delete_biz_opp_activity)
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}

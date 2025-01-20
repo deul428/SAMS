@@ -458,7 +458,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 setProToSaleNo(true);
             }
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD .....................
-            const dateKeys = ['a_sale_date', 'a_collect_money_date', 'a_purchase_date', 'a_contract_date'];
+            const dateKeys = ['a_sale_date', 'a_collect_money_date', 'a_purchase_date', 'a_contract_date', 'a_activity_date'];
             dateKeys.forEach(key => {
                 if (a_v_modalPropsData[key]) {
                     return a_v_modalPropsData[key] = a_v_modalPropsData[key].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3');
@@ -707,7 +707,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         if (show) {
             // console.log(show, onHide);
             // console.log(userCheck);
-            console.log(setIsRefresh);
+            // console.log(setIsRefresh);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
         }
@@ -729,10 +729,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
         syncPath();
     }, [currentPath, location.pathname, dispatch]); */
-
+/* 
     useEffect(()=> {
         console.log("v_teamHandling: ", v_teamHandling, "\nv_deptHandling: ", v_deptHandling)
-    }, [v_teamHandling, v_deptHandling])
+    }, [v_teamHandling, v_deptHandling]) */
     // UI 업데이트
     const [proToSaleNo, setProToSaleNo] = useState(true);
     useEffect(() => {
@@ -1253,7 +1253,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 data-key='biz_opp_activity' 
                                                 placeholder='활동 일자'
                                                 onChange={f_handlingInput}
-                                                defaultValue={a_v_modalPropsData?.a_contract_date || ''}
+                                                defaultValue={a_v_modalPropsData?.a_activity_date || ''}
                                                 />
                                             </FloatingLabel>
                                         </Col>

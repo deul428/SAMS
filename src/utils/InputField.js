@@ -592,7 +592,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     // setAuthLevels(authCheck());
     // 디버깅용
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(
         `input: `, input,
         `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
@@ -610,7 +610,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         v_selectTeam,
         v_filteredProTo,
         v_deptHandling, v_teamHandling, v_userHandling
-    ])
+    ]) */
 
     useEffect(() => {
         // console.log("=-=-==-=--=data:-=-=-=--=-", data);

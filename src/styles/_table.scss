@@ -1,30 +1,11 @@
+@import './global';
+
 #tableArea {
     width: 100%;
 }
 table {
     width: 100%;
     font-size: 0.8rem;
-    > div {
-        width: 100%;
-        border: none;
-        thead, tbody { 
-            width: 100%;
-            display: table; /* 테이블 컨텍스트를 유지 */
-            table-layout: fixed; /* 테이블의 고정 레이아웃 */
-            tr {
-                // width: 100%;
-                display: table-row; /* 테이블 행으로 설정 */
-                overflow-x: scroll; 
-                th {
-                }
-                td {
-                }
-                th, td {
-                    width: auto; /* 기본 너비 유지 */
-                }
-            }
-        }
-    }
     thead {
         th {
             vertical-align: middle;
@@ -77,7 +58,69 @@ table {
         }
     }
     
+    &.activity {
+        div.d-flex {
+            border: 1px solid #aaa !important;
+            width: 100%;
+            border: none;
+            div.collapseArea {
+                padding: 0;
+                div.collapseItem {
+                    padding: 0;
+                    tbody {
+                        tr {
+            
+                        }
+                        td {
+            
+                        }
+                    }
     
+                }
+                button.collapseController {
+                    background-color: $point-color;
+                    width: 100%;
+                    height: 1.5rem;
+                    line-height: calc(1.5rem / 2);
+                    font-size: 0.8rem;
+                    display: inline-flex;    
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 0;
+                    svg {
+                        margin-right: 0.5rem;
+                    }
+                }
+                
+            }
+            thead, tbody {
+                width: 100%;
+                display: table;
+                table-layout: fixed;
+                tr {
+                    display: table-row; 
+                    overflow-x: scroll; 
+                    th {
+                    }
+                    td {
+                    }
+                    th, td {
+                        width: auto; 
+                    }
+                }
+            }
+            thead {}
+            tbody {
+                tr {
+                    th, td {
+        
+                    }
+    
+                }
+            }
+
+        }
+    }
     button.btn.light {
         // font-size: 0.75rem;
     }

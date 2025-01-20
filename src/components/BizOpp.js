@@ -76,7 +76,7 @@ const BizOpp = () => {
     };
 
     useEffect(() => {
-        console.log(isRefresh);
+        // console.log(isRefresh);
         if(isRefresh === true || endpoint) {
             f_handlingData('post', endpoint, userCheck);
         }

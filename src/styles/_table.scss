@@ -110,8 +110,9 @@ table {
                                     padding: 0.3rem 0.6rem !important;
                                     border: 1px solid $base-color;
                                     &.activityDetails {
+                                        text-align: left;
+                                        line-height: 1.25rem;
                                         flex: 1; 
-                                        display: inline-block;
                                         overflow: hidden;
                                         white-space: normal;
                                         text-overflow: ellipsis;

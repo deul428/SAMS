@@ -11,7 +11,6 @@ import { Modal, Button, Form, Row, Col, ListGroup, FloatingLabel } from 'react-b
 import { FileArrowDownFill } from 'react-bootstrap-icons';
 
 const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData, authLevel, setIsRefresh}) => {
-    console.log("v_modalPropsData: ", v_modalPropsData);
     // v_propsData: inputField에서 받아오는 list 포함 데이터 / v_modalPropsData: dynamicTable에서 받아오는 테이블 데이터, 사용자가 선택한 행의 데이터만 불러옴
     const dispatch = useDispatch();
     const location = useLocation();

@@ -79,7 +79,7 @@ const Activity = () => {
             <InputField v_componentName={'activity'} v_propsData={data} setRes={setRes}/>
             <div className='wrap' id='activity'>
                 <div className='dataPostArea'>
-                    <h4 style={{textAlign:"center"}} className='mb-3'>영업 활동 등록은 사업 (기회) 관리 - 사업 (기회) 등록에서 진행해 주시기 바랍니다.</h4>
+                    <h3 style={{textAlign:"center", fontWeight: "500", color:"blue"}} className='mb-4'>영업 활동 등록은 사업 (기회) 관리 - 사업 (기회) 등록에서 진행해 주시기 바랍니다.</h3>
                     {/* <div className='btnArea d-flex justify-content-end'>
                         {(auth.userAuthCode === '0002') ? 
                         <></> : 

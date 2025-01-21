@@ -1980,12 +1980,12 @@ def f_select_biz_opp_history(request):
                                                                  FROM ajict_bms_schema.dept CCC
                                                                  WHERE CCC.dept_id = B.change_preparation_dept_id AND
                                                                        CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
-                                           A.renewal_code,
-                                           CASE WHEN A.renewal_code = 'I'
+                                           B.renewal_code,
+                                           CASE WHEN B.renewal_code = 'I'
                                                 THEN (SELECT PP.create_date FROM ajict_bms_schema.biz_opp PP WHERE PP.biz_opp_id = A.biz_opp_id)
-                                                WHEN A.renewal_code = 'U'
+                                                WHEN B.renewal_code = 'U'
                                                 THEN (SELECT QQ.update_date FROM ajict_bms_schema.biz_opp QQ WHERE QQ.biz_opp_id = A.biz_opp_id)
-                                                WHEN A.renewal_code = 'D'
+                                                WHEN B.renewal_code = 'D'
                                                 THEN (SELECT RR.delete_date FROM ajict_bms_schema.biz_opp RR WHERE RR.biz_opp_id = A.biz_opp_id)
                                                 ELSE NULL
                                             END AS renewal_date
@@ -2005,8 +2005,8 @@ def f_select_biz_opp_history(request):
 
 
          #test
-         v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
-         print(f"f_select_biz_opp1()에서의 v_formatted_sql : {v_formatted_sql}")
+         #v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
+         #print(f"f_select_biz_history()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:

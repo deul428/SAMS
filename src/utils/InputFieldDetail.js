@@ -51,37 +51,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     activity_details
     activity_date */
     // 250106 전달해야 할 파라미터 키 끝
-
-    const p_bizopp_insert = {
-        a_session_user_id: auth.userId,
-        a_biz_opp_id: '',
-        a_biz_opp_name: '',
-        a_progress2_rate_code: '',
-        a_contract_date: '',
-        a_essential_achievement_tf: false,
-
-        a_change_preparation_dept_id: '',
-        a_last_client_com2_code: '',
-        a_last_client_com2_name: '',
-        a_sale_com2_code: '',
-        a_sale_com2_name: '',
-        a_sale_item_no: '',
-        a_sale_date: '',
-        a_sale_amt: 0,
-        a_sale_profit: 0,
-        a_purchase_date: '',
-        a_purchase_amt: 0,
-        a_collect_money_date: '',
-        a_biz_section2_code: '',
-        a_biz_section2_name: '',
-        a_principal_product2_code: '',
-        a_principal_product2_name: '',
-
-        a_activity_details: '',
-        a_activity_date: '',
-    }
-
-    const p_bizopp_update = {
+    const p_bizopp = {
         a_session_user_id: auth.userId,
         biz_opp: { 
             // a_biz_opp_id: '',
@@ -97,23 +67,22 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_sale_com2_code: '',
             a_sale_item_no: '',
             a_sale_date: '',
-            a_sale_amt: 0,
-            a_sale_profit: 0,
+            a_sale_amt: "0",
+            a_sale_profit: "0",
             a_purchase_date: '',
-            a_purchase_amt: 0,
+            a_purchase_amt: "0",
             a_collect_money_date: '',
             a_biz_section2_code: '',
             a_principal_product2_code: '',
 
             a_user_name: '',
-
         },
         biz_opp_activity: {
             a_activity_details: '',
             a_activity_date: '',
         }
     }
-    const [insertInput, setInsertInput] = useState(p_bizopp_update);
+    const [insertInput, setInsertInput] = useState(p_bizopp);
     // 변화 감지 추출
     const [updateInput, setUpdateInput] = useState([]);
 
@@ -522,22 +491,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         let confirmMsg;
         console.log("-----------------input--------------", input);
         if (input && e) {
-            e.preventDefault(); // submit 방지
-            // 유효값 검사
-            // 날짜 yyyy-mm-dd -> yyyymmdd
-           /*  const dateKeys = ['a_sale_date', 'a_collect_money_date', 'a_purchase_date', 'a_contract_date', 'a_activity_date'];
-            dateKeys.forEach(key => {
-                if (input[key]) {
-                    return input[key] = input[key].replace(/-/g, '');
-                }
-            });
-            // 숫자 , 제거 
-            const numKeys = ['a_purchase_amt', 'a_sale_amt', 'a_sale_profit'];
-            numKeys.forEach(key => {
-                if (input[key]) {
-                    return input[key] = input[key].replace(/,/g, '');
-                }
-            }); */
+            e.preventDefault(); 
             const dateKeysMap = {
                 biz_opp: ['a_contract_date'],
                 biz_opp_detail: ['a_purchase_date', 'a_sale_date', 'a_collect_money_date'],
@@ -553,41 +507,41 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     });
                 }
             });
-            const numKeys = ['a_purchase_amt', 'a_sale_amt', 'a_sale_profit'];
 
+            const numKeys = ['a_purchase_amt', 'a_sale_amt', 'a_sale_profit'];
             if (input.biz_opp_detail) {
                 numKeys.forEach((key) => {
-                    if (input.biz_opp_detail[key] && input.biz_opp_detail[key] instanceof String) {
-                        input.biz_opp_detail[key] = Number(
+                    if (/* typeof input.biz_opp_detail[key] === 'string' &&  */Number(input.biz_opp_detail[key]) > 999) {
+                        console.log('999 넘는 key', key, input.biz_opp_detail[key])
+                        input.biz_opp_detail[key] = /* Number( */
                             input.biz_opp_detail[key].replace(/,/g, '')
-                        );
+                       /*  ); */
                     }
                 });
             }
-            
-            
+
             // 유효값 검사 끝
             if (v_componentName === 'bizOpp') {
                 if (msg === '등록') {
                     if (
-                        input.biz_opp.a_biz_opp_name.trim() !== '' && // 문자열 검사
-                        input.biz_opp.a_progress2_rate_code.trim() !== '' && // 문자열 검사
-                        input.biz_opp.a_contract_date.trim() !== '' && // 문자열 검사
-                        input.biz_opp.a_essential_achievement_tf !== null && // boolean 값 검사
+                        input.biz_opp.a_biz_opp_name.trim() !== '' && 
+                        input.biz_opp.a_progress2_rate_code.trim() !== '' && 
+                        input.biz_opp.a_contract_date.trim() !== '' && 
+                        input.biz_opp.a_essential_achievement_tf !== null && 
         
-                        input.biz_opp_detail.a_change_preparation_dept_id.trim() !== '' && // 문자열 검사
-                        input.biz_opp_detail.a_sale_com2_code.trim() !== '' && // 문자열 검사
-                        input.biz_opp_detail.a_sale_date.trim() !== '' && // 문자열 검사
-                        input.biz_opp_detail.a_sale_amt >= 0 && // 숫자 검사
-                        input.biz_opp_detail.a_sale_profit >= 0 && // 숫자 검사
-                        input.biz_opp_detail.a_purchase_date.trim() !== '' && // 문자열 검사
-                        input.biz_opp_detail.a_purchase_amt >= 0 && // 숫자 검사
-                        input.biz_opp_detail.a_biz_section2_code.trim() !== '' && // 문자열 검사
-                        input.biz_opp_detail.a_principal_product2_code.trim() !== '' && // 문자열 검사
-                        input.biz_opp_detail.a_user_name.trim() !== '' && // 문자열 검사
+                        input.biz_opp_detail.a_change_preparation_dept_id.trim() !== '' && 
+                        input.biz_opp_detail.a_sale_com2_code.trim() !== '' && 
+                        input.biz_opp_detail.a_sale_date.trim() !== '' && 
+                        // input.biz_opp_detail.a_sale_amt >= 0 &&
+                        // input.biz_opp_detail.a_sale_profit >= 0 &&
+                        // input.biz_opp_detail.a_purchase_amt >= 0 &&
+                        input.biz_opp_detail.a_purchase_date.trim() !== '' && 
+                        input.biz_opp_detail.a_biz_section2_code.trim() !== '' && 
+                        input.biz_opp_detail.a_principal_product2_code.trim() !== '' && 
+                        input.biz_opp_detail.a_user_name.trim() !== '' && 
         
-                        input.biz_opp_activity.a_activity_details.trim() !== '' && // 문자열 검사
-                        input.biz_opp_activity.a_activity_date.trim() !== '' // 문자열 검사
+                        input.biz_opp_activity.a_activity_details.trim() !== '' && 
+                        input.biz_opp_activity.a_activity_date.trim() !== '' 
                     ) {
                         confirmMsg = `사업 (기회) 명 ${input.biz_opp.a_biz_opp_name}을(를) 등록하시겠습니까?`;
                     } else {
@@ -595,42 +549,46 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         return; 
                     }
                 } else if (msg === '수정' && a_v_modalPropsData) {
+                    console.log(a_v_modalPropsData, input);
                     if (
-                        ((input.biz_opp.a_biz_opp_name && input.biz_opp.a_biz_opp_name.trim() !== '') || 
-                        (a_v_modalPropsData.a_biz_opp_name && a_v_modalPropsData.a_biz_opp_name.trim() !== '')) &&
+                        (
+                            (input.biz_opp.a_biz_opp_name && input.biz_opp.a_biz_opp_name.trim() !== '') || 
+                            (a_v_modalPropsData.a_biz_opp_name && a_v_modalPropsData.a_biz_opp_name.trim() !== '')
+                        ) ||
     
                         ((input.biz_opp.a_progress2_rate_code && input.biz_opp.a_progress2_rate_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_progress2_rate_code && a_v_modalPropsData.a_progress2_rate_code.trim() !== '')) &&
+                        (a_v_modalPropsData.a_progress2_rate_code && a_v_modalPropsData.a_progress2_rate_code.trim() !== ''))  ||
                        
                        ((input.biz_opp.a_contract_date && input.biz_opp.a_contract_date.trim() !== '') || 
-                        (a_v_modalPropsData.a_contract_date && a_v_modalPropsData.a_contract_date.trim() !== '')) &&
+                        (a_v_modalPropsData.a_contract_date && a_v_modalPropsData.a_contract_date.trim() !== ''))  ||
                        
                        ((input.biz_opp.a_essential_achievement_tf !== null) || 
-                        (a_v_modalPropsData.a_essential_achievement_tf !== null)) &&
+                        (a_v_modalPropsData.a_essential_achievement_tf !== null))  ||
                        
                        ((input.biz_opp_detail.a_sale_com2_code && input.biz_opp_detail.a_sale_com2_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_sale_com2_code && a_v_modalPropsData.a_sale_com2_code.trim() !== '')) &&
+                        (a_v_modalPropsData.a_sale_com2_code && a_v_modalPropsData.a_sale_com2_code.trim() !== ''))  ||
                        
                        ((input.biz_opp_detail.a_sale_date && input.biz_opp_detail.a_sale_date.trim() !== '') || 
-                        (a_v_modalPropsData.a_sale_date && a_v_modalPropsData.a_sale_date.trim() !== '')) &&
+                        (a_v_modalPropsData.a_sale_date && a_v_modalPropsData.a_sale_date.trim() !== ''))  ||
                        
-                       ((input.biz_opp_detail.a_sale_amt !== undefined && input.biz_opp_detail.a_sale_amt >= 0) || 
+                       /* ((input.biz_opp_detail.a_sale_amt !== undefined && input.biz_opp_detail.a_sale_amt >= 0) || 
                         (a_v_modalPropsData.a_sale_amt !== undefined && a_v_modalPropsData.a_sale_amt >= 0)) &&
                        
                        ((input.biz_opp_detail.a_sale_profit !== undefined && input.biz_opp_detail.a_sale_profit >= 0) || 
                         (a_v_modalPropsData.a_sale_profit !== undefined && a_v_modalPropsData.a_sale_profit >= 0)) &&
+
+                        ((input.biz_opp_detail.a_purchase_amt !== undefined && input.biz_opp_detail.a_purchase_amt >= 0) || 
+                         (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) && */
                        
                        ((input.biz_opp_detail.a_purchase_date && input.biz_opp_detail.a_purchase_date.trim() !== '') || 
-                        (a_v_modalPropsData.a_purchase_date && a_v_modalPropsData.a_purchase_date.trim() !== '')) &&
+                        (a_v_modalPropsData.a_purchase_date && a_v_modalPropsData.a_purchase_date.trim() !== ''))  ||
                        
-                       ((input.biz_opp_detail.a_purchase_amt !== undefined && input.biz_opp_detail.a_purchase_amt >= 0) || 
-                        (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) &&
                        
                        ((input.biz_opp_detail.a_biz_section2_code && input.biz_opp_detail.a_biz_section2_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_biz_section2_code && a_v_modalPropsData.a_biz_section2_code.trim() !== '')) &&
+                        (a_v_modalPropsData.a_biz_section2_code && a_v_modalPropsData.a_biz_section2_code.trim() !== ''))  ||
                        
                        ((input.biz_opp_detail.a_principal_product2_code && input.biz_opp_detail.a_principal_product2_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_principal_product2_code && a_v_modalPropsData.a_principal_product2_code.trim() !== '')) &&
+                        (a_v_modalPropsData.a_principal_product2_code && a_v_modalPropsData.a_principal_product2_code.trim() !== ''))  ||
                        
                        ((input.biz_opp_detail.a_user_name && input.biz_opp_detail.a_user_name.trim() !== '') || 
                         (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== '')) /* &&
@@ -713,6 +671,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             setIsProDisabled(true);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
+        } else {
+            setUpdateInput([])
+            setInsertInput(p_bizopp)
+    // const [updateInput, setUpdateInput] = useState([]);
         }
     }, [show]); // show가 변경될 때만 실행되도록 보장
     useEffect(() => {

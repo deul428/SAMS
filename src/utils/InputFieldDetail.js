@@ -365,7 +365,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     
         if (e.target.name === 'a_progress2_rate_code' && (e.target.value === '0005' || e.target.value === '0006')) {
             // console.log('진행률 바뀜!');
-            setProToSaleNo(false);
+            setIsProDisabled(false);
         }
 
         /* if (
@@ -381,7 +381,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             ))
         ) {
             console.log('진행률 바뀜!');
-            setProToSaleNo(true);
+            setIsProDisabled(true);
         } */
 
         const updateValue = (setState) => {
@@ -455,9 +455,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // 판품번호 disabled 제어
             if (v_modalPropsData.progress2_rate_code === '0005' || v_modalPropsData.progress2_rate_code === '0006') {
                 // console.log('진행률 바뀜!');
-                setProToSaleNo(false);
+                setIsProDisabled(false);
             } else {
-                setProToSaleNo(true);
+                setIsProDisabled(true);
             }
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD .....................
             const dateKeys = ['a_sale_date', 'a_collect_money_date', 'a_purchase_date', 'a_contract_date', 'a_activity_date'];
@@ -710,6 +710,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // console.log(show, onHide);
             // console.log(userCheck);
             // console.log(setIsRefresh);
+            setIsProDisabled(true);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
         }
@@ -736,7 +737,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         console.log("v_teamHandling: ", v_teamHandling, "\nv_deptHandling: ", v_deptHandling)
     }, [v_teamHandling, v_deptHandling]) */
     // UI 업데이트
-    const [proToSaleNo, setProToSaleNo] = useState(true);
+    const [isProDisabled, setIsProDisabled] = useState(true);
     useEffect(() => {
         const updateUI = () => {
             /* if (!currentPath || currentPath === '/login') {
@@ -883,7 +884,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         // value={input.sale_item_no || ''} 
                                                         defaultValue={a_v_modalPropsData?.a_sale_item_no || ''}
                                                         disabled={
-                                                            (proToSaleNo === true ? true : false /* 
+                                                            (isProDisabled === true ? true : false /* 
                                                                 (auth.userAuthCode === '0002') ? 
                                                                 (false) : fal */)
                                                         }/>
@@ -1152,33 +1153,37 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </Col>
                                                 </Row>)
                                             }
-                                            {(
-                                                a_v_modalPropsData ? 
-                                                    (<Row className='d-flex justify-content-between' >
+                                                {a_v_modalPropsData ? 
+                                                (<Row className='d-flex justify-content-between'>
                                                     <h3 style={{"textAlign": "left", "fontSize": "1.1rem", "paddingLeft":"0"}} className='mt-2'>활동 내역 이력 &#40;최근 5건&#41;</h3>
-                                                    <ListGroup as='ol' numbered className='col activity '>
-                                                        <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
-                                                            <div className='ms-2 me-auto'>
-                                                            <div className='fw-bold'>Subheading</div>
-                                                            Cras justo odio
-                                                            </div>
-                                                        </ListGroup.Item>
-                                                        <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
-                                                            <div className='ms-2 me-auto'>
-                                                            <div className='fw-bold'>Subheading</div>
-                                                            Cras justo odio
-                                                            </div>
-                                                        </ListGroup.Item>
-                                                        <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
-                                                            <div className='ms-2 me-auto'>
-                                                            <div className='fw-bold'>Subheading</div>
-                                                            Cras justo odio
-                                                            </div>
-                                                        </ListGroup.Item>
+                                                    <ListGroup as='ol' numbered className='col activity'>
+                                                        {/* {a_v_modalPropsData.map((e, index) => { */}
+                                                            <>
+                                                            <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
+                                                                <div className='ms-2 me-auto'>
+                                                                <div className='fw-bold'>Subheading</div>
+                                                                Cras justo odio
+                                                                </div>
+                                                            </ListGroup.Item>
+                                                            <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
+                                                                <div className='ms-2 me-auto'>
+                                                                <div className='fw-bold'>Subheading</div>
+                                                                Cras justo odio
+                                                                </div>
+                                                            </ListGroup.Item>
+                                                            <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
+                                                                <div className='ms-2 me-auto'>
+                                                                <div className='fw-bold'>Subheading</div>
+                                                                Cras justo odio
+                                                                </div>
+                                                            </ListGroup.Item>
+                                                            </>
+
+                                                        {/* })} */}
                                                     </ListGroup>
                                                 </Row>)
                                                 : ('')
-                                            )}
+                                                }
                                             </>
                                         </div>
                                     </div>
@@ -1305,7 +1310,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // }
         };
         updateUI();
-    }, [/* currentPath */, show, onHide, insertInput, getData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling, proToSaleNo]);
+    }, [/* currentPath */, show, onHide, insertInput, getData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling, isProDisabled]);
 
     return (
         <div id='inputFieldDetail'>

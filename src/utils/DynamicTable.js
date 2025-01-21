@@ -246,7 +246,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     });
   };
 
-  // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
   useEffect(() => {
     let htmlContent = null;
     if (
@@ -331,7 +330,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         case `activity`: 
           htmlContent = (
             <>
-            <Table hover responsive className='activity'>
+            <Table hover responsive className='activity' >
               {Object.entries(groupedData).map(([biz_opp_id, group], groupIndex) => {
                   const commonInfo = group[0]; // 그룹의 첫 번째 데이터를 공통 정보로 사용
                   return (
@@ -377,7 +376,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                           <tbody>
                             <div className='collapseArea'>
                               {group.map((item, index) => (
-                                index+1 > 5 ? 
+                                index > 4 ? 
                                 <Collapse in={openStates[biz_opp_id] || false}>
                                   <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
                                     <div className='collapseItem'>

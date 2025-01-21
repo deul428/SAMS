@@ -703,8 +703,8 @@ def f_select_popup_biz_opp(request):
             v_rows = v_cursor.fetchall()
          v_data["search_principal_product_code"] = [dict(zip(v_columns,row)) for row in v_rows]
          v_sql_dept_id = """SELECT dept_id AS change_preparation_dept_id,
-                                   dept_name,
-                                   high_dept_id,
+                                   dept_name AS change_preparation_dept_name,
+                                   high_dept_id AS change_preparation_high_dept_id,
                                    remark,
                                    create_user,
                                    create_date,

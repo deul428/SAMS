@@ -702,7 +702,18 @@ def f_select_popup_biz_opp(request):
             v_columns = [v_column[0] for v_column in v_cursor.description]
             v_rows = v_cursor.fetchall()
          v_data["search_principal_product_code"] = [dict(zip(v_columns,row)) for row in v_rows]
-         v_sql_dept_id = """SELECT * FROM ajict_bms_schema.dept WHERE delete_date IS NULL"""
+         v_sql_dept_id = """SELECT dept_id AS change_preparation_dept_id,
+                                   dept_name,
+                                   high_dept_id,
+                                   remark,
+                                   create_user,
+                                   create_date,
+                                   update_user,
+                                   update_date,
+                                   delete_user,
+                                   delete_date
+                            FROM ajict_bms_schema.dept
+                            WHERE delete_date IS NULL"""
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_dept_id)
             v_columns = [v_column[0] for v_column in v_cursor.description]
@@ -1994,8 +2005,8 @@ def f_select_biz_opp_history(request):
 
 
          #test
-         #v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
-         #print(f"f_select_biz_opp1()에서의 v_formatted_sql : {v_formatted_sql}")
+         v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
+         print(f"f_select_biz_opp1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:

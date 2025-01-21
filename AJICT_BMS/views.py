@@ -1034,7 +1034,6 @@ def f_insert_biz_opp(request):
                                                                                             progress2_rate_code,
                                                                                             contract_date,
                                                                                             essential_achievement_tf,
-                                                                                            renewal_code,
                                                                                             create_user)
                                                                                            VALUES (%s,
                                                                                                    1,
@@ -1043,7 +1042,6 @@ def f_insert_biz_opp(request):
                                                                                                    %s,
                                                                                                    %s,
                                                                                                    %s,
-                                                                                                   'I',
                                                                                                    %s)"""
             v_param_insert_biz_opp_history = []
             v_param_insert_biz_opp_history.append(v_biz_opp_id)
@@ -1082,6 +1080,7 @@ def f_insert_biz_opp(request):
                                                                                                           biz_section2_code,
                                                                                                           principal_product1_code,
                                                                                                           principal_product2_code,
+                                                                                                          renewal_code,
                                                                                                           create_user)
                                                                                                          VALUES (%s,
                                                                                                                  1,
@@ -1104,6 +1103,7 @@ def f_insert_biz_opp(request):
                                                                                                                  %s,
                                                                                                                  'PRI',
                                                                                                                  %s,
+                                                                                                                 'I'
                                                                                                                  %s)"""
             v_param_insert_biz_opp_detail_history = []
             v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)

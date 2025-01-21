@@ -1103,7 +1103,7 @@ def f_insert_biz_opp(request):
                                                                                                                  %s,
                                                                                                                  'PRI',
                                                                                                                  %s,
-                                                                                                                 'I'
+                                                                                                                 'I',
                                                                                                                  %s)"""
             v_param_insert_biz_opp_detail_history = []
             v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)

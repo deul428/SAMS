@@ -40,6 +40,7 @@ const roots = {
             { Header: '사업 구분', accessor: 'biz_section2_name' },
             { Header: '제품 구분', accessor: 'principal_product2_name' },
             { Header: '활동 이력', accessor: 'activity_details'},
+            { Header: '사업 복제', accessor: ''},
         ]
     },
     bizoppSelect2: {depth1: 'biz-opp', depth2: '', endpoint: 'select-biz-opp2/', component: BizOpp, 

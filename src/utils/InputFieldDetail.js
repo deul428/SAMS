@@ -1156,13 +1156,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             (<></>) : 
                                             (a_v_modalPropsData ? 
                                                 (<>
-                                                <Button variant='warning'>사업 (기회) 복제</Button>
-                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', updateInput, e, '수정')}>수정</Button>
+                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', updateInput, e, '수정')}>저장</Button>
                                                 <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp/', updateInput, e, '삭제')}>삭제</Button>
                                                 </>) 
                                                 : 
                                                 (<>
-                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e, '등록')}>등록</Button> 
+                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e, '등록')}>저장</Button> 
                                                 </>)
                                             )
                                         }

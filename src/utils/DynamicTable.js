@@ -103,6 +103,46 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   }, [v_propsData]);
 
 
+
+  const f_handlingData = async (method, endpoint, input = null, e) => {
+    const copy = {
+      a_session_user_id: auth.userId,
+      a_biz_opp_id: input.biz_opp_id
+    }
+    // console.log("e", e, "input", input);
+    if (input && e) {
+      e.stopPropagation(); //이벤트 전파 방지
+      e.preventDefault(); 
+    }
+    
+    input = copy;
+    // console.log(input)
+    // input = copy;
+    // console.log(input);
+    try {
+      const response = await apiMethods[method](endpoint, input);
+      if (response?.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
+        if(Array.isArray(response)){
+          console.log(response, response[0].STATUS, response[0].MESSAGE);
+        } else {
+          console.log(response.status.STATUS, response.status.MESSAGE);
+        }
+        return;
+      } else {
+        console.log('사업 (기회) 복제 response 송신 완료', "\nendpoint: ", endpoint, "\nresponse: ", response);
+        alert('정상적으로 복제되었습니다.'); 
+        setIsRefresh(true);
+        return response;
+      }
+      // 송신 끝
+      
+    } catch (error) {
+      console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
+      alert('오류가 발생했습니다. 관리자에게 문의하세요.', error);
+    }
+  }
+
+
   const [v_handlingHtml, setVHandlingHtml] = useState(null);
   // =================== input field에서 넘어온 값(res)에 따라 핸들링 ===================
   // res obj / res.data arr
@@ -305,15 +345,22 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             {index === row.cells.length - 1
                             ? 
                             (
-                            <Button size="sm" variant="light" className='btnCell' onClick={(e) => {
-                              openModal(e, row.original, 'history');
-                            }}>
-                              이력
-                            </Button>)
+                            <>
+                            <Button size="sm" variant='warning' className='btnCell' onClick={(e) => f_handlingData('post', '복제', row.original, e)} >복제</Button>
+                            </>
+                            )
                             : 
+                            (index === row.cells.length - 2 ? 
+                              <Button size="sm" variant="light" className='btnCell' onClick={(e) => {
+                                openModal(e, row.original, 'history');
+                              }}>
+                                이력
+                              </Button>
+                             :
                             (index === 0 ? 
                               (<span>{row.index + 1}</span>) 
                               : cell.render('Cell'))
+                            )
                             }
                           </td>
                         );

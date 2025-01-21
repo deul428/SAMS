@@ -38,16 +38,6 @@ table {
     &.bizopp { 
         thead {
             th {
-                width: 104px;
-                min-width: 104px;
-                max-width: 104px;
-                // min-width: 104px;
-                // max-width: 250px;
-                
-        
-                // &:nth-child(4), &:nth-child(5) {
-                //     min-width: 104px;
-                // }
             }
         }
         tbody {
@@ -62,8 +52,14 @@ table {
                         min-width: 200px;
                         max-width: 200px;
                     }
-                    &:last-child {
+                    &:nth-last-child(-n+2) {
                         padding: 0 !important;
+                        width: 80px;
+                        min-width: 80px;
+                        max-width: 80px;
+                        button {
+                            width: inherit;
+                        }
                     }
                 }
             }

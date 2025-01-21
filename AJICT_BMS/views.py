@@ -734,6 +734,12 @@ def f_insert_biz_opp(request):
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
+
+
+      #test
+      print(f"{v_body}")
+
+
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
       #if v_session_user_id is not None:
       #   v_session_user_id = v_session_user_id.strip()
@@ -1192,7 +1198,62 @@ def f_insert_biz_opp(request):
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
 
-#def f_renewal_biz_opp(request)
+
+def f_renewal_biz_opp(request):
+   v_session_user_id = ''
+   v_body = ''
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      if v_session_user_id is not None:
+         v_session_user_id = v_session_user_id.strip()
+   if not v_session_user_id:
+      v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   else:
+      try:
+         with transaction.atomic():
+            # v_body = {a_session_user_id: 'leecj',
+            #           biz_opp:{a_biz_opp_id:'',
+            #                     a_biz_opp_name:'',
+            #                     a_progress2_rate_code:'',
+            #                     a_contract_date:'',
+            #                     a_essential_achievement_tf:false},
+            #           biz_opp_detail:{a_change_preparation_dept_id:'',
+            #                           a_last_client_com2_code:'',
+            #                           a_last_client_com2_name:'',
+            #                           a_sale_com2_code:'',
+            #                           a_sale_com2_name:'',
+            #                           a_sale_item_no:'',
+            #                           a_sale_date:'',
+            #                           a_sale_amt:0,
+            #                           a_sale_profit:0,
+            #                           a_purchase_date:'',
+            #                           a_purchase_amt:0,
+            #                           a_collect_money_date:'',
+            #                           a_biz_section2_code:'',
+            #                           a_biz_section2_name:'',
+            #                           a_principal_product2_code:'',
+            #                           a_principal_product2_name:''},
+            #           biz_opp_activity:{a_activity_details:'',
+            #                             a_activity_date:''}}
+            v_biz_opp = v_body.get('biz_opp')
+            if not v_biz_opp:
+               print(f"Yes!")
+            transaction.set_rollback(True)
+            v_return = {'STATUS':'FAIL','MESSAGE':"'계약 일자' 항목은 필수 입력(선택) 항목입니다!"}
+            v_square_bracket_return = [v_return]
+            return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      except DatabaseError:
+         v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      except Exception as E:
+         v_return = {'STATUS':'FAIL','MESSAGE':'오류가 발생했습니다.','ERROR':str(E)}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+
 
 def f_delete_biz_opp(request):
    v_session_user_id = ''

@@ -1,116 +1,83 @@
 @import './global';
 
-#tableArea {
-    width: 100%;
-}
 table {
     width: 100%;
     font-size: 0.8rem;
     thead {
-        th {
-            vertical-align: middle;
-            cursor: default;
-            &.header_biz_opp_name {
-                max-width: 80px;
-            }
-        }
+        th {}
     }
-    tr {
-        th, td {
-            border: 1px solid #dee2e6;
-            /* min-width: 80px;
-            max-width: 250px; */
-            overflow: hidden; 
-            white-space: nowrap; 
-            text-overflow: ellipsis; /* 말줄임표 추가 */
-            min-height: 32px;
-            // padding: 1rem 0.5rem;
-            padding: 0;
-            &:nth-child(2), &:nth-child(3) {
-                min-width: 104px;
+    thead, tbody {
+        tr {
+            th, td {
+                vertical-align: middle;
+                border: 1px solid #dee2e6;
+                min-width: 80px;
+                max-width: 250px;
+                overflow: hidden; 
+                white-space: nowrap; 
+                text-overflow: ellipsis; /* 말줄임표 추가 */
+                min-height: 32px;
+                // padding: 1rem 0.5rem;
+                // padding: 0;
+                /* &:nth-child(2), &:nth-child(3) {
+                    min-width: 104px;
+                } */
             }
-        }
-        &.fullRow {
             td {
-                    &:first-child {
+                position: relative;
+                vertical-align: middle;
+                padding: 0.3rem 0.6rem !important;
+                
+                button {
+                    width: 100%;
                 }
             }
-        }
-        td {
-            position: relative;
-            vertical-align: middle;
-            padding: 0.3rem 0.6rem !important;
-            
-            button {
-                width: 100%;
-            }
-            &:last-child {
-                padding: 0 !important;
-            }
-            &.historyCell {
-                padding: 0 !important;
-                height: 30px;
-                > .tableCell {
-                    padding: 0.3rem 0.6rem !important;
-                    height: inherit;
-                }
-            }       
         }
     }
     
+    &.bizopp { 
+        thead {
+            th {
+                width: 104px;
+                min-width: 104px;
+                max-width: 104px;
+                // min-width: 104px;
+                // max-width: 250px;
+                
+        
+                // &:nth-child(4), &:nth-child(5) {
+                //     min-width: 104px;
+                // }
+            }
+        }
+        tbody {
+            tr {
+                td {
+                    table-layout: fixed;
+                    width: 104px;
+                    min-width: 104px;
+                    max-width: 104px;
+                    &:nth-child(8) {
+                        width: 200px;
+                        min-width: 200px;
+                        max-width: 200px;
+                    }
+                    &:last-child {
+                        padding: 0 !important;
+                    }
+                }
+            }
+        }
+    }
     &.activity {
         div.d-flex {
             border: 1px solid #aaa !important;
             width: 100%;
             border: none;
-                tbody {
-                    div.collapseArea {
-                        padding: 0;
-                        div {
-                            padding: 0;
-                            &.collapseItem {
-                                tr {
-                                    
-                                }
-                                td {
-                    
-                                }
-                            }
-                            tr {
-                                    
-                            }
-                            td {
-                                padding: 0.3rem 0.6rem !important;
-                                border: 1px solid $base-color;
-                                &.activityDetails {
-                                    width: 100%;
-                                }
-                            }
-                        }
-                    }
-                button.collapseController {
-                    background-color: $point-color;
-                    width: 100%;
-                    height: 1.5rem;
-                    line-height: calc(1.5rem / 2);
-                    font-size: 0.8rem;
-                    display: inline-flex;    
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 0;
-                    svg {
-                        margin-right: 0.5rem;
-                    }
-                }
-                
-            }
             thead, tbody {
                 width: 100%;
                 display: table;
                 table-layout: fixed;
-                tr {
-                    display: table-row; 
-                    overflow-x: scroll; 
                     th {
                     }
                     td {
@@ -118,19 +85,89 @@ table {
                     th, td {
                         width: auto; 
                     }
-                }
             }
-            thead {}
-            tbody {
+            thead { 
                 tr {
-                    th, td {
-        
-                    }
-    
+                    cursor: default;
+                    display: table-row; 
+                    overflow-x: scroll; 
                 }
             }
+            tbody {
+                div.collapseArea {
+                    padding: 0;
+                    div {
+                        padding: 0;
+                        &.collapseBox {
+                            // display: flex;
+                            // width: 100%;
+                            word-break: break-all;
+                            div.collapseItem {
+                                display: inline-flex;
+                                width: 100%;
+                                td {
+                                    cursor: pointer;
+                                    padding: 0.3rem 0.6rem !important;
+                                    border: 1px solid $base-color;
+                                    &.activityDetails {
+                                        flex: 1; 
+                                        display: inline-block;
+                                        overflow: hidden;
+                                        white-space: normal;
+                                        text-overflow: ellipsis;
+                                        display: -webkit-box;
+                                        -webkit-line-clamp: 2;
+                                        -webkit-box-orient: vertical;
+                                        word-break: break-all;
+                                    }
+                                }
+                            }
+                        }
+                        tr {
+                                
+                        }
+                        
+                    }
+                }
+            }
+            button.collapseController {
+                background-color: $point-color;
+                width: 100%;
+                height: 1.5rem;
+                line-height: calc(1.5rem / 2);
+                font-size: 0.8rem;
+                display: inline-flex;    
+                align-items: center;
+                justify-content: center;
+                border-radius: 0;
+                svg {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+    }
+    &.bizoppHistory {
+        thead {
 
         }
+        tbody {
+            background-color: red;
+            tr {
+                td {
+                    &.historyCell {
+                        padding: 0 !important;
+                        height: 30px;
+                        .tableCell {
+                            // padding: 0.3rem 0.6rem !important;
+                            height: inherit;
+                            line-height: 30px;
+                            vertical-align: middle;
+                        }
+                    }  
+                }
+            }
+        }
+
     }
     button.btn.light {
         // font-size: 0.75rem;

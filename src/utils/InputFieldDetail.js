@@ -421,7 +421,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const a = a_v_modalPropsData;
         // console.log( "a_v_modalPropsData", a_v_modalPropsData);
         
-        var p_bizopp_delete = {a_biz_opp_id: a.a_biz_opp_id,
+        var p_bizopp_delete = {
+            a_biz_opp_id: a.a_biz_opp_id,
             a_biz_opp_name: a.a_biz_opp_name,
             a_progress1_rate_code: a.a_progress1_rate_code,
             a_progress2_rate_code: a.a_progress2_rate_code,
@@ -445,7 +446,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_biz_section1_code: a.a_biz_section1_code,
             a_biz_section2_code: a.a_biz_section2_code,
             a_principal_product1_code: a.a_principal_product1_code,
-            a_principal_product2_code: a.a_principal_product2_code,}
+            a_principal_product2_code: a.a_principal_product2_code,
+        }
     }
     // 2. UI 표현용
     useEffect(() => {

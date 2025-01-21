@@ -306,7 +306,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             {index === row.cells.length - 1
                             ? 
                             (
-                            <Button size="sm" variant="light" onClick={(e) => {
+                            <Button size="sm" variant="light" className='btnCell' onClick={(e) => {
                               openModal(e, row.original, 'history');
                             }}>
                               이력
@@ -379,27 +379,30 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                               {group.map((item, index) => (
                                 index+1 > 5 ? 
                                 <Collapse in={openStates[biz_opp_id] || false}>
-                                  <div id={`collapse-${biz_opp_id}`} className='collapseItem' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                                    {console.log("group[index]: ", group[index], biz_opp_id, index)}
+                                  <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
+                                    <div className='collapseItem'>
+                                      {/* {console.log("group[index]: ", group[index], biz_opp_id, index)} */}
                                       <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                                       <td className='activityDetails' colSpan={11}>{item.activity_details}</td>
+                                    </div>
                                   </div>
                                 </Collapse> : 
                                 
-                                <div id={`collapse-${biz_opp_id}`} className='collapseItem' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                                  <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                                  <td className='activityDetails' colSpan={11}>{item.activity_details}</td>
+                                <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
+                                  <div className='collapseItem'>
+                                    <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                                    <td className='activityDetails' colSpan={11}>{item.activity_details}</td>
+                                  </div>
                                 </div>
                               ))}
-                              
-                          </div>
+                            </div>
                             <Button className='collapseController'
                               onClick={() => toggleCollapse(biz_opp_id)}
                               aria-controls={`collapse-${biz_opp_id}`}
                               aria-expanded={openStates[biz_opp_id] || false}>
                               {openStates[biz_opp_id] ? 
                               <><ArrowBarUp /><span>접기</span></> : 
-                              <><ArrowBarDown /><span>펼치기</span></>}
+                              <><ArrowBarDown /><span>모두 펼치기</span></>}
                             </Button>
                           </tbody>
                         </>
@@ -409,9 +412,15 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                         <tbody>
                           <div className='collapseArea'>
                             {group.map((item, index) => (
-                              <div id={`collapse-${biz_opp_id}`} className='' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                                <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                                <td className='activityDetails' colSpan={11}>{item.activity_details}</td>
+                              <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
+                                <div className='collapseItem'>
+                                  <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                                  <td className='activityDetails' colSpan={11}>
+                                    <div type='textarea'>
+                                      {item.activity_details}
+                                    </div>
+                                  </td>
+                                </div>
                               </div>
                             ))}
                           </div>

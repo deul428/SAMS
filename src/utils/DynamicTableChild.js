@@ -8,8 +8,8 @@ import roots from './datas/Roots';
 import { Table, Button, Pagination } from 'react-bootstrap';
 import { CaretUp, CaretDown } from 'react-bootstrap-icons';
 
-import '../styles/_table.scss'; 
 import '../styles/_global.scss';
+import '../styles/_table.scss'; 
 
 // level 2 테이블 (ex. 사업 (기회) 이력 조회)
 function DynamicTableChild({ v_componentName, v_propsData }) {
@@ -169,7 +169,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
         case `bizOppHistory`: 
         htmlContent = (
             <>
-            <Table bordered hover responsive {...getTableProps()}>
+            <Table bordered hover responsive {...getTableProps()} className='bizoppHistory'>
             <thead>
                 {headerGroups.map((headerGroup) => {
                   const { key, ...restProps } = headerGroup.getHeaderGroupProps();

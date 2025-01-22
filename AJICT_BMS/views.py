@@ -1278,7 +1278,6 @@ def f_renewal_biz_opp(request):
                v_sql_update_biz_opp = f"UPDATE ajict_bms_schema.biz_opp SET " + ",".join(v_set_clauses_biz_opp) + ",update_user = %s,update_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)
-               v_new_set_clauses = ['u_' + v_item for v_item in v_set_clauses_biz_opp]
 
 
                #test
@@ -1372,9 +1371,10 @@ def f_renewal_biz_opp(request):
 
 
             if v_biz_opp or v_biz_opp_detail:
-               v_base_columns = ['biz_opp_id','history_no','progress1_rate_code','create_user']
-               v_columns_str = ',\n '.join(v_base_columns + v_new_set_clauses)
-               v_values_str = ',\n '.join(['%s' for _ in v_base_columns] + ['TRUE' for _ in v_new_set_clauses])
+               v_new_set_clauses_biz_opp = ['u_' + v_item for v_item in v_set_clauses_biz_opp]
+               v_base_columns = ['biz_opp_id','history_no','biz_opp_name','progress1_rate_code','progress2_rate_code','contract_date','essential_achievement_tf','create_user']
+               v_columns_str = ',\n '.join(v_base_columns + v_new_set_clauses_biz_opp)
+               v_values_str = ',\n '.join(['%s' for _ in v_base_columns] + ['TRUE' for _ in v_new_set_clauses_biz_opp])
                v_sql_update_biz_opp_history = f"""INSERT INTO ajict_bms_schema.biz_opp_history ({v_columns_str})
                                                  SELECT %s,
                                                         (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),

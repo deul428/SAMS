@@ -1260,8 +1260,7 @@ def f_renewal_biz_opp(request):
             #                               'a_activity_details':'바쁘다!!!'}}
             v_biz_opp = v_body.get('biz_opp')
             v_biz_opp_detail = v_body.get('biz_opp_detail')
-            v_biz_opp_activity = v_body.get('biz_opp_activity')
-            v_biz_opp_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
             v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
             if v_biz_opp:
                v_param = []
@@ -1276,7 +1275,7 @@ def f_renewal_biz_opp(request):
                         #   v_param.append(v_nested_value)
                         v_set_clauses.append(f"{v_nested_key[2:]} = %s")
                         v_param.append(v_nested_value)
-               v_sql_update_biz_opp = (f"UPDATE ajict_bms_schema.biz_opp SET ") + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"
+               v_sql_update_biz_opp = f"UPDATE ajict_bms_schema.biz_opp SET " + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)
 
@@ -1303,8 +1302,8 @@ def f_renewal_biz_opp(request):
                         #   v_param.append(v_nested_value)
                         v_set_clauses.append(f"{v_nested_key[2:]} = %s")
                         v_param.append(v_nested_value)
-               v_sql_update_biz_opp_detail = (f"UPDATE ajict_bms_schema.biz_opp_detail\
-                                                SET ") + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP\
+               v_sql_update_biz_opp_detail = f"UPDATE ajict_bms_schema.biz_opp_detail\
+                                                SET " + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP\
                                                 WHERE biz_opp_id = %s AND detail_no = %s"
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)

@@ -1389,12 +1389,20 @@ def f_renewal_biz_opp(request):
                                                         %s
                                                  FROM ajict_bms_schema.biz_opp A
                                                  WHERE A.biz_opp_id = %s"""
-               v_param.append(v_biz_opp_id)
-               v_param.append(v_biz_opp_id)
-               v_param.append(v_session_user_id)
-               v_param.append(v_biz_opp_id)
+               v_param_update_biz_opp_history = []
+               v_param_update_biz_opp_history.append(v_biz_opp_id)
+               v_param_update_biz_opp_history.append(v_biz_opp_id)
+               v_param_update_biz_opp_history.append(v_session_user_id)
+               v_param_update_biz_opp_history.append(v_biz_opp_id)
+
+
+               #test
+               v_formatted_sql = v_sql_update_biz_opp_history % tuple(map(repr,v_param_update_biz_opp_history))
+               print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                with connection.cursor() as v_cursor:
-                  v_cursor.execute(v_sql_update_biz_opp_history,v_param)
+                  v_cursor.execute(v_sql_update_biz_opp_history,v_param_update_biz_opp_history)
                v_sql_update_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
                                                                                                       detail_no,
                                                                                                       history_no,
@@ -1444,13 +1452,21 @@ def f_renewal_biz_opp(request):
                                                         FROM ajict_bms_schema.biz_opp_detail A
                                                         WHERE A.biz_opp_id = %s AND
                                                               A.detail_no = %s"""
-               v_param.append(v_biz_opp_id)
-               v_param.append(v_biz_opp_id)
-               v_param.append(v_session_user_id)
-               v_param.append(v_biz_opp_id)
-               v_param.append(v_detail_no)
+               v_param_update_biz_opp_detail_history = []
+               v_param_update_biz_opp_detail_history.append(v_biz_opp_id)
+               v_param_update_biz_opp_detail_history.append(v_biz_opp_id)
+               v_param_update_biz_opp_detail_history.append(v_session_user_id)
+               v_param_update_biz_opp_detail_history.append(v_biz_opp_id)
+               v_param_update_biz_opp_detail_history.append(v_detail_no)
+
+
+               #test
+               v_formatted_sql = v_sql_update_biz_opp_detail_history % tuple(map(repr,v_param_update_biz_opp_detail_history))
+               print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                with connection.cursor() as v_cursor:
-                  v_cursor.execute(v_sql_update_biz_opp_detail_history,v_param)
+                  v_cursor.execute(v_sql_update_biz_opp_detail_history,v_param_update_biz_opp_detail_history)
 
 
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}

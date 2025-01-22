@@ -1276,7 +1276,7 @@ def f_renewal_biz_opp(request):
                         #   v_param.append(v_nested_value)
                         v_set_clauses.append(f"{v_nested_key[2:]} = %s")
                         v_param.append(v_nested_value)
-               v_sql_update_biz_opp = (f"UPDATE ajict_bms_schema.biz_opp SET ") + ",".join(v_set_clauses) + " ,update_user = %s,update_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"
+               v_sql_update_biz_opp = (f"UPDATE ajict_bms_schema.biz_opp SET ") + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)
 
@@ -1304,7 +1304,7 @@ def f_renewal_biz_opp(request):
                         v_set_clauses.append(f"{v_nested_key[2:]} = %s")
                         v_param.append(v_nested_value)
                v_sql_update_biz_opp_detail = (f"UPDATE ajict_bms_schema.biz_opp_detail\
-                                                SET ") + ",".join(v_set_clauses) + " update_user = %s,update_date = CURRENT_TIMESTAMP\
+                                                SET ") + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP\
                                                 WHERE biz_opp_id = %s AND detail_no = %s"
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)

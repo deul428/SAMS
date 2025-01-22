@@ -737,7 +737,7 @@ def f_insert_biz_opp(request):
 
 
       #test
-      print(f"{v_body}")
+      #print(f"{v_body}")
 
 
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
@@ -785,7 +785,9 @@ def f_insert_biz_opp(request):
          v_biz_opp_id = ''
          with transaction.atomic():
             v_sql_max = """SELECT CASE WHEN (SELECT COUNT(*) FROM ajict_bms_schema.biz_opp WHERE SUBSTRING(biz_opp_id FROM 1 FOR 4) = TO_CHAR(NOW(),'YYYY')) > 0
-                                       THEN (SELECT TO_CHAR(NOW(),'YYYY') || LPAD(MAX(SUBSTRING(biz_opp_id FROM 5 FOR 4)::INTEGER + 1)::TEXT,4,'0') FROM ajict_bms_schema.biz_opp WHERE SUBSTRING(biz_opp_id FROM 1 FOR 4) = TO_CHAR(NOW(),'YYYY'))
+                                       THEN (SELECT TO_CHAR(NOW(),'YYYY') || LPAD(MAX(SUBSTRING(biz_opp_id FROM 5 FOR 4)::INTEGER + 1)::TEXT,4,'0')
+                                             FROM ajict_bms_schema.biz_opp
+                                             WHERE SUBSTRING(biz_opp_id FROM 1 FOR 4) = TO_CHAR(NOW(),'YYYY'))
                                        ELSE TO_CHAR(NOW(),'YYYY') || '0001'
                                   END AS biz_opp_id"""
             with connection.cursor() as v_cursor:
@@ -1201,10 +1203,21 @@ def f_insert_biz_opp(request):
 
 def f_renewal_biz_opp(request):
    v_session_user_id = ''
+
+
+   #test
+   #v_session_user_id = 'leecj'
+
+
    v_body = ''
    if request.method == 'POST':
+
+
+      #test
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+
+
       if v_session_user_id is not None:
          v_session_user_id = v_session_user_id.strip()
    if not v_session_user_id:
@@ -1214,35 +1227,217 @@ def f_renewal_biz_opp(request):
    else:
       try:
          with transaction.atomic():
-            # v_body = {a_session_user_id: 'leecj',
-            #           biz_opp:{a_biz_opp_id:'',
-            #                     a_biz_opp_name:'',
-            #                     a_progress2_rate_code:'',
-            #                     a_contract_date:'',
-            #                     a_essential_achievement_tf:false},
-            #           biz_opp_detail:{a_change_preparation_dept_id:'',
-            #                           a_last_client_com2_code:'',
-            #                           a_last_client_com2_name:'',
-            #                           a_sale_com2_code:'',
-            #                           a_sale_com2_name:'',
-            #                           a_sale_item_no:'',
-            #                           a_sale_date:'',
-            #                           a_sale_amt:0,
-            #                           a_sale_profit:0,
-            #                           a_purchase_date:'',
-            #                           a_purchase_amt:0,
-            #                           a_collect_money_date:'',
-            #                           a_biz_section2_code:'',
-            #                           a_biz_section2_name:'',
-            #                           a_principal_product2_code:'',
-            #                           a_principal_product2_name:''},
-            #           biz_opp_activity:{a_activity_details:'',
-            #                             a_activity_date:''}}
+            # v_body = {'a_session_user_id':'leecj',
+            #           'biz_opp':{'a_biz_opp_id':'20251000',
+            #                      'a_biz_opp_name':'Web 개발 사업',
+            #                      'a_contract_date':'20241030',
+            #                      'a_essential_achievement_tf':False},
+            #           'biz_opp_detail':{'a_biz_opp_id':'20251000',
+            #                             'a_detail_no':1,
+            #                             'user_id':'bradjung',
+            #                             'a_change_preparation_dept_id':'9711',
+            #                             'change_preparation_dept_name':'영업1팀',
+            #                             'a_last_client_com2_code':'0001',
+            #                             'a_sale_com2_code':'0002',
+            #                             'a_sale_item_no':'S24166',
+            #                             'a_sale_date':'20241130',
+            #                             'a_sale_amt':108685000,
+            #                             'a_sale_profit':11057303,
+            #                             'a_purchase_date':'20240101',
+            #                             'a_purchase_amt':0,
+            #                             'a_collect_money_date':'',
+            #                             'a_biz_section2_code':'0001',
+            #                             'a_principal_product2_code':'0002'},
+            #           'biz_opp_activity':{'a_biz_opp_id':'20240023',
+            #                               'a_detail_no':1,
+            #                               'a_activity_no':1,
+            #                               'a_activity_details':'바쁘다!!!'}}
             v_biz_opp = v_body.get('biz_opp')
-            if not v_biz_opp:
-               print(f"Yes!")
-            transaction.set_rollback(True)
-            v_return = {'STATUS':'FAIL','MESSAGE':"'계약 일자' 항목은 필수 입력(선택) 항목입니다!"}
+            v_biz_opp_detail = v_body.get('biz_opp_detail')
+            v_biz_opp_activity = v_body.get('biz_opp_activity')
+            v_biz_opp_id = ''
+            v_detail_no = ''
+            if v_biz_opp:
+               v_param = []
+               v_set_clauses = []
+               for v_key,v_value in v_body.items():
+                  if v_key == 'biz_opp' and isinstance(v_value,dict):
+                     for v_nested_key,v_nested_value in v_value.items():
+                        if v_nested_key == 'a_biz_opp_id':
+                           v_biz_opp_id = v_nested_value
+                        else:
+                           v_set_clauses.append(f"{v_nested_key[2:]} = %s")
+                           v_param.append(v_nested_value)
+               v_sql_update_biz_opp = f"UPDATE ajict_bms_schema.biz_opp SET " + ",".join(v_set_clauses) + " update_user = %s,update_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"
+               v_param.append(v_session_user_id)
+               v_param.append(v_biz_opp_id)
+               with connection.cursor() as v_cursor:
+                  v_cursor.execute(v_sql_update_biz_opp,v_param)
+
+
+#test
+               #v_formatted_sql = v_sql_update_biz_opp % tuple(map(repr,v_param))
+               #print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+            if v_biz_opp_detail:
+               v_param = []
+               v_set_clauses = []
+               for v_key,v_value in v_body.items():
+                  if v_key == 'biz_opp_detail' and isinstance(v_value,dict):
+                     for v_nested_key,v_nested_value in v_value.items():
+                        if v_nested_key == 'a_biz_opp_id':
+                           v_biz_opp_id = v_nested_value
+                        if v_nested_key == 'a_detail_no':
+                           v_detail_no = v_nested_value
+                        if v_nested_key != 'a_biz_opp_id' and v_nested_key != 'a_detail_no':
+                           v_set_clauses.append(f"{v_nested_key[2:]} = %s")
+                           v_param.append(v_nested_value)
+               v_sql_update_biz_opp_detail = (f"UPDATE ajict_bms_schema.biz_opp_detail\
+                                                SET ") + ",".join(v_set_clauses) + " update_user = %s,update_date = CURRENT_TIMESTAMP\
+                                                WHERE biz_opp_id = %s AND detail_no = %s"
+               v_param.append(v_session_user_id)
+               v_param.append(v_biz_opp_id)
+               v_param.append(v_detail_no)
+               with connection.cursor() as v_cursor:
+                  v_cursor.execute(v_sql_update_biz_opp_detail,v_param)
+
+
+               #test
+               #v_formatted_sql = v_sql_update_biz_opp % tuple(map(repr,v_param))
+               #print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
+            if v_biz_opp_activity:
+               v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
+                                                                                                 detail_no,
+                                                                                                 activity_no,
+                                                                                                 activity_details,
+                                                                                                 activity_date,
+                                                                                                 create_user)
+                                                                                                VALUES (%s,
+                                                                                                        %s,
+                                                                                                        (SELECT COALESCE(MAX(activity_no),0) + 1
+                                                                                                         FROM ajict_bms_schema.biz_opp_activity
+                                                                                                         WHERE biz_opp_id = %s AND
+                                                                                                               detail_no = %s),
+                                                                                                        %s,
+                                                                                                        %s,
+                                                                                                        %s)"""
+               v_param = []
+               v_param.append(v_biz_opp_id)
+               v_param.append(v_detail_no)
+               v_param.append(v_biz_opp_id)
+               v_param.append(v_detail_no)
+               v_activity_details = None if v_body.get('biz_opp_activity',{}).get('a_activity_details') == '' else v_body.get('biz_opp_activity',{}).get('a_activity_details')
+               if v_activity_details is not None:
+                  v_activity_details = v_activity_details.strip()
+               if not v_activity_details:
+                  transaction.set_rollback(True)
+                  v_return = {'STATUS':'FAIL','MESSAGE':"'활동 내역' 항목은 필수 입력(선택) 항목입니다!"}
+                  v_square_bracket_return = [v_return]
+                  return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+               else:
+                  v_param.append(v_activity_details)
+               v_activity_date = None if v_body.get('biz_opp_activity',{}).get('a_activity_date') == '' else v_body.get('biz_opp_activity',{}).get('a_activity_date')
+               if v_activity_date is not None:
+                  v_activity_date = v_activity_date.strip()
+               if not v_activity_date:
+                  transaction.set_rollback(True)
+                  v_return = {'STATUS':'FAIL','MESSAGE':"'활동 일자' 항목은 필수 입력(선택) 항목입니다!"}
+                  v_square_bracket_return = [v_return]
+                  return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+               else:
+                  v_param.append(v_activity_date)
+               v_param.append(v_session_user_id)
+               with connection.cursor() as v_cursor:
+                  v_cursor.execute(v_sql_insert_biz_opp_activity,v_param)
+
+
+
+            if v_biz_opp or v_biz_opp_detail:
+               v_sql_update_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
+                                                                                               history_no,
+                                                                                               biz_opp_name,
+                                                                                               progress1_rate_code,
+                                                                                               progress2_rate_code,
+                                                                                               contract_date,
+                                                                                               essential_achievement_tf,
+                                                                                               create_user)
+                                                 SELECT %s,
+                                                        (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
+                                                        A.biz_opp_name,
+                                                        A.progress1_rate_code,
+                                                        A.progress2_rate_code,
+                                                        A.contract_date,
+                                                        A.essential_achievement_tf,
+                                                        %s
+                                                 FROM ajict_bms_schema.biz_opp A
+                                                 WHERE A.biz_opp_id = %s"""
+               v_param.append(v_biz_opp_id)
+               v_param.append(v_biz_opp_id)
+               v_param.append(v_session_user_id)
+               v_param.append(v_biz_opp_id)
+               with connection.cursor() as v_cursor:
+                  v_cursor.execute(v_sql_update_biz_opp_history,v_param)
+               v_sql_update_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
+                                                                                                      detail_no,
+                                                                                                      history_no,
+                                                                                                      user_id,
+                                                                                                      change_preparation_dept_id,
+                                                                                                      change_preparation_dept_name,
+                                                                                                      last_client_com1_code,
+                                                                                                      last_client_com2_code,
+                                                                                                      sale_com1_code,
+                                                                                                      sale_com2_code,
+                                                                                                      sale_item_no,
+                                                                                                      sale_date,
+                                                                                                      sale_amt,
+                                                                                                      sale_profit,
+                                                                                                      purchase_date,
+                                                                                                      purchase_amt,
+                                                                                                      collect_money_date,
+                                                                                                      biz_section1_code,
+                                                                                                      biz_section2_code,
+                                                                                                      principal_product1_code,
+                                                                                                      principal_product2_code,
+                                                                                                      renewal_code,
+                                                                                                      create_user)
+                                                        SELECT %s,
+                                                               1,
+                                                               (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
+                                                               A.user_id,
+                                                               A.change_preparation_dept_id,
+                                                               A.change_preparation_dept_name,
+                                                               A.last_client_com1_code,
+                                                               A.last_client_com2_code,
+                                                               A.sale_com1_code,
+                                                               A.sale_com2_code,
+                                                               A.sale_item_no,
+                                                               A.sale_date,
+                                                               A.sale_amt,
+                                                               A.sale_profit,
+                                                               A.purchase_date,
+                                                               A.purchase_amt,
+                                                               A.collect_money_date,
+                                                               A.biz_section1_code,
+                                                               A.biz_section2_code,
+                                                               A.principal_product1_code,
+                                                               A.principal_product2_code,
+                                                               'U',
+                                                               %s
+                                                        FROM ajict_bms_schema.biz_opp_detail A
+                                                        WHERE A.biz_opp_id = %s AND
+                                                              A.detail_no = %s"""
+               v_param.append(v_biz_opp_id)
+               v_param.append(v_biz_opp_id)
+               v_param.append(v_session_user_id)
+               v_param.append(v_biz_opp_id)
+               v_param.append(v_detail_no)
+               with connection.cursor() as v_cursor:
+                  v_cursor.execute(v_sql_update_biz_opp_detail_history,v_param)
+
+
+            v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
             v_square_bracket_return = [v_return]
             return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
       except DatabaseError:
@@ -1314,7 +1509,7 @@ def f_delete_biz_opp(request):
                                                                                             essential_achievement_tf,
                                                                                             create_user)
                                               SELECT %s,
-                                                     (SELECT MAX(AA.history_no) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
+                                                     (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
                                                      A.biz_opp_name,
                                                      A.progress1_rate_code,
                                                      A.progress2_rate_code,
@@ -1354,7 +1549,7 @@ def f_delete_biz_opp(request):
                                                                                                    create_user)
                                                      SELECT %s,
                                                             1,
-                                                            (SELECT MAX(AA.history_no) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
+                                                            (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
                                                             A.user_id,
                                                             A.change_preparation_dept_id,
                                                             A.change_preparation_dept_name,
@@ -1928,6 +2123,111 @@ def f_select_biz_opp_activity2(request):
          v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+
+
+
+def f_select_biz_opp_activity3(request):
+   v_session_user_id = ''
+   v_body = ''
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      if v_session_user_id is not None:
+         v_session_user_id = v_session_user_id.strip()
+   if not v_session_user_id:
+      v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   else:
+      try:
+         v_sql_select_session = """SELECT user_id,
+                                          user_name,
+                                          cipher,
+                                          dept_id,
+                                          position1_code,
+                                          position2_code,
+                                          responsibility1_code,
+                                          responsibility2_code,
+                                          auth1_code,
+                                          auth2_code,
+                                          beginning_login_tf,
+                                          create_user,
+                                          create_date,
+                                          update_user,
+                                          update_date,
+                                          delete_user,
+                                          delete_date
+                                   FROM ajict_bms_schema.aj_user
+                                   WHERE user_id = %s AND
+                                         delete_date IS NULL"""
+         v_param1 = []
+         v_param1.append(v_session_user_id)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql_select_session,v_param1)
+            v_columns = [v_column[0] for v_column in v_cursor.description]
+            v_rows = v_cursor.fetchall()
+            v_data_session = [dict(zip(v_columns,row)) for row in v_rows]
+            #v_auth1_code = v_data_session[0]['auth1_code']
+         v_sql_select_biz_opp_activity = """SELECT biz_opp_id,
+                                                   detail_no,
+                                                   activity_no,
+                                                   activity_details,
+                                                   activity_date,
+                                                   create_user,
+                                                   create_date,
+                                                   update_user,
+                                                   update_date,
+                                                   delete_user,
+                                                   delete_date
+                                            FROM ajict_bms_schema.biz_opp_activity
+                                            WHERE biz_opp_id = %s AND
+                                                  detail_no = %s AND
+                                                  delete_date IS NULL
+                                            ORDER BY detail_no DESC LIMIT 5"""
+#                                  A.contract_date BETWEEN %s AND %s AND
+#                                  B.sale_date BETWEEN %s AND %s"""
+         v_param2 = []
+         v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+         if v_biz_opp_id is not None:
+            v_biz_opp_id = v_biz_opp_id.strip()
+         if not v_biz_opp_id:
+            v_return = {'STATUS':'FAIL','MESSAGE':'a_biz_opp_id를 전달 받지 못했습니다.'}
+            v_square_bracket_return = [v_return]
+            return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+         else:
+            v_param2.append(v_biz_opp_id)
+         v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
+         v_param2.append(v_detail_no)
+
+
+         #test
+         #v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
+         #print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql_select_biz_opp_activity,v_param2)
+            v_columns = [v_column[0] for v_column in v_cursor.description]
+            v_rows = v_cursor.fetchall()
+            v_data = [dict(zip(v_columns,row)) for row in v_rows]
+            if not v_data:
+               v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
+            else:
+               v_status = {"STATUS":"SUCCESS","MESSAGE":"조회되었습니다."}
+            return JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})
+      except DatabaseError:
+         v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      except json.JSONDecodeError:
+         v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
+
+
+
+
+
 def f_select_biz_opp_history(request):
    v_session_user_id = ''
    v_body = ''
@@ -2056,13 +2356,13 @@ def f_select_biz_opp_history(request):
                                           A.biz_opp_id = B.biz_opp_id AND
                                           A.history_no = B.history_no AND
                                           A.biz_opp_id = %s AND
-                                          B.detail_no = %s"""
+                                          B.detail_no = %s
+                                    ORDER BY A.biz_opp_id,\
+                                             B.detail_no,\
+                                             B.history_no"""
          v_param = []
          v_param.append(v_biz_opp_id)
          v_param.append(v_detail_no)
-         v_sql_biz_opp_history += " ORDER BY A.biz_opp_id,\
-                                              B.detail_no,\
-                                              B.history_no"
 
 
          #test

@@ -1313,7 +1313,6 @@ def f_renewal_biz_opp(request):
                print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
-            if v_biz_opp_activity:
             v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
                                                                                               detail_no,
                                                                                               activity_no,

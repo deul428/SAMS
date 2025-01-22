@@ -1262,9 +1262,9 @@ def f_renewal_biz_opp(request):
             v_biz_opp_detail = v_body.get('biz_opp_detail')
             v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
             v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
+            v_set_clauses_biz_opp = []
             if v_biz_opp:
                v_param = []
-               v_set_clauses = []
                for v_key,v_value in v_body.items():
                   if v_key == 'biz_opp' and isinstance(v_value,dict):
                      for v_nested_key,v_nested_value in v_value.items():
@@ -1273,11 +1273,12 @@ def f_renewal_biz_opp(request):
                         #else:
                         #   v_set_clauses.append(f"{v_nested_key[2:]} = %s")
                         #   v_param.append(v_nested_value)
-                        v_set_clauses.append(f"{v_nested_key[2:]} = %s")
+                        v_set_clauses_biz_opp.append(f"{v_nested_key[2:]} = %s")
                         v_param.append(v_nested_value)
-               v_sql_update_biz_opp = f"UPDATE ajict_bms_schema.biz_opp SET " + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"
+               v_sql_update_biz_opp = f"UPDATE ajict_bms_schema.biz_opp SET " + ",".join(v_set_clauses_biz_opp) + ",update_user = %s,update_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)
+               v_new_set_clauses = ['u_' + v_item for v_item in v_set_clauses_biz_opp]
 
 
                #test
@@ -1303,8 +1304,8 @@ def f_renewal_biz_opp(request):
                         v_set_clauses.append(f"{v_nested_key[2:]} = %s")
                         v_param.append(v_nested_value)
                v_sql_update_biz_opp_detail = f"UPDATE ajict_bms_schema.biz_opp_detail\
-                                                SET " + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP\
-                                                WHERE biz_opp_id = %s AND detail_no = %s"
+                                               SET " + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP\
+                                               WHERE biz_opp_id = %s AND detail_no = %s"
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)
                v_param.append(v_detail_no)
@@ -1371,14 +1372,10 @@ def f_renewal_biz_opp(request):
 
 
             if v_biz_opp or v_biz_opp_detail:
-               v_sql_update_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
-                                                                                               history_no,
-                                                                                               biz_opp_name,
-                                                                                               progress1_rate_code,
-                                                                                               progress2_rate_code,
-                                                                                               contract_date,
-                                                                                               essential_achievement_tf,
-                                                                                               create_user)
+               v_base_columns = ['biz_opp_id','history_no','progress1_rate_code','create_user']
+               v_columns_str = ',\n '.join(v_base_columns + v_new_set_clauses)
+               v_values_str = ',\n '.join(['%s' for _ in v_base_columns] + ['TRUE' for _ in v_new_set_clauses])
+               v_sql_update_biz_opp_history = f"""INSERT INTO ajict_bms_schema.biz_opp_history ({v_columns_str})
                                                  SELECT %s,
                                                         (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
                                                         A.biz_opp_name,
@@ -1386,9 +1383,28 @@ def f_renewal_biz_opp(request):
                                                         A.progress2_rate_code,
                                                         A.contract_date,
                                                         A.essential_achievement_tf,
-                                                        %s
+                                                        %s,
+                                                        {v_values_str}
                                                  FROM ajict_bms_schema.biz_opp A
                                                  WHERE A.biz_opp_id = %s"""
+               # v_sql_update_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
+               #                                                                                                history_no,
+               #                                                                                                biz_opp_name,
+               #                                                                                                progress1_rate_code,
+               #                                                                                                progress2_rate_code,
+               #                                                                                                contract_date,
+               #                                                                                                essential_achievement_tf,
+               #                                                                                                create_user)
+               #                                                  SELECT %s,
+               #                                                         (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
+               #                                                         A.biz_opp_name,
+               #                                                         A.progress1_rate_code,
+               #                                                         A.progress2_rate_code,
+               #                                                         A.contract_date,
+               #                                                         A.essential_achievement_tf,
+               #                                                         %s
+               #                                                  FROM ajict_bms_schema.biz_opp A
+               #                                                  WHERE A.biz_opp_id = %s"""
                v_param_update_biz_opp_history = []
                v_param_update_biz_opp_history.append(v_biz_opp_id)
                v_param_update_biz_opp_history.append(v_biz_opp_id)
@@ -1403,23 +1419,23 @@ def f_renewal_biz_opp(request):
 
                with connection.cursor() as v_cursor:
                   v_cursor.execute(v_sql_update_biz_opp_history,v_param_update_biz_opp_history)
-               v_sql_update_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
-                                                                                                      detail_no,
-                                                                                                      history_no,
-                                                                                                      user_id,
-                                                                                                      change_preparation_dept_id,
-                                                                                                      change_preparation_dept_name,
-                                                                                                      last_client_com1_code,
-                                                                                                      last_client_com2_code,
-                                                                                                      sale_com1_code,
-                                                                                                      sale_com2_code,
-                                                                                                      sale_item_no,
-                                                                                                      sale_date,
-                                                                                                      sale_amt,
-                                                                                                      sale_profit,
-                                                                                                      purchase_date,
-                                                                                                      purchase_amt,
-                                                                                                      collect_money_date,
+               v_sql_update_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_history (biz_opp_id,
+                                                                                                             detail_no,
+                                                                                                             history_no,
+                                                                                                             user_id,
+                                                                                                             change_preparation_dept_id,
+                                                                                                             change_preparation_dept_name,
+                                                                                                             last_client_com1_code,
+                                                                                                             last_client_com2_code,
+                                                                                                             sale_com1_code,
+                                                                                                             sale_com2_code,
+                                                                                                             sale_item_no,
+                                                                                                             sale_date,
+                                                                                                             sale_amt,
+                                                                                                             sale_profit,
+                                                                                                             purchase_date,
+                                                                                                             purchase_amt,
+                                                                                                             collect_money_date,
                                                                                                       biz_section1_code,
                                                                                                       biz_section2_code,
                                                                                                       principal_product1_code,

@@ -406,7 +406,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                         dept = [v_propsData.data.search_headquarters[0]];
                         team = [v_propsData.data.search_team[0]];
                         break;
-                    case '9200' :
+                    case '9201' :
                         dept = [v_propsData.data.search_headquarters[1]];
                         team = [v_propsData.data.search_team[1]];
                         break;

@@ -117,7 +117,7 @@ const authCheck = ({ data,
         const deptId = auth.userDeptCode;
         if (deptId.length === 4) {
             switch(deptId) {
-                case '9200' :
+                case '9201' :
                     dept = [data.search_headquarters[1]];
                     team = [data.search_team[0]];
                     break;

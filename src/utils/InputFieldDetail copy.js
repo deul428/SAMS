@@ -134,7 +134,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const deptId = auth.userDeptCode;
         if (deptId.length === 4) {
             switch(deptId) {
-                case '9200' :
+                case '9201' :
                     dept = [v_propsData.data.search_headquarters[1]];
                     team = [v_propsData.data.search_team[0]];
                     break;

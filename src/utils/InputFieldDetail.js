@@ -124,7 +124,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     dept = [v_propsData.data.search_headquarters[0]];
                     team = [v_propsData.data.search_team[0]];
                     break;
-                case '9200' :
+                case '9201' :
                     dept = [v_propsData.data.search_headquarters[1]];
                     team = [v_propsData.data.search_team[1]];
                     break;
@@ -197,7 +197,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             team = '';
             console.log('no dept, no team');
         }
-        // console.log("dept: ", dept, "team: ", team);
+        console.log("dept: ", dept, "team: ", team);
 
         // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
         const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {

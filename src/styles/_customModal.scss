@@ -16,6 +16,34 @@
             }
             .modal-body {
                 padding: 1rem 2rem;
+                .modalcntnt {
+                    .bizoppHistoryArea {
+                        #tableAreaChild {
+                            .table-responsive {
+                                table.bizoppHistory {
+                                    thead {
+                                        tr {
+                                            th {
+                                                span {
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                    tbody {
+                                        tr {
+                                            td.historyCell {
+                                                div.tableCell {
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 .row {
                     .d-flex {
                         > * {}

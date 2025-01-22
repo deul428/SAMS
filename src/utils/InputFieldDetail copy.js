@@ -54,6 +54,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const p_bizopp = {
         a_session_user_id: auth.userId,
         biz_opp: { 
+            // a_biz_opp_id: '',
+            
             a_biz_opp_name: '',
             a_progress2_rate_code: '',
             a_contract_date: '',
@@ -72,8 +74,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_collect_money_date: '',
             a_biz_section2_code: '',
             a_principal_product2_code: '',
-            a_user_name: (auth.userAuthCode === '0003' && auth.userResCode === '0001') ?
-                auth.userName : ''
+
+            a_user_name: '',
         },
         biz_opp_activity: {
             a_activity_details: '',
@@ -86,6 +88,19 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
 
     const [v_teamByDept, setVTeamByDept] = useState({});
+    // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
+    const f_teamLinkedDept = () => {
+        const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
+            const { change_preparation_high_dept_id } = items;
+            if (!acc[change_preparation_high_dept_id]) {
+                acc[change_preparation_high_dept_id] = [];
+            }
+        acc[change_preparation_high_dept_id].push(items);
+            return acc;
+        }, {});
+
+        setVTeamByDept(mappingTeamByDept);
+    }
     
     // const [v_selectDept, setVSelectDept] = useState('');
     const [v_selectTeam, setVSelectTeam] = useState([]);
@@ -110,7 +125,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     })
     const [v_userHandling, setVUserHandling] = useState({
         userValue: '',
-        userMsg: '',
+        userMsg: '-- 담당자를 선택하세요 --',
         userDisabled: true,
     })
 
@@ -192,26 +207,16 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             team = '';
             console.log('no dept, no team');
         }
-        console.log("dept: ", dept, "team: ", team);
+        // console.log("dept: ", dept, "team: ", team);
 
-        // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
         const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
-            const { high_dept_id } = items;
-            if (!acc[high_dept_id]) {
-                acc[high_dept_id] = [];
-            }
-        acc[high_dept_id].push(items);
-            return acc;
-        }, {});
-
-        /* const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
             const { change_preparation_high_dept_id } = items;
             if (!acc[change_preparation_high_dept_id]) {
                 acc[change_preparation_high_dept_id] = [];
             }
         acc[change_preparation_high_dept_id].push(items);
             return acc;
-        }, {}); */
+        }, {});
 
         // console.log("mappingTeamByDept: ", mappingTeamByDept);
         setVTeamByDept(mappingTeamByDept);
@@ -259,52 +264,48 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 switch(auth.userResCode) {
                     case '0001':
                         setVTeamHandling({
-                            teamValue: team[0].dept_id,
-                            teamMsg: team[0].dept_name,
+                            teamValue: team[0].change_preparation_dept_id,
+                            teamMsg: team[0].change_preparation_dept_name,
                             teamDisabled: true
                         })
                         setVDeptHandling({
-                            deptValue: dept[0].dept_id,
-                            deptMsg: dept[0].dept_name,
+                            deptValue: dept[0].change_preparation_dept_id,
+                            deptMsg: dept[0].change_preparation_dept_name,
                             deptDisabled: true,
-                        });
-                        setVUserHandling({
-                            userValue: auth.userId,
-                            userMsg: auth.userName,
-                            userDisabled: true,
                         });
                         break;
                     case '0002': 
                         setVTeamHandling({
-                            teamValue: team[0].dept_id,
-                            teamMsg: team[0].dept_name,
+                            teamValue: team[0].change_preparation_dept_id,
+                            teamMsg: team[0].change_preparation_dept_name,
                             teamDisabled: true
                         })
                         setVDeptHandling({
-                            deptValue: dept[0].dept_id,
-                            deptMsg: dept[0].dept_name,
+                            deptValue: dept[0].change_preparation_dept_id,
+                            deptMsg: dept[0].change_preparation_dept_name,
                             deptDisabled: true,
                         });
                         break;
                     case '0003':
                         // f_teamLinkedDept();
                         const myTeam = mappingTeamByDept[auth.userDeptCode];
+                        // console.log("mappingTeamByDept[auth.userDeptCode]: ", mappingTeamByDept[auth.userDeptCode]);
                         setVDepts(myTeam);
                         if (team) {
                             setVTeamHandling({
-                                teamValue: team[0].dept_id,
-                                teamMsg: team[0].high_dept_name,
+                                teamValue: team[0].change_preparation_dept_id,
+                                teamMsg: team[0].change_preparation_dept_name,
                             })
                         } else {
                             setVTeamHandling((team) => ({
                                 ...team,
-                                teamValue: dept[0].dept_id,
-                                // teamMsg: dept[0].dept_name,
+                                teamValue: dept[0].change_preparation_dept_id,
+                                // teamMsg: dept[0].change_preparation_dept_name,
                             }))
                         }
                         setVDeptHandling({
-                            deptValue: dept[0].dept_id,
-                            deptMsg: dept[0].dept_name,
+                            deptValue: dept[0].change_preparation_dept_id,
+                            deptMsg: dept[0].change_preparation_dept_name,
                         });
                         break;
                     default :
@@ -332,30 +333,29 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const valueLevel = type === 'checkbox' ? checked : value.trim();
     
         if (e.target.name === 'a_progress2_rate_code' && (e.target.value === '0005' || e.target.value === '0006')) {
+            // console.log('진행률 바뀜!');
             setIsProDisabled(false);
         }
 
+        /* if (
+            (updateInput?.biz_opp_detail?.a_progress2_rate_code && 
+            (
+                (updateInput?.biz_opp_detail.a_progress2_rate_code === '0005')
+                || (updateInput?.biz_opp_detail.a_progress2_rate_code === '0006')
+            )) || 
+            (insertInput?.biz_opp_detail?.a_progress2_rate_code && 
+                (
+                (insertInput?.biz_opp_detail.a_progress2_rate_code === '0005')
+                || (insertInput?.biz_opp_detail.a_progress2_rate_code === '0006')
+            ))
+        ) {
+            console.log('진행률 바뀜!');
+            setIsProDisabled(true);
+        } */
+
         const updateValue = (setState) => {
             setState((prevInput) => {
-                // 필드가 disabled일 경우(수정 불가능할 경우), input에 값을 자동으로 채워 넣음. 그렇지 않을 경우 사용자가 입력한 input을 채워 넣음. < 해야 함
-                const updatedInput = {
-                    ...prevInput,
-                    a_session_user_id: auth.userId,
-                    biz_opp_detail: {
-                        ...prevInput.biz_opp_detail,
-                        a_change_preparation_dept_id: 
-                            v_teamHandling.teamDisabled ? 
-                            v_teamHandling.teamValue
-                            : prevInput.biz_opp_detail?.a_change_preparation_dept_id || '',
-
-                        /* a_user_name: v_userHandling.userDisabled
-                            ? v_userHandling.userMsg // userDisabled가 true일 때 자동 값
-                            : name === 'a_user_name' // 현재 변경 필드가 a_user_name일 경우
-                            ? valueLevel // 사용자가 입력한 값 반영
-                            : prevInput.biz_opp_detail?.a_user_name || '', // 기존 값 유지 */
-                    },
-                }
-
+                const updatedInput = { ...prevInput, a_session_user_id: auth.userId, };
                 if (tableLevel) {
                     updatedInput[tableLevel] = {
                         ...updatedInput[tableLevel],
@@ -374,7 +374,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     
     useEffect(() => {
         console.log("input: ", insertInput, "\n\nchangeInput: ", updateInput);
-    }, [insertInput, updateInput]);
+    }, [insertInput, updateInput])
     // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 끝 .....................
     // ----------------- 1) 등록 및 수정 input 핸들링 끝 -----------------
 
@@ -387,6 +387,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             Object.entries(v_modalPropsData).map(([key, value]) => [`a_${key}`, value])
         );
         const a = a_v_modalPropsData;
+        // console.log( "a_v_modalPropsData", a_v_modalPropsData);
         
         var p_bizopp_delete = {
             a_biz_opp_id: a.a_biz_opp_id,
@@ -422,6 +423,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         if (v_modalPropsData) {
             // 판품번호 disabled 제어
             if (v_modalPropsData.progress2_rate_code === '0005' || v_modalPropsData.progress2_rate_code === '0006') {
+                // console.log('진행률 바뀜!');
                 setIsProDisabled(false);
             } else {
                 setIsProDisabled(true);
@@ -663,13 +665,16 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     }
     useEffect(() => {
         if (show) {
+            // console.log(show, onHide);
+            // console.log(userCheck);
+            // console.log(setIsRefresh);
             setIsProDisabled(true);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
         } else {
-            /* setUpdateInput([]);
-            setInsertInput(p_bizopp); */
-            // v_modalPropsData = {};
+            setUpdateInput([])
+            setInsertInput(p_bizopp)
+    // const [updateInput, setUpdateInput] = useState([]);
         }
     }, [show]); // show가 변경될 때만 실행되도록 보장
     useEffect(() => {
@@ -689,12 +694,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
         syncPath();
     }, [currentPath, location.pathname, dispatch]); */
-
+/* 
     useEffect(()=> {
-        console.log("v_teamHandling: \n", v_teamHandling, 
-        "\nv_deptHandling: \n", v_deptHandling,
-        "\nv_userHandling: \n", v_userHandling)
-    }, [v_teamHandling, v_deptHandling, v_userHandling])
+        console.log("v_teamHandling: ", v_teamHandling, "\nv_deptHandling: ", v_deptHandling)
+    }, [v_teamHandling, v_deptHandling]) */
     // UI 업데이트
     const [isProDisabled, setIsProDisabled] = useState(true);
     useEffect(() => {
@@ -813,11 +816,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             }
                                                             {(v_depts) ? 
                                                                 v_depts.map((e) => {
-                                                                    if (e.dept_id) {
-                                                                        return <option key={e.dept_id} value={e.dept_id || ''}>{e.dept_name}</option>
-                                                                    } else if (e.change_preparation_dept_id) {
-                                                                        return <option key={e.change_preparation_dept_id} value={e.change_preparation_dept_id || ''}>{e.change_preparation_dept_name}</option>
-                                                                    }
+                                                                    return <option key={e.change_preparation_dept_id} value={e.change_preparation_dept_id || ''}>{e.change_preparation_dept_name}</option>
                                                                 })
                                                                 :
                                                                 ('')
@@ -833,12 +832,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         data-key='biz_opp_detail'
                                                         onChange={f_handlingInput} 
                                                         // value={input.user_name || ''} 
-                                                        defaultValue={
-                                                            a_v_modalPropsData ? 
-                                                            a_v_modalPropsData?.a_user_name : 
-                                                            (auth.userAuthCode === '0003' && auth.userResCode === '0002') ? '' :
-                                                            (auth.userAuthCode === '0003' && auth.userResCode === '0003') ? '' :
-                                                            v_userHandling.userMsg}
+                                                        defaultValue={a_v_modalPropsData?.a_user_name || ''}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>

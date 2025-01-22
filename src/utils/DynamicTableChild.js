@@ -169,8 +169,8 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
         case `bizOppHistory`: 
         htmlContent = (
             <>
-            <Table bordered hover responsive {...getTableProps()} className='bizoppHistory'>
-            <thead>
+            <Table bordered responsive {...getTableProps()} className='bizoppHistory'>
+              <thead>
                 {headerGroups.map((headerGroup) => {
                   const { key, ...restProps } = headerGroup.getHeaderGroupProps();
                   return (
@@ -188,28 +188,27 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
                           </th>
                         );
                       })}
-                      
                     </tr>
                   );
                 })}
               </thead>
               <tbody {...getTableBodyProps()}>
                 {page.map(row => {
-                    prepareRow(row);
-                    const { key, ...restProps } = row.getRowProps();
-                    return (
-                        <tr key={key} {...restProps}>
-                            {row.cells.map((cell, index) => {
-                                const { key, ...restProps } = cell.getCellProps({ className: 'table-cell historyCell' });
-                                return (
-                                  <td key={key} {...restProps} style={{
-                                    backgroundColor: cell.column.id.startsWith('u_') && cell.value ? 'red' : 'white', // 조건부 스타일
-                                  }}>
-                                    {cell.render('Cell')}
-                                  </td> 
-                                );
-                            })}
-                        </tr>
+                  prepareRow(row);
+                  const { key, ...restProps } = row.getRowProps();
+                  return (
+                    <tr key={key} {...restProps}>
+                      {row.cells.map((cell, index) => {
+                        const { key, ...restProps } = cell.getCellProps({ className: 'table-cell historyCell' });
+                        return (
+                          <td key={key} {...restProps} style={{
+                            backgroundColor: cell.column.id.startsWith('u_') && cell.value ? 'red' : 'white',
+                          }}>
+                            {cell.render('Cell')}
+                          </td> 
+                        );
+                      })}
+                    </tr>
                     );
                 })}
               </tbody>

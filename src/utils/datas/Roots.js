@@ -205,11 +205,11 @@ function v_handlingNum(value) {
     }
     return value;
 };
-function v_handlingCss({value, row}) {
+/* function v_handlingCss({value, row}) {
     <div className='tableCell' style={{backgroundColor: value && row ? 'rgba(255,0,0,0.4)' : 'white', height: 'inherit'}}>
     {value}
 </div>
-}
+} */
 function dynamicCellStyle(row, parameter) {
     const isChanged = row.original[`u_${parameter}`]; 
     return {

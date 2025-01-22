@@ -51,7 +51,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     activity_details
     activity_date */
     // 250106 전달해야 할 파라미터 키 끝
-
     const p_bizopp = {
         a_session_user_id: auth.userId,
         biz_opp: { 
@@ -61,8 +60,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_essential_achievement_tf: false,
         },
         biz_opp_detail: {
-            a_detail_no: v_modalPropsData ? v_modalPropsData.detail_no : '',
-            a_change_preparation_dept_id: auth.userAuthCode === '0003' ? auth.userDeptCode : '',
+            a_change_preparation_dept_id: '',
             a_last_client_com2_code: '',
             a_sale_com2_code: '',
             a_sale_item_no: '',
@@ -287,19 +285,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             deptMsg: dept[0].dept_name,
                             deptDisabled: true,
                         });
-                        setVUserHandling((prevDept) => ({
-                            ...prevDept,
-                            userDisabled: false,
-                        }));
                         break;
                     case '0003':
                         // f_teamLinkedDept();
                         const myTeam = mappingTeamByDept[auth.userDeptCode];
                         setVDepts(myTeam);
-                        setVUserHandling((prevDept) => ({
-                            ...prevDept,
-                            userDisabled: false,
-                        }));
                         if (team) {
                             setVTeamHandling({
                                 teamValue: team[0].dept_id,
@@ -345,15 +335,28 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             setIsProDisabled(false);
         }
 
-        const updateValue = (setState) => {
-            setState((prevInput) => {
-                // 필드가 disabled일 경우(수정 불가능할 경우), input에 값을 자동으로 채워 넣음. 그렇지 않을 경우 사용자가 입력한 input을 채워 넣음. < 해야 함
-                const updatedInput = { ...prevInput, a_session_user_id: auth.userId, 
-                    biz_opp_detail: {
-                        ...prevInput.biz_opp_detail,
-                        a_detail_no: a_v_modalPropsData ? a_v_modalPropsData.a_detail_no : 1
-                    }
+        const updateValue = (setState, shouldUpdateDeptId = false) => {
+            setState((prevInput, ) => {
+                const updatedBizOppDetail = {
+                    ...prevInput.biz_opp_detail,
+                };
+    
+                // `a_change_preparation_dept_id`를 조건에 따라 추가
+                if (shouldUpdateDeptId) {
+                    updatedBizOppDetail.a_change_preparation_dept_id = v_teamHandling.teamDisabled
+                        ? v_teamHandling.teamValue
+                        : prevInput.biz_opp_detail?.a_change_preparation_dept_id || '';
+                } else {
+                    // 키를 삭제
+                    delete updatedBizOppDetail.a_change_preparation_dept_id;
                 }
+    
+                const updatedInput = {
+                    ...prevInput,
+                    a_session_user_id: auth.userId,
+                    biz_opp_detail: updatedBizOppDetail,
+                };
+
                 if (tableLevel) {
                     updatedInput[tableLevel] = {
                         ...updatedInput[tableLevel],
@@ -366,8 +369,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 return updatedInput; 
             })
         }
-        updateValue(setInsertInput);
-        updateValue(setUpdateInput);
+        updateValue(setInsertInput, true);
+        updateValue(setUpdateInput, false);
     };
     
     useEffect(() => {
@@ -450,17 +453,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 }
                 return updatedInput;
             });
-            console.log("!!!!!", a_v_modalPropsData.a_detail_no);
             setUpdateInput((prevInput) => {
-                const updatedInput = { ...prevInput, a_session_user_id: auth.userId,
-                };
+                const updatedInput = { ...prevInput, a_session_user_id: auth.userId, };
                 updatedInput.biz_opp = {
                     ...prevInput.biz_opp,
                     a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
-                }
-                updateInput.biz_opp_detail = {
-                    ...prevInput.biz_opp_detail,
-                    a_detail_no: a_v_modalPropsData.a_detail_no,
                 }
                 return updatedInput; 
             });
@@ -843,8 +840,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             (auth.userAuthCode === '0003' && auth.userResCode === '0002') ? '' :
                                                             (auth.userAuthCode === '0003' && auth.userResCode === '0003') ? '' :
                                                             v_userHandling.userMsg}
-                                                        
-                                                        disabled={v_userHandling.userDisabled}
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
@@ -1110,7 +1105,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             placeholder='활동 내역 신규 입력' 
                                                             onChange={f_handlingInput} 
                                                             // value={input.활동 내역 || ''} 
-                                                            /* defaultValue={a_v_modalPropsData?.a_activity_details || ''} */
+                                                            defaultValue={a_v_modalPropsData?.a_activity_details || ''}
                                                             />
                                                         </FloatingLabel>
                                                     </Col>
@@ -1121,7 +1116,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             data-key='biz_opp_activity' 
                                                             placeholder='활동 일자'
                                                             onChange={f_handlingInput}
-                                                            /* defaultValue={a_v_modalPropsData?.a_contract_date || ''} */
+                                                            defaultValue={a_v_modalPropsData?.a_contract_date || ''}
                                                             />
                                                         </FloatingLabel>
                                                     </Col>

@@ -1205,11 +1205,11 @@ def f_renewal_biz_opp(request):
 
 
    #test
-   #v_session_user_id = ''
+   v_session_user_id = ''
 
 
    #test
-   v_session_user_id = 'leecj'
+   #v_session_user_id = 'leecj'
 
 
    v_body = ''
@@ -1217,8 +1217,8 @@ def f_renewal_biz_opp(request):
 
 
       #test
-      #v_body = json.loads(request.body)
-      #v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      v_body = json.loads(request.body)
+      v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
 
 
       if v_session_user_id is not None:
@@ -1230,30 +1230,30 @@ def f_renewal_biz_opp(request):
    else:
       try:
          with transaction.atomic():
-            v_body = {'a_session_user_id':'leecj',
-                      'a_biz_opp_id':'20251000',
-                      'a_detail_no':1,
-                      'biz_opp':{'a_biz_opp_name':'Web 개발 사업',
-                                 'a_contract_date':'20241030',
-                                 'a_essential_achievement_tf':False},
-                      'biz_opp_detail':{'user_id':'bradjung',
-                                        'a_change_preparation_dept_id':'9711',
-                                        'change_preparation_dept_name':'영업1팀',
-                                        'a_last_client_com2_code':'0001',
-                                        'a_sale_com2_code':'0002',
-                                        'a_sale_item_no':'S24166',
-                                        'a_sale_date':'20241130',
-                                        'a_sale_amt':108685000,
-                                        'a_sale_profit':11057303,
-                                        'a_purchase_date':'20240101',
-                                        'a_purchase_amt':0,
-                                        'a_collect_money_date':'',
-                                        'a_biz_section2_code':'0001',
-                                        'a_principal_product2_code':'0002'},
-                      'biz_opp_activity':{'a_biz_opp_id':'20240023',
-                                          'a_detail_no':1,
-                                          'a_activity_no':1,
-                                          'a_activity_details':'바쁘다!!!'}}
+            # v_body = {'a_session_user_id':'leecj',
+            #           'a_biz_opp_id':'20251000',
+            #           'a_detail_no':1,
+            #           'biz_opp':{'a_biz_opp_name':'Web 개발 사업',
+            #                      'a_contract_date':'20241030',
+            #                      'a_essential_achievement_tf':False},
+            #           'biz_opp_detail':{'user_id':'bradjung',
+            #                             'a_change_preparation_dept_id':'9711',
+            #                             'change_preparation_dept_name':'영업1팀',
+            #                             'a_last_client_com2_code':'0001',
+            #                             'a_sale_com2_code':'0002',
+            #                             'a_sale_item_no':'S24166',
+            #                             'a_sale_date':'20241130',
+            #                             'a_sale_amt':108685000,
+            #                             'a_sale_profit':11057303,
+            #                             'a_purchase_date':'20240101',
+            #                             'a_purchase_amt':0,
+            #                             'a_collect_money_date':'',
+            #                             'a_biz_section2_code':'0001',
+            #                             'a_principal_product2_code':'0002'},
+            #           'biz_opp_activity':{'a_biz_opp_id':'20240023',
+            #                               'a_detail_no':1,
+            #                               'a_activity_no':1,
+            #                               'a_activity_details':'바쁘다!!!'}}
             v_biz_opp = v_body.get('biz_opp')
             v_biz_opp_detail = v_body.get('biz_opp_detail')
             v_biz_opp_activity = v_body.get('biz_opp_activity')
@@ -1275,14 +1275,15 @@ def f_renewal_biz_opp(request):
                v_sql_update_biz_opp = f"UPDATE ajict_bms_schema.biz_opp SET " + ",".join(v_set_clauses) + " update_user = %s,update_date = CURRENT_TIMESTAMP WHERE biz_opp_id = %s"
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)
-               with connection.cursor() as v_cursor:
-                  v_cursor.execute(v_sql_update_biz_opp,v_param)
 
 
-#test
+               #test
                v_formatted_sql = v_sql_update_biz_opp % tuple(map(repr,v_param))
                print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
+
+               with connection.cursor() as v_cursor:
+                  v_cursor.execute(v_sql_update_biz_opp,v_param)
             if v_biz_opp_detail:
                v_param = []
                v_set_clauses = []
@@ -1304,15 +1305,15 @@ def f_renewal_biz_opp(request):
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)
                v_param.append(v_detail_no)
-               with connection.cursor() as v_cursor:
-                  v_cursor.execute(v_sql_update_biz_opp_detail,v_param)
 
 
                #test
-               v_formatted_sql = v_sql_update_biz_opp % tuple(map(repr,v_param))
+               v_formatted_sql = v_sql_update_biz_opp_detail % tuple(map(repr,v_param))
                print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
+               with connection.cursor() as v_cursor:
+                  v_cursor.execute(v_sql_update_biz_opp_detail,v_param)
             v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
                                                                                               detail_no,
                                                                                               activity_no,
@@ -1328,11 +1329,11 @@ def f_renewal_biz_opp(request):
                                                                                                      %s,
                                                                                                      %s,
                                                                                                      %s)"""
-            v_param = []
-            v_param.append(v_biz_opp_id)
-            v_param.append(v_detail_no)
-            v_param.append(v_biz_opp_id)
-            v_param.append(v_detail_no)
+            v_param_insert_biz_opp_activity = []
+            v_param_insert_biz_opp_activity.append(v_biz_opp_id)
+            v_param_insert_biz_opp_activity.append(v_detail_no)
+            v_param_insert_biz_opp_activity.append(v_biz_opp_id)
+            v_param_insert_biz_opp_activity.append(v_detail_no)
             v_activity_details = None if v_body.get('biz_opp_activity',{}).get('a_activity_details') == '' else v_body.get('biz_opp_activity',{}).get('a_activity_details')
             if v_activity_details is not None:
                v_activity_details = v_activity_details.strip()
@@ -1342,7 +1343,7 @@ def f_renewal_biz_opp(request):
                v_square_bracket_return = [v_return]
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:
-               v_param.append(v_activity_details)
+               v_param_insert_biz_opp_activity.append(v_activity_details)
             v_activity_date = None if v_body.get('biz_opp_activity',{}).get('a_activity_date') == '' else v_body.get('biz_opp_activity',{}).get('a_activity_date')
             if v_activity_date is not None:
                v_activity_date = v_activity_date.strip()
@@ -1352,8 +1353,15 @@ def f_renewal_biz_opp(request):
                v_square_bracket_return = [v_return]
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:
-               v_param.append(v_activity_date)
-            v_param.append(v_session_user_id)
+               v_param_insert_biz_opp_activity.append(v_activity_date)
+            v_param_insert_biz_opp_activity.append(v_session_user_id)
+
+
+            #test
+            v_formatted_sql = v_sql_insert_biz_opp_activity % tuple(map(repr,v_param_insert_biz_opp_activity))
+            print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_activity,v_param)
 

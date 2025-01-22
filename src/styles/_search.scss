@@ -29,6 +29,30 @@
                 font-weight: 500;
             }
         }
+        &.bizoppArea {
+            .row {
+                ol {
+                    li {
+                        display: inline-flex;
+                        width: 100%;
+                        justify-content: space-between;
+                        &::before {
+                            position: absolute;
+                            left: 1rem;
+                        }
+                        div {
+                            &.activityDetails {
+                                margin-left: 1.5rem;
+                            }
+                            &.activityDate {
+
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
         .row {
             width: $full;
             // margin-bottom: 1rem;
@@ -60,11 +84,6 @@
                 ol.list-group {
                     li {
                     }
-                }
-            }
-            &.bizoppArea {
-                .row {
-    
                 }
             }
             .col {

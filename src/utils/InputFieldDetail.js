@@ -603,7 +603,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         (a_v_modalPropsData.a_principal_product2_code && a_v_modalPropsData.a_principal_product2_code.trim() !== ''))  ||
                        
                        ((input.biz_opp_detail.a_user_name && input.biz_opp_detail.a_user_name.trim() !== '') || 
-                        (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== ''))  */
+                        (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== '')) ||
+                        (input.biz_opp_activity.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') &&
+                       
+                        (input.biz_opp_activity.a_activity_date && input.biz_opp_activity.a_activity_date.trim() !== '') 
+                        */
                         
                        
                     //    ((input.biz_opp_detail.a_sale_amt !== undefined && input.biz_opp_detail.a_sale_amt >= 0) || 
@@ -613,12 +617,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     //     (a_v_modalPropsData.a_sale_profit !== undefined && a_v_modalPropsData.a_sale_profit >= 0)) &&
 
                     //     ((input.biz_opp_detail.a_purchase_amt !== undefined && input.biz_opp_detail.a_purchase_amt >= 0) || 
-                    //      (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) && 
-                       
-                    //    (input.biz_opp_activity.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') &&
-                       
-                    //    (input.biz_opp_activity.a_activity_date && input.biz_opp_activity.a_activity_date.trim() !== '')
-                       
+                    //      (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) 
                     ) {
                         confirmMsg = `사업 (기회) 일련 번호 ${a_v_modalPropsData.a_biz_opp_id}을(를) 수정하시겠습니까?`;
                     } else {
@@ -1168,9 +1167,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                                 console.log(activityData.length)
                                                                 return (
                                                                     <>
-                                                                    <div>{e.activity_date}</div>
-                                                                    <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
-                                                                        <div>{e.activity_details}</div>
+                                                                    <ListGroup.Item as='li' className=''>
+                                                                        <div className='activityDetails'>{e.activity_details}</div>
+                                                                        <div className='fw-bold activityDate'>{e.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</div>
                                                                     </ListGroup.Item>
                                                                     </>
                                                                 )

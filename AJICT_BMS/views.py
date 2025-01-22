@@ -1221,6 +1221,10 @@ def f_renewal_biz_opp(request):
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
 
 
+#test
+      print(f"v_body : {v_body}")
+
+
       if v_session_user_id is not None:
          v_session_user_id = v_session_user_id.strip()
    if not v_session_user_id:
@@ -1258,7 +1262,7 @@ def f_renewal_biz_opp(request):
             v_biz_opp_detail = v_body.get('biz_opp_detail')
             v_biz_opp_activity = v_body.get('biz_opp_activity')
             v_biz_opp_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
-            v_detail_no = ''
+            v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
             if v_biz_opp:
                v_param = []
                v_set_clauses = []

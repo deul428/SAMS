@@ -402,41 +402,45 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             const deptId = auth.userDeptCode;
             if (deptId.length === 4) {
                 switch(deptId) {
+                    case '9109' :
+                        dept = [v_propsData.data.search_headquarters[0]];
+                        team = [v_propsData.data.search_team[0]];
+                        break;
                     case '9200' :
-                        dept = [data.search_headquarters[1]];
-                        team = [data.search_team[0]];
+                        dept = [v_propsData.data.search_headquarters[1]];
+                        team = [v_propsData.data.search_team[1]];
                         break;
                     case '9509' :
-                        dept = [data.search_headquarters[2]];
-                        team = [data.search_team[1]];
+                        dept = [v_propsData.data.search_headquarters[2]];
+                        team = [v_propsData.data.search_team[2]];
                         break;
                     case '9711' :
-                        dept = [data.search_headquarters[3]];
-                        team = [data.search_team[2]];
+                        dept = [v_propsData.data.search_headquarters[3]];
+                        team = [v_propsData.data.search_team[3]];
                         break;
                     case '9712' :
-                        dept = [data.search_headquarters[3]];
-                        team = [data.search_team[3]];
+                        dept = [v_propsData.data.search_headquarters[3]];
+                        team = [v_propsData.data.search_team[4]];
                         break;
                     case '9713' :
-                        dept = [data.search_headquarters[3]];
-                        team = [data.search_team[4]];
+                        dept = [v_propsData.data.search_headquarters[3]];
+                        team = [v_propsData.data.search_team[5]];
                         break;
                     case '9721' :
-                        dept = [data.search_headquarters[4]];
-                        team = [data.search_team[5]];
+                        dept = [v_propsData.data.search_headquarters[4]];
+                        team = [v_propsData.data.search_team[6]];
                         break;
                     case '9722' :
-                        dept = [data.search_headquarters[4]];
-                        team = [data.search_team[6]];
+                        dept = [v_propsData.data.search_headquarters[4]];
+                        team = [v_propsData.data.search_team[7]];
                         break;
                     case '9723' :
-                        dept = [data.search_headquarters[4]];
-                        team = [data.search_team[7]];
+                        dept = [v_propsData.data.search_headquarters[4]];
+                        team = [v_propsData.data.search_team[8]];
                         break;
                     case '9801' :
-                        dept = [data.search_headquarters[5]];
-                        team = [data.search_team[8]];
+                        dept = [v_propsData.data.search_headquarters[5]];
+                        team = [v_propsData.data.search_team[9]];
                         break;
                     default :
                         break;
@@ -444,28 +448,28 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             } else if (deptId.length === 5) {
                 switch(deptId) {
                     case '91000' :
-                        dept = [data.search_headquarters[0]];
+                        dept = [v_propsData.data.search_headquarters[0]];
                         team = '';
                         break;
                     case '92000' :
-                        dept = [data.search_headquarters[1]];
-                        team = [data.search_team[0]];
+                        dept = [v_propsData.data.search_headquarters[1]];
+                        team = [v_propsData.data.search_team[1]];
                         break;
                     case '95000' :
-                        dept = [data.search_headquarters[2]];
-                        team = [data.search_team[1]];
+                        dept = [v_propsData.data.search_headquarters[2]];
+                        team = [v_propsData.data.search_team[2]];
                         break;
                     case '97100' :
-                        dept = [data.search_headquarters[3]];
+                        dept = [v_propsData.data.search_headquarters[3]];
                         team = '';
                         break;
                     case '97200' :
-                        dept = [data.search_headquarters[4]];
+                        dept = [v_propsData.data.search_headquarters[4]];
                         team = '';
                         break;
                     case '98000' :
-                        dept = [data.search_headquarters[5]];
-                        team = [data.search_team[8]];
+                        dept = [v_propsData.data.search_headquarters[5]];
+                        team = [v_propsData.data.search_team[9]];
                         break;
                     default :
                         break;
@@ -473,7 +477,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             } else {
                 dept = '';
                 team = '';
-                // console.log('no dept, no team');
+                console.log('no dept, no team');
             }
             // console.log(dept, team);
     

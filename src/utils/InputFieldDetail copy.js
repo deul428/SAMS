@@ -332,7 +332,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const tableLevel = dataset.key; 
         const valueLevel = type === 'checkbox' ? checked : value.trim();
     
-        if (e.target.name === 'a_progress2_rate_code' && (e.target.value === '0005' || e.target.value === '0006')) {
+        if (e.target.name === 'a_progress2_rate_code' && (e.target.value === '0007' || e.target.value === '0006')) {
             // console.log('진행률 바뀜!');
             setIsProDisabled(false);
         }
@@ -340,12 +340,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         /* if (
             (updateInput?.biz_opp_detail?.a_progress2_rate_code && 
             (
-                (updateInput?.biz_opp_detail.a_progress2_rate_code === '0005')
+                (updateInput?.biz_opp_detail.a_progress2_rate_code === '0007')
                 || (updateInput?.biz_opp_detail.a_progress2_rate_code === '0006')
             )) || 
             (insertInput?.biz_opp_detail?.a_progress2_rate_code && 
                 (
-                (insertInput?.biz_opp_detail.a_progress2_rate_code === '0005')
+                (insertInput?.biz_opp_detail.a_progress2_rate_code === '0007')
                 || (insertInput?.biz_opp_detail.a_progress2_rate_code === '0006')
             ))
         ) {
@@ -422,7 +422,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         // a_v_modalPropsData 데이터 핸들링 후 input 객체에 복사
         if (v_modalPropsData) {
             // 판품번호 disabled 제어
-            if (v_modalPropsData.progress2_rate_code === '0005' || v_modalPropsData.progress2_rate_code === '0006') {
+            if (v_modalPropsData.progress2_rate_code === '0007' || v_modalPropsData.progress2_rate_code === '0006') {
                 // console.log('진행률 바뀜!');
                 setIsProDisabled(false);
             } else {

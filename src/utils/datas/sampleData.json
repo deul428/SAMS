@@ -294,7 +294,7 @@
     },
     {
         "great_classi_code": "PRO",
-        "small_classi_code": "0005",
+        "small_classi_code": "0007",
         "great_classi_name": "진행률",
         "small_classi_name": "90%",
         "explanation": null,
@@ -513,7 +513,7 @@
         "delete_date": null
     },
     {
-        "biz_opp_id": "20240005",
+        "biz_opp_id": "20240007",
         "biz_opp_clone_no": 1,
         "biz_opp_name": "2024년 연구소시스템 노후 Infra(Server, Storage) 교체 추진(IDEMS)",
         "user_id": "bradjung",

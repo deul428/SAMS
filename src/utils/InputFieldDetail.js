@@ -61,7 +61,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_essential_achievement_tf: false,
         },
         biz_opp_detail: {
-            a_detail_no: v_modalPropsData ? v_modalPropsData.detail_no : '',
             a_change_preparation_dept_id: auth.userAuthCode === '0003' ? auth.userDeptCode : '',
             a_last_client_com2_code: '',
             a_sale_com2_code: '',
@@ -121,41 +120,45 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const deptId = auth.userDeptCode;
         if (deptId.length === 4) {
             switch(deptId) {
+                case '9109' :
+                    dept = [v_propsData.data.search_headquarters[0]];
+                    team = [v_propsData.data.search_team[0]];
+                    break;
                 case '9200' :
                     dept = [v_propsData.data.search_headquarters[1]];
-                    team = [v_propsData.data.search_team[0]];
+                    team = [v_propsData.data.search_team[1]];
                     break;
                 case '9509' :
                     dept = [v_propsData.data.search_headquarters[2]];
-                    team = [v_propsData.data.search_team[1]];
+                    team = [v_propsData.data.search_team[2]];
                     break;
                 case '9711' :
                     dept = [v_propsData.data.search_headquarters[3]];
-                    team = [v_propsData.data.search_team[2]];
+                    team = [v_propsData.data.search_team[3]];
                     break;
                 case '9712' :
                     dept = [v_propsData.data.search_headquarters[3]];
-                    team = [v_propsData.data.search_team[3]];
+                    team = [v_propsData.data.search_team[4]];
                     break;
                 case '9713' :
                     dept = [v_propsData.data.search_headquarters[3]];
-                    team = [v_propsData.data.search_team[4]];
+                    team = [v_propsData.data.search_team[5]];
                     break;
                 case '9721' :
                     dept = [v_propsData.data.search_headquarters[4]];
-                    team = [v_propsData.data.search_team[5]];
+                    team = [v_propsData.data.search_team[6]];
                     break;
                 case '9722' :
                     dept = [v_propsData.data.search_headquarters[4]];
-                    team = [v_propsData.data.search_team[6]];
+                    team = [v_propsData.data.search_team[7]];
                     break;
                 case '9723' :
                     dept = [v_propsData.data.search_headquarters[4]];
-                    team = [v_propsData.data.search_team[7]];
+                    team = [v_propsData.data.search_team[8]];
                     break;
                 case '9801' :
                     dept = [v_propsData.data.search_headquarters[5]];
-                    team = [v_propsData.data.search_team[8]];
+                    team = [v_propsData.data.search_team[9]];
                     break;
                 default :
                     break;
@@ -168,11 +171,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     break;
                 case '92000' :
                     dept = [v_propsData.data.search_headquarters[1]];
-                    team = [v_propsData.data.search_team[0]];
+                    team = [v_propsData.data.search_team[1]];
                     break;
                 case '95000' :
                     dept = [v_propsData.data.search_headquarters[2]];
-                    team = [v_propsData.data.search_team[1]];
+                    team = [v_propsData.data.search_team[2]];
                     break;
                 case '97100' :
                     dept = [v_propsData.data.search_headquarters[3]];
@@ -184,7 +187,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     break;
                 case '98000' :
                     dept = [v_propsData.data.search_headquarters[5]];
-                    team = [v_propsData.data.search_team[8]];
+                    team = [v_propsData.data.search_team[9]];
                     break;
                 default :
                     break;
@@ -194,7 +197,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             team = '';
             console.log('no dept, no team');
         }
-        console.log("dept: ", dept, "team: ", team);
+        // console.log("dept: ", dept, "team: ", team);
 
         // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
         const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
@@ -221,8 +224,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         switch(auth.userAuthCode) {
             //1. admin
             case '0001' :
-                if (getData) {
-                    setVDepts(getData?.data?.search_dept_id);
+                if (detailData) {
+                    setVDepts(detailData?.data?.search_dept_id);
                 }
                 setVDeptHandling((prevDept) => ({
                     ...prevDept,
@@ -240,8 +243,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 break;
             // 2. guest
             case '0002' :
-                if (getData) {
-                    setVDepts(getData?.data?.search_dept_id);
+                if (detailData) {
+                    setVDepts(detailData?.data?.search_dept_id);
                 }
                 setVDeptHandling((prevDept) => ({
                     ...prevDept,
@@ -348,11 +351,13 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const updateValue = (setState) => {
             setState((prevInput) => {
                 // 필드가 disabled일 경우(수정 불가능할 경우), input에 값을 자동으로 채워 넣음. 그렇지 않을 경우 사용자가 입력한 input을 채워 넣음. < 해야 함
-                const updatedInput = { ...prevInput, a_session_user_id: auth.userId, 
-                    biz_opp_detail: {
+                const updatedInput = { 
+                    ...prevInput, 
+                    a_session_user_id: auth.userId, 
+                    /* biz_opp_detail: {
                         ...prevInput.biz_opp_detail,
                         a_detail_no: a_v_modalPropsData ? a_v_modalPropsData.a_detail_no : 1
-                    }
+                    } */
                 }
                 if (tableLevel) {
                     updatedInput[tableLevel] = {
@@ -443,25 +448,32 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             
             // input, changeInput에 a_v_modalPropsData.a_biz_opp_id 추가
             setInsertInput((prevInput) => {
-                const updatedInput = { ...prevInput, a_session_user_id: auth.userId, };
-                updatedInput.biz_opp = {
-                    ...prevInput.biz_opp,
-                    a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
-                }
-                return updatedInput;
-            });
-            console.log("!!!!!", a_v_modalPropsData.a_detail_no);
-            setUpdateInput((prevInput) => {
-                const updatedInput = { ...prevInput, a_session_user_id: auth.userId,
+                const insertedInput = { 
+                    ...prevInput, 
+                    a_session_user_id: auth.userId,
+                
                 };
-                updatedInput.biz_opp = {
+                /* updatedInput.biz_opp = {
+                    ...prevInput.biz_opp,
+                } */
+                return insertedInput;
+            });
+            // console.log("!!!!!", a_v_modalPropsData.a_detail_no);
+            setUpdateInput((prevInput) => {
+                const updatedInput = { 
+                    ...prevInput, 
+                    a_session_user_id: auth.userId,
+                    a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
+                    a_detail_no: a_v_modalPropsData.a_detail_no,
+                };
+                /* updatedInput.biz_opp = {
                     ...prevInput.biz_opp,
                     a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
                 }
                 updateInput.biz_opp_detail = {
                     ...prevInput.biz_opp_detail,
                     a_detail_no: a_v_modalPropsData.a_detail_no,
-                }
+                } */
                 return updatedInput; 
             });
         } 
@@ -470,10 +482,17 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // ================= 사업 기회 조회 테이블부 핸들링 끝 ================= 
 
     // ================= POST ================= 
-    const [getData, setGetData] = useState(null);
+    const [detailData, setDetailData] = useState(null);
+    const [activityData, setActivityData] = useState(null);
     const f_handlingData = async (method, endpoint, input = null, e, msg) => {
-        if (msg === '삭제' && a_v_modalPropsData) {
-            // 삭제 누를 시 confirm 
+        if (msg === '활동조회' && a_v_modalPropsData) {
+            input = { 
+                a_session_user_id: input.a_session_user_id, 
+                a_biz_opp_id: v_modalPropsData.biz_opp_id, 
+                a_detail_no: v_modalPropsData.detail_no 
+            };
+            // return input;
+        } else if (msg === '삭제' && a_v_modalPropsData) {
             const f_warningMsg = () => {
                 input = {
                     a_session_user_id: input.a_session_user_id,
@@ -483,6 +502,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 if (window.confirm(`정말 ${p_bizopp_delete.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`)){
                     alert('정상적으로 삭제되었습니다.');
                     onHide(true);
+                    setIsRefresh(true)
                     return input;
                 } else {
                     return;
@@ -551,12 +571,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         return; 
                     }
                 } else if (msg === '수정' && a_v_modalPropsData) {
-                    console.log(a_v_modalPropsData, input);
+                    // console.log(a_v_modalPropsData, input);
                     if (
-                        (
-                            (input.biz_opp.a_biz_opp_name && input.biz_opp.a_biz_opp_name.trim() !== '') || 
-                            (a_v_modalPropsData.a_biz_opp_name && a_v_modalPropsData.a_biz_opp_name.trim() !== '')
-                        ) ||
+                        ((input?.biz_opp?.a_biz_opp_name && input?.biz_opp?.a_biz_opp_name.trim() !== '') || 
+                        (a_v_modalPropsData.a_biz_opp_name && a_v_modalPropsData.a_biz_opp_name.trim() !== '')
+                        ) /* ||
     
                         ((input.biz_opp.a_progress2_rate_code && input.biz_opp.a_progress2_rate_code.trim() !== '') || 
                         (a_v_modalPropsData.a_progress2_rate_code && a_v_modalPropsData.a_progress2_rate_code.trim() !== ''))  ||
@@ -573,15 +592,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                        ((input.biz_opp_detail.a_sale_date && input.biz_opp_detail.a_sale_date.trim() !== '') || 
                         (a_v_modalPropsData.a_sale_date && a_v_modalPropsData.a_sale_date.trim() !== ''))  ||
                        
-                       /* ((input.biz_opp_detail.a_sale_amt !== undefined && input.biz_opp_detail.a_sale_amt >= 0) || 
-                        (a_v_modalPropsData.a_sale_amt !== undefined && a_v_modalPropsData.a_sale_amt >= 0)) &&
-                       
-                       ((input.biz_opp_detail.a_sale_profit !== undefined && input.biz_opp_detail.a_sale_profit >= 0) || 
-                        (a_v_modalPropsData.a_sale_profit !== undefined && a_v_modalPropsData.a_sale_profit >= 0)) &&
-
-                        ((input.biz_opp_detail.a_purchase_amt !== undefined && input.biz_opp_detail.a_purchase_amt >= 0) || 
-                         (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) && */
-                       
                        ((input.biz_opp_detail.a_purchase_date && input.biz_opp_detail.a_purchase_date.trim() !== '') || 
                         (a_v_modalPropsData.a_purchase_date && a_v_modalPropsData.a_purchase_date.trim() !== ''))  ||
                        
@@ -593,11 +603,21 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         (a_v_modalPropsData.a_principal_product2_code && a_v_modalPropsData.a_principal_product2_code.trim() !== ''))  ||
                        
                        ((input.biz_opp_detail.a_user_name && input.biz_opp_detail.a_user_name.trim() !== '') || 
-                        (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== '')) /* &&
+                        (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== ''))  */
+                        
                        
-                       (input.biz_opp_activity.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') &&
+                    //    ((input.biz_opp_detail.a_sale_amt !== undefined && input.biz_opp_detail.a_sale_amt >= 0) || 
+                    //     (a_v_modalPropsData.a_sale_amt !== undefined && a_v_modalPropsData.a_sale_amt >= 0)) &&
                        
-                       (input.biz_opp_activity.a_activity_date && input.biz_opp_activity.a_activity_date.trim() !== '') */
+                    //    ((input.biz_opp_detail.a_sale_profit !== undefined && input.biz_opp_detail.a_sale_profit >= 0) || 
+                    //     (a_v_modalPropsData.a_sale_profit !== undefined && a_v_modalPropsData.a_sale_profit >= 0)) &&
+
+                    //     ((input.biz_opp_detail.a_purchase_amt !== undefined && input.biz_opp_detail.a_purchase_amt >= 0) || 
+                    //      (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) && 
+                       
+                    //    (input.biz_opp_activity.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') &&
+                       
+                    //    (input.biz_opp_activity.a_activity_date && input.biz_opp_activity.a_activity_date.trim() !== '')
                        
                     ) {
                         confirmMsg = `사업 (기회) 일련 번호 ${a_v_modalPropsData.a_biz_opp_id}을(를) 수정하시겠습니까?`;
@@ -627,30 +647,38 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 }
             }
         }
-        if ((confirmMsg && window.confirm(confirmMsg)) || (msg === '삭제') || (msg === '조회')) {
+        if ((confirmMsg && window.confirm(confirmMsg)) || (msg === '삭제') || (msg === '조회') || (msg === '활동조회')) {
             try {
                 // 송신
                 /* if (endpoint === 'select-popup-biz-opp/' && msg === 'authCheck') {
                     console.log(endpoint, input, e, msg);
                 } */
-                if(e) {console.log("submit 될 input data\n", input, "\ne:", e);}
+                if(e) { console.log("submit 될 input data\n", input, "\ne:", e); }
+
                 const response = await apiMethods[method](endpoint, input);
                 if (response?.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
-                    if(Array.isArray(response)){
+                    if (Array.isArray(response)){
                         console.log(response, response[0].STATUS, response[0].MESSAGE);
                     } else {
                         console.log(response.status.STATUS, response.status.MESSAGE);
                     }
                     return;
                 } else {
-                    console.log('사업 (기회) 등록/수정 response 송신 완료', "\nendpoint: ", endpoint, "\nresponse: ", response);
+                    console.log('사업 (기회) 상세 관리 response 송신 완료 ', msg, "\nendpoint: ", endpoint, "\nresponse: ", response);
+
                     if (e && msg === '등록') { 
                         alert('정상적으로 등록되었습니다.'); 
                         onHide(true);
                         setIsRefresh(true);
+                    } 
+                    
+                    if (msg === '활동조회') {
+                        setActivityData(response.data);
+                        return response;
+                    } else if (msg === '조회') {
+                        setDetailData(response);
+                        return response;
                     }
-                    setGetData(response);
-                    return response;
                 }
                 // 송신 끝
                 
@@ -662,6 +690,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             return;
         }
     }
+    
     const userCheck = {
         a_session_user_id: auth.userId,
     }
@@ -670,6 +699,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             setIsProDisabled(true);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
+            if (v_modalPropsData) {
+                f_handlingData('post', 'select-biz-opp-activity3/', userCheck, null, '활동조회');
+            }
         } else {
             /* setUpdateInput([]);
             setInsertInput(p_bizopp); */
@@ -677,10 +709,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         }
     }, [show]); // show가 변경될 때만 실행되도록 보장
     useEffect(() => {
-        if (getData) {
+        if (detailData) {
             authCheck();
         }
-    }, [getData])
+    }, [detailData])
     // ================= POST 끝 ================= 
 
 /*     // Redux와 React Router 동기화
@@ -693,12 +725,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
         syncPath();
     }, [currentPath, location.pathname, dispatch]); */
-
+/* 
     useEffect(()=> {
         console.log("v_teamHandling: \n", v_teamHandling, 
         "\nv_deptHandling: \n", v_deptHandling,
         "\nv_userHandling: \n", v_userHandling)
-    }, [v_teamHandling, v_deptHandling, v_userHandling])
+    }, [v_teamHandling, v_deptHandling, v_userHandling]) */
     // UI 업데이트
     const [isProDisabled, setIsProDisabled] = useState(true);
     useEffect(() => {
@@ -707,10 +739,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
                 return;
             } */
-            /* if(!a_v_modalPropsData && !getData) {
+            /* if(!a_v_modalPropsData && !detailData) {
                 return;
             } */
-            if (v_modalPropsData || getData) {
+            if (v_modalPropsData || detailData) {
                 switch (v_componentName) {
                     case `bizOpp`:
                         setVHandlingHtml(
@@ -878,9 +910,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                                 a_v_modalPropsData ? 
                                                                 a_v_modalPropsData.a_last_client_com2_code : '선택')}
                                                             >{(a_v_modalPropsData ? a_v_modalPropsData.a_last_client_com2_name : '선택')}</option>
-                                                            {(getData) ? 
+                                                            {(detailData) ? 
                                                                 (
-                                                                    getData?.data?.search_last_client_com_code.map((e) => {
+                                                                    detailData?.data?.search_last_client_com_code.map((e) => {
                                                                         return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
                                                                     })
                                                                 )
@@ -910,9 +942,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                                 a_v_modalPropsData ? 
                                                                 a_v_modalPropsData.a_sale_com2_code : '선택')}
                                                             >{(a_v_modalPropsData ? a_v_modalPropsData.a_sale_com2_name : '선택')}</option>
-                                                            {(getData) ? 
+                                                            {(detailData) ? 
                                                                 (
-                                                                    getData?.data?.search_last_client_com_code.map((e) => {
+                                                                    detailData?.data?.search_last_client_com_code.map((e) => {
                                                                         return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
                                                                     })
                                                                 )
@@ -1058,9 +1090,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         defaultValue={a_v_modalPropsData?.a_biz_section2_name || ''}
                                                         >
                                                             <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_biz_section2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_biz_section2_name : '선택')}</option>
-                                                            {(getData) ? 
+                                                            {(detailData) ? 
                                                                 (
-                                                                    getData?.data?.search_biz_section_code.map((e) => {
+                                                                    detailData?.data?.search_biz_section_code.map((e) => {
                                                                         return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
                                                                     })
                                                                 )
@@ -1082,9 +1114,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         defaultValue={a_v_modalPropsData?.a_principal_product2_name || ''}
                                                         >
                                                             <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_principal_product2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_principal_product2_name : '선택')}</option>
-                                                            {(getData) ? 
+                                                            {(detailData) ? 
                                                                 (
-                                                                    getData?.data?.search_principal_product_code.map((e) => {
+                                                                    detailData?.data?.search_principal_product_code.map((e) => {
                                                                         return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
                                                                     })
                                                                 )
@@ -1131,29 +1163,20 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 (<Row className='d-flex justify-content-between'>
                                                     <h3 style={{"textAlign": "left", "fontSize": "1.1rem", "paddingLeft":"0"}} className='mt-2'>활동 내역 이력 &#40;최근 5건&#41;</h3>
                                                     <ListGroup as='ol' numbered className='col activity'>
-                                                        {/* {a_v_modalPropsData.map((e, index) => { */}
-                                                            <>
-                                                            <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
-                                                                <div className='ms-2 me-auto'>
-                                                                <div className='fw-bold'>Subheading</div>
-                                                                Cras justo odio
-                                                                </div>
-                                                            </ListGroup.Item>
-                                                            <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
-                                                                <div className='ms-2 me-auto'>
-                                                                <div className='fw-bold'>Subheading</div>
-                                                                Cras justo odio
-                                                                </div>
-                                                            </ListGroup.Item>
-                                                            <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
-                                                                <div className='ms-2 me-auto'>
-                                                                <div className='fw-bold'>Subheading</div>
-                                                                Cras justo odio
-                                                                </div>
-                                                            </ListGroup.Item>
-                                                            </>
-
-                                                        {/* })} */}
+                                                        {activityData ? 
+                                                            activityData.map((e) => {
+                                                                console.log(activityData.length)
+                                                                return (
+                                                                    <>
+                                                                    <div>{e.activity_date}</div>
+                                                                    <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start'>
+                                                                        <div>{e.activity_details}</div>
+                                                                    </ListGroup.Item>
+                                                                    </>
+                                                                )
+                                                            })
+                                                        : ''
+                                                        }
                                                     </ListGroup>
                                                 </Row>)
                                                 : ('')
@@ -1163,20 +1186,20 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                     </div>
                                 </Modal.Body>
                                 <Modal.Footer className='btnArea justify-content-center'>
-                                        {
-                                            (auth.userAuthCode === '0002') ? 
-                                            (<></>) : 
-                                            (a_v_modalPropsData ? 
-                                                (<>
-                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'renewal-biz-opp/', updateInput, e, '수정')}>저장</Button>
-                                                <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp/', updateInput, e, '삭제')}>삭제</Button>
-                                                </>) 
-                                                : 
-                                                (<>
-                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e, '등록')}>저장</Button> 
-                                                </>)
-                                            )
-                                        }
+                                    {
+                                        (auth.userAuthCode === '0002') ? 
+                                        (<></>) : 
+                                        (a_v_modalPropsData ? 
+                                            (<>
+                                            <Button variant='primary' onClick={(e) => f_handlingData('post', 'renewal-biz-opp/', updateInput, e, '수정')}>저장</Button>
+                                            <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp/', updateInput, e, '삭제')}>삭제</Button>
+                                            </>) 
+                                            : 
+                                            (<>
+                                            <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp/', insertInput, e, '등록')}>저장</Button> 
+                                            </>)
+                                        )
+                                    }
                                     <Button variant='secondary' onClick={onHide}>닫기</Button>
                                 </Modal.Footer>
                             </Modal>
@@ -1283,7 +1306,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // }
         };
         updateUI();
-    }, [/* currentPath */, show, onHide, insertInput, getData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling, isProDisabled]);
+    }, [/* currentPath */, show, onHide, insertInput, activityData, detailData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling, isProDisabled]);
 
     return (
         <div id='inputFieldDetail'>

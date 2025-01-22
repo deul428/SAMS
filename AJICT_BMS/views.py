@@ -1366,7 +1366,7 @@ def f_renewal_biz_opp(request):
 
 
             with connection.cursor() as v_cursor:
-               v_cursor.execute(v_sql_insert_biz_opp_activity,v_param)
+               v_cursor.execute(v_sql_insert_biz_opp_activity,v_param_insert_biz_opp_activity)
 
 
 

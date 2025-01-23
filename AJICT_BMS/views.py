@@ -1530,8 +1530,17 @@ def f_delete_biz_opp(request):
             v_param_delete_biz_opp_history = []
             v_param_delete_biz_opp_detail_history = []
             v_param_delete_biz_opp_activity = []
-            v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
-            v_detail_no = None if v_body.get('biz_opp',{}).get('a_detail_no') == '' else v_body.get('biz_opp',{}).get('a_detail_no')
+            #v_biz_opp_id = None if v_body.get('biz_opp',{}).get('a_biz_opp_id') == '' else v_body.get('biz_opp',{}).get('a_biz_opp_id')
+            #v_detail_no = None if v_body.get('biz_opp',{}).get('a_detail_no') == '' else v_body.get('biz_opp',{}).get('a_detail_no')
+            v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+            v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
+
+
+            #test
+            print(f"v_biz_opp_id : {v_biz_opp_id}")
+            print(f"v_detail_no : {v_detail_no}")
+
+
             v_sql_count = """SELECT COUNT(*) AS count FROM ajict_bms_schema.bi_opp_detail WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_count.append(v_biz_opp_id)
             with connection.cursor() as v_cursor:

@@ -1541,7 +1541,7 @@ def f_delete_biz_opp(request):
             print(f"v_detail_no : {v_detail_no}")
 
 
-            v_sql_count = """SELECT COUNT(*) AS count FROM ajict_bms_schema.bi_opp_detail WHERE biz_opp_id = %s AND delete_date IS NULL"""
+            v_sql_count = """SELECT COUNT(*) AS count FROM ajict_bms_schema.biz_opp_detail WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_count.append(v_biz_opp_id)
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_count,v_param_count)
@@ -1576,7 +1576,7 @@ def f_delete_biz_opp(request):
                                                                                             contract_date,
                                                                                             essential_achievement_tf,
                                                                                             create_user)
-                                              SELECT %s,
+                                              SELECT A.biz_opp_id,
                                                      (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
                                                      A.biz_opp_name,
                                                      A.progress1_rate_code,
@@ -1586,7 +1586,6 @@ def f_delete_biz_opp(request):
                                                      %s
                                               FROM ajict_bms_schema.biz_opp A
                                               WHERE A.biz_opp_id = %s"""
-            v_param_delete_biz_opp_history.append(v_biz_opp_id)
             v_param_delete_biz_opp_history.append(v_biz_opp_id)
             v_param_delete_biz_opp_history.append(v_session_user_id)
             v_param_delete_biz_opp_history.append(v_biz_opp_id)
@@ -1615,7 +1614,7 @@ def f_delete_biz_opp(request):
                                                                                                    principal_product2_code,
                                                                                                    renewal_code,
                                                                                                    create_user)
-                                                     SELECT %s,
+                                                     SELECT A.biz_opp_id,
                                                             1,
                                                             (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
                                                             A.user_id,
@@ -1642,7 +1641,6 @@ def f_delete_biz_opp(request):
                                                           WHERE A.biz_opp_id = %s AND
                                                                 A.detail_no = %s"""
             v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
-            v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
             v_param_delete_biz_opp_detail_history.append(v_session_user_id)
             v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
             v_param_delete_biz_opp_detail_history.append(v_detail_no)
@@ -1656,7 +1654,7 @@ def f_delete_biz_opp(request):
                                                    delete_date IS NULL"""
             v_param_delete_biz_opp_activity.append(v_session_user_id)
             v_param_delete_biz_opp_activity.append(v_biz_opp_id)
-            v_param_delete_biz_opp_detail_history.append(v_detail_no)
+            v_param_delete_biz_opp_activity.append(v_detail_no)
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_delete_biz_opp_activity,v_param_delete_biz_opp_activity)
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}

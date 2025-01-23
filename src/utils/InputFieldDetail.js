@@ -1164,7 +1164,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     <ListGroup as='ol' numbered className='col activity'>
                                                         {activityData ? 
                                                             activityData.map((e) => {
-                                                                console.log(activityData.length)
                                                                 return (
                                                                     <>
                                                                     <ListGroup.Item as='li' className=''>

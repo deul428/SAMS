@@ -2,14 +2,14 @@
 
 @include mobile335 {
     button.btn {
-        padding: 0.25rem 0.5rem;
+        padding: 0.3rem 0.6rem;
         font-size: 0.75rem !important;
     }
 }
 @include tablet758 {
     button.btn {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem !important;
     }
 }
 @include desktop1024 {

@@ -1195,7 +1195,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         (a_v_modalPropsData ? 
                                             (<>
                                             <Button variant='primary' onClick={(e) => f_handlingData('post', 'renewal-biz-opp/', updateInput, e, '수정')}>저장</Button>
-                                            <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp/', updateInput, e, '삭제')}>삭제</Button>
+
+                                            {auth.userAuthCode === '0001' ? 
+                                                <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp/', updateInput, e, '삭제')}>삭제</Button>
+                                                : 
+                                                (<></>)
+                                            }
                                             </>) 
                                             : 
                                             (<>
@@ -1286,12 +1291,17 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             (auth.userAuthCode === '0002') ? 
                                             (<></>) : 
                                             (a_v_modalPropsData ? 
-                                                (<>
+                                                
+                                                <>
                                                 <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp-activity/', updateInput, e, '수정')}>수정</Button>
-                                                <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp-activity/', updateInput, e, '삭제')}>삭제</Button>
-                                                </>) 
+                                                
+                                                    {auth.userAuthCode === '0001' ? 
+                                                    <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp-activity/', updateInput, e, '삭제')}>삭제</Button>
+                                                    : 
+                                                    (<></>)}
+                                                </>
                                                 : 
-                                                ('')
+                                                (<></>)
                                             )
                                         }
                                     <Button variant='secondary' onClick={onHide}>닫기</Button>

@@ -1543,6 +1543,13 @@ def f_delete_biz_opp(request):
 
             v_sql_count = """SELECT COUNT(*) AS count FROM ajict_bms_schema.biz_opp_detail WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_count.append(v_biz_opp_id)
+
+
+            #test
+            v_formatted_sql = v_sql_count % tuple(map(repr,v_param_count))
+            print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_count,v_param_count)
                v_row1 = v_cursor.fetchone()
@@ -1553,6 +1560,13 @@ def f_delete_biz_opp(request):
                   if v_biz_opp_id is not None:
                      v_biz_opp_id = v_biz_opp_id.strip()
                   v_param_delete_biz_opp.append(v_biz_opp_id)
+
+
+                  #test
+                  v_formatted_sql = v_sql_delete_biz_opp % tuple(map(repr,v_param_delete_biz_opp))
+                  print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                   with connection.cursor() as v_cursor_delete_biz_opp:
                      v_cursor_delete_biz_opp.execute(v_sql_delete_biz_opp,v_param_delete_biz_opp)
             v_sql_delete_biz_opp_detail = """UPDATE ajict_bms_schema.biz_opp_detail
@@ -1566,6 +1580,13 @@ def f_delete_biz_opp(request):
                v_biz_opp_id = v_biz_opp_id.strip()
             v_param_delete_biz_opp_detail.append(v_biz_opp_id)
             v_param_delete_biz_opp_detail.append(v_detail_no)
+
+
+            #test
+            v_formatted_sql = v_sql_delete_biz_opp_detail % tuple(map(repr,v_param_delete_biz_opp_detail))
+            print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_delete_biz_opp_detail,v_param_delete_biz_opp_detail)
             v_sql_delete_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
@@ -1589,6 +1610,13 @@ def f_delete_biz_opp(request):
             v_param_delete_biz_opp_history.append(v_biz_opp_id)
             v_param_delete_biz_opp_history.append(v_session_user_id)
             v_param_delete_biz_opp_history.append(v_biz_opp_id)
+
+
+            #test
+            v_formatted_sql = v_sql_delete_biz_opp_history % tuple(map(repr,v_param_delete_biz_opp_history))
+            print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_delete_biz_opp_history,v_param_delete_biz_opp_history)
             v_sql_delete_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,

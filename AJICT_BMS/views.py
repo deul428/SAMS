@@ -1672,6 +1672,13 @@ def f_delete_biz_opp(request):
             v_param_delete_biz_opp_detail_history.append(v_session_user_id)
             v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
             v_param_delete_biz_opp_detail_history.append(v_detail_no)
+
+
+            #test
+            v_formatted_sql = v_sql_delete_biz_opp_detail_history % tuple(map(repr,v_param_delete_biz_opp_detail_history))
+            print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_delete_biz_opp_detail_history,v_param_delete_biz_opp_detail_history)
             v_sql_delete_biz_opp_activity = """UPDATE ajict_bms_schema.biz_opp_activity
@@ -1683,6 +1690,13 @@ def f_delete_biz_opp(request):
             v_param_delete_biz_opp_activity.append(v_session_user_id)
             v_param_delete_biz_opp_activity.append(v_biz_opp_id)
             v_param_delete_biz_opp_activity.append(v_detail_no)
+
+
+            #test
+            v_formatted_sql = v_sql_delete_biz_opp_activity % tuple(map(repr,v_param_delete_biz_opp_activity))
+            print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
          with connection.cursor() as v_cursor:
             v_cursor.execute(v_sql_delete_biz_opp_activity,v_param_delete_biz_opp_activity)
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}

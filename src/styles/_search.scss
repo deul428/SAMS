@@ -1,5 +1,5 @@
-@import '../styles/global';
-
+@import './global';
+@import './mixin';
 
 #bizOppHistory {
     .wrap {
@@ -92,6 +92,20 @@
                 &.floating {
                     label {
                         font-size: 0.9rem;
+                    }
+                    @include mobile335 {
+                    }
+                    @include tablet758 {
+                    }
+                    @include desktop1024 {
+                        .form-floating {
+                            min-width: 100px;
+                        }
+                    }
+                    @include desktop1200 {
+                        .form-floating {
+                            min-width: 120px;
+                        }
                     }
                     .form-floating { 
                         width: 100%;

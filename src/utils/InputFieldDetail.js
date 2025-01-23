@@ -393,13 +393,13 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         
         var p_bizopp_delete = {
             a_biz_opp_id: a.a_biz_opp_id,
-            a_biz_opp_name: a.a_biz_opp_name,
+            /* a_biz_opp_name: a.a_biz_opp_name,
             a_progress1_rate_code: a.a_progress1_rate_code,
             a_progress2_rate_code: a.a_progress2_rate_code,
             a_contract_date: a.a_contract_date,
-            a_essential_achievement_tf: a.a_essential_achievement_tf,
+            a_essential_achievement_tf: a.a_essential_achievement_tf, */
             a_detail_no: a.a_detail_no,
-            a_user_id: a.a_user_id,
+            /* a_user_id: a.a_user_id,
             a_change_preparation_dept_id: a.a_change_preparation_dept_id,
             a_change_preparation_dept_name: a.a_change_preparation_dept_name,
             a_last_client_com1_code: a.a_last_client_com1_code,
@@ -416,7 +416,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_biz_section1_code: a.a_biz_section1_code,
             a_biz_section2_code: a.a_biz_section2_code,
             a_principal_product1_code: a.a_principal_product1_code,
-            a_principal_product2_code: a.a_principal_product2_code,
+            a_principal_product2_code: a.a_principal_product2_code, */
         }
     }
     // 2. UI 표현용
@@ -491,25 +491,30 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 a_biz_opp_id: v_modalPropsData.biz_opp_id, 
                 a_detail_no: v_modalPropsData.detail_no 
             };
-            // return input;
-        } else if (msg === '삭제' && a_v_modalPropsData) {
+        } else if (msg === '삭제' && v_modalPropsData) {
             const f_warningMsg = () => {
                 input = {
                     a_session_user_id: input.a_session_user_id,
                     ...p_bizopp_delete,
                 };
                 console.log('delete mode', input);
-                if (window.confirm(`정말 ${p_bizopp_delete.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`)){
+                if (window.confirm(`정말 ${p_bizopp_delete.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`) === true) {
                     alert('정상적으로 삭제되었습니다.');
                     onHide(true);
-                    setIsRefresh(true)
+                    setIsRefresh(true);
                     return input;
                 } else {
-                    return;
+                    return null;
                 }
+            } 
+            const updatedInput = f_warningMsg(); // 반환값을 변수에 저장
+            if (!updatedInput) {
+                // console.log("삭제 작업이 취소되었습니다."); // 취소 로그
+                return; // 삭제 취소 시 이후 코드 실행 중단
             }
-            f_warningMsg();
+            input = updatedInput; // Confirm이 true일 때만 input 업데이트
         }
+
         let confirmMsg;
         console.log("-----------------input--------------", input);
         if (input && e) {

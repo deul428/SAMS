@@ -1,3 +1,22 @@
+@import './mixin';
+
+@include mobile335 {
+    button.btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem !important;
+    }
+}
+@include tablet758 {
+    button.btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+@include desktop1024 {
+}
+@include desktop1200 {
+}
+
 button.btn {
     font-size: 1rem;
 }

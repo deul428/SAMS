@@ -7,13 +7,17 @@
     align-items: center;
 }
 
+$breakpoint-mobile335: 335px;
+$breakpoint-tablet758: 758px;
+$breakpoint-desktop1024: 1024px;
+$breakpoint-desktop1200: 1200px;
+
 $full: 100%;
 $auto: 0 auto;
 $margin-bottom-10: 0 0 10% 0;
 $primary-color: #ccc;
 $base-color: #eee;
 $point-color: #1a8ef3;
-
 h1 { 
     // fontSize 2.5rem
     font-weight: 700;

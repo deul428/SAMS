@@ -14,7 +14,10 @@ import ExcelTable from './components/test/ExcelTable';
 import Tree_uiUsed_productManage from './components/test/Tree_uiUsed_productManage';
 import ResizableTable from './components/test/ResizableTable';
 
+import usePreventRefresh from './hooks/usePreventRefresh';
+
 function AppCntnt() {
+  usePreventRefresh();
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -29,9 +32,9 @@ function AppCntnt() {
     <>
       {!hiddenPaths.includes(location.pathname) && <Header />}
       <div id='cntntArea'>
-        {/* {!hiddenPaths.includes(location.pathname) && <MultiTabComponent />} */}
-        {/* <ExcelTable></ExcelTable> */}
-        {/* <Tree_uiUsed_productManage></Tree_uiUsed_productManage> */}
+          {/* {!hiddenPaths.includes(location.pathname) && <MultiTabComponent />} */}
+          {/* <ExcelTable></ExcelTable> */}
+          {/* <Tree_uiUsed_productManage></Tree_uiUsed_productManage> */}
         <Routes>
           <Route exact path='/' element={<AuthLogin />} />
           {/* { roots.map((value, index) => (
@@ -48,7 +51,6 @@ function AppCntnt() {
               element={<value.component />}
             />
           ))}
-
         </Routes>
       </div>
     </>

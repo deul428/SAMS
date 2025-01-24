@@ -23,7 +23,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   const [v_childComponent, setVChildComponent] = useState(null);
 
   const openModal = (e, handling, view) => {
-    console.log(e, handling);
     if (view === 'history') {
       setVChildComponent('BizOppHistory');
       e.stopPropagation(); //이벤트 전파 방지

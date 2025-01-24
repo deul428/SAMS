@@ -197,7 +197,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             team = '';
             console.log('no dept, no team');
         }
-        console.log("dept: ", dept, "team: ", team);
+        // console.log("dept: ", dept, "team: ", team);
 
         // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
         const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
@@ -375,9 +375,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         updateValue(setUpdateInput);
     };
     
-    useEffect(() => {
+/*     useEffect(() => {
         console.log("input: ", insertInput, "\n\nchangeInput: ", updateInput);
-    }, [insertInput, updateInput]);
+    }, [insertInput, updateInput]); */
     // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 끝 .....................
     // ----------------- 1) 등록 및 수정 input 핸들링 끝 -----------------
 
@@ -458,7 +458,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 } */
                 return insertedInput;
             });
-            // console.log("!!!!!", a_v_modalPropsData.a_detail_no);
             setUpdateInput((prevInput) => {
                 const updatedInput = { 
                     ...prevInput, 
@@ -485,39 +484,32 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const [detailData, setDetailData] = useState(null);
     const [activityData, setActivityData] = useState(null);
     const f_handlingData = async (method, endpoint, input = null, e, msg) => {
+        let confirmMsg;
+        let confirmResult = true;
+
         if (msg === '활동조회' && a_v_modalPropsData) {
             input = { 
                 a_session_user_id: input.a_session_user_id, 
-                a_biz_opp_id: v_modalPropsData.biz_opp_id, 
-                a_detail_no: v_modalPropsData.detail_no 
+                a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id, 
+                a_detail_no: a_v_modalPropsData.a_detail_no 
             };
-        } else if (msg === '삭제' && v_modalPropsData) {
-            const f_warningMsg = () => {
-                input = {
-                    a_session_user_id: input.a_session_user_id,
-                    ...p_bizopp_delete,
-                };
-                console.log('delete mode', input);
-                if (window.confirm(`정말 ${p_bizopp_delete.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`) === true) {
-                    alert('정상적으로 삭제되었습니다.');
-                    onHide(true);
-                    setIsRefresh(true);
-                    return input;
-                } else {
-                    return null;
-                }
-            } 
-            const updatedInput = f_warningMsg(); // 반환값을 변수에 저장
+        } else if (msg === '삭제' && a_v_modalPropsData) {
+            input = { 
+                a_session_user_id: input.a_session_user_id, 
+                a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id, 
+                a_detail_no: a_v_modalPropsData.a_detail_no 
+            };
+            confirmMsg = `정말 ${input.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`
+        } 
+            /* const updatedInput = f_warningMsg(); // 반환값을 변수에 저장
             if (!updatedInput) {
                 // console.log("삭제 작업이 취소되었습니다."); // 취소 로그
                 return; // 삭제 취소 시 이후 코드 실행 중단
             }
             input = updatedInput; // Confirm이 true일 때만 input 업데이트
-        }
+        } */
 
-        let confirmMsg;
-        console.log("-----------------input--------------", input);
-        if (input && e) {
+        if (input && e && (msg === '등록' || msg === '수정')) {
             e.preventDefault(); 
             const dateKeysMap = {
                 biz_opp: ['a_contract_date'],
@@ -576,53 +568,43 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         return; 
                     }
                 } else if (msg === '수정' && a_v_modalPropsData) {
-                    // console.log(a_v_modalPropsData, input);
+                    console.log("a_v_modalPropsData: ", a_v_modalPropsData, "input:", input);
                     if (
                         ((input?.biz_opp?.a_biz_opp_name && input?.biz_opp?.a_biz_opp_name.trim() !== '') || 
                         (a_v_modalPropsData.a_biz_opp_name && a_v_modalPropsData.a_biz_opp_name.trim() !== '')
-                        ) /* ||
-    
-                        ((input.biz_opp.a_progress2_rate_code && input.biz_opp.a_progress2_rate_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_progress2_rate_code && a_v_modalPropsData.a_progress2_rate_code.trim() !== ''))  ||
-                       
-                       ((input.biz_opp.a_contract_date && input.biz_opp.a_contract_date.trim() !== '') || 
-                        (a_v_modalPropsData.a_contract_date && a_v_modalPropsData.a_contract_date.trim() !== ''))  ||
-                       
-                       ((input.biz_opp.a_essential_achievement_tf !== null) || 
-                        (a_v_modalPropsData.a_essential_achievement_tf !== null))  ||
-                       
-                       ((input.biz_opp_detail.a_sale_com2_code && input.biz_opp_detail.a_sale_com2_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_sale_com2_code && a_v_modalPropsData.a_sale_com2_code.trim() !== ''))  ||
-                       
-                       ((input.biz_opp_detail.a_sale_date && input.biz_opp_detail.a_sale_date.trim() !== '') || 
-                        (a_v_modalPropsData.a_sale_date && a_v_modalPropsData.a_sale_date.trim() !== ''))  ||
-                       
-                       ((input.biz_opp_detail.a_purchase_date && input.biz_opp_detail.a_purchase_date.trim() !== '') || 
-                        (a_v_modalPropsData.a_purchase_date && a_v_modalPropsData.a_purchase_date.trim() !== ''))  ||
-                       
-                       
-                       ((input.biz_opp_detail.a_biz_section2_code && input.biz_opp_detail.a_biz_section2_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_biz_section2_code && a_v_modalPropsData.a_biz_section2_code.trim() !== ''))  ||
-                       
-                       ((input.biz_opp_detail.a_principal_product2_code && input.biz_opp_detail.a_principal_product2_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_principal_product2_code && a_v_modalPropsData.a_principal_product2_code.trim() !== ''))  ||
-                       
-                       ((input.biz_opp_detail.a_user_name && input.biz_opp_detail.a_user_name.trim() !== '') || 
-                        (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== '')) ||
-                        (input.biz_opp_activity.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') &&
-                       
-                        (input.biz_opp_activity.a_activity_date && input.biz_opp_activity.a_activity_date.trim() !== '') 
-                        */
-                        
-                       
-                    //    ((input.biz_opp_detail.a_sale_amt !== undefined && input.biz_opp_detail.a_sale_amt >= 0) || 
-                    //     (a_v_modalPropsData.a_sale_amt !== undefined && a_v_modalPropsData.a_sale_amt >= 0)) &&
-                       
-                    //    ((input.biz_opp_detail.a_sale_profit !== undefined && input.biz_opp_detail.a_sale_profit >= 0) || 
-                    //     (a_v_modalPropsData.a_sale_profit !== undefined && a_v_modalPropsData.a_sale_profit >= 0)) &&
+                        ) &&
 
-                    //     ((input.biz_opp_detail.a_purchase_amt !== undefined && input.biz_opp_detail.a_purchase_amt >= 0) || 
-                    //      (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) 
+                        ((input?.biz_opp?.a_essential_achievement_tf !== null) || 
+                        (a_v_modalPropsData.a_essential_achievement_tf !== null))  &&
+                        
+                        ((input?.biz_opp?.a_contract_date && input?.biz_opp?.a_contract_date.trim() !== '') || 
+                        (a_v_modalPropsData.a_contract_date && a_v_modalPropsData.a_contract_date.trim() !== ''))  &&
+                        ((input?.biz_opp_detail?.a_sale_date && input?.biz_opp_detail?.a_sale_date.trim() !== '') || 
+                        (a_v_modalPropsData.a_sale_date && a_v_modalPropsData.a_sale_date.trim() !== ''))  &&
+                        ((input?.biz_opp_detail?.a_purchase_date && input?.biz_opp_detail?.a_purchase_date.trim() !== '') || 
+                        (a_v_modalPropsData.a_purchase_date && a_v_modalPropsData.a_purchase_date.trim() !== ''))  &&
+
+                        ((input?.biz_opp_detail?.a_sale_amt !== undefined && input?.biz_opp_detail?.a_sale_amt >= 0) ||  
+                        (a_v_modalPropsData.a_sale_amt !== undefined && a_v_modalPropsData.a_sale_amt >= 0)) &&
+                        ((input?.biz_opp_detail?.a_sale_profit !== undefined && input?.biz_opp_detail?.a_sale_profit >= 0) || 
+                        (a_v_modalPropsData.a_sale_profit !== undefined && a_v_modalPropsData.a_sale_profit >= 0)) &&
+                        ((input?.biz_opp_detail?.a_purchase_amt !== undefined && input?.biz_opp_detail?.a_purchase_amt >= 0) || 
+                        (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) 
+                        
+                        ((input?.biz_opp_detail?.a_sale_com2_code && input?.biz_opp_detail?.a_sale_com2_code.trim() !== '') || 
+                        (a_v_modalPropsData.a_sale_com2_code && a_v_modalPropsData.a_sale_com2_code.trim() !== ''))  &&
+                        ((input?.biz_opp?.a_progress2_rate_code && input?.biz_opp?.a_progress2_rate_code.trim() !== '') || 
+                        (a_v_modalPropsData.a_progress2_rate_code && a_v_modalPropsData.a_progress2_rate_code.trim() !== ''))  &&
+                        ((input?.biz_opp_detail?.a_biz_section2_code && input?.biz_opp_detail?.a_biz_section2_code.trim() !== '') || 
+                        (a_v_modalPropsData.a_biz_section2_code && a_v_modalPropsData.a_biz_section2_code.trim() !== ''))  &&
+                        ((input?.biz_opp_detail?.a_principal_product2_code && input?.biz_opp_detail?.a_principal_product2_code.trim() !== '') || 
+                        (a_v_modalPropsData.a_principal_product2_code && a_v_modalPropsData.a_principal_product2_code.trim() !== ''))  &&
+
+                        ((input?.biz_opp_detail?.a_user_name && input?.biz_opp_detail?.a_user_name.trim() !== '') || 
+                        (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== '')) &&
+
+                        (input?.biz_opp_activity?.a_activity_details && input?.biz_opp_activity?.a_activity_details.trim() !== '') &&
+                        (input?.biz_opp_activity?.a_activity_date && input?.biz_opp_activity?.a_activity_date.trim() !== '') 
                     ) {
                         confirmMsg = `사업 (기회) 일련 번호 ${a_v_modalPropsData.a_biz_opp_id}을(를) 수정하시겠습니까?`;
                     } else {
@@ -651,46 +633,61 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 }
             }
         }
-        if ((confirmMsg && window.confirm(confirmMsg)) || (msg === '삭제') || (msg === '조회') || (msg === '활동조회')) {
+        if (confirmMsg) {
+            confirmResult = window.confirm(confirmMsg);
+        }
+        if (
+            (confirmResult && msg === '등록') || 
+            (confirmResult && msg === '수정') || 
+            (confirmResult && msg === '삭제') || 
+            (msg === '조회') || (msg === '활동조회')) {
             try {
-                // 송신
-                /* if (endpoint === 'select-popup-biz-opp/' && msg === 'authCheck') {
-                    console.log(endpoint, input, e, msg);
-                } */
-                if(e) { console.log("submit 될 input data\n", input, "\ne:", e); }
-
+                if ((msg !== '조회') && (msg !== '활동조회')) { console.log("submit 될 input data\n", input); }
                 const response = await apiMethods[method](endpoint, input);
                 if (response?.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
                     if (Array.isArray(response)){
                         console.log(response, response[0].STATUS, response[0].MESSAGE);
+                        alert(response[0].MESSAGE);
                     } else {
+                        if (msg === '활동조회') {
+                            setActivityData('');
+                        } else {
+                            alert(response.status.MESSAGE);
+                        }
                         console.log(response.status.STATUS, response.status.MESSAGE);
                     }
                     return;
                 } else {
-                    console.log('사업 (기회) 상세 관리 response 송신 완료 ', msg, "\nendpoint: ", endpoint, "\nresponse: ", response);
-
-                    if (e && msg === '등록') { 
-                        alert('정상적으로 등록되었습니다.'); 
-                        onHide(true);
-                        setIsRefresh(true);
-                    } 
-                    
+                    console.log(`사업 (기회) 상세 관리 [${msg}부] response 송신 완료 `, "\nendpoint: ", endpoint, "\nresponse: ", response);
                     if (msg === '활동조회') {
                         setActivityData(response.data);
                         return response;
                     } else if (msg === '조회') {
                         setDetailData(response);
                         return response;
-                    }
+                    } else if (e && msg === '등록') { 
+                        alert('정상적으로 등록되었습니다.'); 
+                        onHide(true);
+                        setIsRefresh(true);
+                    } else if (e && msg === '수정') { 
+                        alert('정상적으로 수정되었습니다.'); 
+                        onHide(true);
+                        setIsRefresh(true);
+                    } else if (msg === '삭제') {
+                        alert('정상적으로 삭제되었습니다.');
+                        onHide(true);
+                        setIsRefresh(true);
+                        // return input;
+                    } 
                 }
                 // 송신 끝
                 
             } catch (error) {
-                console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
+                console.log('Error during login:', error, `f_handlingData(${method}) error!\n ${error.message}`);
                 alert('오류가 발생했습니다. 관리자에게 문의하세요.', error);
             }
         } else {
+            console.log('return')
             return;
         }
     }
@@ -1178,7 +1175,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                                     </>
                                                                 )
                                                             })
-                                                        : ''
+                                                        :  (<></>)
                                                         }
                                                     </ListGroup>
                                                 </Row>)

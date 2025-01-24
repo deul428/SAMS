@@ -85,6 +85,7 @@ const BizOpp = () => {
       
     const [res, setRes] = useState([]);
     const [authLevels, setAuthLevels] = useState();
+
     return (
         <>
             {returnMsg || ''}

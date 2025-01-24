@@ -844,8 +844,8 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp.append(v_session_user_id)
 
             #test
-            #v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
-            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
+            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:

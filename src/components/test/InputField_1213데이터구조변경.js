@@ -163,7 +163,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                         <Form.Label className="">계약 일자</Form.Label>
                                         <div>
                                             <Form.Control size="sm" type="date" label="FROM" className="" name="" value=""/>
-                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <span>~</span>
                                             <Form.Control size="sm" type="date" />
                                         </div>
                                     </Col>
@@ -171,7 +171,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                         <Form.Label className="">매출 일자</Form.Label>
                                         <div>
                                             <Form.Control size="sm" type="date" label="FROM" className="" name="" value=""/>
-                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <span>~</span>
                                             <Form.Control size="sm" type="date" />
                                         </div>
                                     </Col>
@@ -195,7 +195,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                                     ('')
                                                 )}
                                             </Form.Select>
-                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <span>~</span>
                                             <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id="fromSelect" value={selectToPro} onChange={handleToChange}>
                                                 <option>선택</option>
                                                 {(data.length > 0 ? 
@@ -282,14 +282,14 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                             <Form.Label className="">계약 일자</Form.Label>
                                             <div>
                                                 <Form.Control size="sm" type="date" label="FROM" className="" name="" value=""/>
-                                                <span style={{margin: '0 10px'}}>~</span><Form.Control size="sm" type="date" />
+                                                <span>~</span><Form.Control size="sm" type="date" />
                                             </div>
                                         </Col>
                                         <Col xs={12} md={12} lg={5} className="col d-flex align-items-center justify-content-start">
                                             <Form.Label className="">매출 일자</Form.Label>
                                             <div>
                                                 <Form.Control size="sm" type="date" label="FROM" className="" name="" value=""/>
-                                                <span style={{margin: '0 10px'}}>~</span><Form.Control size="sm" type="date" />
+                                                <span>~</span><Form.Control size="sm" type="date" />
                                             </div>
                                         </Col>
                                         <Col xs={12} md={2} lg={2} className='btnArea col d-flex align-items-center justify-content-end'>

@@ -7,8 +7,8 @@
 //   'primary': $point-color,
 // );
 $font-size-base: 2rem;
-.form-floating input[type="date"]::-webkit-calendar-picker-indicator,
-.form-floating input[type="date"]::-webkit-inner-spin-button { font-size: 1.1rem;  }
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-inner-spin-button { font-size: 1.1rem; cursor: pointer; }
 
 
 /* @media (min-width: 1200px) {

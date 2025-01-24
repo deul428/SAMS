@@ -663,8 +663,8 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                         <div className='inputField'>
                             <div className='searchItem'>
                                 <>
-                                <Row className='d-flex justify-content-end'>
-                                    <Col xs={12} md={12} lg={4} className='btnArea col d-flex justify-content-end floating'>
+                                <Row className='d-flex justify-content-end btnRow'>
+                                    <Col xs={12} md={12} lg={4} className='btnCol col d-flex justify-content-end floating'>
                                         <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e, null)}>조회</Button>
                                         {/* <Button variant='dark' className='ms-2' onClick={(e) => f_resetData('cancel')}>초기화</Button> */}
                                     </Col>
@@ -678,7 +678,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                             <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' defaultValue={input?.a_contract_date_from || ''} onChange={f_handlingInput}
                                             />
                                         </FloatingLabel>
-                                        <span style={{margin: '0 10px'}}>~</span>
+                                        <span>~</span>
                                         <FloatingLabel label='계약 일자 To'>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' defaultValue={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
@@ -687,7 +687,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                         <FloatingLabel label='매출 일자 From'>
                                             <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' defaultValue={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
-                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <span>~</span>
                                         <FloatingLabel label='매출 일자 To'>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' defaultValue={input?.a_sale_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
@@ -709,7 +709,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                                 )}
                                             </Form.Select>
                                         </FloatingLabel>
-                                        <span style={{margin: '0 10px'}}>~</span>
+                                        <span>~</span>
                                         <FloatingLabel label='진행률 To'>
                                             <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id='fromSelect' value={input?.a_progress_rate_code_to || ''} name='a_progress_rate_code_to' onChange={f_handleToChange}>
                                                 <option value=''>선택</option>
@@ -781,29 +781,34 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                         <div className='inputField'>
                             <div className='searchItem'>
                                 <>
-                                <Row className='d-flex justify-content-between'>
-                                    <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                <Row className='d-flex justify-content-end btnRow'>
+                                    <Col xs={12} md={12} lg={4} className='btnCol col d-flex justify-content-end floating'>
+                                        <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e, null)}>조회</Button>
+                                        {/* <Button variant='dark' className='ms-2' onClick={(e) => f_resetData('cancel')}>초기화</Button> */}
+                                    </Col>
+                                </Row>
+                                <Row className='d-flex justify-content-start'>
+                                    {/* <Col xs={12} md={12} lg={4} className='btnArea col d-flex justify-content-end floating'>
+                                        <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e, null)}>조회</Button>
+                                    </Col> */}
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='계약 일자 From'>
-                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' defaultValue={input?.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
+                                            <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' defaultValue={input?.a_contract_date_from || ''} onChange={f_handlingInput}
                                             />
                                         </FloatingLabel>
-                                        <span style={{margin: '0 10px'}}>~</span>
+                                        <span>~</span>
                                         <FloatingLabel label='계약 일자 To'>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' defaultValue={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
-                                    <Col xs={12} md={5} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='매출 일자 From'>
                                             <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' defaultValue={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
-                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <span>~</span>
                                         <FloatingLabel label='매출 일자 To'>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' defaultValue={input?.a_sale_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
-                                    </Col>
-                                    <Col xs={12} md={2} lg={4} className='btnArea col d-flex justify-content-end floating'>
-                                        <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e, null)}>조회</Button>
-                                        {/* <Button variant='dark' className='ms-2' onClick={(e) => f_resetData('cancel')}>초기화</Button> */}
                                     </Col>
                                 </Row>
                                 <Row className='d-flex justify-content-between'>

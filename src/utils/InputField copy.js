@@ -643,7 +643,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                             <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input?.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
                                             />
                                         </FloatingLabel>
-                                        <span style={{margin: '0 10px'}}>~</span>
+                                        <span>~</span>
                                         <FloatingLabel label='계약 일자 To'>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
@@ -652,7 +652,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                         <FloatingLabel label='매출 일자 From'>
                                             <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
-                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <span>~</span>
                                         <FloatingLabel label='매출 일자 To'>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input?.a_sale_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
@@ -678,7 +678,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                                 )}
                                             </Form.Select>
                                         </FloatingLabel>
-                                        <span style={{margin: '0 10px'}}>~</span>
+                                        <span>~</span>
                                         <FloatingLabel label='진행률 To'>
                                             <Form.Select size='sm' aria-label='selectBox' className='pro_2'  id='fromSelect' value={input?.a_progress_rate_code_to || ''} name='a_progress_rate_code_to' onChange={f_handleToChange}>
                                                 <option value=''>선택</option>
@@ -756,7 +756,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                             <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' value={input?.a_contract_date_from || ''} onChange={f_handlingInput} // 값 변경 시 상태 업데이트
                                             />
                                         </FloatingLabel>
-                                        <span style={{margin: '0 10px'}}>~</span>
+                                        <span>~</span>
                                         <FloatingLabel label='계약 일자 To'>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' value={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
@@ -765,7 +765,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                         <FloatingLabel label='매출 일자 From'>
                                             <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' value={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
-                                            <span style={{margin: '0 10px'}}>~</span>
+                                            <span>~</span>
                                         <FloatingLabel label='매출 일자 To'>
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_sale_date_to' value={input?.a_sale_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>

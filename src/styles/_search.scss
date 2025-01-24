@@ -2,19 +2,31 @@
 @import './mixin';
 
 @include mobile335 {
-    &.btnRow {
-        position: relative !important;
-    } 
+    .searchItem {
+        .row {
+            &.btnRow {
+                position: relative !important;
+            } 
+        }
+    }
 }
 @include tablet758 {
-    &.btnRow {
-        position: relative !important;
-    } 
+    .searchItem {
+        .row {
+            &.btnRow {
+                position: relative !important;
+            } 
+        }
+    }
 }
 @include desktop1024 {
-    &.btnRow {
-        position: relative !important;
-    } 
+    .searchItem {
+        .row {
+            &.btnRow {
+                position: relative !important;
+            } 
+        }
+    }
     .form-floating {
         min-width: 100px;
     }

@@ -8,7 +8,8 @@ import axios from 'axios';
 const apiUrl = axios.create({
     // baseURL: 'http://127.0.0.1:8000/', 
     // baseURL: 'http://10.0.60.62:8000/',
-    baseURL: 'http://10.0.60.201:8000/',
+    baseURL: 'https://10.0.60.201:8000/',
+    // baseURL: 'http://10.0.60.201:8000/',
     credentials: "include", // 세션 쿠키 포함
     // withCredentials: true, 
     headers: {

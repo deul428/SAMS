@@ -539,7 +539,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 });
             }
 
-            // 유효값 검사 끝
+            // 유효값 검사
             if (v_componentName === 'bizOpp') {
                 if (msg === '등록') {
                     if (
@@ -569,42 +569,33 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     }
                 } else if (msg === '수정' && a_v_modalPropsData) {
                     console.log("a_v_modalPropsData: ", a_v_modalPropsData, "input:", input);
+
+                    const validateStr = (obj, key) => obj?.[key] != null && obj[key].toString().trim() !== '';
+                    const validateNum = (obj, key) => obj?.[key] != null && typeof obj[key] === 'number' && obj[key] >= 0;
+                    const hasBizOpp = !!input?.biz_opp;
+                    const hasBizOppDetail = !!input?.biz_opp_detail;
+                    const hasBizOppActivity = !!input?.biz_opp_activity;
+                    if (!hasBizOpp || !hasBizOppDetail || !hasBizOppActivity) return;
                     if (
-                        ((input?.biz_opp?.a_biz_opp_name && input?.biz_opp?.a_biz_opp_name.trim() !== '') || 
-                        (a_v_modalPropsData.a_biz_opp_name && a_v_modalPropsData.a_biz_opp_name.trim() !== '')
+                        (
+                            validateStr(input.biz_opp, 'a_biz_opp_name') ||
+                            input.biz_opp?.a_essential_achievement_tf !== null ||
+                            validateStr(input.biz_opp, 'a_contract_date') ||
+                            validateStr(input.biz_opp_detail, 'a_sale_date') ||
+                            validateStr(input.biz_opp_detail, 'a_purchase_date') ||
+                            validateNum(input.biz_opp_detail, 'a_sale_amt') ||
+                            validateNum(input.biz_opp_detail, 'a_sale_profit') ||
+                            validateNum(input.biz_opp_detail, 'a_purchase_amt') ||
+                            validateStr(input.biz_opp_detail, 'a_sale_com2_code') ||
+                            validateStr(input.biz_opp, 'a_progress2_rate_code') ||
+                            validateStr(input.biz_opp_detail, 'a_biz_section2_code') ||
+                            validateStr(input.biz_opp_detail, 'a_principal_product2_code') ||
+                            validateStr(input.biz_opp_detail, 'a_user_name')
                         ) &&
-
-                        ((input?.biz_opp?.a_essential_achievement_tf !== null) || 
-                        (a_v_modalPropsData.a_essential_achievement_tf !== null))  &&
-                        
-                        ((input?.biz_opp?.a_contract_date && input?.biz_opp?.a_contract_date.trim() !== '') || 
-                        (a_v_modalPropsData.a_contract_date && a_v_modalPropsData.a_contract_date.trim() !== ''))  &&
-                        ((input?.biz_opp_detail?.a_sale_date && input?.biz_opp_detail?.a_sale_date.trim() !== '') || 
-                        (a_v_modalPropsData.a_sale_date && a_v_modalPropsData.a_sale_date.trim() !== ''))  &&
-                        ((input?.biz_opp_detail?.a_purchase_date && input?.biz_opp_detail?.a_purchase_date.trim() !== '') || 
-                        (a_v_modalPropsData.a_purchase_date && a_v_modalPropsData.a_purchase_date.trim() !== ''))  &&
-
-                        ((input?.biz_opp_detail?.a_sale_amt !== undefined && input?.biz_opp_detail?.a_sale_amt >= 0) ||  
-                        (a_v_modalPropsData.a_sale_amt !== undefined && a_v_modalPropsData.a_sale_amt >= 0)) &&
-                        ((input?.biz_opp_detail?.a_sale_profit !== undefined && input?.biz_opp_detail?.a_sale_profit >= 0) || 
-                        (a_v_modalPropsData.a_sale_profit !== undefined && a_v_modalPropsData.a_sale_profit >= 0)) &&
-                        ((input?.biz_opp_detail?.a_purchase_amt !== undefined && input?.biz_opp_detail?.a_purchase_amt >= 0) || 
-                        (a_v_modalPropsData.a_purchase_amt !== undefined && a_v_modalPropsData.a_purchase_amt >= 0)) 
-                        
-                        ((input?.biz_opp_detail?.a_sale_com2_code && input?.biz_opp_detail?.a_sale_com2_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_sale_com2_code && a_v_modalPropsData.a_sale_com2_code.trim() !== ''))  &&
-                        ((input?.biz_opp?.a_progress2_rate_code && input?.biz_opp?.a_progress2_rate_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_progress2_rate_code && a_v_modalPropsData.a_progress2_rate_code.trim() !== ''))  &&
-                        ((input?.biz_opp_detail?.a_biz_section2_code && input?.biz_opp_detail?.a_biz_section2_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_biz_section2_code && a_v_modalPropsData.a_biz_section2_code.trim() !== ''))  &&
-                        ((input?.biz_opp_detail?.a_principal_product2_code && input?.biz_opp_detail?.a_principal_product2_code.trim() !== '') || 
-                        (a_v_modalPropsData.a_principal_product2_code && a_v_modalPropsData.a_principal_product2_code.trim() !== ''))  &&
-
-                        ((input?.biz_opp_detail?.a_user_name && input?.biz_opp_detail?.a_user_name.trim() !== '') || 
-                        (a_v_modalPropsData.a_user_name && a_v_modalPropsData.a_user_name.trim() !== '')) &&
-
-                        (input?.biz_opp_activity?.a_activity_details && input?.biz_opp_activity?.a_activity_details.trim() !== '') &&
-                        (input?.biz_opp_activity?.a_activity_date && input?.biz_opp_activity?.a_activity_date.trim() !== '') 
+                        (
+                            validateStr(input.biz_opp_activity, 'a_activity_details') &&
+                            validateStr(input.biz_opp_activity, 'a_activity_date')
+                        )
                     ) {
                         confirmMsg = `사업 (기회) 일련 번호 ${a_v_modalPropsData.a_biz_opp_id}을(를) 수정하시겠습니까?`;
                     } else {

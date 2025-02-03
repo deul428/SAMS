@@ -387,7 +387,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                         <th>사업 번호</th>
                         <td>{commonInfo.biz_opp_id}</td>
                         <th>사업명</th>
-                        <td style={{'width':'calc(100% - (8.66666% + 8%*2))'}} colSpan={9}>{commonInfo.biz_opp_name}</td>
+                        <td style={{'width':'calc(100% - (8.66666% + 8%*2))', 'textAlign':'left'}} colSpan={9}>{commonInfo.biz_opp_name}</td>
                       </div>
                     </tbody>
                     <tbody>
@@ -447,6 +447,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             </div>
                           ))}
                           <Button className='collapseController'
+                            variant='dark'
                             onClick={() => toggleCollapse(biz_opp_id)}
                             aria-controls={`collapse-${biz_opp_id}`}
                             aria-expanded={openStates[biz_opp_id] || false}>

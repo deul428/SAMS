@@ -1229,7 +1229,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             <Modal.Header closeButton>
                             <Modal.Title className='fs-3'>
                                 {
-                                (auth.userAuthCode === '0002') ? 
+                                (auth.userAuthCode !== '0001') ? 
                                 '영업 활동 상세 조회' : '영업 활동 갱신'
                                 }
                             </Modal.Title>
@@ -1242,14 +1242,15 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                     <>
                                     <Row className='d-flex justify-content-between mb-2'>
                                         <Col xs={12} md={3} lg={3} className=''>
-                                            <FloatingLabel label='사업 일련 번호' disabled>
+                                            <FloatingLabel label='사업 일련 번호'>
                                                 <Form.Control size='sm' type='text' className='' 
                                                 name='a_biz_opp_id' 
                                                 data-key='biz_opp' 
                                                 placeholder='사업 일련 번호'
                                                 onChange={f_handlingInput}
-                                                defaultValue={a_v_modalPropsData?.a_biz_opp_id || ''}
-                                                disabled
+                                                defaultValue={a_v_modalPropsData?.a_biz_opp_id || ''} 
+                                                style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}
+                                                disabled={auth.userAuthCode === '0001' ? true : false}
                                                 />
                                             </FloatingLabel>
                                         </Col>
@@ -1261,13 +1262,14 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 placeholder='사업 (기회) 명'
                                                 onChange={f_handlingInput} 
                                                 // value={input.biz_opp_name || ''}
-                                                defaultValue={a_v_modalPropsData?.a_biz_opp_name || ''} 
-                                                disabled
+                                                defaultValue={a_v_modalPropsData?.a_biz_opp_name || ''}
+                                                style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}
+                                                disabled={auth.userAuthCode === '0001' ? true : false}
                                                 />
                                             </FloatingLabel>
                                         </Col>
                                         <Col xs={12} md={3} lg={3} className=''>
-                                            <FloatingLabel label='활동 일자'>
+                                            <FloatingLabel label='활동 일자' style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}>
                                                 <Form.Control size='sm' type='date' className='' 
                                                 name='a_activity_date' 
                                                 data-key='biz_opp_activity' 
@@ -1286,6 +1288,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 data-key='biz_opp_activity'
                                                 placeholder='활동 내역' 
                                                 onChange={f_handlingInput} 
+                                                style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}
                                                 defaultValue={a_v_modalPropsData?.a_activity_details || ''}
                                                 />
                                             </FloatingLabel>
@@ -1297,7 +1300,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             </Modal.Body>
                                 <Modal.Footer className='btnArea justify-content-center'>
                                         {
-                                            (auth.userAuthCode === '0002') ? 
+                                            (auth.userAuthCode !== '0001') ? 
                                             (<></>) : 
                                             (a_v_modalPropsData ? 
                                                 

@@ -2456,6 +2456,41 @@ def f_delete_biz_opp_activity(request):
       v_square_bracket_return = [v_return]
       return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
    try:
+      v_sql_session = """SELECT user_id,
+                                user_name,
+                                cipher,
+                                dept_id,
+                                position1_code,
+                                position2_code,
+                                responsibility1_code,
+                                responsibility2_code,
+                                auth1_code,
+                                auth2_code,
+                                beginning_login_tf,
+                                create_user,
+                                create_date,
+                                update_user,
+                                update_date,
+                                delete_user,
+                                delete_date
+                         FROM ajict_bms_schema.aj_user
+                         WHERE user_id = %s AND
+                               delete_date IS NULL"""
+      v_param_sql_session = []
+      v_param_sql_session.append(v_session_user_id)
+      v_auth1_code = ''
+      v_auth2_code = ''
+      with connection.cursor() as v_cursor:
+         v_cursor.execute(v_sql_session,v_param_sql_session)
+         v_columns = [v_column[0] for v_column in v_cursor.description]
+         v_rows = v_cursor.fetchall()
+         v_data_session = [dict(zip(v_columns,row)) for row in v_rows]
+         v_auth1_code = v_data_session[0]['auth1_code']
+         v_auth2_code = v_data_session[0]['auth2_code']
+      if v_auth1_code == 'AUT' and v_auth2_code != '0001':
+         v_return = {'STATUS':'FAIL','MESSAGE':"Admin인 경우에만 '활동 내역'을 삭제할 수 있습니다."}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
       with transaction.atomic():
          v_sql = "UPDATE ajict_bms_schema.biz_opp_activity\
                    SET delete_user = %s,\

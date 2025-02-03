@@ -2411,7 +2411,7 @@ def f_update_biz_opp_activity(request):
                    SET activity_details = %s,\
                        activity_date = %s,\
                        update_user = %s,\
-                       update_date = CURRENT_TIMESTAMP\
+                       update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
                    WHERE biz_opp_id = %s AND\
                          detail_no = %s AND\
                          activity_no = %s AND\

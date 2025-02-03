@@ -141,7 +141,7 @@ def f_update_cipher_change(request):
             v_cursor.execute(v_sql,v_param)
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
             v_square_bracket_return = [v_return]
-            return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
+            return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
    except DatabaseError:
       v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
       v_square_bracket_return = [v_return]
@@ -149,7 +149,7 @@ def f_update_cipher_change(request):
    except Exception as E:
       v_return = {'STATUS':'FAIL','MESSAGE':'System의 문제로 인해 비밀번호를 변경하지 못했습니다.','ERROR':str(E)}
       v_square_bracket_return = [v_return]
-      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
 def f_logout(request):
    logout(request)
    v_return = {'STATUS':'LOGOUT','MESSAGE':'logout 했습니다.'}
@@ -1234,30 +1234,30 @@ def f_renewal_biz_opp(request):
    else:
       try:
          with transaction.atomic():
-            # v_body = {'a_session_user_id':'leecj',
-            #           'a_biz_opp_id':'20251000',
-            #           'a_detail_no':1,
-            #           'biz_opp':{'a_biz_opp_name':'Web 개발 사업',
-            #                      'a_contract_date':'20241030',
-            #                      'a_essential_achievement_tf':False},
-            #           'biz_opp_detail':{'user_id':'bradjung',
-            #                             'a_change_preparation_dept_id':'9711',
-            #                             'change_preparation_dept_name':'영업1팀',
-            #                             'a_last_client_com2_code':'0001',
-            #                             'a_sale_com2_code':'0002',
-            #                             'a_sale_item_no':'S24166',
-            #                             'a_sale_date':'20241130',
-            #                             'a_sale_amt':108685000,
-            #                             'a_sale_profit':11057303,
-            #                             'a_purchase_date':'20240101',
-            #                             'a_purchase_amt':0,
-            #                             'a_collect_money_date':'',
-            #                             'a_biz_section2_code':'0001',
-            #                             'a_principal_product2_code':'0002'},
-            #           'biz_opp_activity':{'a_biz_opp_id':'20240023',
-            #                               'a_detail_no':1,
-            #                               'a_activity_no':1,
-            #                               'a_activity_details':'바쁘다!!!'}}
+            v_body = {'a_session_user_id':'leecj',
+                      'a_biz_opp_id':'20251000',
+                      'a_detail_no':1,
+                      'biz_opp':{'a_biz_opp_name':'Web 개발 사업',
+                                 'a_contract_date':'20241030',
+                                 'a_essential_achievement_tf':False},
+                      'biz_opp_detail':{'user_id':'bradjung',
+                                        'a_change_preparation_dept_id':'9711',
+                                        'change_preparation_dept_name':'영업1팀',
+                                        'a_last_client_com2_code':'0001',
+                                        'a_sale_com2_code':'0002',
+                                        'a_sale_item_no':'S24166',
+                                        'a_sale_date':'20241130',
+                                        'a_sale_amt':108685000,
+                                        'a_sale_profit':11057303,
+                                        'a_purchase_date':'20240101',
+                                        'a_purchase_amt':0,
+                                        'a_collect_money_date':'',
+                                        'a_biz_section2_code':'0001',
+                                        'a_principal_product2_code':'0002'},
+                      'biz_opp_activity':{'a_biz_opp_id':'20240023',
+                                          'a_detail_no':1,
+                                          'a_activity_no':1,
+                                          'a_activity_details':'바쁘다!!!'}}
             v_biz_opp = v_body.get('biz_opp')
             v_biz_opp_detail = v_body.get('biz_opp_detail')
             v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
@@ -2331,11 +2331,155 @@ def f_select_biz_opp_activity3(request):
          v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
+def f_update_biz_opp_activity(request):
+   v_session_user_id = ''
+   v_biz_opp_id = ''
+   v_detail_no = 0
+   v_activity_no = ''
+   v_activity_details = ''
+   v_activity_date = ''
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
 
 
+      #test
+      print(f"v_body : {v_body}")
 
 
-
+      v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      if v_session_user_id is not None:
+         v_session_user_id = v_session_user_id.strip()
+      v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+      if v_biz_opp_id is not None:
+         v_biz_opp_id = v_biz_opp_id.strip()
+      v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
+      v_activity_no = None if v_body.get('a_activity_no') == '' else v_body.get('a_activity_no')
+      v_activity_details = None if v_body.get('a_activity_details') == '' else v_body.get('a_activity_details')
+      if v_activity_details is not None:
+         v_activity_details = v_activity_details.strip()
+      v_activity_date = None if v_body.get('a_activity_date') == '' else v_body.get('a_activity_date')
+      if v_activity_date is not None:
+         v_activity_date = v_activity_date.strip()
+   if not v_session_user_id:
+      v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   if not isinstance(v_detail_no,(int)):
+      v_return = {'STATUS':'FAIL','MESSAGE':"'a_detail_no' 매개변수의 값이 숫자형이 아닙니다."}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   try:
+      v_sql_session = """SELECT user_id,
+                                user_name,
+                                cipher,
+                                dept_id,
+                                position1_code,
+                                position2_code,
+                                responsibility1_code,
+                                responsibility2_code,
+                                auth1_code,
+                                auth2_code,
+                                beginning_login_tf,
+                                create_user,
+                                create_date,
+                                update_user,
+                                update_date,
+                                delete_user,
+                                delete_date
+                         FROM ajict_bms_schema.aj_user
+                         WHERE user_id = %s AND
+                               delete_date IS NULL"""
+      v_param_sql_session = []
+      v_param_sql_session.append(v_session_user_id)
+      v_auth1_code = ''
+      v_auth2_code = ''
+      with connection.cursor() as v_cursor:
+         v_cursor.execute(v_sql_session,v_param_sql_session)
+         v_columns = [v_column[0] for v_column in v_cursor.description]
+         v_rows = v_cursor.fetchall()
+         v_data_session = [dict(zip(v_columns,row)) for row in v_rows]
+         v_auth1_code = v_data_session[0]['auth1_code']
+         v_auth2_code = v_data_session[0]['auth2_code']
+      if v_auth1_code == 'AUT' and v_auth2_code != '0001':
+         v_return = {'STATUS':'FAIL','MESSAGE':"Admin인 경우에만 '활동 내역'을 수정할 수 있습니다."}
+         v_square_bracket_return = [v_return]
+         return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      with transaction.atomic():
+         v_sql = "UPDATE ajict_bms_schema.biz_opp_activity\
+                   SET activity_details = %s,\
+                       activity_date = %s,\
+                       update_user = %s,\
+                       update_date = CURRENT_TIMESTAMP\
+                   WHERE biz_opp_id = %s AND\
+                         detail_no = %s AND\
+                         activity_no = %s AND\
+                         delete_date IS NULL"
+         v_param = []
+         v_param.append(v_activity_details)
+         v_param.append(v_activity_date)
+         v_param.append(v_session_user_id)
+         v_param.append(v_biz_opp_id)
+         v_param.append(v_detail_no)
+         v_param.append(v_activity_no)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql,v_param)
+            v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
+            v_square_bracket_return = [v_return]
+            return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   except DatabaseError:
+      v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   except Exception as E:
+      v_return = {'STATUS':'FAIL','MESSAGE':'오류가 발생했습니다.','ERROR':str(E)}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+def f_delete_biz_opp_activity(request):
+   v_session_user_id = ''
+   v_biz_opp_id = ''
+   v_detail_no = 0
+   v_activity_no = ''
+   if request.method == 'POST':
+      v_body = json.loads(request.body)
+      v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      if v_session_user_id is not None:
+         v_session_user_id = v_session_user_id.strip()
+      v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+      if v_biz_opp_id is not None:
+         v_biz_opp_id = v_biz_opp_id.strip()
+      v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
+      v_activity_no = None if v_body.get('a_activity_no') == '' else v_body.get('a_activity_no')
+   if not v_session_user_id:
+      v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   try:
+      with transaction.atomic():
+         v_sql = "UPDATE ajict_bms_schema.biz_opp_activity\
+                   SET delete_user = %s,\
+                       delete_date = CURRENT_TIMESTAMP\
+                   WHERE biz_opp_id = %s AND\
+                         detail_no = %s AND\
+                         activity_no = %s AND\
+                         delete_date IS NULL"
+         v_param=[]
+         v_param.append(v_session_user_id)
+         v_param.append(v_biz_opp_id)
+         v_param.append(v_detail_no)
+         v_param.append(v_activity_no)
+         with connection.cursor() as v_cursor:
+            v_cursor.execute(v_sql,v_param)
+            v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
+            v_square_bracket_return = [v_return]
+            return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   except DatabaseError:
+      v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+   except Exception as E:
+      v_return = {'STATUS':'FAIL','MESSAGE':'오류가 발생했습니다.','ERROR':str(E)}
+      v_square_bracket_return = [v_return]
+      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
 def f_select_biz_opp_history(request):
    v_session_user_id = ''
    v_body = ''

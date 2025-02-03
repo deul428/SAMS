@@ -605,7 +605,17 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 }
             } else if (v_componentName === 'activity') {
                 if (msg === '수정' && a_v_modalPropsData) {
-                    console.log(a_v_modalPropsData, input);
+                    const updateInput = { 
+                        a_session_user_id: input.a_session_user_id, 
+                        a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id, 
+                        a_detail_no: a_v_modalPropsData.a_detail_no,
+                        a_activity_date: a_v_modalPropsData.a_activity_date,
+                        a_activity_details: input.biz_opp_activity.a_activity_details,
+                        a_activity_no: a_v_modalPropsData.a_activity_no
+                    };
+                    console.log(a_v_modalPropsData, input, updateInput);
+                    input = updateInput;
+                    console.log(input);
                     if (
                         (
                             (input.biz_opp_activity?.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') || 
@@ -649,7 +659,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     }
                     return;
                 } else {
-                    console.log(`사업 (기회) 상세 관리 [${msg}부] response 송신 완료 `, "\nendpoint: ", endpoint, "\nresponse: ", response);
+                    console.log(`${v_componentName} [${msg}부] response 송신 완료 `, "\nendpoint: ", endpoint, "\nresponse: ", response);
                     if (msg === '활동조회') {
                         setActivityData(response.data);
                         return response;
@@ -1281,7 +1291,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             (a_v_modalPropsData ? 
                                                 
                                                 <>
-                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'insert-biz-opp-activity/', updateInput, e, '수정')}>수정</Button>
+                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'update-biz-opp-activity/', updateInput, e, '수정')}>수정</Button>
                                                 
                                                     {auth.userAuthCode === '0001' ? 
                                                     <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp-activity/', updateInput, e, '삭제')}>삭제</Button>

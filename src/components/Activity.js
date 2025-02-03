@@ -22,6 +22,7 @@ const Activity = () => {
     const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
 
+    const [isRefresh, setIsRefresh] = useState(false);
     const [returnMsg, setReturnMsg] = useState(null);
 
     const f_handlingData = async (method, endpoint, input = null) => {
@@ -67,8 +68,10 @@ const Activity = () => {
     }
 
     useEffect(() => {
-        f_handlingData('post', endpoint, userCheck);
-    }, [endpoint]);
+        if(isRefresh === true || endpoint) {
+            f_handlingData('post', endpoint, userCheck);
+        }
+    }, [endpoint, isRefresh]);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
 
     const [res, setRes] = useState([]);
@@ -93,7 +96,7 @@ const Activity = () => {
                         :   
                         (data.length === 0 ? 
                             (<p>데이터를 불러오는 중입니다...</p>) : 
-                            (<DynamicTable v_componentName={'activity'} tableData={data.data.retrieve_biz_opp_activity} tableColumns={roots.activitySelect1.props} v_propsData={data} res={res}/>)
+                            (<DynamicTable v_componentName={'activity'} tableData={data.data.retrieve_biz_opp_activity} tableColumns={roots.activitySelect1.props} v_propsData={data} res={res} setIsRefresh={setIsRefresh}/>)
                         )
                     }
                 </div>

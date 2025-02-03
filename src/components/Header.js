@@ -82,7 +82,7 @@ function Header() {
                         </Nav.Link>
 
                         <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[1]) ? 'active' : ''} nav-link`} id='menu04'>
-                        목표 관리
+                            목표 관리
                             <Nav.Link as={NavLink} className='menuItem' to={`/${roots.aimManage.depth1}/${roots.aimManage.depth2}`}>목표 관리</Nav.Link>
                             <Nav.Link as={NavLink} className='menuItem' to={`/${roots.aimacheive.depth1}/${roots.aimacheive.depth2}`}>달성률 조회</Nav.Link>
                         </div>

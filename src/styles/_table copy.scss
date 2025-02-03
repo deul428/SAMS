@@ -7,7 +7,7 @@ table {
         th {}
     }
     thead, tbody {
-        th, td {
+        th, td, div.collapseItem > div {
             vertical-align: middle;
             border: 1px solid #dee2e6;
             min-width: 80px;
@@ -68,50 +68,60 @@ table {
             border: 1px solid #aaa !important;
             width: 100%;
             border: none;
-        
-            tbody {
+            thead, tbody {
                 width: 100%;
                 display: table;
                 table-layout: fixed;
-                div {
-                    padding: 0;
-                    width: 100%;
-                    div.collapseBox {
-                        padding: 0;
-                        display: inline-flex;
-                        width: 100%;
-                        word-break: break-all;
-                        cursor: pointer;
-                    }
-                    th, td {    
-                        display: inline-block;
-                        min-width: unset;
-                        max-width: unset;
-                        width: auto;
-                        padding: 0.3rem 0.6rem !important;
-                        border: 1px solid $base-color;
-                        &.activityDetails {
-                            text-align: left;
-                            line-height: 1.25rem;
-                            flex: 1; 
-                            overflow: hidden;
-                            white-space: normal;
-                            text-overflow: ellipsis;
-                            display: -webkit-box;
-                            -webkit-line-clamp: 2;
-                            -webkit-box-orient: vertical;
-                            word-break: break-all;
-                            width: auto;
-                        }
-                    }
                     th {
-                        width: 8%;
                     }
                     td {
-                        width: 8.66666%;
+                    }
+                    th, td {
+                        width: auto; 
+                    }
+            }
+            tbody {
+                tr {
+                    cursor: default;
+                    display: table-row; 
+                    overflow-x: scroll; 
+                }
+                div.collapseArea {
+                    padding: 0;
+                    div {
+                        padding: 0;
+                        &.collapseBox {
+                            // display: flex;
+                            // width: 100%;
+                            word-break: break-all;
+                            div.collapseItem {
+                                display: inline-flex;
+                                width: 100%;
+                                td {
+                                    cursor: pointer;
+                                    padding: 0.3rem 0.6rem !important;
+                                    border: 1px solid $base-color;
+                                    &.activityDetails {
+                                        text-align: left;
+                                        line-height: 1.25rem;
+                                        flex: 1; 
+                                        overflow: hidden;
+                                        white-space: normal;
+                                        text-overflow: ellipsis;
+                                        display: -webkit-box;
+                                        -webkit-line-clamp: 2;
+                                        -webkit-box-orient: vertical;
+                                        word-break: break-all;
+                                    }
+                                }
+                            }
+                        }
+                        tr {
+                                
+                        }
+                        
                     }
                 }
-                    
             }
             button.collapseController {
                 background-color: $point-color;
@@ -156,4 +166,5 @@ table {
     button.btn.light {
         // font-size: 0.75rem;
     }
+    
 }

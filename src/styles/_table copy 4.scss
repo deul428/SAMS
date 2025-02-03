@@ -76,18 +76,14 @@ table {
                 div {
                     padding: 0;
                     width: 100%;
-                    div.collapseBox {
+                    div {
                         padding: 0;
                         display: inline-flex;
                         width: 100%;
                         word-break: break-all;
-                        cursor: pointer;
                     }
-                    th, td {    
-                        display: inline-block;
-                        min-width: unset;
-                        max-width: unset;
-                        width: auto;
+                    th, td {
+                        cursor: pointer;
                         padding: 0.3rem 0.6rem !important;
                         border: 1px solid $base-color;
                         &.activityDetails {
@@ -103,12 +99,6 @@ table {
                             word-break: break-all;
                             width: auto;
                         }
-                    }
-                    th {
-                        width: 8%;
-                    }
-                    td {
-                        width: 8.66666%;
                     }
                 }
                     

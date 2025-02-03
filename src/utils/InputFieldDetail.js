@@ -494,12 +494,23 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 a_detail_no: a_v_modalPropsData.a_detail_no 
             };
         } else if (msg === '삭제' && a_v_modalPropsData) {
-            input = { 
-                a_session_user_id: input.a_session_user_id, 
-                a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id, 
-                a_detail_no: a_v_modalPropsData.a_detail_no 
-            };
-            confirmMsg = `정말 ${input.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`
+            if (v_componentName === 'bizOpp') {
+                input = { 
+                    a_session_user_id: input.a_session_user_id, 
+                    a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id, 
+                    a_detail_no: a_v_modalPropsData.a_detail_no 
+                };
+                confirmMsg = `정말 ${input.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`
+            } else if (v_componentName === 'activity') {
+                input = { 
+                    a_session_user_id: input.a_session_user_id, 
+                    a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id, 
+                    a_detail_no: a_v_modalPropsData.a_detail_no,
+                    a_activity_no: a_v_modalPropsData.a_detail_no 
+                };
+                confirmMsg = `해당 영업 활동 내역을 삭제하시겠습니까?`
+
+            }
         } 
             /* const updatedInput = f_warningMsg(); // 반환값을 변수에 저장
             if (!updatedInput) {
@@ -1219,7 +1230,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             <Modal.Title className='fs-3'>
                                 {
                                 (auth.userAuthCode === '0002') ? 
-                                '영업 활동 상세 조회' : '영업 활동 수정'
+                                '영업 활동 상세 조회' : '영업 활동 갱신'
                                 }
                             </Modal.Title>
                             </Modal.Header> 
@@ -1291,7 +1302,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             (a_v_modalPropsData ? 
                                                 
                                                 <>
-                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'update-biz-opp-activity/', updateInput, e, '수정')}>수정</Button>
+                                                <Button variant='primary' onClick={(e) => f_handlingData('post', 'update-biz-opp-activity/', updateInput, e, '수정')}>저장</Button>
                                                 
                                                     {auth.userAuthCode === '0001' ? 
                                                     <Button variant='danger' onClick={(e) => f_handlingData('post', 'delete-biz-opp-activity/', updateInput, e, '삭제')}>삭제</Button>

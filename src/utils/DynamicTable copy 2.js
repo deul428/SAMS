@@ -9,7 +9,7 @@ import { apiMethods } from './api';
 import roots from './datas/Roots';
 
 import { Table, Button, Pagination, Row, Col, ModalBody, Modal, FloatingLabel, Form, Collapse, Card } from 'react-bootstrap';
-import { CaretUp, CaretDown, ArrowBarDown, ArrowBarUp, TrainFreightFront } from 'react-bootstrap-icons';
+import { CaretUp, CaretDown, ArrowBarDown, ArrowBarUp } from 'react-bootstrap-icons';
 import '../styles/_table.scss';
 import '../styles/_global.scss';
 import { useMemo } from 'react';
@@ -378,111 +378,116 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
             <>
             <Table hover responsive className='activity' >
               {Object.entries(groupedData).map(([biz_opp_id, group], groupIndex) => {
-                const commonInfo = group[0]; // 그룹의 첫 번째 데이터를 공통 정보로 사용
-                return (
-                  <>
-                  <div key={groupIndex} className='mb-4 d-flex flex-column'>
-                    <tbody>
-                      <div>
-                        <th>사업 번호</th>
-                        <td>{commonInfo.biz_opp_id}</td>
-                        <th>사업명</th>
-                        <td style={{'width':'calc(100% - (8.66666% + 8%*2))'}} colSpan={9}>{commonInfo.biz_opp_name}</td>
-                      </div>
-                    </tbody>
-                    <tbody>
-                      <div>
-                        <th>소속 본부</th>
-                        <td colSpan={3}>{commonInfo.change_preparation_high_dept_name}</td>
-                        <th>팀</th>
-                        <td colSpan={3}>{commonInfo.change_preparation_dept_name}</td>
-                        <th>영업 담당자</th>
-                        <td colSpan={3}>{commonInfo.user_name}</td>
-                      </div>
-                    </tbody>
-                    <tbody>
-                      <div>
-                        <th>계약 일자</th>
-                        <td>{commonInfo.contract_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                        <th>매출 일자</th>
-                        <td>{commonInfo.sale_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                        <th>매출 금액</th>
-                        <td>{commonInfo.sale_amt.toLocaleString('ko-KR')}</td>
-                        <th>매출 이익</th>
-                        <td>{commonInfo.sale_profit.toLocaleString('ko-KR')}</td>
-                        <th>사업 구분</th>
-                        <td>{commonInfo.biz_section2_name}</td>
-                        <th>제품 구분</th>
-                        <td>{commonInfo.principal_product2_name}</td>
-                      </div>
-                    </tbody>
-                    {group.length > 5 ? 
-                      (
-                        <>
-                        <tbody >
-                          {group.map((item, index) => (
-                            index > 4 ? 
-                            <Collapse in={openStates[biz_opp_id] || false}>
-                              <div>
+                  const commonInfo = group[0]; // 그룹의 첫 번째 데이터를 공통 정보로 사용
+                  return (
+                    <>
+                    <div key={groupIndex} className='mb-4 d-flex flex-column'>
+                      <tbody>
+                        <tr>
+                          <th>사업 일련 번호</th>
+                          <td>{commonInfo.biz_opp_id}</td>
+                          <th>사업명</th>
+                          <td colSpan={9}>{commonInfo.biz_opp_name}</td>
+                        </tr>
+                      </tbody>
+                      <tbody>
+                        <tr>
+                          <th>소속 본부</th>
+                          <td colSpan={3}>{commonInfo.change_preparation_high_dept_name}</td>
+                          <th>팀</th>
+                          <td colSpan={3}>{commonInfo.change_preparation_dept_name}</td>
+                          <th>영업 담당자</th>
+                          <td colSpan={3}>{commonInfo.user_name}</td>
+                        </tr>
+                      </tbody>
+                      <tbody>
+                        <tr>
+                          <th>계약 일자</th>
+                          <td>{commonInfo.contract_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                          <th>매출 일자</th>
+                          <td>{commonInfo.sale_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                          <th>매출 금액</th>
+                          <td>{commonInfo.sale_amt.toLocaleString('ko-KR')}</td>
+                          <th>매출 이익</th>
+                          <td>{commonInfo.sale_profit.toLocaleString('ko-KR')}</td>
+                          <th>사업 구분</th>
+                          <td>{commonInfo.biz_section2_name}</td>
+                          <th>제품 구분</th>
+                          <td>{commonInfo.principal_product2_name}</td>
+                        </tr>
+                      </tbody>
+                      {group.length > 5 ? 
+                        (
+                          <>
+                          <tbody>
+                            <div className='collapseArea'>
+                              {group.map((item, index) => (
+                                index > 4 ? 
+                                <Collapse in={openStates[biz_opp_id] || false}>
+                                  <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
+                                    <div className='collapseItem'>
+                                      {/* {console.log("group[index]: ", group[index], biz_opp_id, index)} */}
+                                      <th>상세 번호</th>
+                                      <td>{item.detail_no}</td>
+                                      <th>활동 일자</th>
+                                      <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                                      <th>활동 내역</th>
+                                      <td className='activityDetails' colSpan={5}>{item.activity_details}</td>
+                                    </div>
+                                  </div>
+                                </Collapse> : 
+                                
                                 <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
+                                  <div className='collapseItem'>
+                                    <th>상세 번호</th>
+                                    <td>{item.detail_no}</td>
+                                    <th>활동 일자</th>
+                                    <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                                    <th>활동 내역</th>
+                                    <td className='activityDetails' colSpan={5}>{item.activity_details}</td>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                            <Button className='collapseController'
+                              onClick={() => toggleCollapse(biz_opp_id)}
+                              aria-controls={`collapse-${biz_opp_id}`}
+                              aria-expanded={openStates[biz_opp_id] || false}>
+                              {openStates[biz_opp_id] ? 
+                              <><ArrowBarUp /><span>접기</span></> : 
+                              <><ArrowBarDown /><span>모두 펼치기</span></>}
+                            </Button>
+                          </tbody>
+                        </>
+                        )
+                        :
+                        (
+                        <tbody>
+                          <div className='collapseArea'>
+                            {group.map((item, index) => (
+                              <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
+                                <div className='collapseItem'>
                                   <th>상세 번호</th>
                                   <td>{item.detail_no}</td>
                                   <th>활동 일자</th>
                                   <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                                   <th>활동 내역</th>
-                                  <td className='activityDetails' colSpan={6}>{item.activity_details}</td>
+                                  <td className='activityDetails' colSpan={5}>
+                                    <div type='textarea'>
+                                      {item.activity_details}
+                                    </div>
+                                  </td>
                                 </div>
                               </div>
-                            </Collapse> : 
-                            
-                            <div>
-                              <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                                <th>상세 번호</th>
-                                <td>{item.detail_no}</td>
-                                <th>활동 일자</th>
-                                <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                                <th>활동 내역</th>
-                                <td className='activityDetails' colSpan={6}>{item.activity_details}</td>
-                              </div>
-                            </div>
-                          ))}
-                          <Button className='collapseController'
-                            onClick={() => toggleCollapse(biz_opp_id)}
-                            aria-controls={`collapse-${biz_opp_id}`}
-                            aria-expanded={openStates[biz_opp_id] || false}>
-                            {openStates[biz_opp_id] ? 
-                            <><ArrowBarUp /><span>접기</span></> : 
-                            <><ArrowBarDown /><span>모두 펼치기</span></>}
-                          </Button>
-                        </tbody>
-                      </>
-                      )
-                      :
-                      (
-                      <tbody>
-                        {group.map((item, index) => (
-                          <div>
-                            <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                              <th>상세 번호</th>
-                              <td>{item.detail_no}</td>
-                              <th>활동 일자</th>
-                              <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                              <th>활동 내역</th>
-                              <td className='activityDetails' colSpan={6}>
-                                <div type='textarea'>
-                                  {item.activity_details}
-                                </div>
-                              </td>
-                            </div>
+                            ))}
                           </div>
-                        ))}
-                      </tbody>
-                      )
-                    }
-                  </div>
-                  </>
-                );
-              })}
+                        </tbody>
+                        )
+                      }
+                    </div>
+                    </>
+                  );
+                })}
             </Table>
             </>  
             

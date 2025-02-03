@@ -1854,6 +1854,7 @@ def f_select_biz_opp_activity1(request):
                                                                  FROM ajict_bms_schema.dept CCC
                                                                  WHERE CCC.dept_id = B.change_preparation_dept_id AND
                                                                        CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
+                                            C.detail_no,
                                             C.activity_no,
                                             C.activity_details,
                                             C.activity_date,
@@ -2123,6 +2124,7 @@ def f_select_biz_opp_activity2(request):
                                                                  FROM ajict_bms_schema.dept CCC
                                                                  WHERE CCC.dept_id = B.change_preparation_dept_id AND
                                                                        CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
+                                            C.detail_no,
                                             C.activity_no,
                                             C.activity_details,
                                             C.activity_date,

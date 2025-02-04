@@ -767,7 +767,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 switch (v_componentName) {
                     case `bizOpp`:
                         setVHandlingHtml(
-                            <Modal size='xl' show={show} onHide={onHide} scrollable /* centered */>
+                            <Modal size='xl' show={show} onHide={onHide} scrollable centered>
                                 <Modal.Header closeButton>
                                     <Modal.Title className='fs-3'>
                                         {

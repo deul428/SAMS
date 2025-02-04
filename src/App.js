@@ -16,6 +16,7 @@ import ResizableTable from './components/test/ResizableTable';
 
 import usePreventRefresh from './hooks/usePreventRefresh';
 
+import OffcanvasExample from './components/OffcanvasExample';
 function AppCntnt() {
   usePreventRefresh();
   const location = useLocation();
@@ -32,6 +33,7 @@ function AppCntnt() {
     <>
       {!hiddenPaths.includes(location.pathname) && <Header />}
       <div id='cntntArea'>
+        <OffcanvasExample/>
           {/* {!hiddenPaths.includes(location.pathname) && <MultiTabComponent />} */}
           {/* <ExcelTable></ExcelTable> */}
           {/* <Tree_uiUsed_productManage></Tree_uiUsed_productManage> */}

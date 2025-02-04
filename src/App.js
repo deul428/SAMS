@@ -33,7 +33,7 @@ function AppCntnt() {
     <>
       {!hiddenPaths.includes(location.pathname) && <Header />}
       <div id='cntntArea'>
-        <OffcanvasExample/>
+        {/* <OffcanvasExample/> */}
           {/* {!hiddenPaths.includes(location.pathname) && <MultiTabComponent />} */}
           {/* <ExcelTable></ExcelTable> */}
           {/* <Tree_uiUsed_productManage></Tree_uiUsed_productManage> */}

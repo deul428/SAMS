@@ -1,12 +1,13 @@
-import { Button, ButtonGroup, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, ButtonGroup, Container, Nav, Navbar, NavDropdown, Offcanvas, Form } from 'react-bootstrap';
 import { Person } from 'react-bootstrap-icons';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/reducers/AuthSlice';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import ci from '../assets/img/AJ_ICT.svg';
 import roots from '../utils/datas/Roots';
 import debounce from 'lodash';
+
 function Header() {
     const navigate = useNavigate(); // 페이지 이동에 사용
     // ============== Log-In 처리 ==============
@@ -57,51 +58,105 @@ function Header() {
         v_hasChildUrls.some(value => location.pathname.includes(value)) ? setIsActive(true) : setIsActive(false);
     }, [location]);
 
-    const [width, setWidth] = useState(window.innerWidth);
-    const handleResize = debounce(() => {
-        setWidth(window.innerWidth);
-    }, 200);
+
+    // response UI - window width 감지
+    const [browserWidth, setBrowserWidth] = useState(0);
+    const resizeTimer = useRef(null);
+    // const [v_mainHeader, setVMainHeader] = useState(null);
+    // const [v_responsiveHeader, setVresponsiveHeader] = useState(null);
+
     useEffect(() => {
-        window.addEventListener("resize", handleResize);
-        console.log(width, window.innerWidth);
-        return () => {
-            // cleanup
-            window.removeEventListener("resize", handleResize);
+        const handleResize = () => {
+            if (resizeTimer.current !== null) return;
+            resizeTimer.current = setTimeout(() => {
+                resizeTimer.current = null;
+                setBrowserWidth(window.innerWidth);
+            }, 200);
         };
-    }, [window.innerWidth]);
+        window.addEventListener('resize', handleResize);  
+        return () => {
+            window.addEventListener('resize', handleResize);
+        };
+    }, [browserWidth]);
+
+    const v_mainHeader = useMemo(() => ({
+        display: browserWidth < 1024 ? "none" : "block",
+    }), [browserWidth]);
+        
+    const v_responsiveHeader = useMemo(() => ({
+        display: browserWidth < 1024 ? "block" : "none",
+    }), [browserWidth]);
+      
     return (
         <>
-            <Navbar id='header' fixed='top' bg='primary' v_haschildurls-bs-theme='dark'>
-                <Container>
-                    <Nav className='brand'>
-                        <Navbar.Brand href='#'>
-                            <img className='ci' src={ci} alt={`AJICT_CI`} />
-                        </Navbar.Brand>
-                    </Nav>
-                    
-                    <Nav className='navMenu'>
-                        <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[0]) ? 'active' : ''} nav-link`} id='menu01'>
-                            기본 정보 관리
-                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots.adminUser.depth1}/${roots.adminUser.depth2}`}>사용자 관리</Nav.Link>
-                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots.adminCode.depth1}/${roots.adminCode.depth2}`}>공통 코드 관리</Nav.Link>
-                            <Nav.Link as={NavLink} className='menuItem' id='menu02' to={`/${roots.adminProduct.depth1}/${roots.adminProduct.depth2}`}>제품 관리</Nav.Link>
-                        </div>
-                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.bizoppSelect1.depth1) ? 'active' : ''}`} id='menu03' to={`/${roots.bizoppSelect1.depth1}/${roots.bizoppSelect1.depth2}`}>
-                            사업 (기회) 관리
-                        </Nav.Link>
-                        <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.activitySelect1.depth1) ? 'active' : ''}`} to={`/${roots.activitySelect1.depth1}/${roots.activitySelect1.depth2}`}>
-                            영업 활동 관리
-                        </Nav.Link>
+        <Navbar id='header' key={'xl'} expand={'xl'} className="responsiveHeader bg-body-tertiary mb-3" style={v_responsiveHeader}>
+            <Container fluid>
+                <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${'xl'}`} />
+                <Navbar.Offcanvas id={`offcanvasNavbar-expand-${'xl'}`} aria-labelledby=    {`offcanvasNavbarLabel-expand-${'xl'}`} placement="end">
+                    <Offcanvas.Header closeButton />
+                    <Offcanvas.Body>
+                        <Nav className='brand'>
+                            <Navbar.Brand href='#'>
+                                <img className='ci' src={ci} alt={`AJICT_CI`} />
+                            </Navbar.Brand>
+                        </Nav>
+                        
+                        <Nav className='navMenu'>
+                            <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[0]) ? 'active' : ''} nav-link`} id='menu01'>
+                                기본 정보 관리
+                                <Nav.Link as={NavLink} className='menuItem' to={`/${roots.adminUser.depth1}/${roots.adminUser.depth2}`}>사용자 관리</Nav.Link>
+                                <Nav.Link as={NavLink} className='menuItem' to={`/${roots.adminCode.depth1}/${roots.adminCode.depth2}`}>공통 코드 관리</Nav.Link>
+                                <Nav.Link as={NavLink} className='menuItem' id='menu02' to={`/${roots.adminProduct.depth1}/${roots.adminProduct.depth2}`}>제품 관리</Nav.Link>
+                            </div>
+                            <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.bizoppSelect1.depth1) ? 'active' : ''}`} id='menu03' to={`/${roots.bizoppSelect1.depth1}/${roots.bizoppSelect1.depth2}`}>
+                                사업 (기회) 관리
+                            </Nav.Link>
+                            <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.activitySelect1.depth1) ? 'active' : ''}`} to={`/${roots.activitySelect1.depth1}/${roots.activitySelect1.depth2}`}>
+                                영업 활동 관리
+                            </Nav.Link>
 
-                        <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[1]) ? 'active' : ''} nav-link`} id='menu04'>
-                            목표 관리
-                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots.aimManage.depth1}/${roots.aimManage.depth2}`}>목표 관리</Nav.Link>
-                            <Nav.Link as={NavLink} className='menuItem' to={`/${roots.aimacheive.depth1}/${roots.aimacheive.depth2}`}>달성률 조회</Nav.Link>
-                        </div>
-                    </Nav>
-                    <div className='loginInfoArea'>{v_loginInfo}</div>
-                </Container>
-            </Navbar>
+                            <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[1]) ? 'active' : ''} nav-link`} id='menu04'>
+                                목표 관리
+                                <Nav.Link as={NavLink} className='menuItem' to={`/${roots.aimManage.depth1}/${roots.aimManage.depth2}`}>목표 관리</Nav.Link>
+                                <Nav.Link as={NavLink} className='menuItem' to={`/${roots.aimacheive.depth1}/${roots.aimacheive.depth2}`}>달성률 조회</Nav.Link>
+                            </div>
+                        </Nav>
+                        <div className='loginInfoArea'>{v_loginInfo}</div>
+                    </Offcanvas.Body>
+                </Navbar.Offcanvas>
+            </Container>
+        </Navbar>
+        <Navbar id='header' fixed='top' bg='primary' v_haschildurls-bs-theme='dark' style={v_mainHeader}>
+            <Container>
+                <Nav className='brand'>
+                    <Navbar.Brand href='#'>
+                        <img className='ci' src={ci} alt={`AJICT_CI`} />
+                    </Navbar.Brand>
+                </Nav>
+                
+                <Nav className='navMenu'>
+                    <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[0]) ? 'active' : ''} nav-link`} id='menu01'>
+                        기본 정보 관리
+                        <Nav.Link as={NavLink} className='menuItem' to={`/${roots.adminUser.depth1}/${roots.adminUser.depth2}`}>사용자 관리</Nav.Link>
+                        <Nav.Link as={NavLink} className='menuItem' to={`/${roots.adminCode.depth1}/${roots.adminCode.depth2}`}>공통 코드 관리</Nav.Link>
+                        <Nav.Link as={NavLink} className='menuItem' id='menu02' to={`/${roots.adminProduct.depth1}/${roots.adminProduct.depth2}`}>제품 관리</Nav.Link>
+                    </div>
+                    <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.bizoppSelect1.depth1) ? 'active' : ''}`} id='menu03' to={`/${roots.bizoppSelect1.depth1}/${roots.bizoppSelect1.depth2}`}>
+                        사업 (기회) 관리
+                    </Nav.Link>
+                    <Nav.Link as={NavLink} className={`menuItem menus ${location.pathname.includes(roots.activitySelect1.depth1) ? 'active' : ''}`} to={`/${roots.activitySelect1.depth1}/${roots.activitySelect1.depth2}`}>
+                        영업 활동 관리
+                    </Nav.Link>
+
+                    <div className={`menus ${isActive && location.pathname.includes(v_hasChildUrls[1]) ? 'active' : ''} nav-link`} id='menu04'>
+                        목표 관리
+                        <Nav.Link as={NavLink} className='menuItem' to={`/${roots.aimManage.depth1}/${roots.aimManage.depth2}`}>목표 관리</Nav.Link>
+                        <Nav.Link as={NavLink} className='menuItem' to={`/${roots.aimacheive.depth1}/${roots.aimacheive.depth2}`}>달성률 조회</Nav.Link>
+                    </div>
+                </Nav>
+                <div className='loginInfoArea'>{v_loginInfo}</div>
+            </Container>
+        </Navbar>
         </>
     );
 }

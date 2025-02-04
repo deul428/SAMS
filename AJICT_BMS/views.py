@@ -1498,7 +1498,7 @@ def f_renewal_biz_opp(request):
                                                               A.detail_no = %s"""
                v_param_update_biz_opp_detail_history = []
                v_param_update_biz_opp_detail_history.append(v_biz_opp_id)
-               v_param_update_biz_opp_detail_history.append(v_biz_opp_id)
+               v_param_update_biz_opp_detail_history.append(v_detail_no)
                v_param_update_biz_opp_detail_history.append(v_session_user_id)
                v_param_update_biz_opp_detail_history.append(v_biz_opp_id)
                v_param_update_biz_opp_detail_history.append(v_detail_no)

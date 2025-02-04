@@ -1094,7 +1094,7 @@ def f_insert_biz_opp(request):
                                                                                                                  1,
                                                                                                                  1,
                                                                                                                  %s,
-                                                                                                                 %s,
+                                                                                                                 TRIM(%s),
                                                                                                                  (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s AND A.delete_date IS NULL),
                                                                                                                  'COR',
                                                                                                                  %s,
@@ -1238,7 +1238,7 @@ def f_renewal_biz_opp(request):
                       'a_biz_opp_id':'20250034',
                       'a_detail_no':1,
                       'biz_opp':{'a_biz_opp_name':'수정이 잘 되기를 바래.',
-                                 'a_contract_date':'20250202',
+                                 #'a_contract_date':'20250202',
                                  'a_progress2_rate_code':'0001',
                                  'a_essential_achievement_tf':False},
                       'biz_opp_detail':{'a_user_id':'leecj',
@@ -1247,22 +1247,23 @@ def f_renewal_biz_opp(request):
                                         'a_last_client_com2_code':'0002',
                                         'a_sale_com2_code':'0001',
                                         'a_sale_item_no':'',
-                                        'a_sale_date':'20250215',
+                                        #'a_sale_date':'20250215',
                                         'a_sale_amt':567890,
-                                        'a_sale_profit':56,
+                                        'a_sale_profit':9999999,
                                         'a_purchase_date':'20250219',
                                         'a_purchase_amt':567,
                                         'a_collect_money_date':'20250225',
                                         'a_biz_section2_code':'0003',
                                         'a_principal_product2_code':'0008'},
-                      'biz_opp_activity':{'a_activity_details':'2월의 첫 출근이닷!',
-                                          'a_activity_date':'20250203'}}
+                      'biz_opp_activity':{'a_activity_details':'두번째!',
+                                          'a_activity_date':'20250204'}}
             v_biz_opp = v_body.get('biz_opp')
             v_biz_opp_detail = v_body.get('biz_opp_detail')
             v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
             v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
             v_set_clauses_biz_opp = []
             v_set_clauses_biz_opp_history = []
+            v_set_clauses_biz_opp_detail_history = []
             if v_biz_opp:
                v_param = []
                for v_key,v_value in v_body.items():
@@ -1302,6 +1303,7 @@ def f_renewal_biz_opp(request):
                         #   v_set_clauses.append(f"{v_nested_key[2:]} = %s")
                         #   v_param.append(v_nested_value)
                         v_set_clauses.append(f"{v_nested_key[2:]} = %s")
+                        v_set_clauses_biz_opp_detail_history.append(v_nested_key)
                         v_param.append(v_nested_value)
                v_sql_update_biz_opp_detail = f"UPDATE ajict_bms_schema.biz_opp_detail\
                                                SET " + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
@@ -1368,26 +1370,19 @@ def f_renewal_biz_opp(request):
 
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_activity,v_param_insert_biz_opp_activity)
-
-
-
             if v_biz_opp or v_biz_opp_detail:
-               v_new_set_clauses_biz_opp_history = ['u_' + v_item for v_item in v_set_clauses_biz_opp_history]
+               v_new_set_clauses_biz_opp_history = ['u_' + v_item.replace('a_','',1) for v_item in v_set_clauses_biz_opp_history]
                v_base_columns = ['biz_opp_id','history_no','biz_opp_name','progress1_rate_code','progress2_rate_code','contract_date','essential_achievement_tf','create_user']
                v_columns_str = ',\n '.join(v_base_columns + v_new_set_clauses_biz_opp_history)
-
-
-               #test
-               #v_values_str = ',\n '.join(['%s' for _ in v_base_columns] + ['TRUE' for _ in v_new_set_clauses_biz_opp_history])
-
                v_values_str = ',\n '.join(['TRUE' for _ in v_new_set_clauses_biz_opp_history])
 
 
                #test
-               print(f"v_new_set_clauses_biz_opp_history : {v_new_set_clauses_biz_opp_history}")
-               print(f"v_base_columns : {v_base_columns}")
-               print(f"v_columns_str : {v_columns_str}")
-               print(f"v_values_str : {v_values_str}")
+               # print(f"v_new_set_clauses_biz_opp_history : {v_new_set_clauses_biz_opp_history}")
+               # print(f"v_base_columns : {v_base_columns}")
+               # print(f"v_columns_str : {v_columns_str}")
+               # print(f"v_values_str : {v_values_str}")
+               # print(f"v_set_clauses_biz_opp_history : {v_set_clauses_biz_opp_history}")
 
 
                v_sql_update_biz_opp_history = f"""INSERT INTO ajict_bms_schema.biz_opp_history ({v_columns_str})
@@ -1434,32 +1429,49 @@ def f_renewal_biz_opp(request):
 
                with connection.cursor() as v_cursor:
                   v_cursor.execute(v_sql_update_biz_opp_history,v_param_update_biz_opp_history)
-               v_sql_update_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_history (biz_opp_id,
-                                                                                                             detail_no,
-                                                                                                             history_no,
-                                                                                                             user_id,
-                                                                                                             change_preparation_dept_id,
-                                                                                                             change_preparation_dept_name,
-                                                                                                             last_client_com1_code,
-                                                                                                             last_client_com2_code,
-                                                                                                             sale_com1_code,
-                                                                                                             sale_com2_code,
-                                                                                                             sale_item_no,
-                                                                                                             sale_date,
-                                                                                                             sale_amt,
-                                                                                                             sale_profit,
-                                                                                                             purchase_date,
-                                                                                                             purchase_amt,
-                                                                                                             collect_money_date,
-                                                                                                      biz_section1_code,
-                                                                                                      biz_section2_code,
-                                                                                                      principal_product1_code,
-                                                                                                      principal_product2_code,
-                                                                                                      renewal_code,
-                                                                                                      create_user)
-                                                        SELECT %s,
-                                                               1,
-                                                               (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
+               v_new_set_clauses_biz_opp_detail_history = ['u_' + v_item.replace('a_','',1) for v_item in v_set_clauses_biz_opp_detail_history]
+               v_base_columns = []
+               v_base_columns = ['biz_opp_id',
+                                 'detail_no',
+                                 'history_no',
+                                 'user_id',
+                                 'change_preparation_dept_id',
+                                 'change_preparation_dept_name',
+                                 'last_client_com1_code',
+                                 'last_client_com2_code',
+                                 'sale_com1_code',
+                                 'sale_com2_code',
+                                 'sale_item_no',
+                                 'sale_date',
+                                 'sale_amt',
+                                 'sale_profit',
+                                 'purchase_date',
+                                 'purchase_amt',
+                                 'collect_money_date',
+                                 'biz_section1_code',
+                                 'biz_section2_code',
+                                 'principal_product1_code',
+                                 'principal_product2_code',
+                                 'renewal_code',
+                                 'create_user']
+               v_columns_str = []
+               v_columns_str = ',\n '.join(v_base_columns + v_new_set_clauses_biz_opp_detail_history)
+               v_values_str = []
+               v_values_str = ',\n '.join(['TRUE' for _ in v_new_set_clauses_biz_opp_detail_history])
+
+
+               #test
+               print(f"v_new_set_clauses_biz_opp_detail_history : {v_new_set_clauses_biz_opp_detail_history}")
+               print(f"v_base_columns : {v_base_columns}")
+               print(f"v_columns_str : {v_columns_str}")
+               print(f"v_values_str : {v_values_str}")
+               print(f"v_set_clauses_biz_opp_detail_history : {v_set_clauses_biz_opp_detail_history}")
+
+
+               v_sql_update_biz_opp_detail_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_history ({v_columns_str})
+                                                        SELECT A.biz_opp_id,
+                                                               A.detail_no,
+                                                               (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_detail_history AA WHERE AA.biz_opp_id = %s AND AA.detail_no = %s),
                                                                A.user_id,
                                                                A.change_preparation_dept_id,
                                                                A.change_preparation_dept_name,
@@ -1479,7 +1491,8 @@ def f_renewal_biz_opp(request):
                                                                A.principal_product1_code,
                                                                A.principal_product2_code,
                                                                'U',
-                                                               %s
+                                                               %s,
+                                                               {v_values_str}
                                                         FROM ajict_bms_schema.biz_opp_detail A
                                                         WHERE A.biz_opp_id = %s AND
                                                               A.detail_no = %s"""
@@ -1498,8 +1511,6 @@ def f_renewal_biz_opp(request):
 
                with connection.cursor() as v_cursor:
                   v_cursor.execute(v_sql_update_biz_opp_detail_history,v_param_update_biz_opp_detail_history)
-
-
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
             v_square_bracket_return = [v_return]
             return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})

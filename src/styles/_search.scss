@@ -7,6 +7,31 @@
             &.btnRow {
                 position: relative !important;
             } 
+            .col {
+                margin-bottom: 0.7rem !important;
+            }
+        }
+
+        &.bizoppArea {
+            .row {
+                ol {
+                    li {
+                        flex-direction: column-reverse !important;
+                        &::before {
+                            top: 2rem !important;
+                        }
+                        div {
+                            &.activityDetails {
+                            }
+                            &.activityDate {
+                                width: 100% !important;
+                                text-align: left !important;
+                            }
+                        }
+                    }
+                }
+
+            }
         }
     }
 }

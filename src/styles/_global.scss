@@ -7,11 +7,57 @@
     align-items: center;
 }
 
-$breakpoint-mobile335: 335px;
-$breakpoint-tablet758: 758px;
-$breakpoint-desktop1024: 1024px;
-$breakpoint-desktop1200: 1200px;
+@import './mixin';
 
+@include mobile335 {
+    h1 { 
+        // fontSize 2.5rem
+        font-size: 2rem;
+    }
+    h2 {
+        // fontSize 2rem, 기본 heading 값
+        margin: 2.5% !important;
+        font-size: 1.5rem;
+        text-align: center !important;
+    }
+    h3 {
+        font-size: 1.25rem;
+    }
+    h4, label {
+        font-size: 1rem;
+    }
+    h5, button.btn-sm {
+        font-size: 0.75rem;
+    }
+}
+@include tablet758 {
+    h1 { 
+        // fontSize 2.5rem
+        font-size: 2rem;
+    }
+    h2 {
+        // fontSize 2rem, 기본 heading 값
+        margin: 2.5% !important;
+        font-size: 1.5rem;
+        text-align: center !important;
+    }
+    h3 {
+        font-size: 1.25rem;
+    }
+    h4, label {
+        font-size: 1rem;
+    }
+    h5, button.btn-sm {
+        font-size: 0.75rem;
+    }
+    
+}
+@include desktop1024 {
+    
+}
+@include desktop1200 {
+    
+}
 $full: 100%;
 $auto: 0 auto;
 $margin-bottom-10: 0 0 10% 0;

@@ -586,7 +586,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     const hasBizOpp = !!input?.biz_opp;
                     const hasBizOppDetail = !!input?.biz_opp_detail;
                     const hasBizOppActivity = !!input?.biz_opp_activity;
-                    if (!hasBizOpp || !hasBizOppDetail || !hasBizOppActivity) return;
+                    if (!hasBizOpp && !hasBizOppDetail && !hasBizOppActivity) {
+                        console.log('없어요');
+                        return;
+                    };
                     if (
                         (
                             validateStr(input.biz_opp, 'a_biz_opp_name') ||
@@ -716,6 +719,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 f_handlingData('post', 'select-biz-opp-activity3/', userCheck, null, '활동조회');
             }
         } else {
+            setInsertInput(p_bizopp);
+            setUpdateInput([]);
             /* setUpdateInput([]);
             setInsertInput(p_bizopp); */
             // v_modalPropsData = {};
@@ -1159,7 +1164,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             />
                                                         </FloatingLabel>
                                                     </Col>
-                                                    <Col xs={12} md={6} lg={4} xl={3} className='activity col d-flex align-items-center floating'>
+                                                    <Col xs={12} md={3} lg={4} xl={3} className='activity col d-flex align-items-center floating'>
                                                         <FloatingLabel label='활동 일자'>
                                                             <Form.Control size='sm' type='date' className='' 
                                                             name='a_activity_date' 

@@ -619,6 +619,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 }
             } else if (v_componentName === 'activity') {
                 if (msg === '수정' && a_v_modalPropsData) {
+                    console.log(input);
+                    if (!input.biz_opp_activity?.a_activity_details) {
+                        return;
+                    }
                     const updateInput = { 
                         a_session_user_id: input.a_session_user_id, 
                         a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id, 
@@ -629,7 +633,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     };
                     console.log(a_v_modalPropsData, input, updateInput);
                     input = updateInput;
-                    console.log(input);
                     if (
                         (
                             (input.biz_opp_activity?.a_activity_details && input.biz_opp_activity.a_activity_details.trim() !== '') || 

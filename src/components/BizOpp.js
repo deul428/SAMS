@@ -55,7 +55,7 @@ const BizOpp = () => {
             } 
             console.log(`API Get (수신)\nEndpoint: (BizOpp.js) ${endpoint}\nresponse: `, response);
             if (Array.isArray(response)) {
-                alert(response[0].MESSAGE || '로그인 필요');
+                alert('로그인이 필요합니다.');
                 navigate(`/${roots.login.endpoint}`, { replace: true });
                 return;
             } else {

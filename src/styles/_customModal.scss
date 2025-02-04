@@ -1,5 +1,35 @@
 // react-bootstrap's Modal Style
 @import './global';
+@import './mixin';
+
+@include mobile335 {
+    .modal {
+        .modal-dialog {
+
+        }
+    }
+}
+@include tablet758 {
+    .modal {
+        .modal-dialog {
+            max-width: 90vw;
+        }
+    }
+}
+@include desktop1024 {
+    .modal {
+        .modal-dialog {
+            
+        }
+    }
+}
+@include desktop1200 {
+    .modal {
+        .modal-dialog {
+            
+        }
+    }
+}
 
 .modal {
     .modal-dialog {

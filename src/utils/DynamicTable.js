@@ -485,7 +485,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                           </div>
                         ))}
                       </tbody>
-                      )
+                      ) 
                     }
                   </div>
                   </>

@@ -95,7 +95,6 @@
         .row {
             width: $full;
             // margin-bottom: 1rem;
-            margin-bottom: 0.5rem;
             &.btnRow {
                 position: absolute;
                 top: 0;
@@ -106,6 +105,7 @@
                 }
             } 
             .col {
+                margin-bottom: 0.5rem;
                 padding: 0;
                 padding-right: 1rem;
                 &.floating {

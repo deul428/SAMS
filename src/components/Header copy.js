@@ -6,7 +6,7 @@ import { logout } from '../redux/reducers/AuthSlice';
 import { useState, useEffect } from 'react';
 import ci from '../assets/img/AJ_ICT.svg';
 import roots from '../utils/datas/Roots';
-import debounce from 'lodash';
+
 function Header() {
     const navigate = useNavigate(); // 페이지 이동에 사용
     // ============== Log-In 처리 ==============
@@ -56,19 +56,7 @@ function Header() {
     useEffect(() => {
         v_hasChildUrls.some(value => location.pathname.includes(value)) ? setIsActive(true) : setIsActive(false);
     }, [location]);
-
-    const [width, setWidth] = useState(window.innerWidth);
-    const handleResize = debounce(() => {
-        setWidth(window.innerWidth);
-    }, 200);
-    useEffect(() => {
-        window.addEventListener("resize", handleResize);
-        console.log(width, window.innerWidth);
-        return () => {
-            // cleanup
-            window.removeEventListener("resize", handleResize);
-        };
-    }, [window.innerWidth]);
+ 
     return (
         <>
             <Navbar id='header' fixed='top' bg='primary' v_haschildurls-bs-theme='dark'>

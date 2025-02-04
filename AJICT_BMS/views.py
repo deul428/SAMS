@@ -1234,30 +1234,30 @@ def f_renewal_biz_opp(request):
    else:
       try:
          with transaction.atomic():
-            # v_body = {'a_session_user_id':'leecj',
-            #           'a_biz_opp_id':'20250034',
-            #           'a_detail_no':1,
-            #           'biz_opp':{'a_biz_opp_name':'수정이 잘 되기를 바래.',
-            #                      #'a_contract_date':'20250202',
-            #                      'a_progress2_rate_code':'0002',
-            #                      'a_essential_achievement_tf':False},
-            #           'biz_opp_detail':{},
-            #           # 'biz_opp_detail':{'a_user_id':'leecj',
-            #           #                   'a_change_preparation_dept_id':'98000',
-            #           #                   'a_change_preparation_dept_name':'신사업추진본부',
-            #           #                   'a_last_client_com2_code':'0002',
-            #           #                   'a_sale_com2_code':'0001',
-            #           #                   'a_sale_item_no':'',
-            #           #                  #'a_sale_date':'20250215',
-            #           #                   'a_sale_amt':567890,
-            #           #                   'a_sale_profit':9999999,
-            #           #                   'a_purchase_date':'20250219',
-            #           #                   'a_purchase_amt':567,
-            #           #                   'a_collect_money_date':'20250225',
-            #           #                   'a_biz_section2_code':'0003',
-            #           #                   'a_principal_product2_code':'0008'},
-            #           'biz_opp_activity':{'a_activity_details':'세번째!',
-            #                               'a_activity_date':'20250204'}}
+            v_body = {'a_session_user_id':'leecj',
+                      'a_biz_opp_id':'20250034',
+                      'a_detail_no':1,
+                      'biz_opp':{'a_biz_opp_name':'수정이 잘 되기를 바래.',
+                                 #'a_contract_date':'20250202',
+                                 'a_progress2_rate_code':'0002',
+                                 'a_essential_achievement_tf':False},
+                      'biz_opp_detail':{},
+                      # 'biz_opp_detail':{'a_user_id':'leecj',
+                      #                   'a_change_preparation_dept_id':'98000',
+                      #                   'a_change_preparation_dept_name':'신사업추진본부',
+                      #                   'a_last_client_com2_code':'0002',
+                      #                   'a_sale_com2_code':'0001',
+                      #                   'a_sale_item_no':'',
+                      #                  #'a_sale_date':'20250215',
+                      #                   'a_sale_amt':567890,
+                      #                   'a_sale_profit':9999999,
+                      #                   'a_purchase_date':'20250219',
+                      #                   'a_purchase_amt':567,
+                      #                   'a_collect_money_date':'20250225',
+                      #                   'a_biz_section2_code':'0003',
+                      #                   'a_principal_product2_code':'0008'},
+                      'biz_opp_activity':{'a_activity_details':'세번째!',
+                                          'a_activity_date':'20250204'}}
             v_biz_opp = v_body.get('biz_opp')
             v_biz_opp_detail = v_body.get('biz_opp_detail')
             v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
@@ -1314,6 +1314,9 @@ def f_renewal_biz_opp(request):
                v_param.append(v_detail_no)
 
 
+
+
+
                #test
                v_formatted_sql = v_sql_update_biz_opp_detail % tuple(map(repr,v_param))
                print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
@@ -1321,6 +1324,22 @@ def f_renewal_biz_opp(request):
 
                with connection.cursor() as v_cursor:
                   v_cursor.execute(v_sql_update_biz_opp_detail,v_param)
+
+               v_change_preparation_dept_id = None if v_body.get('a_change_preparation_dept_id') == '' else v_body.get('a_change_preparation_dept_id')
+               v_param_change_preparation_dept_name = []
+               if v_change_preparation_dept_id:
+                  v_sql_update_change_preparation_dept_name = """UPDATE ajict_bms_schema.biz_opp_detail
+                                                                 SET change_preparation_dept_name = (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s AND A.delete_date IS NULL),
+                                                                     update_user = %s,
+                                                                     update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'
+                                                                 WHERE biz_opp_id = %s AND
+                                                                       detail_no = %s"""
+                  v_param_change_preparation_dept_name.append(v_change_preparation_dept_id)
+                  v_param_change_preparation_dept_name.append(v_session_user_id)
+                  v_param_change_preparation_dept_name.append(v_biz_opp_id)
+                  v_param_change_preparation_dept_name.append(v_detail_no)
+                  with connection.cursor() as v_cursor:
+                     v_cursor.execute(v_sql_update_change_preparation_dept_name,v_param_change_preparation_dept_name)
             v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,
                                                                                               detail_no,
                                                                                               activity_no,

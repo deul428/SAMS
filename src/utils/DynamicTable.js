@@ -403,7 +403,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                         <td colSpan={3}>{commonInfo.change_preparation_high_dept_name}</td>
                         <th>팀</th>
                         <td colSpan={3}>{commonInfo.change_preparation_dept_name}</td>
-                        <th>영업 담당자</th>
+                        <th>담당자</th>
                         <td colSpan={3}>{commonInfo.user_name}</td>
                       </div>
                     </tbody>

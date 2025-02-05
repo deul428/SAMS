@@ -898,9 +898,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='영업 담당자'>
+                                                    <FloatingLabel label='담당자'>
                                                         <Form.Control size='sm' type='text' 
-                                                        className='' placeholder='영업 담당자'
+                                                        className='' placeholder='담당자'
                                                         name='a_user_name' 
                                                         data-key='biz_opp_detail'
                                                         onChange={f_handlingInput} 

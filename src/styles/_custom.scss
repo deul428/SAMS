@@ -44,5 +44,28 @@ $theme-colors: map-merge(
   // width: 80%;
 } 
 
+@import './mixin';
 
+// mobile, tablet은 햄버거 메뉴로 변경
+@include mobile335 {
+  .form-select-sm, .form-control-sm {
+    font-size: 1rem !important;
+    height: 4rem !important;
+    min-height: 4rem !important;
+    line-height: 2 !important;
+  }
+}
+@include tablet758 {
+  .form-select-sm, .form-control-sm {
+    font-size: 1rem !important;
+    height: 4rem !important;
+    min-height: 4rem !important;
+    line-height: 2 !important;
+  }
+}
+
+@include desktop1024 {
+}
+@include desktop1200 {
+}
 @import '~bootstrap/scss/bootstrap';

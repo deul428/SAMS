@@ -796,7 +796,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     ({"pointerEvents": "none"}) : ({})
                                                 }>
                                                     <FloatingLabel label='사업 (기회) 일련 번호'>
-                                                        <Form.Control type='text' className=''
+                                                        <Form.Control size='sm' type='text' className=''
                                                         name='a_biz_opp_id' 
                                                         /* data-key='biz_opp' */
                                                         placeholder='사업 (기회) 일련 번호'
@@ -811,7 +811,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={9} lg={8} xl={9} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 (기회) 명'>
-                                                        <Form.Control as='textarea' type='text' className=''
+                                                        <Form.Control as='textarea' size='sm' type='text' className=''
                                                         name='a_biz_opp_name' 
                                                         data-key='biz_opp'
                                                         placeholder='사업 (기회) 명'
@@ -830,7 +830,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 
                                                 {/* <Col xs={12} md={6} lg={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='본부'>
-                                                        <Form.Control type='text' className='' placeholder='본부'
+                                                        <Form.Control size='sm' type='text' className='' placeholder='본부'
                                                         name='' 
                                                         // data-key='biz_opp_detail'
                                                         onChange={f_handlingInput}
@@ -841,7 +841,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col> */}
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='소속 부서'>
-                                                        <Form.Select type='text' className='' placeholder='소속 부서'
+                                                        <Form.Select size='sm' type='text' className='' placeholder='소속 부서'
                                                         name='a_change_preparation_dept_id' 
                                                         data-key='biz_opp_detail'
                                                         onChange={f_handlingInput} 
@@ -891,9 +891,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='영업 담당자'>
-                                                        <Form.Control type='text' 
-                                                        className='' placeholder='영업 담당자'
+                                                    <FloatingLabel label='담당자'>
+                                                        <Form.Control size='sm' type='text' 
+                                                        className='' placeholder='담당자'
                                                         name='a_user_name' 
                                                         // data-key='biz_opp_detail'
                                                         onChange={f_handlingInput} 
@@ -911,7 +911,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='판품 번호 (진행률 90% 이상일 시 기입)'>
-                                                        <Form.Control type='text' className=''
+                                                        <Form.Control size='sm' type='text' className=''
                                                         name='a_sale_item_no' 
                                                         data-key='biz_opp_detail' 
                                                         placeholder='판품 번호 (진행률 90% 이상일 시 기입)'
@@ -927,7 +927,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='최종 고객사 (선택)'>
-                                                        <Form.Select aria-label='selectBox' className='' name='a_last_client_com2_code'
+                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_last_client_com2_code'
                                                         data-key='biz_opp_detail'
                                                         placeholder='최종 고객사 (선택)' 
                                                         onChange={f_handlingInput} 
@@ -959,7 +959,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             }>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출처'>
-                                                        <Form.Select aria-label='selectBox' className='' name='a_sale_com2_code'
+                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_sale_com2_code'
                                                         data-key='biz_opp_detail'
                                                         placeholder='매출처' 
                                                         onChange={f_handlingInput} 
@@ -985,7 +985,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='진행률'>
-                                                        <Form.Select aria-label='selectBox' className='' name='a_progress2_rate_code' 
+                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_progress2_rate_code' 
                                                         data-key='biz_opp'
                                                         onChange={f_handlingInput} 
                                                         // value={input.progress2_rate_name || ''} 
@@ -1019,7 +1019,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='계약 일자'>
-                                                        <Form.Control type='date' className='' 
+                                                        <Form.Control size='sm' type='date' className='' 
                                                         name='a_contract_date' 
                                                         data-key='biz_opp' 
                                                         placeholder='계약 일자'
@@ -1037,7 +1037,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             }>
                                                 <Col xs={12} md={6} lg={6} xl={3}  className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 일자'>
-                                                        <Form.Control type='date' className='' 
+                                                        <Form.Control size='sm' type='date' className='' 
                                                         name='a_sale_date' 
                                                         data-key='biz_opp_detail' 
                                                         placeholder='매출 일자'
@@ -1049,7 +1049,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매입 일자'>
-                                                        <Form.Control type='date' className='' placeholder='매입 일자'
+                                                        <Form.Control size='sm' type='date' className='' placeholder='매입 일자'
                                                         name='a_purchase_date' 
                                                         data-key='biz_opp_detail' 
                                                         onChange={f_handlingInput}
@@ -1060,7 +1060,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='수금 일자 (선택)'>
-                                                        <Form.Control type='date' className='' 
+                                                        <Form.Control size='sm' type='date' className='' 
                                                         name='a_collect_money_date' 
                                                         data-key='biz_opp_detail' 
                                                         placeholder='수금 일자 (선택)'
@@ -1072,7 +1072,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 금액'>
-                                                        <Form.Control type='text' className='' 
+                                                        <Form.Control size='sm' type='text' className='' 
                                                         name='a_sale_amt' 
                                                         data-key='biz_opp_detail' 
                                                         placeholder='매출 금액'
@@ -1090,7 +1090,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             }>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매입 금액'>
-                                                        <Form.Control type='text' className='' name='a_purchase_amt' 
+                                                        <Form.Control size='sm' type='text' className='' name='a_purchase_amt' 
                                                         data-key='biz_opp_detail' 
                                                         placeholder='매입 금액'
                                                         onChange={f_handlingInput}
@@ -1101,7 +1101,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 이익'>
-                                                        <Form.Control type='text' className='' name='a_sale_profit' 
+                                                        <Form.Control size='sm' type='text' className='' name='a_sale_profit' 
                                                         data-key='biz_opp_detail' 
                                                         placeholder='매출 이익'
                                                         onChange={f_handlingInput} 
@@ -1112,7 +1112,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 구분'>
-                                                        <Form.Select aria-label='사업 구분' className='' name='a_biz_section2_code' 
+                                                        <Form.Select size='sm' aria-label='사업 구분' className='' name='a_biz_section2_code' 
                                                         data-key='biz_opp_detail' 
                                                         onChange={f_handlingInput} 
                                                         // value={input.biz_section2_name || ''}
@@ -1136,7 +1136,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='제품'>
-                                                        <Form.Select aria-label='selectBox' className='' name='a_principal_product2_code'
+                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_principal_product2_code'
                                                         data-key='biz_opp_detail' 
                                                         onChange={f_handlingInput} 
                                                         // value={input.principal_product2_name || ''} 
@@ -1165,7 +1165,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 <Row className='d-flex justify-content-between activityArea'>
                                                     <Col xs={12} md={9} lg={8} xl={9} className='activity col d-flex align-items-center floating'>
                                                         <FloatingLabel label='활동 내역 신규 입력' >
-                                                            <Form.Control as='textarea'type='text' className='' 
+                                                            <Form.Control as='textarea'size='sm' type='text' className='' 
                                                             name='a_activity_details' 
                                                             data-key='biz_opp_activity'
                                                             placeholder='활동 내역 신규 입력' 
@@ -1177,7 +1177,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </Col>
                                                     <Col xs={12} md={3} lg={4} xl={3} className='activity col d-flex align-items-center floating'>
                                                         <FloatingLabel label='활동 일자'>
-                                                            <Form.Control type='date' className='' 
+                                                            <Form.Control size='sm' type='date' className='' 
                                                             name='a_activity_date' 
                                                             data-key='biz_opp_activity' 
                                                             placeholder='활동 일자'
@@ -1259,7 +1259,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                     <Row className='d-flex justify-content-between mb-2'>
                                         <Col xs={12} md={3} lg={3} className=''>
                                             <FloatingLabel label='사업 일련 번호'>
-                                                <Form.Control type='text' className='' 
+                                                <Form.Control size='sm' type='text' className='' 
                                                 name='a_biz_opp_id' 
                                                 data-key='biz_opp' 
                                                 placeholder='사업 일련 번호'
@@ -1272,7 +1272,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         </Col>
                                         <Col xs={12} md={6} lg={6} className=''>
                                             <FloatingLabel label='사업 (기회) 명'>
-                                                <Form.Control as='textarea' type='text' className=''
+                                                <Form.Control as='textarea' size='sm' type='text' className=''
                                                 name='a_biz_opp_name' 
                                                 data-key='biz_opp'
                                                 placeholder='사업 (기회) 명'
@@ -1286,7 +1286,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         </Col>
                                         <Col xs={12} md={3} lg={3} className=''>
                                             <FloatingLabel label='활동 일자' style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}>
-                                                <Form.Control type='date' className='' 
+                                                <Form.Control size='sm' type='date' className='' 
                                                 name='a_activity_date' 
                                                 data-key='biz_opp_activity' 
                                                 placeholder='활동 일자'
@@ -1299,7 +1299,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                     <Row className='d-flex justify-content-between'>
                                         <Col xs={12} md={12} lg={12} className=''>
                                             <FloatingLabel label='활동 내역' >
-                                                <Form.Control as='textarea' type='text' className='activityDetails' 
+                                                <Form.Control as='textarea' size='sm' type='text' className='activityDetails' 
                                                 name='a_activity_details' 
                                                 data-key='biz_opp_activity'
                                                 placeholder='활동 내역' 

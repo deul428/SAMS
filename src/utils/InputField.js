@@ -764,7 +764,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={4} lg={4} className='col d-flex align-items-center justify-content-start floating'>
-                                        <FloatingLabel label='영업 담당자'>
+                                        <FloatingLabel label='담당자'>
                                             <Form.Control size='sm' type='text' id='userName' defaultValue={v_userHandling.userValue || ''} name='a_user_name' onChange={f_handlingInput} disabled={v_userHandling.userDisabled}/>
                                         </FloatingLabel>
                                     </Col>
@@ -843,7 +843,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
-                                        <FloatingLabel label='영업 담당자'>
+                                        <FloatingLabel label='담당자'>
                                             <Form.Control size='sm' type='text' id='userName' defaultValue={v_userHandling.userValue || ''} name='a_user_name' onChange={f_handlingInput} disabled={v_userHandling.userDisabled}/>
                                         </FloatingLabel>
                                     </Col>

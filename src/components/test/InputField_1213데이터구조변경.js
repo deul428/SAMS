@@ -263,7 +263,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                         </Form.Select>
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
-                                        <Form.Label className=''>영업 담당자</Form.Label>
+                                        <Form.Label className=''>담당자</Form.Label>
                                         <Form.Control size='sm' type='text' placeholder='담당자명을 입력하세요' value={input.a_username}/>
                                     </Col>
                                 </Row>
@@ -316,7 +316,7 @@ const InputField = ({ v_componentName, v_propsData }) => {
                                             </Form.Select>
                                         </Col>
                                         <Col xs={12} md={6} lg={4} className="col d-flex align-items-center justify-content-start">
-                                            <Form.Label className=''>영업 담당자</Form.Label>
+                                            <Form.Label className=''>담당자</Form.Label>
                                             <Form.Control size='sm' type='text' placeholder='Default input' />
                                         </Col>
                                     </Row>

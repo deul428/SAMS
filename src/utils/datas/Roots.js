@@ -18,7 +18,7 @@ const roots = {
         { Header: '사업 복제 번호', accessor: 'detail_no'},
         { Header: '본부', accessor: 'change_preparation_high_dept_name' },
         { Header: '팀', accessor: 'change_preparation_dept_name' },
-        { Header: '영업 담당자', accessor: 'user_name' },
+        { Header: '담당자', accessor: 'user_name' },
         { Header: '판품 번호', accessor: 'sale_item_no' },
         { Header: '사업 (기회) 명', accessor: 'biz_opp_name' },
         { Header: '최종 고객사', accessor: 'last_client_com2_name' },
@@ -50,7 +50,7 @@ const roots = {
       { Header: '이력 번호', accessor: 'history_no' },
       { Header: '갱신 일시', accessor: 'renewal_date', Cell: ({value}) => value ? moment(value).format('YYYY-MM-DD') : '' },
       { Header: '갱신 구분', accessor: 'renewal_code', Cell: ({value}) => value === 'I'? value = '등록' : value === 'U'? value = '수정' : '삭제' },
-      { Header: '영업 담당자', accessor: 'user_name' },
+      { Header: '담당자', accessor: 'user_name' },
       { Header: '판품 번호', accessor: 'sale_item_no',
       Cell: ({ value, row }) => (
           <div style={dynamicCellStyle(row, 'sale_item_no')} className='tableCell'>
@@ -164,7 +164,7 @@ const roots = {
         props: [
             { Header: '본부', accessor: 'change_preparation_high_dept_name' },
             { Header: '팀', accessor: 'change_preparation_dept_name' },
-            { Header: '영업 담당자', accessor: 'user_name' },
+            { Header: '담당자', accessor: 'user_name' },
 
             { Header: '사업 일련 번호', accessor: 'biz_opp_id'},
             { Header: '사업 (기회) 명', accessor: 'biz_opp_name' },

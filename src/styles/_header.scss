@@ -4,16 +4,25 @@
 // mobile, tablet은 햄버거 메뉴로 변경
 @include mobile335 {
     .offcanvas {
-        width: 70% !important;
-        .offcanvas-body {
-            
+        width: 60% !important;
+        .offcanvas-body { 
+            .brand.navbar-nav {
+                width: 100% !important;
+                a.navbar-brand {
+                    img.ci {
+                        // min-width: 150px;
+                        max-width: 250px;
+                    }
+                }
+            } 
         }
     }
 }
 @include tablet758 {
     .offcanvas {
         .offcanvas-body {
-            
+            padding: 1rem 4rem !important;
+           
         }
     }
 }
@@ -27,6 +36,9 @@
             }
         }
     }
+    .fade.offcanvas-backdrop {
+        display: none;
+    }
 }
 @include desktop1200 {
     #root nav#header {
@@ -35,6 +47,9 @@
                 width: 50%;
             }
         }
+    }
+    .fade.offcanvas-backdrop {
+        display: none;
     }
 }
 @media (min-width: #{$breakpoint-desktop1200}) and (max-width: 1600px) {
@@ -52,6 +67,7 @@
     padding: 0;
     z-index: 998;
     &.responsiveHeader {
+        z-index: 998;
         left: unset;
         height: fit-content;
         width: fit-content;
@@ -60,6 +76,7 @@
             justify-content: flex-end;
             padding: 1rem;
             button {
+                background-color: $light;
                 span {
 
                 }
@@ -75,6 +92,8 @@
     
 }
 .offcanvas {
+    overflow-y: scroll;
+
     .offcanvus-header {
         button.btn-close {
 
@@ -83,14 +102,15 @@
     .offcanvas-body {
         padding: 1rem 2rem;
         overflow-y: scroll;
-        .brand {
+        .brand.navbar-nav {
             a.navbar-brand {
                 img.ci {
 
                 }
             }
         }
-        .navMenu {
+        .navMenu.navbar-nav {
+            margin-bottom: 0.5rem;
             .menus.nav-link {
                 a {
                     &.nav-link.menuItem {

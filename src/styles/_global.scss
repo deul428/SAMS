@@ -18,7 +18,7 @@ $point-color: #1a8ef3;
 @include mobile335 {
     #cntntArea {
         width: 100% !important;
-        z-index: 1;
+        // z-index: 1;
         .wrap {
             position: relative;
             margin: 0 auto 2.5%;
@@ -51,7 +51,7 @@ $point-color: #1a8ef3;
 @include tablet758 {
     #cntntArea {
         width: 100% !important;
-        z-index: 1;
+        // z-index: 1;
         .wrap {
             position: relative;
             margin: 0 auto 2.5%;

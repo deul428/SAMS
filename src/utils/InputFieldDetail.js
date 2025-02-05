@@ -872,7 +872,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                                     a_v_modalPropsData.a_change_preparation_dept_name : 
                                                                     v_teamHandling.teamValue ? 
                                                                     v_teamHandling.teamMsg : v_deptHandling.deptMsg
-                                                                )}
+                                                                ) + ` (현재 값)`}
                                                             </option>
                                                             {(v_deptHandling.deptValue) ? 
                                                                 <option value={v_deptHandling.deptValue}>{v_deptHandling.deptMsg}</option>
@@ -940,7 +940,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             value={(
                                                                 a_v_modalPropsData ? 
                                                                 a_v_modalPropsData.a_last_client_com2_code : '선택')}
-                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_last_client_com2_name : '선택')}</option>
+                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_last_client_com2_name : '선택') + ` (현재 값)`}</option>
                                                             {(detailData) ? 
                                                                 (
                                                                     detailData?.data?.search_last_client_com_code.map((e) => {
@@ -972,7 +972,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             value={(
                                                                 a_v_modalPropsData ? 
                                                                 a_v_modalPropsData.a_sale_com2_code : '선택')}
-                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_sale_com2_name : '선택')}</option>
+                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_sale_com2_name : '선택') + ` (현재 값)`}</option>
                                                             {(detailData) ? 
                                                                 (
                                                                     detailData?.data?.search_last_client_com_code.map((e) => {
@@ -997,7 +997,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             value={(
                                                                 a_v_modalPropsData ? 
                                                                 a_v_modalPropsData.a_progress2_rate_code : '선택')}
-                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_progress2_rate_name : '선택')}</option>
+                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_progress2_rate_name : '선택') + ` (현재 값)`}</option>
                                                             {(v_propsData ? 
                                                                 (
                                                                     v_propsData?.data?.search_commonness_pro.map((e) => {
@@ -1120,7 +1120,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         // value={input.biz_section2_name || ''}
                                                         defaultValue={a_v_modalPropsData?.a_biz_section2_name || ''}
                                                         >
-                                                            <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_biz_section2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_biz_section2_name : '선택')}</option>
+                                                            <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_biz_section2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_biz_section2_name : '선택') + ` (현재 값)`}</option>
                                                             {(detailData) ? 
                                                                 (
                                                                     detailData?.data?.search_biz_section_code.map((e) => {
@@ -1144,7 +1144,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         // value={input.principal_product2_name || ''} 
                                                         defaultValue={a_v_modalPropsData?.a_principal_product2_name || ''}
                                                         >
-                                                            <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_principal_product2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_principal_product2_name : '선택')}</option>
+                                                            <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_principal_product2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_principal_product2_name : '선택') + ` (현재 값)`}</option>
                                                             {(detailData) ? 
                                                                 (
                                                                     detailData?.data?.search_principal_product_code.map((e) => {

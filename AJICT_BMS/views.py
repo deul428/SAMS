@@ -1293,22 +1293,27 @@ def f_renewal_biz_opp(request):
             if v_biz_opp_detail:
                v_param = []
                v_set_clauses = []
-               v_user_name = None if v_body.get('a_user_name') == '' else v_body.get('a_user_name')
-               if v_user_name is not None:
-                  v_user_name = v_user_name.strip()
-               if not v_user_name:
-                  transaction.set_rollback(True)
-                  v_return = {'STATUS':'FAIL','MESSAGE':"'담당자' 항목은 필수 전달 항목입니다!"}
-                  v_square_bracket_return = [v_return]
-                  return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-               else:
-                  v_sql_user = """SELECT user_id FROM ajict_bms_schema.aj_user WHERE user_name = %s AND delete_date IS NULL"""
-                  v_param_select_user = []
-                  v_param_select_user.append(v_user_name)
-                  with connection.cursor() as v_cursor:
-                     v_cursor.execute(v_sql_user,v_param_select_user)
-                     v_row1 = v_cursor.fetchone()
-                     v_user_id = v_row1[0]
+
+
+               #test
+               # v_user_name = None if v_body.get('a_user_name') == '' else v_body.get('a_user_name')
+               # if v_user_name is not None:
+               #    v_user_name = v_user_name.strip()
+               # if not v_user_name:
+               #    transaction.set_rollback(True)
+               #    v_return = {'STATUS':'FAIL','MESSAGE':"'담당자' 항목은 필수 전달 항목입니다!"}
+               #    v_square_bracket_return = [v_return]
+               #    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+               # else:
+               #    v_sql_user = """SELECT user_id FROM ajict_bms_schema.aj_user WHERE user_name = %s AND delete_date IS NULL"""
+               #    v_param_select_user = []
+               #    v_param_select_user.append(v_user_name)
+               #    with connection.cursor() as v_cursor:
+               #       v_cursor.execute(v_sql_user,v_param_select_user)
+               #       v_row1 = v_cursor.fetchone()
+               #       v_user_id = v_row1[0]
+
+
                for v_key,v_value in v_body.items():
                   if v_key == 'biz_opp_detail' and isinstance(v_value,dict):
                      for v_nested_key,v_nested_value in v_value.items():

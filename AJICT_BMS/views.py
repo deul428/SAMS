@@ -1343,7 +1343,7 @@ def f_renewal_biz_opp(request):
 
                with connection.cursor() as v_cursor:
                   v_cursor.execute(v_sql_update_biz_opp_detail,v_param)
-               v_change_preparation_dept_id = None if v_body.get('bit_opp_detail').get('a_change_preparation_dept_id') == '' else v_body.get('bit_opp_detail').get('a_change_preparation_dept_id')
+               v_change_preparation_dept_id = None if v_body.get('biz_opp_detail').get('a_change_preparation_dept_id') == '' else v_body.get('biz_opp_detail').get('a_change_preparation_dept_id')
 
 
                #test

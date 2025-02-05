@@ -352,15 +352,22 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             setState((prevInput) => {
                 // 필드가 disabled일 경우(수정 불가능할 경우), input에 값을 자동으로 채워 넣음. 그렇지 않을 경우 사용자가 입력한 input을 채워 넣음. < 해야 함
                 let updatedInput;
-                // 수정 시
+                console.log(prevInput);
                 if (a_v_modalPropsData) {
                     updatedInput = { 
                         ...prevInput, 
                         a_session_user_id: auth.userId,
                         a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
                         a_detail_no: a_v_modalPropsData.a_detail_no,
-                        a_user_name: prevInput.a_user_name
+                        /* biz_opp_detail: {
+                            ...prevInput.biz_opp_detail,
+                            a_detail_no: a_v_modalPropsData ? a_v_modalPropsData.a_detail_no : 1
+                        } */
                     }
+                    if (prevInput.a_user_name) {
+                        console.log(this);
+                    }
+
                 } else {
                     updatedInput = { 
                         ...prevInput, 
@@ -576,7 +583,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         input.biz_opp_detail.a_purchase_date.trim() !== '' && 
                         input.biz_opp_detail.a_biz_section2_code.trim() !== '' && 
                         input.biz_opp_detail.a_principal_product2_code.trim() !== '' && 
-                        input.a_user_name.trim() !== '' && 
+                        input.biz_opp_detail.a_user_name.trim() !== '' && 
         
                         input.biz_opp_activity.a_activity_details.trim() !== '' && 
                         input.biz_opp_activity.a_activity_date.trim() !== '' 
@@ -895,7 +902,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         <Form.Control size='sm' type='text' 
                                                         className='' placeholder='영업 담당자'
                                                         name='a_user_name' 
-                                                        // data-key='biz_opp_detail'
+                                                        data-key='biz_opp_detail'
                                                         onChange={f_handlingInput} 
                                                         // value={input.user_name || ''} 
                                                         defaultValue={

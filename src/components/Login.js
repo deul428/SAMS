@@ -86,19 +86,15 @@ const AuthLogin = () => {
                     alert(`현재 비밀번호와 변경하려는 비밀번호가 동일합니다. 다른 비밀번호를 입력하세요.`);
                     return;
                 } 
-                if (!pwInput.a_session_user_id) {
+                /* if (!pwInput.a_session_user_id) {
                     alert(`세션 아이디가 비어 있습니다. (디버깅용)`);
                     return;
-                }
+                } */
                 const response = await apiMethods[method]('update-cipher-change/', pwInput);
-                console.log(response);
-
                 await dispatch(login({ ...auth, userId: auth.userId, userPw: pwInput.a_new_cipher }));
+
+                console.log(response);
                 
-                console.log(`
-                ========= 비밀번호 변경 =========
-                \n${JSON.stringify(response, null, 2)}
-                \n======= 비밀번호 변경 끝 =========`);
                 // 이전 경로로 리디렉션
                 const from = location.state?.from?.pathname || `/${roots.home.url}`;
                 setRedirect(from);

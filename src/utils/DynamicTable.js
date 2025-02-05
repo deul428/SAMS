@@ -76,7 +76,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 10,
+      initialState: { pageIndex: 0, pageSize: 2,
         sortBy: [
           { 
             id: 'biz_opp_id',

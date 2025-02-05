@@ -4,12 +4,17 @@
 // mobile, tablet은 햄버거 메뉴로 변경
 @include mobile335 {
     .offcanvas {
-        width: 80% !important;
+        width: 70% !important;
+        .offcanvas-body {
+            
+        }
     }
 }
 @include tablet758 {
     .offcanvas {
-        // width: 80% !important;
+        .offcanvas-body {
+            
+        }
     }
 }
 // mobile, tablet은 햄버거 메뉴로 변경 끝
@@ -76,7 +81,8 @@
         }
     }
     .offcanvas-body {
-        padding: 2rem;
+        padding: 1rem 2rem;
+        overflow-y: scroll;
         .brand {
             a.navbar-brand {
                 img.ci {
@@ -99,11 +105,15 @@
             }
         }
         .loginInfoArea {
+            text-align: center;
             .btnLoginInfo.btn-group {
                 button.btn {
-
+                    font-size: 1rem !important;
                 }
                 button.btn.btnUserId {
+                    svg {
+                        display: none !important;
+                    }
 
                 }
                 button.btn.btnLogout {

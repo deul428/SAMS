@@ -76,11 +76,18 @@ const BizOpp = () => {
     };
 
     useEffect(() => {
-        // console.log(isRefresh);
-        if(isRefresh === true || endpoint) {
-            f_handlingData('post', endpoint, userCheck);
-        }
-    }, [endpoint, isRefresh]);
+        f_handlingData('post', endpoint, userCheck);
+    }, [endpoint]);
+
+    useEffect(() => {
+        console.log(isRefresh);
+        if(isRefresh === true) {
+            setTimeout(() => {
+                console.log('isRefresh 시작');
+                f_handlingData('post', endpoint, userCheck);
+            }, 1000);
+        } 
+    }, [isRefresh]);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
       
     const [res, setRes] = useState([]);

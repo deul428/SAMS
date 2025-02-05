@@ -73,7 +73,7 @@ function Header() {
                 setBrowserWidth(window.innerWidth);
             }, 200);
         };
-        console.log(browserWidth, window.innerWidth);
+        // console.log(browserWidth, window.innerWidth);
         window.addEventListener('resize', handleResize);  
         return () => {
             window.addEventListener('resize', handleResize);

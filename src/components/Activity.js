@@ -68,10 +68,18 @@ const Activity = () => {
     }
 
     useEffect(() => {
-        if(isRefresh === true || endpoint) {
-            f_handlingData('post', endpoint, userCheck);
+        f_handlingData('post', endpoint, userCheck);
+    }, [endpoint]);
+
+    useEffect(() => {
+        console.log(isRefresh);
+        if(isRefresh === true) {
+            setTimeout(() => {
+                console.log('isRefresh 시작');
+                f_handlingData('post', endpoint, userCheck);
+            }, 2000);
         }
-    }, [endpoint, isRefresh]);
+    }, [isRefresh]);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
 
     const [res, setRes] = useState([]);

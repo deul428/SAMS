@@ -723,6 +723,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     }
     useEffect(() => {
         if (show) {
+            setIsRefresh(false);
             setIsProDisabled(true);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
@@ -1009,7 +1010,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <Form.Label htmlFor='inputChck2'>필달 여부</Form.Label>
+                                                    <Form.Label htmlFor='inputChck2' className='essentialAchievementTf'>필달 여부</Form.Label>
                                                     <Form.Check type={`checkbox`} id={`inputChck2`} name='a_essential_achievement_tf' 
                                                     data-key='biz_opp'
                                                     onChange={f_handlingInput}

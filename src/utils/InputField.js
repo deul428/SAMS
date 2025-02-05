@@ -693,7 +693,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                         </FloatingLabel>
                                     </Col>
                                 </Row>
-                                <Row className='d-flex justify-content-between'>
+                                <Row className='d-flex justify-content-start'>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='진행률 From'>
                                             <Form.Select size='sm' aria-label='selectBox' className='pro_1 ' id='fromSelect' value={input?.a_progress_rate_code_from || ''} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
@@ -726,13 +726,13 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                         </FloatingLabel>
                                     </Col>
                                     <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
-                                        <Form.Label htmlFor='inputChck' className=''>필달 여부</Form.Label>
+                                        <Form.Label htmlFor='inputChck' className='essentialAchievementTf'>필달 여부</Form.Label>
                                         <Form.Check type={`checkbox`} id={`inputChck`} checked={input?.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
                                     </Col>
-                                    <Col xs={12} md={0} lg={4} className='col d-flex align-items-center justify-content-start floating'>
-                                    </Col>
+                                   {/*  <Col xs={12} md={0} lg={4} className='col d-flex align-items-center justify-content-start floating' style={{'marginBottom':'0'}}>
+                                    </Col> */}
                                 </Row>
-                                <Row className='d-flex justify-content-between'>
+                                <Row className='d-flex justify-content-between' >
                                     <Col xs={12} md={4} lg={4} className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='본부'>
                                             <Form.Select id='select1' size='sm' aria-label='selectBox' value={input?.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept} disabled={v_deptHandling.deptDisabled}>

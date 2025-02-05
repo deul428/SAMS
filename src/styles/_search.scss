@@ -8,7 +8,10 @@
                 position: relative !important;
             } 
             .col {
-                margin-bottom: 0.7rem !important;
+                margin-bottom: 1rem !important;
+                .essentialAchievementTf {
+                    font-size: 1rem !important;
+                }
             }
         }
 
@@ -41,6 +44,11 @@
             &.btnRow {
                 position: relative !important;
             } 
+            .col {
+                .essentialAchievementTf {
+                    font-size: 1rem !important;
+                }
+            }
         }
     }
 }

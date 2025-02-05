@@ -63,7 +63,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 15, 
+      initialState: { pageIndex: 0, pageSize: 10, 
         sortBy: [ {id: 'history_no', desc: true} ] 
       }, // 초기 페이지 설정
     },

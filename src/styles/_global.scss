@@ -47,6 +47,14 @@ $point-color: #1a8ef3;
     h5, button.btn-sm {
         font-size: 0.75rem;
     }
+    .pagination {
+        .paginationList {
+            li {
+                --bs-pagination-padding-x: 0.5rem !important;
+                --bs-pagination-padding-y: 0.5rem !important;
+            }
+        }
+    }
 }
 @include tablet758 {
     #cntntArea {

@@ -62,9 +62,7 @@ function Header() {
     // response UI - window width 감지
     const [browserWidth, setBrowserWidth] = useState(0);
     const resizeTimer = useRef(null);
-    // const [v_mainHeader, setVMainHeader] = useState(null);
-    // const [v_responsiveHeader, setVresponsiveHeader] = useState(null);
-
+    
     useEffect(() => {
         const handleResize = () => {
             if (resizeTimer.current !== null) return;

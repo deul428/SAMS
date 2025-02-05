@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTable, usePagination, useSortBy } from 'react-table';
 import moment from 'moment';
 import { apiMethods } from './api';
@@ -70,42 +70,81 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
     useSortBy, usePagination
   );
 
-  // =================== pagination jsx ===================
+  // =================== pagination jsx ===================  
+  // response UI - window width 감지
+  const [browserWidth, setBrowserWidth] = useState(0);
+  const resizeTimer = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (resizeTimer.current !== null) return;
+      resizeTimer.current = setTimeout(() => {
+        resizeTimer.current = null;
+        setBrowserWidth(window.innerWidth);
+      }, 200);
+    };
+    // console.log(browserWidth, window.innerWidth);
+    window.addEventListener('resize', handleResize);  
+    return () => {
+      window.addEventListener('resize', handleResize);
+    };
+  }, [browserWidth, window.innerWidth]);
+
   const renderPagination = () => {
-    const range = 2; // 현재 페이지 앞뒤 몇 개를 표시할지 설정
+    let range = 3; // 현재 페이지 앞뒤 몇 개를 표시할지 설정
     const items = [];
   
-    // 첫 페이지 항상 표시
-    items.push(
-      <Pagination.Item key={0} active={pageIndex === 0} onClick={() => gotoPage(0)}>1</Pagination.Item>
-    );
-  
-    // 중간 ellipsis와 현재 페이지 주변
-    if (pageIndex > range + 1) {
-      items.push(<Pagination.Ellipsis key="left-ellipsis" />);
-    }
-  
-    for (let number = Math.max(1, pageIndex - range); number <= Math.min(pageIndex + range, pageCount - 2); number++) {
+    if ((browserWidth || window.innerWidth) < 758) {
+      range = 1;
+      if (pageIndex > range + 1) {
+        items.push(<Pagination.Ellipsis key="left-ellipsis" />);
+      }
+    
+      for (let number = Math.max(0, pageIndex - range); number <= Math.min(pageIndex + range, pageCount - 1); number++) {
+        items.push(
+          <Pagination.Item key={number} active={pageIndex === number} onClick={() => gotoPage(number)}>
+            {number + 1}
+          </Pagination.Item>
+        );
+      }
+    
+      if (pageIndex < pageCount - range - 2) {
+        items.push(<Pagination.Ellipsis key="right-ellipsis" />);
+      }
+
+      return items;
+    } else {
+      // 첫 페이지 항상 표시
       items.push(
-        <Pagination.Item key={number} active={pageIndex === number} onClick={() => gotoPage(number)}>
-          {number + 1}
-        </Pagination.Item>
+        <Pagination.Item key={0} active={pageIndex === 0} onClick={() => gotoPage(0)}>1</Pagination.Item>
       );
+      // 중간 ellipsis와 현재 페이지 주변
+      if (pageIndex > range + 1) {
+        items.push(<Pagination.Ellipsis key="left-ellipsis" />);
+      }
+    
+      for (let number = Math.max(1, pageIndex - range); number <= Math.min(pageIndex + range, pageCount - 2); number++) {
+        items.push(
+          <Pagination.Item key={number} active={pageIndex === number} onClick={() => gotoPage(number)}>
+            {number + 1}
+          </Pagination.Item>
+        );
+      }
+    
+      if (pageIndex < pageCount - range - 2) {
+        items.push(<Pagination.Ellipsis key="right-ellipsis" />);
+      }
+
+      // 마지막 페이지 항상 표시
+      if (pageCount > 1) {
+        items.push(
+          <Pagination.Item key={pageCount - 1} active={pageIndex === pageCount - 1} onClick={() => gotoPage(pageCount - 1)}>
+            {pageCount}
+          </Pagination.Item>
+        );
+      }
+      return items;
     }
-  
-    if (pageIndex < pageCount - range - 2) {
-      items.push(<Pagination.Ellipsis key="right-ellipsis" />);
-    }
-  
-    // 마지막 페이지 항상 표시
-    if (pageCount > 1) {
-      items.push(
-        <Pagination.Item key={pageCount - 1} active={pageIndex === pageCount - 1} onClick={() => gotoPage(pageCount - 1)}>
-          {pageCount}
-        </Pagination.Item>
-      );
-    }
-    return items;
   };
 
   const pagination = (

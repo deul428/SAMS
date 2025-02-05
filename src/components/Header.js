@@ -87,13 +87,14 @@ function Header() {
         display: browserWidth < 1024 ? "block" : "none",
     }), [browserWidth]);
       
+    const attr = `-expand-${'xl'}`;
     return (
         <>
-        <Navbar id='header' key={'xl'} expand={'xl'} className="responsiveHeader bg-body-tertiary mb-3" style={v_responsiveHeader}>
+        <Navbar id='header' fixed='top' key={'xl'} expand={'xl'} bg='transparent' className="responsiveHeader" style={v_responsiveHeader}>
             <Container fluid>
-                <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${'xl'}`} />
-                <Navbar.Offcanvas id={`offcanvasNavbar-expand-${'xl'}`} aria-labelledby=    {`offcanvasNavbarLabel-expand-${'xl'}`} placement="end">
-                    <Offcanvas.Header closeButton />
+                <Navbar.Toggle aria-controls={'offcanvasNavbar' + attr} />
+                <Navbar.Offcanvas style={v_responsiveHeader} id={'offcanvasNavbar' + attr} aria-labelledby=    {'offcanvasNavbarLabel' + attr} placement="end" className='bg-primary'>
+                    <Offcanvas.Header closeButton/>
                     <Offcanvas.Body>
                         <Nav className='brand'>
                             <Navbar.Brand href='#'>

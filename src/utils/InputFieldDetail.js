@@ -351,15 +351,23 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         const updateValue = (setState) => {
             setState((prevInput) => {
                 // 필드가 disabled일 경우(수정 불가능할 경우), input에 값을 자동으로 채워 넣음. 그렇지 않을 경우 사용자가 입력한 input을 채워 넣음. < 해야 함
-                const updatedInput = { 
-                    ...prevInput, 
-                    a_session_user_id: auth.userId,
-                    a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
-                    a_detail_no: a_v_modalPropsData.a_detail_no,
-                    /* biz_opp_detail: {
-                        ...prevInput.biz_opp_detail,
-                        a_detail_no: a_v_modalPropsData ? a_v_modalPropsData.a_detail_no : 1
-                    } */
+                let updatedInput;
+                if (a_v_modalPropsData) {
+                    updatedInput = { 
+                        ...prevInput, 
+                        a_session_user_id: auth.userId,
+                        a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
+                        a_detail_no: a_v_modalPropsData.a_detail_no,
+                        /* biz_opp_detail: {
+                            ...prevInput.biz_opp_detail,
+                            a_detail_no: a_v_modalPropsData ? a_v_modalPropsData.a_detail_no : 1
+                        } */
+                    }
+                } else {
+                    updatedInput = { 
+                        ...prevInput, 
+                        a_session_user_id: auth.userId,
+                    }
                 }
                 if (tableLevel) {
                     updatedInput[tableLevel] = {

@@ -72,7 +72,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
 
   // =================== pagination jsx ===================
   const renderPagination = () => {
-    const range = 10; // 현재 페이지 앞뒤 몇 개를 표시할지 설정
+    const range = 2; // 현재 페이지 앞뒤 몇 개를 표시할지 설정
     const items = [];
   
     // 첫 페이지 항상 표시

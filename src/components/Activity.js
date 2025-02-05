@@ -77,7 +77,7 @@ const Activity = () => {
             setTimeout(() => {
                 console.log('isRefresh 시작');
                 f_handlingData('post', endpoint, userCheck);
-            }, 2000);
+            }, 1000);
         }
     }, [isRefresh]);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 

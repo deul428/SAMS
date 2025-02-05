@@ -76,7 +76,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 10,
+      initialState: { pageIndex: 0, pageSize: 2,
         sortBy: [
           { 
             id: 'biz_opp_id',
@@ -168,7 +168,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
 
   // =================== pagination jsx ===================
   const renderPagination = () => {
-    const range = 10; // 현재 페이지 앞뒤 몇 개를 표시할지 설정
+    const range = 1; // 현재 페이지 앞뒤 몇 개를 표시할지 설정
     const items = [];
   
     // 첫 페이지 항상 표시

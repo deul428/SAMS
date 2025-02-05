@@ -3,23 +3,13 @@
 
 // mobile, tablet은 햄버거 메뉴로 변경
 @include mobile335 {
-    #root nav#header {
-        overflow-y: scroll;
-        .container {
-            div.navbar-nav.navMenu {
-                width: 80%;
-            }
-        }
+    .offcanvas {
+        width: 80% !important;
     }
 }
 @include tablet758 {
-    #root nav#header {
-        overflow-y: scroll;
-        .container {
-            div.navbar-nav.navMenu {
-                width: 70%;
-            }
-        }
+    .offcanvas {
+        // width: 80% !important;
     }
 }
 // mobile, tablet은 햄버거 메뉴로 변경 끝
@@ -79,7 +69,50 @@
     }
     
 }
+.offcanvas {
+    .offcanvus-header {
+        button.btn-close {
 
+        }
+    }
+    .offcanvas-body {
+        padding: 2rem;
+        .brand {
+            a.navbar-brand {
+                img.ci {
+
+                }
+            }
+        }
+        .navMenu {
+            .menus.nav-link {
+                a {
+                    &.nav-link.menuItem {
+
+                    }
+                }
+            }
+            a {
+                &.menus.nav-link.menuItem {
+
+                }
+            }
+        }
+        .loginInfoArea {
+            .btnLoginInfo.btn-group {
+                button.btn {
+
+                }
+                button.btn.btnUserId {
+
+                }
+                button.btn.btnLogout {
+
+                }
+            }
+        }
+    }
+}
 nav#header, .offcanvas {
     div.brand {
         width: $full;

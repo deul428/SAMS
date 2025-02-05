@@ -73,18 +73,19 @@ function Header() {
                 setBrowserWidth(window.innerWidth);
             }, 200);
         };
+        console.log(browserWidth, window.innerWidth);
         window.addEventListener('resize', handleResize);  
         return () => {
             window.addEventListener('resize', handleResize);
         };
-    }, [browserWidth]);
+    }, [browserWidth, window.innerWidth]);
 
     const v_mainHeader = useMemo(() => ({
-        display: browserWidth < 1024 ? "none" : "block",
+        display: (browserWidth || window.innerWidth) < 1024 ? "none" : "block",
     }), [browserWidth]);
         
     const v_responsiveHeader = useMemo(() => ({
-        display: browserWidth < 1024 ? "block" : "none",
+        display: (browserWidth || window.innerWidth) < 1024 ? "block" : "none",
     }), [browserWidth]);
       
     const attr = `-expand-${'xl'}`;

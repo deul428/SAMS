@@ -60,6 +60,7 @@
         left: unset;
         height: fit-content;
         width: fit-content;
+        overflow-y: hidden;
         .container-fluid {
             justify-content: flex-end;
             padding: 1rem;

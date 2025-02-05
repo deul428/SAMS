@@ -1328,9 +1328,9 @@ def f_renewal_biz_opp(request):
                         v_set_clauses_biz_opp_detail_history.append(v_nested_key)
                         v_param.append(v_nested_value)
                v_sql_update_biz_opp_detail = f"UPDATE ajict_bms_schema.biz_opp_detail\
-                                               SET " + ",".join(v_set_clauses) + ",user_id = %s,update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
+                                               SET " + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
                                                WHERE biz_opp_id = %s AND detail_no = %s"
-               v_param.append(v_user_id)
+               # v_param.append(v_user_id)
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)
                v_param.append(v_detail_no)

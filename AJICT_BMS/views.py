@@ -1320,11 +1320,11 @@ def f_renewal_biz_opp(request):
                if v_user_name:
                   if v_biz_opp_detail:
                      v_sql_update_biz_opp_detail = f"UPDATE ajict_bms_schema.biz_opp_detail\
-                                                     SET " + ",".join(v_set_clauses) + "user_id = %s,update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
+                                                     SET " + ",".join(v_set_clauses) + ",user_id = %s,update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
                                                      WHERE biz_opp_id = %s AND detail_no = %s"
                   else:
                      v_sql_update_biz_opp_detail = f"UPDATE ajict_bms_schema.biz_opp_detail\
-                                                     SET " + ",".join(v_set_clauses) + ",user_id = %s,update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
+                                                     SET " + ",".join(v_set_clauses) + "user_id = %s,update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
                                                      WHERE biz_opp_id = %s AND detail_no = %s"
                else:
                   v_sql_update_biz_opp_detail = f"UPDATE ajict_bms_schema.biz_opp_detail\

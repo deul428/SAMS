@@ -1314,9 +1314,6 @@ def f_renewal_biz_opp(request):
                v_param.append(v_detail_no)
 
 
-
-
-
                #test
                v_formatted_sql = v_sql_update_biz_opp_detail % tuple(map(repr,v_param))
                print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
@@ -1338,6 +1335,13 @@ def f_renewal_biz_opp(request):
                   v_param_change_preparation_dept_name.append(v_session_user_id)
                   v_param_change_preparation_dept_name.append(v_biz_opp_id)
                   v_param_change_preparation_dept_name.append(v_detail_no)
+
+
+                  #test
+                  v_formatted_sql = v_sql_update_change_preparation_dept_name % tuple(map(repr,v_param_change_preparation_dept_name))
+                  print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                   with connection.cursor() as v_cursor:
                      v_cursor.execute(v_sql_update_change_preparation_dept_name,v_param_change_preparation_dept_name)
             v_sql_insert_biz_opp_activity = """INSERT INTO ajict_bms_schema.biz_opp_activity (biz_opp_id,

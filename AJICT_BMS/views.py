@@ -1347,8 +1347,8 @@ def f_renewal_biz_opp(request):
                v_change_preparation_dept_id = None if v_body.get('biz_opp_detail',{}).get('a_change_preparation_dept_id') == '' else v_body.get('biz_opp_detail',{}).get('a_change_preparation_dept_id')
 
 
-               #test
-               print(f"v_change_preparation_dept_id : {v_change_preparation_dept_id}")
+               # #test
+               # print(f"v_change_preparation_dept_id : {v_change_preparation_dept_id}")
 
 
                v_param_change_preparation_dept_name = []

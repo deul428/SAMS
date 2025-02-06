@@ -166,6 +166,8 @@ table {
                         padding: 0 !important;
                         height: 30px;
                         text-overflow: ellipsis;
+                        max-width: unset;
+                        overflow-x: visible;
                         .tableCell {
                             padding: 0.3rem 0.6rem !important;
                             height: inherit;

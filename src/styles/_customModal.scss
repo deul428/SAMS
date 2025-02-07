@@ -191,4 +191,30 @@
         left: 0;
         background: rgba($color: #000000, $alpha: 0.2);
     }
+    .modal-body {
+        .modalcntnt {
+            .inputField {
+                h3 {
+
+                }
+                .treeBtnArea {
+                    padding-bottom: 0.5rem;  
+                    border-bottom: 1px solid $base-color;
+                    text-align: center;
+
+                    button {
+                        &:first-child {
+                            margin-right: 0.5rem;
+                        }
+                        &:last-child {
+
+                        }
+                    }
+                }
+                .searchItem {
+                    margin-top: 0.5rem; 
+                }
+            }
+        }
+    }
 }

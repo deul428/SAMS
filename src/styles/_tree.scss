@@ -4,6 +4,8 @@
             div {
                 div.rc-tree-list-holder-inner {
                     .rc-tree-treenode {
+                        position: relative;
+                        margin-bottom: 0.2rem;
                         &.rc-tree-treenode-switcher-open {
 
                         }
@@ -14,6 +16,18 @@
 
                         }
                         span.rc-tree-switcher {
+                            width: 25%;
+                            height: 1.5rem;
+                            background: transparent;
+                            background-image: unset;
+                            /* background-size: cover; */
+                            vertical-align: middle;
+                            line-height: inherit;
+                            margin: 0;
+                            position: absolute;
+                            /* top: 0; */
+                            /* left: 0; */
+                            z-index: 999;
                             &.rc-tree-switcher_open {
 
                             }
@@ -21,7 +35,7 @@
                                 
                             }
                         }
-                        span.rc-tree-node-contnet-wrapper {
+                        span.rc-tree-node-content-wrapper {
                             &.rc-tree-node-content-wrapper-open {
 
                             }
@@ -31,12 +45,22 @@
                             &.rc-tree-node-selected {
 
                             }
-                            span.rc-tree-iconEle {
+                            span.rc-tree-iconEle {    
+                                background-size: cover;
+                                vertical-align: middle;
+                                background-position: center;
+                                transition: all 0.3ms linear;
+                                background-image: url(../assets/img/chevron-down.svg);
+                                margin-right: 0.2rem; 
                                 &.rc-tree-icon__open {
-
                                 }
                                 &.rc-tree-icon__close {
-
+                                    transform: rotate(-90deg);
+                                }
+                                &.rc-tree-icon__docu {
+                                    opacity: 0;
+                                    pointer-events: none;
+                                    text-indent: 1rem;
                                 }
                             }
                             span.rc-tree-title {
@@ -48,9 +72,9 @@
             }
         }
     }
-
 }
 
 .modal-content .modal-body .inputField .rc-tree {
-    padding: 0 2rem;
+    width: 60%;
+    margin: 1rem auto 0;
 }

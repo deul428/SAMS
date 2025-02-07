@@ -156,16 +156,20 @@
                             width: inherit;
                             padding-left: 0.75rem;
                             option {
-                                // transform: translateX(0.25rem);
                             }
                         }
-                        /* label {
-                            padding: 0.5rem 0.2rem !important;
+                        &.inputTree {
+                            input {
+                                cursor: pointer;
+                            }
+                            svg.bi-search {
+                                width: 1.1rem;
+                                position: absolute;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                right: 0.75rem;
+                            }
                         }
-                        input {
-                            padding: 0.5rem 0.2rem !important;
-                        } */
-                        
                     }
                 }
                 span {

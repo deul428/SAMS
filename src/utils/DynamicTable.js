@@ -113,7 +113,8 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   const f_handlingData = async (method, endpoint, input = null, e) => {
     const copy = {
       a_session_user_id: auth.userId,
-      a_biz_opp_id: input.biz_opp_id
+      a_biz_opp_id: input.biz_opp_id,
+      a_detail_no: input.detail_no
     }
     // console.log("e", e, "input", input);
     if (input && e) {
@@ -122,9 +123,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     }
     
     input = copy;
-    // console.log(input)
-    // input = copy;
-    // console.log(input);
+    console.log(input);
     try {
       const response = await apiMethods[method](endpoint, input);
       if (response?.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {

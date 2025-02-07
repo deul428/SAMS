@@ -4,13 +4,11 @@ import { useLocation } from 'react-router-dom';
 import { setLocation } from '../redux/reducers/LocationSlice';
 import { apiMethods } from './api';
 
-import Trees from './Trees';
-
 import roots from './datas/Roots';
 import '../styles/_customModal.scss';
 import '../styles/_search.scss';
 import { Modal, Button, Form, Row, Col, ListGroup, FloatingLabel } from 'react-bootstrap';
-import { FileArrowDownFill, Search } from 'react-bootstrap-icons';
+import { FileArrowDownFill } from 'react-bootstrap-icons';
 
 const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData, authLevel, setIsRefresh}) => {
     // v_propsData: inputField에서 받아오는 list 포함 데이터 / v_modalPropsData: dynamicTable에서 받아오는 테이블 데이터, 사용자가 선택한 행의 데이터만 불러옴
@@ -747,23 +745,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     }, [detailData])
     // ================= POST 끝 ================= 
 
-    // tree Modal로 연결
-    
-    const [showModal, setShowModal] = useState(false);
-    const [v_childComponent, setVChildComponent] = useState(null);  
-    const openModal = (e, v_treeName) => {
-        if (v_treeName === 'product') {
-            setVChildComponent('product');
-            e.stopPropagation(); //이벤트 전파 방지
-        } else if (v_treeName === '') {
-            setVChildComponent('');
-        } else { return; }
-        setShowModal(true);
-        console.log(setShowModal, showModal);
-    }
-    const closeModal = () => {
-        setShowModal(false);
-    };
 /*     // Redux와 React Router 동기화
     useEffect(() => {
         const syncPath = async () => {
@@ -1103,7 +1084,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>
-                                            <Row className='d-flex justify-content-start'
+                                            <Row className='d-flex justify-content-between'
                                             style={ 
                                                 (auth.userAuthCode === '0002') ? 
                                                 ({"pointerEvents": "none"}) : ({})
@@ -1131,16 +1112,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='매출 상세' className='inputTree' onClick={(e) => openModal(e, 'product')}>
-                                                        <Form.Control readOnly size='sm' aria-label='selectBox' className='' name='a_principal_product2_code'
-                                                        data-key='biz_opp_detail' 
-                                                        onChange={f_handlingInput} 
-                                                        defaultValue={a_v_modalPropsData?.a_principal_product2_name || ''}
-                                                        />
-                                                        <Search />
-                                                    </FloatingLabel>
-                                                </Col>
-                                                {/* <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 구분'>
                                                         <Form.Select size='sm' aria-label='사업 구분' className='' name='a_biz_section2_code' 
                                                         data-key='biz_opp_detail' 
@@ -1179,7 +1150,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             }
                                                         </Form.Select>
                                                     </FloatingLabel>
-                                                </Col> */}
+                                                </Col>
                                             </Row>
                                             </>
                                             <>
@@ -1377,7 +1348,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     return (
         <div id='inputFieldDetail'>
             {v_handlingHtml}
-            <Trees v_treeName={v_childComponent} show={showModal} onHide={closeModal} data={detailData}/>
         </div>
     );
 };

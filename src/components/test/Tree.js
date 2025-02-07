@@ -57,8 +57,8 @@ const treeData = [
   },
 ];
 
-const Trees = () => {
+const TreesTest = () => {
   return <Tree treeData={treeData} />;
 };
 
-export default Trees;
+export default TreesTest;

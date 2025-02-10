@@ -5,7 +5,7 @@ import TreeLibrary from "../components/test/Tree";
 import { Form, FloatingLabel } from "react-bootstrap";
 import Tree from 'rc-tree';
 import 'rc-tree/assets/index.css';
-// import '../styles/_tree.scss';
+import '../styles/_tree.scss';
 import '../styles/_button.scss';
 
 const Trees = ({ v_treeName, show, onHide, data }) => {
@@ -28,7 +28,7 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
             bizCode = data.data.search_biz_section_code;
             corCode = data.data.search_last_client_com_code;
             priCode = data.data.search_principal_product_code;
-            console.log(bizCode, corCode, priCode);
+            // console.log(bizCode, corCode, priCode);
 
             const newTreeData = bizCode.map((e, index) => ({
                 title: 
@@ -39,7 +39,11 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
                 key: `0-${index}`, // 키를 유니크하게 변경
                 children: [
                     {
-                        title: 'Level 2 - Node 1',
+                        title: 
+                        <>
+                        <span>{index}</span>
+                        <input type='text' placeholder='비고' value={inputValues['0-0'] || ''} onChange={(e) => handleInputChange('0-0', e.target.value)} />
+                        </>,
                         key: `0-${index}-0`,
                         children: [
                             { title: 
@@ -65,6 +69,7 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
         console.log('selected key', selectedKeys);
         console.log('info', info);
         console.log('selected key info', info.node.title);
+        setSelectedKeys(selectedKeys);
         /* const targetNode = document.querySelector(`[title="${info.node.title}"]`);
         if (targetNode) {
             console.log("찾은 노드:", targetNode);

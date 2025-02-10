@@ -5,7 +5,7 @@
                 div.rc-tree-list-holder-inner {
                     .rc-tree-treenode {
                         position: relative;
-                        margin: 0.2rem 0;
+                        margin-bottom: 0.2rem;
                         &.rc-tree-treenode-switcher-open {
 
                         }
@@ -27,21 +27,21 @@
                             }
                         }
                         span.rc-tree-switcher {
-                            // width: 25%;
-                            // height: 1.5rem;
-                            // background: transparent;
-                            // background-image: unset;
-                            // /* background-size: cover; */
-                            // vertical-align: middle;
-                            // line-height: inherit;
-                            // margin: 0;
-                            // position: absolute;
-                            // /* top: 0; */
-                            // /* left: 0; */
-                            // z-index: 999;
-                            // // pointer-events: none;
-                            // background: pink;
-                            // opacity: 0.3;
+                            width: 25%;
+                            height: 1.5rem;
+                            background: transparent;
+                            background-image: unset;
+                            /* background-size: cover; */
+                            vertical-align: middle;
+                            line-height: inherit;
+                            margin: 0;
+                            position: absolute;
+                            /* top: 0; */
+                            /* left: 0; */
+                            z-index: 999;
+                            // pointer-events: none;
+                            background: pink;
+                            opacity: 0.3;
                         
                             &.rc-tree-switcher_open {
 
@@ -63,11 +63,7 @@
 
                             }
                             &.rc-tree-node-selected {
-                                span.rc-tree-title {
-                                    input {
-                                        display: inline-block !important;
-                                    }
-                                }
+
                             }
                             span.rc-tree-iconEle {    
                                 background-size: cover;
@@ -89,19 +85,15 @@
                             }
                             span.rc-tree-title {
                                 position: relative;
-                                height: 24px;
-                                line-height: 24px;
                                 span {
 
                                 }
                                 input {
                                     position: absolute;
                                     top: 0;
-                                    height: inherit;
-                                    line-height: inherit;
-                                    margin-left: 1.5rem;
-                                    display: none;
+                                    margin-left: 1rem;
                                 }
+
                             }
                         }
                     }

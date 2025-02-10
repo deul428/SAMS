@@ -474,6 +474,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     a_session_user_id: auth.userId,
                     a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
                     a_detail_no: a_v_modalPropsData.a_detail_no,
+                    a_user_name: a_v_modalPropsData.a_user_name,
                 };
                 /* updatedInput.biz_opp = {
                     ...prevInput.biz_opp,
@@ -563,43 +564,100 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // 유효값 검사
             if (v_componentName === 'bizOpp') {
                 if (msg === '등록') {
-                    if (
-                        input.biz_opp.a_biz_opp_name.trim() !== '' && 
-                        input.biz_opp.a_progress2_rate_code.trim() !== '' && 
-                        input.biz_opp.a_contract_date.trim() !== '' && 
-                        input.biz_opp.a_essential_achievement_tf !== null && 
-        
-                        input.biz_opp_detail.a_change_preparation_dept_id.trim() !== '' && 
-                        input.biz_opp_detail.a_sale_com2_code.trim() !== '' && 
-                        input.biz_opp_detail.a_sale_date.trim() !== '' && 
-                        // input.biz_opp_detail.a_sale_amt >= 0 &&
-                        // input.biz_opp_detail.a_sale_profit >= 0 &&
-                        // input.biz_opp_detail.a_purchase_amt >= 0 &&
-                        input.biz_opp_detail.a_purchase_date.trim() !== '' && 
-                        input.biz_opp_detail.a_biz_section2_code.trim() !== '' && 
-                        input.biz_opp_detail.a_principal_product2_code.trim() !== '' && 
-                        input.a_user_name.trim() !== '' && 
-        
-                        input.biz_opp_activity.a_activity_details.trim() !== '' && 
-                        input.biz_opp_activity.a_activity_date.trim() !== '' 
-                    ) {
-                        confirmMsg = `사업 (기회) 명 ${input.biz_opp.a_biz_opp_name}을(를) 등록하시겠습니까?`;
+                    const validateStr = (obj, key) => obj?.[key] != null && obj[key].toString().trim() !== '';
+                    const validateNum = (obj, key) => obj?.[key] != null && /* typeof obj[key] === 'number' &&  */Number(obj[key]) >= 0;
+
+                    // const hasBizOpp = !!input?.biz_opp;
+                    // const hasBizOppDetail = !!input?.biz_opp_detail;
+                    // const hasBizOppActivity = !!input?.biz_opp_activity;
+
+                    if (!input || input.length === 0) {
+                        console.log('input이 없어요');
+                        return;
                     } else {
-                        alert('필수값을 모두 기입하십시오.');
-                        return; 
+                        // if (!hasBizOpp && !hasBizOppDetail && !hasBizOppActivity) {
+                        //     console.log('table key 부분이 없어요');
+                        // }
+
+                        const validateFields = [
+                            { key: 'a_biz_opp_name', validator: () => validateStr(input.biz_opp, 'a_biz_opp_name')},
+                            { key: 'a_user_name', validator: () => validateStr(input, 'a_user_name')},
+                            { key: 'a_sale_com2_code', validator: () => validateStr(input.biz_opp_detail, 'a_sale_com2_code')},
+                            { key: 'a_progress2_rate_code', validator: () => validateStr(input.biz_opp, 'a_progress2_rate_code')},
+                            { key: 'a_essential_achievement_tf', validator: () => input.biz_opp?.a_essential_achievement_tf !== null },
+                            { key: 'a_contract_date', validator: () => validateStr(input.biz_opp, 'a_contract_date')},
+                            { key: 'a_sale_date', validator: () => validateStr(input.biz_opp_detail, 'a_sale_date')},
+                            { key: 'a_purchase_date', validator: () => validateStr(input.biz_opp_detail, 'a_purchase_date')},
+                            { key: 'a_sale_amt', validator: () => validateNum(input.biz_opp_detail, 'a_sale_amt')},
+                            { key: 'a_purchase_amt', validator: () => validateNum(input.biz_opp_detail, 'a_purchase_amt')},
+                            { key: 'a_sale_profit', validator: () => validateNum(input.biz_opp_detail, 'a_sale_profit')},
+                            { key: 'a_biz_section2_code', validator: () => validateStr(input.biz_opp_detail, 'a_biz_section2_code')},
+                            { key: 'a_principal_product2_code', validator: () => validateStr(input.biz_opp_detail, 'a_principal_product2_code')},
+
+                            { key: 'a_activity_details', validator: () => validateStr(input.biz_opp_activity, 'a_activity_details')},
+                            { key: 'a_activity_date', validator: () => validateStr(input.biz_opp_activity, 'a_activity_date')},
+                        ];
+                        const nullField = validateFields.find(field => !field.validator());
+                        if (nullField) {
+                            const targetField = document.querySelector(`[name=${nullField.key}]`) || document.querySelector(`select[name=${nullField.key}]`);
+                            console.log(targetField.placeholder);
+                            console.log(targetField.nextSibling.innerText);
+                            alert(`${targetField.nextSibling.innerText} 필드를 입력하세요.`);
+                            if (targetField) {
+                                targetField.focus(); // 🚀 React가 렌더링을 마친 후 포커스 이동
+                            }
+                            return;
+                        } else {
+                            confirmMsg = `사업 (기회) 명 ${input.biz_opp.a_biz_opp_name}을(를) 등록하시겠습니까?`;
+                        }
                     }
                 } else if (msg === '수정' && a_v_modalPropsData) {
                     console.log("a_v_modalPropsData: ", a_v_modalPropsData, "input:", input);
 
                     const validateStr = (obj, key) => obj?.[key] != null && obj[key].toString().trim() !== '';
                     const validateNum = (obj, key) => obj?.[key] != null && typeof obj[key] === 'number' && obj[key] >= 0;
-                    const hasBizOpp = !!input?.biz_opp;
-                    const hasBizOppDetail = !!input?.biz_opp_detail;
-                    const hasBizOppActivity = !!input?.biz_opp_activity;
-                    if (!hasBizOpp && !hasBizOppDetail && !hasBizOppActivity) {
-                        console.log('없어요');
+
+                    // const hasBizOpp = !!input?.biz_opp;
+                    // const hasBizOppDetail = !!input?.biz_opp_detail;
+                    // const hasBizOppActivity = !!input?.biz_opp_activity;
+
+                    if (!input || input.length === 0) {
+                        console.log('input이 없어요');
                         return;
-                    };
+                    } else {
+                        // if (!hasBizOpp && !hasBizOppDetail && !hasBizOppActivity) {
+                        //     console.log('table key 부분이 없어요');
+                        // }
+
+                        const validateFields = [
+                            { key: 'a_biz_opp_name', validator: () => validateStr(input.biz_opp, 'a_biz_opp_name')},
+                            { key: 'a_essential_achievement_tf', validator: () => input.biz_opp?.a_essential_achievement_tf !== null },
+                            { key: 'a_contract_date', validator: () => validateStr(input.biz_opp, 'a_contract_date')},
+                            { key: 'a_progress2_rate_code', validator: () => validateStr(input.biz_opp, 'a_progress2_rate_code')},
+                            { key: 'a_sale_date', validator: () => validateStr(input.biz_opp_detail, 'a_sale_date')},
+                            { key: 'a_purchase_date', validator: () => validateStr(input.biz_opp_detail, 'a_purchase_date')},
+                            { key: 'a_sale_amt', validator: () => validateNum(input.biz_opp_detail, 'a_sale_amt')},
+                            { key: 'a_sale_profit', validator: () => validateNum(input.biz_opp_detail, 'a_sale_profit')},
+                            { key: 'a_purchase_amt', validator: () => validateNum(input.biz_opp_detail, 'a_purchase_amt')},
+                            { key: 'a_sale_com2_code', validator: () => validateStr(input.biz_opp_detail, 'a_sale_com2_code')},
+                            { key: 'a_biz_section2_code', validator: () => validateStr(input.biz_opp_detail, 'a_biz_section2_code')},
+                            { key: 'a_principal_product2_code', validator: () => validateStr(input.biz_opp_detail, 'a_principal_product2_code')},
+                            { key: 'a_user_name', validator: () => validateStr(input.biz_opp_detail, 'a_user_name')},
+
+                            { key: 'a_activity_details', validator: () => validateStr(input.biz_opp_activity, 'a_activity_details')},
+                            { key: 'a_activity_date', validator: () => validateStr(input.biz_opp_activity, 'a_activity_date')},
+                        ];
+                        const nullField = validateFields.find(field => !field.validator());
+                        if (nullField) {
+                            alert(`${nullField.key}` );
+                            return;
+                        }
+
+                    }
+
+
+
+
                     if (
                         (
                             validateStr(input.biz_opp, 'a_biz_opp_name') ||
@@ -1131,16 +1189,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='매출 상세' className='inputTree' onClick={(e) => openModal(e, 'product')}>
-                                                        <Form.Control readOnly size='sm' aria-label='selectBox' className='' name='a_principal_product2_code'
-                                                        data-key='biz_opp_detail' 
-                                                        onChange={f_handlingInput} 
-                                                        defaultValue={a_v_modalPropsData?.a_principal_product2_name || ''}
-                                                        />
-                                                        <Search />
-                                                    </FloatingLabel>
-                                                </Col>
-                                                {/* <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 구분'>
                                                         <Form.Select size='sm' aria-label='사업 구분' className='' name='a_biz_section2_code' 
                                                         data-key='biz_opp_detail' 
@@ -1179,7 +1227,19 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             }
                                                         </Form.Select>
                                                     </FloatingLabel>
-                                                </Col> */}
+                                                </Col>
+
+                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                    <h4>매출 상세(팝업) 작업 중</h4>
+                                                    <FloatingLabel label='매출 상세' className='inputTree' onClick={(e) => openModal(e, 'product')}>
+                                                        <Form.Control readOnly size='sm' aria-label='selectBox' className='' name='a_principal_product2_code'
+                                                        data-key='biz_opp_detail' 
+                                                        onChange={f_handlingInput} 
+                                                        defaultValue={a_v_modalPropsData?.a_principal_product2_name || ''}
+                                                        />
+                                                        <Search />
+                                                    </FloatingLabel>
+                                                </Col>
                                             </Row>
                                             </>
                                             <>

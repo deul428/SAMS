@@ -4,11 +4,13 @@ import { useLocation } from 'react-router-dom';
 import { setLocation } from '../redux/reducers/LocationSlice';
 import { apiMethods } from './api';
 
+import Trees from './Trees';
+
 import roots from './datas/Roots';
 import '../styles/_customModal.scss';
 import '../styles/_search.scss';
 import { Modal, Button, Form, Row, Col, ListGroup, FloatingLabel } from 'react-bootstrap';
-import { FileArrowDownFill } from 'react-bootstrap-icons';
+import { FileArrowDownFill, Search } from 'react-bootstrap-icons';
 
 const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData, authLevel, setIsRefresh}) => {
     // v_propsData: inputField에서 받아오는 list 포함 데이터 / v_modalPropsData: dynamicTable에서 받아오는 테이블 데이터, 사용자가 선택한 행의 데이터만 불러옴
@@ -352,22 +354,15 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             setState((prevInput) => {
                 // 필드가 disabled일 경우(수정 불가능할 경우), input에 값을 자동으로 채워 넣음. 그렇지 않을 경우 사용자가 입력한 input을 채워 넣음. < 해야 함
                 let updatedInput;
-                console.log(prevInput);
+                // 수정 시
                 if (a_v_modalPropsData) {
                     updatedInput = { 
                         ...prevInput, 
                         a_session_user_id: auth.userId,
                         a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
                         a_detail_no: a_v_modalPropsData.a_detail_no,
-                        /* biz_opp_detail: {
-                            ...prevInput.biz_opp_detail,
-                            a_detail_no: a_v_modalPropsData ? a_v_modalPropsData.a_detail_no : 1
-                        } */
+                        a_user_name: prevInput.a_user_name
                     }
-                    if (prevInput.a_user_name) {
-                        console.log(this);
-                    }
-
                 } else {
                     updatedInput = { 
                         ...prevInput, 
@@ -583,7 +578,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         input.biz_opp_detail.a_purchase_date.trim() !== '' && 
                         input.biz_opp_detail.a_biz_section2_code.trim() !== '' && 
                         input.biz_opp_detail.a_principal_product2_code.trim() !== '' && 
-                        input.biz_opp_detail.a_user_name.trim() !== '' && 
+                        input.a_user_name.trim() !== '' && 
         
                         input.biz_opp_activity.a_activity_details.trim() !== '' && 
                         input.biz_opp_activity.a_activity_date.trim() !== '' 
@@ -594,6 +589,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         return; 
                     }
                 } else if (msg === '수정' && a_v_modalPropsData) {
+
                     console.log("a_v_modalPropsData: ", a_v_modalPropsData, "input:", input);
 
                     const validateStr = (obj, key) => obj?.[key] != null && obj[key].toString().trim() !== '';
@@ -730,6 +726,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     }
     useEffect(() => {
         if (show) {
+            setIsRefresh(false);
             setIsProDisabled(true);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
@@ -751,6 +748,23 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     }, [detailData])
     // ================= POST 끝 ================= 
 
+    // tree Modal로 연결
+    
+    const [showModal, setShowModal] = useState(false);
+    const [v_childComponent, setVChildComponent] = useState(null);  
+    const openModal = (e, v_treeName) => {
+        if (v_treeName === 'product') {
+            setVChildComponent('product');
+            e.stopPropagation(); //이벤트 전파 방지
+        } else if (v_treeName === '') {
+            setVChildComponent('');
+        } else { return; }
+        setShowModal(true);
+        console.log(setShowModal, showModal);
+    }
+    const closeModal = () => {
+        setShowModal(false);
+    };
 /*     // Redux와 React Router 동기화
     useEffect(() => {
         const syncPath = async () => {
@@ -902,7 +916,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         <Form.Control size='sm' type='text' 
                                                         className='' placeholder='담당자'
                                                         name='a_user_name' 
-                                                        data-key='biz_opp_detail'
+                                                        // data-key='biz_opp_detail'
                                                         onChange={f_handlingInput} 
                                                         // value={input.user_name || ''} 
                                                         defaultValue={
@@ -1016,7 +1030,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <Form.Label htmlFor='inputChck2'>필달 여부</Form.Label>
+                                                    <Form.Label htmlFor='inputChck2' className='essentialAchievementTf'>필달 여부</Form.Label>
                                                     <Form.Check type={`checkbox`} id={`inputChck2`} name='a_essential_achievement_tf' 
                                                     data-key='biz_opp'
                                                     onChange={f_handlingInput}
@@ -1090,7 +1104,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>
-                                            <Row className='d-flex justify-content-between'
+                                            <Row className='d-flex justify-content-start'
                                             style={ 
                                                 (auth.userAuthCode === '0002') ? 
                                                 ({"pointerEvents": "none"}) : ({})
@@ -1118,11 +1132,20 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='매출 상세' className='inputTree' onClick={(e) => openModal(e, 'product')}>
+                                                        <Form.Control readOnly size='sm' aria-label='selectBox' className='' name='a_principal_product2_code'
+                                                        data-key='biz_opp_detail' 
+                                                        onChange={f_handlingInput} 
+                                                        defaultValue={a_v_modalPropsData?.a_principal_product2_name || ''}
+                                                        />
+                                                        <Search />
+                                                    </FloatingLabel>
+                                                </Col>
+                                                {/* <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 구분'>
                                                         <Form.Select size='sm' aria-label='사업 구분' className='' name='a_biz_section2_code' 
                                                         data-key='biz_opp_detail' 
                                                         onChange={f_handlingInput} 
-                                                        // value={input.biz_section2_name || ''}
                                                         defaultValue={a_v_modalPropsData?.a_biz_section2_name || ''}
                                                         >
                                                             <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_biz_section2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_biz_section2_name : '선택') + ` (현재 값)`}</option>
@@ -1135,9 +1158,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                                 :
                                                                 ('')
                                                             }
-                                                            {/* <option value='1'>One</option>
-                                                            <option value='2'>Two</option>
-                                                            <option value='3'>Three</option> */}
                                                         </Form.Select>
                                                     </FloatingLabel>
                                                 </Col>
@@ -1146,7 +1166,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         <Form.Select size='sm' aria-label='selectBox' className='' name='a_principal_product2_code'
                                                         data-key='biz_opp_detail' 
                                                         onChange={f_handlingInput} 
-                                                        // value={input.principal_product2_name || ''} 
                                                         defaultValue={a_v_modalPropsData?.a_principal_product2_name || ''}
                                                         >
                                                             <option value={(a_v_modalPropsData ? a_v_modalPropsData.a_principal_product2_name : '선택')}>{(a_v_modalPropsData ? a_v_modalPropsData.a_principal_product2_name : '선택') + ` (현재 값)`}</option>
@@ -1161,7 +1180,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             }
                                                         </Form.Select>
                                                     </FloatingLabel>
-                                                </Col>
+                                                </Col> */}
                                             </Row>
                                             </>
                                             <>
@@ -1359,6 +1378,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     return (
         <div id='inputFieldDetail'>
             {v_handlingHtml}
+            <Trees v_treeName={v_childComponent} show={showModal} onHide={closeModal} data={detailData}/>
         </div>
     );
 };

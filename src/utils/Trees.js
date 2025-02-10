@@ -22,7 +22,7 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
             corCode = data.data.search_last_client_com_code;
             priCode = data.data.search_principal_product_code;
             console.log(bizCode, corCode, priCode);
-            const bizData = bizCode.map((e, index) => ({
+            const corData = corCode.map((e, index) => ({
                 title: e.small_classi_name,
                 key: `0-${index}`, // 키를 유니크하게 변경
                 children: [
@@ -30,8 +30,9 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
                         title: 'Level 2 - Node 1',
                         key: `0-${index}-0`,
                         children: [
-                            { title: 'Level 3 - Node 1 (isLeaf)', key: `0-${index}-0-0`, isLeaf: true },
-                            { title: 'Level 3 - Node 2 (disabled)', key: `0-${index}-0-1`, disabled: true },
+                            { title: 'Level 3 - Node 1', key: `0-${index}-0-0` },
+                            { title: 'Level 3 - Node 2 (isLeaf)', key: `0-${index}-0-1`, isLeaf: true },
+                            { title: 'Level 3 - Node 3 (disabled)', key: `0-${index}-0-2`, disabled: true },
                         ],
                     }
                 ],
@@ -44,8 +45,9 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
                         title: 'Level 2 - Node 1',
                         key: `0-${index}-0`,
                         children: [
-                            { title: 'Level 3 - Node 1 (isLeaf)', key: `0-${index}-0-0`, isLeaf: true },
-                            { title: 'Level 3 - Node 2 (disabled)', key: `0-${index}-0-1`, disabled: true },
+                            { title: 'Level 3 - Node 1', key: `0-${index}-0-0` },
+                            { title: 'Level 3 - Node 2 (isLeaf)', key: `0-${index}-0-1`, isLeaf: true },
+                            { title: 'Level 3 - Node 3 (disabled)', key: `0-${index}-0-2`, disabled: true },
                         ],
                     }
                 ],

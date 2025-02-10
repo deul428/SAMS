@@ -28,14 +28,20 @@
                             /* top: 0; */
                             /* left: 0; */
                             z-index: 999;
+                            // pointer-events: none;
                             &.rc-tree-switcher_open {
 
                             }
                             &.rc-tree-switcher_close {
                                 
                             }
+                            &.rc-tree-switcher-noop {
+                                pointer-events: none;
+                            }
                         }
                         span.rc-tree-node-content-wrapper {
+                            padding-right: 1.5rem;
+                            margin-left: 0;
                             &.rc-tree-node-content-wrapper-open {
 
                             }
@@ -60,7 +66,7 @@
                                 &.rc-tree-icon__docu {
                                     opacity: 0;
                                     pointer-events: none;
-                                    text-indent: 1rem;
+                                    // text-indent: 1rem;
                                 }
                             }
                             span.rc-tree-title {

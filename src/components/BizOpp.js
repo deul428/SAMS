@@ -80,10 +80,8 @@ const BizOpp = () => {
     }, [endpoint]);
 
     useEffect(() => {
-        console.log(isRefresh);
-        if(isRefresh === true) {
+        if (isRefresh === true) {
             setTimeout(() => {
-                console.log('isRefresh 시작');
                 f_handlingData('post', endpoint, userCheck);
             }, 1000);
         } 

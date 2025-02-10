@@ -393,7 +393,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             ? 
                             (
                             <>
-                            <Button size="sm" variant='warning' className='btnCell' onClick={(e) => f_handlingData('post', '복제', row.original, e)} >복제</Button>
+                            <Button size="sm" variant='warning' className='btnCell' onClick={(e) => f_handlingData('post', 'clone-biz-opp/', row.original, e)} >복제</Button>
                             </>
                             )
                             : 

@@ -5,7 +5,7 @@ import TreeLibrary from "../components/test/Tree";
 import { Form, FloatingLabel } from "react-bootstrap";
 import Tree from 'rc-tree';
 import 'rc-tree/assets/index.css';
-// import '../styles/_tree.scss';
+import '../styles/_tree.scss';
 import '../styles/_button.scss';
 
 const Trees = ({ v_treeName, show, onHide, data }) => {
@@ -16,40 +16,38 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
     const switchData = (switchName) => {
         console.log(switchName);
     }
-    const [inputValues, setInputValues] = useState({}); // 입력값 저장
-    const handleInputChange = (key, value) => {
-        setInputValues(prev => ({
-            ...prev,
-            [key]: value
-        }));
-    };
     useEffect(() => {
         if (data) {
             bizCode = data.data.search_biz_section_code;
             corCode = data.data.search_last_client_com_code;
             priCode = data.data.search_principal_product_code;
             console.log(bizCode, corCode, priCode);
-
-            const newTreeData = bizCode.map((e, index) => ({
-                title: 
-                    <>
-                    <span>{e.small_classi_name}</span>
-                    <input type='text' placeholder='비고' value={inputValues['0-0'] || ''} onChange={(e) => handleInputChange('0-0', e.target.value)} />
-                    </>,
+            const corData = corCode.map((e, index) => ({
+                title: e.small_classi_name,
                 key: `0-${index}`, // 키를 유니크하게 변경
                 children: [
                     {
                         title: 'Level 2 - Node 1',
                         key: `0-${index}-0`,
                         children: [
-                            { title: 
-                            <><span>test</span>
-                                <input type='text' placeholder='비고' value={inputValues['0-0'] || ''} onChange={(e) => handleInputChange('0-0', e.target.value)} /></>,
-                                key: `0-${index}-0-0`
-                            },
-                            { title: 'Level 3 - Node 1', key: `0-${index}-0-1` },
-                            { title: 'Level 3 - Node 2 (isLeaf)', key: `0-${index}-0-2`, isLeaf: true },
-                            { title: 'Level 3 - Node 3 (disabled)', key: `0-${index}-0-3`, disabled: true },
+                            { title: 'Level 3 - Node 1', key: `0-${index}-0-0` },
+                            { title: 'Level 3 - Node 2 (isLeaf)', key: `0-${index}-0-1`, isLeaf: true },
+                            { title: 'Level 3 - Node 3 (disabled)', key: `0-${index}-0-2`, disabled: true },
+                        ],
+                    }
+                ],
+            }));
+            const newTreeData = bizCode.map((e, index) => ({
+                title: e.small_classi_name,
+                key: `0-${index}`, // 키를 유니크하게 변경
+                children: [
+                    {
+                        title: 'Level 2 - Node 1',
+                        key: `0-${index}-0`,
+                        children: [
+                            { title: 'Level 3 - Node 1', key: `0-${index}-0-0` },
+                            { title: 'Level 3 - Node 2 (isLeaf)', key: `0-${index}-0-1`, isLeaf: true },
+                            { title: 'Level 3 - Node 3 (disabled)', key: `0-${index}-0-2`, disabled: true },
                         ],
                     }
                 ],
@@ -63,27 +61,16 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
     const [checkedKeys, setCheckedKeys] = useState([]);
     const onSelect = (selectedKeys, info) => {
         console.log('selected key', selectedKeys);
-        console.log('info', info);
         console.log('selected key info', info.node.title);
-        /* const targetNode = document.querySelector(`[title="${info.node.title}"]`);
-        if (targetNode) {
-            console.log("찾은 노드:", targetNode);
-            let siblingDiv = targetNode.parentElement.querySelector(".custom-input-container");
-            if (!siblingDiv) {
-                siblingDiv = document.createElement("div");
-                siblingDiv.className = "custom-input-container";
-                siblingDiv.innerHTML = `<input type="text" placeholder="Enter value" class="custom-input"/>`;
-                targetNode.parentElement.appendChild(siblingDiv);
-            }
-        } */
+        setSelectedKeys(selectedKeys);
         
-        /* // 🚀 노드를 클릭하면 체크박스도 같이 체크/해제
+        // 🚀 노드를 클릭하면 체크박스도 같이 체크/해제
         const key = info.node.key;
         const newCheckedKeys = checkedKeys.includes(key)
             ? checkedKeys.filter(k => k !== key) // 이미 체크되어 있으면 제거
             : [...checkedKeys, key]; // 체크 안 되어 있으면 추가
 
-        setCheckedKeys(newCheckedKeys); */
+        setCheckedKeys(newCheckedKeys);
     }
     const onCheck = (checkedKeys, info) => {
         console.log(info)
@@ -128,9 +115,9 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
                                             </FloatingLabel>
                                             <Button variant='info'>조회</Button>
                                         </div>
-                                        <Tree multiple checkStrictly treeData={treeData} /* onCheck={onSelect}  */onSelect={onSelect}/*  checkedKeys={checkedKeys} *//* onSelect={(checkedKeys, info) => onSelect((checkedKeys, info))} *//>
+                                        <Tree multiple checkStrictly checkable treeData={treeData} onCheck={onCheck} onSelect={onSelect} checkedKeys={checkedKeys}/* onSelect={(checkedKeys, info) => onSelect((checkedKeys, info))} *//>
                                         {/* <p>selectedKeys: {selectedKeys}</p> */}
-                                        <p>selectedKeys: {JSON.stringify(selectedKeys)}</p>
+                                        {/* <p>checkedKeys: {JSON.stringify(checkedKeys)}</p> */}
 
                                     </div>
                                 </div>

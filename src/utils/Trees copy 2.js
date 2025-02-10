@@ -29,27 +29,33 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
             corCode = data.data.search_last_client_com_code;
             priCode = data.data.search_principal_product_code;
             console.log(bizCode, corCode, priCode);
-
-            const newTreeData = bizCode.map((e, index) => ({
-                title: 
-                    <>
-                    <span>{e.small_classi_name}</span>
-                    <input type='text' placeholder='비고' value={inputValues['0-0'] || ''} onChange={(e) => handleInputChange('0-0', e.target.value)} />
-                    </>,
+            const corData = corCode.map((e, index) => ({
+                title: e.small_classi_name,
                 key: `0-${index}`, // 키를 유니크하게 변경
                 children: [
                     {
                         title: 'Level 2 - Node 1',
                         key: `0-${index}-0`,
                         children: [
-                            { title: 
-                            <><span>test</span>
-                                <input type='text' placeholder='비고' value={inputValues['0-0'] || ''} onChange={(e) => handleInputChange('0-0', e.target.value)} /></>,
-                                key: `0-${index}-0-0`
-                            },
-                            { title: 'Level 3 - Node 1', key: `0-${index}-0-1` },
-                            { title: 'Level 3 - Node 2 (isLeaf)', key: `0-${index}-0-2`, isLeaf: true },
-                            { title: 'Level 3 - Node 3 (disabled)', key: `0-${index}-0-3`, disabled: true },
+                            { title: <input type='text' placeholder='제품명 비고' value={inputValues['0-0'] || ''} onChange={(e) => handleInputChange('0-0', e.target.value)}/>},
+                            { title: 'Level 3 - Node 1', key: `0-${index}-0-0` },
+                            { title: 'Level 3 - Node 2 (isLeaf)', key: `0-${index}-0-1`, isLeaf: true },
+                            { title: 'Level 3 - Node 3 (disabled)', key: `0-${index}-0-2`, disabled: true },
+                        ],
+                    }
+                ],
+            }));
+            const newTreeData = bizCode.map((e, index) => ({
+                title: e.small_classi_name,
+                key: `0-${index}`, // 키를 유니크하게 변경
+                children: [
+                    {
+                        title: 'Level 2 - Node 1',
+                        key: `0-${index}-0`,
+                        children: [
+                            { title: 'Level 3 - Node 1', key: `0-${index}-0-0` },
+                            { title: 'Level 3 - Node 2 (isLeaf)', key: `0-${index}-0-1`, isLeaf: true },
+                            { title: 'Level 3 - Node 3 (disabled)', key: `0-${index}-0-2`, disabled: true },
                         ],
                     }
                 ],
@@ -65,7 +71,7 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
         console.log('selected key', selectedKeys);
         console.log('info', info);
         console.log('selected key info', info.node.title);
-        /* const targetNode = document.querySelector(`[title="${info.node.title}"]`);
+        const targetNode = document.querySelector(`[title="${info.node.title}"]`);
         if (targetNode) {
             console.log("찾은 노드:", targetNode);
             let siblingDiv = targetNode.parentElement.querySelector(".custom-input-container");
@@ -75,7 +81,7 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
                 siblingDiv.innerHTML = `<input type="text" placeholder="Enter value" class="custom-input"/>`;
                 targetNode.parentElement.appendChild(siblingDiv);
             }
-        } */
+        }
         
         /* // 🚀 노드를 클릭하면 체크박스도 같이 체크/해제
         const key = info.node.key;

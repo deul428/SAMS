@@ -349,7 +349,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         if (e.target.name === 'a_progress2_rate_code' && (e.target.value === '0006' || e.target.value === '0007')) {
             setIsProDisabled(false);
         }
-
         const updateValue = (setState) => {
             setState((prevInput) => {
                 // 필드가 disabled일 경우(수정 불가능할 경우), input에 값을 자동으로 채워 넣음. 그렇지 않을 경우 사용자가 입력한 input을 채워 넣음. < 해야 함
@@ -593,7 +592,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             const targetField = document.querySelector(`[name=${nullField.key}]`) || document.querySelector(`select[name=${nullField.key}]`);
                             alert(`${targetField.nextSibling.innerText} 필드를 입력하세요.`);
                             if (targetField) {
-                                targetField.focus(); // 🚀 React가 렌더링을 마친 후 포커스 이동
+                                targetField.focus();
                             }
                             return;
                         } else {
@@ -631,7 +630,16 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             { key: 'a_activity_date', parent: 'biz_opp_activity', essential: true, },
                         ];
 
-                        console.log(input['biz_opp_detail']);
+                        if (input.biz_opp_detail?.a_sale_amt) {
+                            console.log(`a_sale_amt ${typeof input.biz_opp_detail.a_sale_amt}`);
+                        }
+                        if (input.biz_opp_detail?.a_sale_profit) {
+                            console.log(`a_sale_profit ${typeof input.biz_opp_detail.a_sale_profit}`);
+                        }
+                        if (input.biz_opp_detail?.a_purchase_amt) {
+                            console.log(`a_purchase_amt ${typeof input.biz_opp_detail.a_purchase_amt}`);
+                        }
+
                         const nullField = validateFields.find(({ key, parent, type, essential }) => {
                             let obj;
                             key === 'a_user_name' ? obj = input : obj = input[parent];
@@ -653,47 +661,20 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             return !validateStr(obj, key);
                         });
 
+                        
+
                         if (nullField) {
-                            console.log("nullField: ", nullField);
+                            console.log("nullField: ", nullField.key);
                             const targetField = document.querySelector(`[name=${nullField.key}]`);
                             alert(`${targetField.nextSibling.innerText} 필드를 입력하세요.`);
                             if (targetField) {
-                                targetField.focus(); // 🚀 React가 렌더링을 마친 후 포커스 이동
+                                targetField.focus(); 
                             }
                             return;
                         } else {
                             confirmMsg = `사업 (기회) 명 을(를) 등록하시겠습니까?`;
                         }
                     }
-
-
-
-                   /*  if (
-                        (
-                            validateStr(input.biz_opp, 'a_biz_opp_name') ||
-                            input.biz_opp?.a_essential_achievement_tf !== null ||
-                            validateStr(input.biz_opp, 'a_contract_date') ||
-                            validateStr(input.biz_opp_detail, 'a_sale_date') ||
-                            validateStr(input.biz_opp_detail, 'a_purchase_date') ||
-                            validateNum(input.biz_opp_detail, 'a_sale_amt') ||
-                            validateNum(input.biz_opp_detail, 'a_sale_profit') ||
-                            validateNum(input.biz_opp_detail, 'a_purchase_amt') ||
-                            validateStr(input.biz_opp_detail, 'a_sale_com2_code') ||
-                            validateStr(input.biz_opp, 'a_progress2_rate_code') ||
-                            validateStr(input.biz_opp_detail, 'a_biz_section2_code') ||
-                            validateStr(input.biz_opp_detail, 'a_principal_product2_code') ||
-                            validateStr(input.biz_opp_detail, 'a_user_name')
-                        ) &&
-                        (
-                            validateStr(input.biz_opp_activity, 'a_activity_details') &&
-                            validateStr(input.biz_opp_activity, 'a_activity_date')
-                        )
-                    ) {
-                        confirmMsg = `사업 (기회) 일련 번호 ${a_v_modalPropsData.a_biz_opp_id}을(를) 수정하시겠습니까?`;
-                    } else {
-                        alert('필수값을 모두 기입하십시오.');
-                        return; 
-                    } */
                 }
             } else if (v_componentName === 'activity') {
                 if (msg === '수정' && a_v_modalPropsData) {
@@ -728,6 +709,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     }
                 }
             }
+            
         }
         if (confirmMsg) {
             confirmResult = window.confirm(confirmMsg);

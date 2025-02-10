@@ -552,6 +552,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             const numKeys = ['a_purchase_amt', 'a_sale_amt', 'a_sale_profit'];
             if (input.biz_opp_detail) {
                 numKeys.forEach((key) => {
+                    console.log(input.biz_opp_detail[key], typeof input.biz_opp_detail[key]);
                     if (typeof input.biz_opp_detail[key] === 'string' /* &&  Number(input.biz_opp_detail[key]) > 999 */) {
                         input.biz_opp_detail[key] = /* Number( */
                             input.biz_opp_detail[key].replace(/\D/g, '');
@@ -564,8 +565,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             if (v_componentName === 'bizOpp') {
                 if (msg === '등록') {
                     const validateStr = (obj, key) => obj?.[key] != null && obj[key].toString().trim() !== '';
-                    const validateNum = (obj, key) => obj?.[key] != null && obj[key].toString().trim() !== '' && !isNaN(Number(obj[key])) && Number(obj[key]) >= 0;
-                    
+                    const validateNum = (obj, key) => obj?.[key] != null && /* typeof obj[key] === 'number' &&  */Number(obj[key]) >= 0;
                     if (!input || input.length === 0) {
                         console.log('input이 없어요');
                         return;
@@ -602,59 +602,43 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     }
                 } else if (msg === '수정' && a_v_modalPropsData) {
                     const validateStr = (obj, key) => obj?.[key] != null && obj[key].toString().trim() !== '';
-                    const validateNum = (obj, key) => obj?.[key] != null && obj[key].toString().trim() !== '' && !isNaN(Number(obj[key])) && Number(obj[key]) >= 0;
+                    const validateNum = (obj, key) => obj?.[key] != null && !isNaN(Number(obj[key])) && Number(obj[key]) >= 0;
+                    // const hasBizOpp = !!input?.biz_opp;
+                    // const hasBizOppDetail = !!input?.biz_opp_detail;
+                    // const hasBizOppActivity = !!input?.biz_opp_activity;
 
+                    console.log(input);
                     if (!input || input.length === 0) {
                         console.log('input이 없어요');
                         return;
                     } else {
-                        console.log(input);
-                        // 존재하는 필드만 검사하도록 수정
+                        // if (!hasBizOpp && !hasBizOppDetail && !hasBizOppActivity) {
+                        //     console.log('table key 부분이 없어요');
+                        // }
+
                         const validateFields = [
-                            { key: 'a_user_name', parent: 'input', essential: true },
+                            { key: 'a_user_name', validator: () => validateStr(input, 'a_user_name')},
+                            /* { key: 'a_biz_opp_name', validator: () => validateStr(input.biz_opp, 'a_biz_opp_name')},
+                            { key: 'a_user_name', validator: () => validateStr(input, 'a_user_name')},
+                            { key: 'a_sale_com2_code', validator: () => validateStr(input.biz_opp_detail, 'a_sale_com2_code')},
+                            { key: 'a_progress2_rate_code', validator: () => validateStr(input.biz_opp, 'a_progress2_rate_code')},
+                            { key: 'a_essential_achievement_tf', validator: () => input.biz_opp?.a_essential_achievement_tf !== null },
+                            { key: 'a_contract_date', validator: () => validateStr(input.biz_opp, 'a_contract_date')},
+                            { key: 'a_sale_date', validator: () => validateStr(input.biz_opp_detail, 'a_sale_date')},
+                            { key: 'a_purchase_date', validator: () => validateStr(input.biz_opp_detail, 'a_purchase_date')},
+                            { key: 'a_sale_amt', validator: () => validateNum(input.biz_opp_detail, 'a_sale_amt')},
+                            { key: 'a_purchase_amt', validator: () => validateNum(input.biz_opp_detail, 'a_purchase_amt')},
+                            { key: 'a_sale_profit', validator: () => validateNum(input.biz_opp_detail, 'a_sale_profit')},
+                            { key: 'a_biz_section2_code', validator: () => validateStr(input.biz_opp_detail, 'a_biz_section2_code')},
+                            { key: 'a_principal_product2_code', validator: () => validateStr(input.biz_opp_detail, 'a_principal_product2_code')}, */
 
-                            { key: 'a_biz_opp_name', parent: 'biz_opp', essential: false },
-                            { key: 'a_progress2_rate_code', parent: 'biz_opp', essential: false },
-                            { key: 'a_contract_date', parent: 'biz_opp', essential: false },
-                            { key: 'a_essential_achievement_tf', parent: 'biz_opp', type: 'boolean', essential: false },
-
-                            { key: 'a_sale_com2_code', parent: 'biz_opp_detail', essential: false },
-                            { key: 'a_sale_date', parent: 'biz_opp_detail', essential: false },
-                            { key: 'a_sale_amt', parent: 'biz_opp_detail', type: 'number', essential: false },
-                            { key: 'a_sale_profit', parent: 'biz_opp_detail', type: 'number', essential: false },
-                            { key: 'a_purchase_date', parent: 'biz_opp_detail', essential: false },
-                            { key: 'a_purchase_amt', parent: 'biz_opp_detail', type: 'number', essential: false },
-                            { key: 'a_biz_section2_code', parent: 'biz_opp_detail', essential: false },
-                            { key: 'a_principal_product2_code', parent: 'biz_opp_detail', essential: false },
-
-                            { key: 'a_activity_details', parent: 'biz_opp_activity', essential: true, },
-                            { key: 'a_activity_date', parent: 'biz_opp_activity', essential: true, },
+                            { key: 'a_activity_details', validator: () => validateStr(input.biz_opp_activity, 'a_activity_details')},
+                            { key: 'a_activity_date', validator: () => validateStr(input.biz_opp_activity, 'a_activity_date')},
                         ];
 
-                        console.log(input['biz_opp_detail']);
-                        const nullField = validateFields.find(({ key, parent, type, essential }) => {
-                            let obj;
-                            key === 'a_user_name' ? obj = input : obj = input[parent];
-
-                            if (!essential) {
-                                // 부모 키가 존재하지 않으면 검사 제외
-                                if (!obj) return false;
-                                
-                                // 필드가 존재하지 않으면 검사 제외
-                                if (!Object.prototype.hasOwnProperty.call(obj, key)) return false;
-                            }
-                            
-                            // 필드 유형에 따라 검사
-                            if (type === 'number') {
-                                console.log(validateNum(obj, key));
-                                return !validateNum(obj, key);
-                            } else if (type === 'boolean') return obj[key] == null;
-                            
-                            return !validateStr(obj, key);
-                        });
-
+                        const nullField = validateFields.find(field => !field.validator());
+                        console.log(nullField);
                         if (nullField) {
-                            console.log("nullField: ", nullField);
                             const targetField = document.querySelector(`[name=${nullField.key}]`);
                             alert(`${targetField.nextSibling.innerText} 필드를 입력하세요.`);
                             if (targetField) {
@@ -662,7 +646,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             }
                             return;
                         } else {
-                            confirmMsg = `사업 (기회) 명 을(를) 등록하시겠습니까?`;
+                            confirmMsg = `사업 (기회) 명 ${input.biz_opp.a_biz_opp_name}을(를) 등록하시겠습니까?`;
                         }
                     }
 

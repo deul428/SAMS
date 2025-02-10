@@ -191,19 +191,17 @@ const roots = {
     home: {depth1: 'home', depth2: '', url: 'home/', component: Home}, 
 }
 function applyFunctions(value, ...functions) {
-    return functions.reduce((acc, func) => func(acc), value);
+  return functions.reduce((acc, func) => func(acc), value);
 }
   
 function v_handlingTF(value) { return value ? 'Y' : 'N'; }
 function v_handlingDate(value) {
-    if (value) { const v_formatValue = value.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'); return v_formatValue; }
-    return value;
+  if (value) { const v_formatValue = value.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'); return v_formatValue; }
+  return value;
 }
 function v_handlingNum(value) {
-    if (value || value === 0) { 
-        const v_formatValue = value.toLocaleString('ko-KR'); return v_formatValue; 
-    }
-    return value;
+  if (value || value === 0) { const v_formatValue = value.toLocaleString('ko-KR'); return v_formatValue; }
+  return value;
 };
 /* function v_handlingCss({value, row}) {
     <div className='tableCell' style={{backgroundColor: value && row ? 'rgba(255,0,0,0.4)' : 'white', height: 'inherit'}}>
@@ -211,10 +209,8 @@ function v_handlingNum(value) {
 </div>
 } */
 function dynamicCellStyle(row, parameter) {
-    const isChanged = row.original[`u_${parameter}`]; 
-    return {
-      backgroundColor: isChanged ? 'rgba(255,0,0,0.4)' : 'white', // 변경 여부에 따라 색상 설정
-    };
-  }
+  const isChanged = row.original[`u_${parameter}`]; 
+  return { backgroundColor: isChanged ? 'rgba(255,0,0,0.4)' : 'white', };
+}
   
 export default roots;

@@ -741,8 +741,8 @@ def f_insert_biz_opp(request):
 
 
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
-      #if v_session_user_id is not None:
-      #   v_session_user_id = v_session_user_id.strip()
+      if v_session_user_id is not None:
+         v_session_user_id = v_session_user_id.strip()
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -1800,7 +1800,7 @@ def f_clone_biz_opp(request):
 
 
    #test
-   v_session_user_id = 'leecj'
+   #v_session_user_id = 'leecj'
 
 
    if request.method == 'POST':
@@ -1812,11 +1812,11 @@ def f_clone_biz_opp(request):
 
 
 #test
-      #v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
+      if v_session_user_id is not None:
+         v_session_user_id = v_session_user_id.strip()
 
 
-      #if v_session_user_id is not None:
-      #   v_session_user_id = v_session_user_id.strip()
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -1883,11 +1883,11 @@ def f_clone_biz_opp(request):
 
 
          #test
-         # v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
-         # v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
+         v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+         v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
 
-         v_biz_opp_id = '20240028'
-         v_detail_no = 1
+         # v_biz_opp_id = '20240028'
+         # v_detail_no = 1
 
 
          v_param_insert_biz_opp_detail.append(v_biz_opp_id)

@@ -1249,22 +1249,22 @@ def f_renewal_biz_opp(request):
             #                      'a_progress2_rate_code':'0002',
             #                      'a_essential_achievement_tf':False},
             #           'biz_opp_detail':{},
-            #           # 'biz_opp_detail':{'a_user_id':'leecj',
-            #           #                   'a_change_preparation_dept_id':'98000',
-            #           #                   'a_change_preparation_dept_name':'신사업추진본부',
-            #           #                   'a_last_client_com2_code':'0002',
-            #           #                   'a_sale_com2_code':'0001',
-            #           #                   'a_sale_item_no':'',
-            #           #                  #'a_sale_date':'20250215',
-            #           #                   'a_sale_amt':567890,
-            #           #                   'a_sale_profit':9999999,
-            #           #                   'a_purchase_date':'20250219',
-            #           #                   'a_purchase_amt':567,
-            #           #                   'a_collect_money_date':'20250225',
-            #           #                   'a_biz_section2_code':'0003',
-            #           #                   'a_principal_product2_code':'0008'},
-            #           'biz_opp_activity':{'a_activity_details':'세번째!',
-            #                               'a_activity_date':'20250204'}}
+                      # 'biz_opp_detail':{'a_user_id':'leecj',
+                      #                   'a_change_preparation_dept_id':'98000',
+                      #                   'a_change_preparation_dept_name':'신사업추진본부',
+                      #                   'a_last_client_com2_code':'0002',
+                      #                   'a_sale_com2_code':'0001',
+                      #                   'a_sale_item_no':'',
+                      #                  #'a_sale_date':'20250215',
+                      #                   'a_sale_amt':567890,
+                      #                   'a_sale_profit':9999999,
+                      #                   'a_purchase_date':'20250219',
+                      #                   'a_purchase_amt':567,
+                      #                   'a_collect_money_date':'20250225',
+                      #                   'a_biz_section2_code':'0003',
+                      #                   'a_principal_product2_code':'0008'},
+                      # 'biz_opp_activity':{'a_activity_details':'세번째!',
+                      #                     'a_activity_date':'20250204'}}
             v_biz_opp = v_body.get('biz_opp')
             v_biz_opp_detail = v_body.get('biz_opp_detail')
             v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
@@ -1673,25 +1673,30 @@ def f_delete_biz_opp(request):
 
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_delete_biz_opp_detail,v_param_delete_biz_opp_detail)
-            v_sql_delete_biz_opp_history = """INSERT INTO ajict_bms_schema.biz_opp_history (biz_opp_id,
-                                                                                            history_no,
-                                                                                            biz_opp_name,
-                                                                                            progress1_rate_code,
-                                                                                            progress2_rate_code,
-                                                                                            contract_date,
-                                                                                            essential_achievement_tf,
-                                                                                            create_user)
-                                              SELECT A.biz_opp_id,
-                                                     (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
-                                                     A.biz_opp_name,
-                                                     A.progress1_rate_code,
-                                                     A.progress2_rate_code,
-                                                     A.contract_date,
-                                                     A.essential_achievement_tf,
-                                                     %s
-                                              FROM ajict_bms_schema.biz_opp A
-                                              WHERE A.biz_opp_id = %s"""
-            v_param_delete_biz_opp_history.append(v_biz_opp_id)
+            v_history_no = 0
+            v_sql_select_history_s = """SELECT NEXTVAL('ajict_bms_schema.history_s')"""
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_select_history_s)
+               v_row = v_cursor.fetchone()
+               v_history_no = v_row[0]
+            v_sql_delete_biz_opp_history = f"""INSERT INTO ajict_bms_schema.biz_opp_history (history_no,
+                                                                                             biz_opp_id,
+                                                                                             biz_opp_name,
+                                                                                             progress1_rate_code,
+                                                                                             progress2_rate_code,
+                                                                                             contract_date,
+                                                                                             essential_achievement_tf,
+                                                                                             create_user)
+                                               SELECT {v_history_no},
+                                                      A.biz_opp_id,
+                                                      A.biz_opp_name,
+                                                      A.progress1_rate_code,
+                                                      A.progress2_rate_code,
+                                                      A.contract_date,
+                                                      A.essential_achievement_tf,
+                                                      %s
+                                               FROM ajict_bms_schema.biz_opp A
+                                               WHERE A.biz_opp_id = %s"""
             v_param_delete_biz_opp_history.append(v_session_user_id)
             v_param_delete_biz_opp_history.append(v_biz_opp_id)
 
@@ -1703,7 +1708,8 @@ def f_delete_biz_opp(request):
 
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_delete_biz_opp_history,v_param_delete_biz_opp_history)
-            v_sql_delete_biz_opp_detail_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_history (biz_opp_id,
+            v_sql_delete_biz_opp_detail_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_history (history_no,
+                                                                                                          biz_opp_id,
                                                                                                           detail_no,
                                                                                                           history_no,
                                                                                                           user_id,
@@ -1726,33 +1732,32 @@ def f_delete_biz_opp(request):
                                                                                                           principal_product2_code,
                                                                                                           renewal_code,
                                                                                                           create_user)
-                                                     SELECT A.biz_opp_id,
-                                                            1,
-                                                            (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_history AA WHERE AA.biz_opp_id = %s),
-                                                            A.user_id,
-                                                            A.change_preparation_dept_id,
-                                                            A.change_preparation_dept_name,
-                                                            A.last_client_com1_code,
-                                                            A.last_client_com2_code,
-                                                            A.sale_com1_code,
-                                                            A.sale_com2_code,
-                                                            A.sale_item_no,
-                                                            A.sale_date,
-                                                            A.sale_amt,
-                                                            A.sale_profit,
-                                                            A.purchase_date,
-                                                            A.purchase_amt,
-                                                            A.collect_money_date,
-                                                            A.biz_section1_code,
-                                                            A.biz_section2_code,
-                                                            A.principal_product1_code,
-                                                            A.principal_product2_code,
-                                                            'D',
-                                                            %s
-                                                     FROM ajict_bms_schema.biz_opp_detail A
-                                                          WHERE A.biz_opp_id = %s AND
-                                                                A.detail_no = %s"""
-            v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
+                                                      SELECT {v_history_no},
+                                                             biz_opp_id,
+                                                             detail_no,
+                                                             user_id,
+                                                             change_preparation_dept_id,
+                                                             change_preparation_dept_name,
+                                                             last_client_com1_code,
+                                                             last_client_com2_code,
+                                                             sale_com1_code,
+                                                             sale_com2_code,
+                                                             sale_item_no,
+                                                             sale_date,
+                                                             sale_amt,
+                                                             sale_profit,
+                                                             purchase_date,
+                                                             purchase_amt,
+                                                             collect_money_date,
+                                                             biz_section1_code,
+                                                             biz_section2_code,
+                                                             principal_product1_code,
+                                                             principal_product2_code,
+                                                             'D',
+                                                             %s
+                                                      FROM ajict_bms_schema.biz_opp_detail
+                                                      WHERE biz_opp_id = %s AND
+                                                            detail_no = %s"""
             v_param_delete_biz_opp_detail_history.append(v_session_user_id)
             v_param_delete_biz_opp_detail_history.append(v_biz_opp_id)
             v_param_delete_biz_opp_detail_history.append(v_detail_no)
@@ -1833,64 +1838,63 @@ def f_clone_biz_opp(request):
             v_return = {'STATUS':'FAIL','MESSAGE':'존재하지 않는 사용자 ID입니다.'}
             v_square_bracket_return = [v_return]
             return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+      v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
+      v_new_detail_no = 0
+      v_sql_new_detail_no = """SELECT COALESCE(MAX(AA.detail_no),0) + 1 AS v_new_detail_no FROM ajict_bms_schema.biz_opp_detail AA WHERE AA.biz_opp_id = %s"""
+      v_param_new_detail_no = []
+      v_param_new_detail_no.append(v_biz_opp_id)
+      with connection.cursor() as v_cursor:
+         v_cursor.execute(v_sql_new_detail_no,v_param_new_detail_no)
+         v_row = v_cursor.fetchone()
+         v_new_detail_no = v_row[0]
       with transaction.atomic():
-         v_sql_insert_biz_opp_detail = """INSERT INTO ajict_bms_schema.biz_opp_detail (biz_opp_id,
-                                                                                       detail_no,
-                                                                                       user_id,
-                                                                                       change_preparation_dept_id,
-                                                                                       change_preparation_dept_name,
-                                                                                       last_client_com1_code,
-                                                                                       last_client_com2_code,
-                                                                                       sale_com1_code,
-                                                                                       sale_com2_code,
-                                                                                       sale_item_no,
-                                                                                       sale_date,
-                                                                                       sale_amt,
-                                                                                       sale_profit,
-                                                                                       purchase_date,
-                                                                                       purchase_amt,
-                                                                                       collect_money_date,
-                                                                                       biz_section1_code,
-                                                                                       biz_section2_code,
-                                                                                       principal_product1_code,
-                                                                                       principal_product2_code,
-                                                                                       create_user)
-                                          SELECT A.biz_opp_id,
-                                                 (SELECT COALESCE(MAX(AA.detail_no),0) + 1 FROM ajict_bms_schema.biz_opp_detail AA WHERE AA.biz_opp_id = %s),
-                                                 A.user_id,
-                                                 A.change_preparation_dept_id,
-                                                 A.change_preparation_dept_name,
-                                                 A.last_client_com1_code,
-                                                 A.last_client_com2_code,
-                                                 A.sale_com1_code,
-                                                 A.sale_com2_code,
-                                                 A.sale_item_no,
-                                                 A.sale_date,
-                                                 A.sale_amt,
-                                                 A.sale_profit,
-                                                 A.purchase_date,
-                                                 A.purchase_amt,
-                                                 A.collect_money_date,
-                                                 A.biz_section1_code,
-                                                 A.biz_section2_code,
-                                                 A.principal_product1_code,
-                                                 A.principal_product2_code,
-                                                 %s
-                                          FROM ajict_bms_schema.biz_opp_detail A
-                                          WHERE A.biz_opp_id = %s AND
-                                                A.detail_no = %s"""
+         v_sql_insert_biz_opp_detail = f"""INSERT INTO ajict_bms_schema.biz_opp_detail (biz_opp_id,
+                                                                                        detail_no,
+                                                                                        user_id,
+                                                                                        change_preparation_dept_id,
+                                                                                         change_preparation_dept_name,
+                                                                                        last_client_com1_code,
+                                                                                        last_client_com2_code,
+                                                                                        sale_com1_code,
+                                                                                        sale_com2_code,
+                                                                                        sale_item_no,
+                                                                                        sale_date,
+                                                                                        sale_amt,
+                                                                                        sale_profit,
+                                                                                        purchase_date,
+                                                                                        purchase_amt,
+                                                                                        collect_money_date,
+                                                                                        biz_section1_code,
+                                                                                        biz_section2_code,
+                                                                                        principal_product1_code,
+                                                                                        principal_product2_code,
+                                                                                        create_user)
+                                           SELECT A.biz_opp_id,
+                                                  {v_new_detail_no},
+                                                  A.user_id,
+                                                  A.change_preparation_dept_id,
+                                                  A.change_preparation_dept_name,
+                                                  A.last_client_com1_code,
+                                                  A.last_client_com2_code,
+                                                  A.sale_com1_code,
+                                                  A.sale_com2_code,
+                                                  A.sale_item_no,
+                                                  A.sale_date,
+                                                  A.sale_amt,
+                                                  A.sale_profit,
+                                                  A.purchase_date,
+                                                  A.purchase_amt,
+                                                  A.collect_money_date,
+                                                  A.biz_section1_code,
+                                                  A.biz_section2_code,
+                                                  A.principal_product1_code,
+                                                  A.principal_product2_code,
+                                                  %s
+                                           FROM ajict_bms_schema.biz_opp_detail A
+                                           WHERE A.biz_opp_id = %s AND
+                                                 A.detail_no = %s"""
          v_param_insert_biz_opp_detail = []
-
-
-         #test
-         v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
          v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
-
-         # v_biz_opp_id = '20240028'
-         # v_detail_no = 1
-
-
-         v_param_insert_biz_opp_detail.append(v_biz_opp_id)
          v_param_insert_biz_opp_detail.append(v_session_user_id)
          v_param_insert_biz_opp_detail.append(v_biz_opp_id)
          v_param_insert_biz_opp_detail.append(v_detail_no)
@@ -1964,7 +1968,7 @@ def f_clone_biz_opp(request):
                                                                                                         create_user)
                                                    SELECT {v_history_no},
                                                           biz_opp_id,
-                                                          detail_no,
+                                                          {v_new_detail_no},
                                                           user_id,
                                                           change_preparation_dept_id,
                                                           change_preparation_dept_name,

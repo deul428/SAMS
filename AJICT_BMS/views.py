@@ -2538,9 +2538,6 @@ def f_select_biz_opp_activity2(request):
          v_return = {'STATUS':'JSON','MESSAGE':'JSON의 format가 틀립니다.'}
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-
-
-
 def f_select_biz_opp_activity3(request):
    v_session_user_id = ''
    v_body = ''
@@ -2598,7 +2595,7 @@ def f_select_biz_opp_activity3(request):
                                             WHERE biz_opp_id = %s AND
                                                   detail_no = %s AND
                                                   delete_date IS NULL
-                                            ORDER BY detail_no DESC LIMIT 5"""
+                                            ORDER BY activity_no DESC LIMIT 5"""
 #                                  A.contract_date BETWEEN %s AND %s AND
 #                                  B.sale_date BETWEEN %s AND %s"""
          v_param2 = []

@@ -202,7 +202,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
     ) { return <div>Loading...</div>; }
     
     if (data.length > 0 || data) {
-      console.log("data: ", ...data, "page: ", ...page);
+      // console.log("data: ", ...data, "page: ", ...page);
       let htmlContent = null;
       switch (v_componentName) {
         case `bizOppHistory`: 

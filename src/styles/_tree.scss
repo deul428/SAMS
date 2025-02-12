@@ -64,9 +64,6 @@
                             }
                             &.rc-tree-node-selected {
                                 span.rc-tree-title {
-                                    input {
-                                        display: inline-block !important;
-                                    }
                                 }
                             }
                             span.rc-tree-iconEle {    
@@ -84,7 +81,6 @@
                                 &.rc-tree-icon__docu {
                                     opacity: 0;
                                     pointer-events: none;
-                                    // text-indent: 1rem;
                                 }
                             }
                             span.rc-tree-title {
@@ -93,14 +89,6 @@
                                 line-height: 24px;
                                 span {
 
-                                }
-                                input {
-                                    position: absolute;
-                                    top: 0;
-                                    height: inherit;
-                                    line-height: inherit;
-                                    margin-left: 1.5rem;
-                                    display: none;
                                 }
                             }
                         }

@@ -55,7 +55,7 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
 
     useEffect(() => {
         if(v_modalPropsData) {
-            // console.log("show: ", show, "onHide: ", onHide, "v_modalPropsData: ", v_modalPropsData);
+            console.log("show: ", show, "onHide: ", onHide, "v_modalPropsData: ", v_modalPropsData);
             userCheck = {
                 a_session_user_id: auth.userId,
                 a_biz_opp_id: v_modalPropsData.biz_opp_id,
@@ -109,8 +109,10 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
                                 </div>
                                 <div className='bizoppHistoryArea mt-4'>
                                     {<DynamicTableChild v_componentName={'bizOppHistory'} v_propsData={
-                                        v_modalPropsData.biz_opp_id === data.data.retrieve_biz_opp_history[0].biz_opp_id ?
-                                        data : null}/>}
+                                        (v_modalPropsData.biz_opp_id === data.data.retrieve_biz_opp_history[0].biz_opp_id) ? 
+                                            ((v_modalPropsData.detail_no === data.data.data.data.retrieve_biz_opp_history[0].detail_no) ?
+                                            data : null) : null
+                                    }/>}
                                 </div>
                             </div>
                         </Modal.Body>

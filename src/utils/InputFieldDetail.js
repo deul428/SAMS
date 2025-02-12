@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { setLocation } from '../redux/reducers/LocationSlice';
 import { apiMethods } from './api';
 
-import Trees from './Trees';
+import Trees from './SalesDetail';
 
 import roots from './datas/Roots';
 import '../styles/_customModal.scss';
@@ -672,7 +672,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             }
                             return;
                         } else {
-                            confirmMsg = `사업 (기회) 명 을(를) 등록하시겠습니까?`;
+                            confirmMsg = `사업 (기회) 일련 번호 ${a_v_modalPropsData.a_biz_opp_id} 을(를) 수정하시겠습니까?`
                         }
                     }
                 }
@@ -809,7 +809,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             setVChildComponent('');
         } else { return; }
         setShowModal(true);
-        console.log(setShowModal, showModal);
     }
     const closeModal = () => {
         setShowModal(false);
@@ -1141,11 +1140,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='매출 금액'>
+                                                    <FloatingLabel label='매출 금액 (&#65510;)'>
                                                         <Form.Control size='sm' type='text' className='' 
                                                         name='a_sale_amt' 
                                                         data-key='biz_opp_detail' 
-                                                        placeholder='매출 금액'
+                                                        placeholder='매출 금액 (&#65510;)'
                                                         onChange={f_handlingInput} 
                                                         // value={input.sale_amt || ''} 
                                                         defaultValue={a_v_modalPropsData?.a_sale_amt || 0}
@@ -1159,7 +1158,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 ({"pointerEvents": "none"}) : ({})
                                             }>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='매입 금액'>
+                                                    <FloatingLabel label='매입 금액 (&#65510;)'>
                                                         <Form.Control size='sm' type='text' className='' name='a_purchase_amt' 
                                                         data-key='biz_opp_detail' 
                                                         placeholder='매입 금액'
@@ -1170,7 +1169,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='매출 이익'>
+                                                    <FloatingLabel label='매출 이익 (&#65510;)'>
                                                         <Form.Control size='sm' type='text' className='' name='a_sale_profit' 
                                                         data-key='biz_opp_detail' 
                                                         placeholder='매출 이익'
@@ -1426,10 +1425,16 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         updateUI();
     }, [/* currentPath */, show, onHide, insertInput, activityData, detailData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling, isProDisabled]);
 
+    
+    const [salesDetailData, setSalesDetailData] = useState({});
+    useEffect(() => {
+        console.log(salesDetailData);
+    }, [salesDetailData])
+    
     return (
         <div id='inputFieldDetail'>
             {v_handlingHtml}
-            <Trees v_treeName={v_childComponent} show={showModal} onHide={closeModal} data={detailData}/>
+            <Trees v_treeName={v_childComponent} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} setSalesDetailData={setSalesDetailData}/>
         </div>
     );
 };

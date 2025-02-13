@@ -58,8 +58,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         a_session_user_id: auth.userId,
         a_user_name: (auth.userAuthCode === '0003' && auth.userResCode === '0001') ?
         auth.userName : '',
-        a_total_biz_sale_amt: 0,
-        a_total_cor_sale_amt: 0,
         biz_opp: { 
             a_biz_opp_name: '',
             a_progress2_rate_code: '',
@@ -1140,7 +1138,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
-                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                {/* <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 금액 (&#65510;)'>
                                                         <Form.Control size='sm' type='text' className='' 
                                                         name='a_sale_amt' 
@@ -1151,13 +1149,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         defaultValue={a_v_modalPropsData?.a_sale_amt || 0}
                                                         />
                                                     </FloatingLabel>
-                                                </Col>
-                                            </Row>
-                                            <Row className='d-flex justify-content-start'
-                                            style={ 
-                                                (auth.userAuthCode === '0002') ? 
-                                                ({"pointerEvents": "none"}) : ({})
-                                            }>
+                                                </Col> */}
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매입 금액 (&#65510;)'>
                                                         <Form.Control size='sm' type='text' className='' name='a_purchase_amt' 
@@ -1169,6 +1161,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
+                                            </Row>
+                                            <Row className='d-flex justify-content-start'
+                                            style={ 
+                                                (auth.userAuthCode === '0002') ? 
+                                                ({"pointerEvents": "none"}) : ({})
+                                            }>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 이익 (&#65510;)'>
                                                         <Form.Control size='sm' type='text' className='' name='a_sale_profit' 
@@ -1180,7 +1178,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
-                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                {/* <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 구분'>
                                                         <Form.Select size='sm' aria-label='사업 구분' className='' name='a_biz_section2_code' 
                                                         data-key='biz_opp_detail' 
@@ -1219,28 +1217,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             }
                                                         </Form.Select>
                                                     </FloatingLabel>
-                                                </Col>
+                                                </Col> */}
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='사업 구분 (매출 상세가 반영될 곳)'>
-                                                        <Form.Control size='sm' className=''
-                                                        value={salesDetailData && salesDetailData.biz ? salesDetailData?.biz : a_v_modalPropsData?.a_biz_section2_name}
-                                                        readOnly
-                                                        >
-                                                        </Form.Control>
-                                                    </FloatingLabel>
-                                                </Col>
-                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='제품 (매출 상세가 반영될 곳)'>
-                                                        <Form.Control size='sm' className='' 
-                                                        value={salesDetailData && salesDetailData.biz ? salesDetailData?.biz : a_v_modalPropsData?.a_biz_section2_name}
-                                                        readOnly
-                                                        >
-                                                        </Form.Control>
-                                                    </FloatingLabel>
-                                                </Col>
-
-                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <h4>매출 상세(팝업) 작업 중</h4>
                                                     <FloatingLabel label='매출 상세' className='inputTree' onClick={(e) => openModal(e, 'product')}>
                                                         <Form.Control readOnly size='sm' aria-label='selectBox' className='' name='a_principal_product2_code'
                                                         data-key='biz_opp_detail' 
@@ -1250,6 +1228,25 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         <Search />
                                                     </FloatingLabel>
                                                 </Col>
+                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='대표 사업 구분 (매출 상세가 반영될 곳)'>
+                                                        <Form.Control size='sm' className=''
+                                                        value={salesDetailData && salesDetailData.biz ? salesDetailData?.biz : a_v_modalPropsData?.a_biz_section2_name}
+                                                        readOnly
+                                                        >
+                                                        </Form.Control>
+                                                    </FloatingLabel>
+                                                </Col>
+                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='대표 제조사명 (매출 상세가 반영될 곳)'>
+                                                        <Form.Control size='sm' className='' 
+                                                        value={salesDetailData && salesDetailData.biz ? salesDetailData?.biz : a_v_modalPropsData?.a_biz_section2_name}
+                                                        readOnly
+                                                        >
+                                                        </Form.Control>
+                                                    </FloatingLabel>
+                                                </Col>
+
                                             </Row>
                                             </>
                                             <>
@@ -1448,8 +1445,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const [salesDetailData, setSalesDetailData] = useState([]);
     useEffect(() => {
         console.log("salesDetailData: ", salesDetailData);
-        
-        // 02.13. 중복의 문제가 있음. 만약 매출 상세에서 선택 후 이 페이지로 나왔다가 다시 들어가서 변경하면 전 값 배열 + 후 값 배열이 됨. 최신 값으로 덮어쓸 필요가 있음.
         const result = [];
 
         Object.entries(salesDetailData)
@@ -1457,14 +1452,15 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             .forEach(([great_classi_code, smallClassiObj]) => {
                 Object.entries(smallClassiObj).forEach(([small_classi_code, value]) => {
                     if (Array.isArray(value)) {
-                        const [sale_amt, a_deligate_tf] = value;
-                        console.log(`Processing: ${great_classi_code} - ${small_classi_code}, sale_amt: ${sale_amt}, a_deligate_tf: ${a_deligate_tf}`);
+                        const [sale_amt, a_deligate_tf, a_mode] = value;
+                        console.log(`Processing: ${great_classi_code} - ${small_classi_code}, sale_amt: ${sale_amt}, a_deligate_tf: ${a_deligate_tf}, a_mode: ${a_mode}`);
         
                         result.push({
-                            great_classi_code,
-                            small_classi_code,
-                            sale_amt,
-                            a_deligate_tf
+                            a_great_classi_code: great_classi_code.toUpperCase(),
+                            a_small_classi_code: small_classi_code,
+                            a_sale_amt: sale_amt,
+                            a_deligate_tf,
+                            a_mode
                         });
                     }
                 });
@@ -1478,17 +1474,15 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         setInsertInput((prevInput) => {
             return { 
                 ...prevInput, 
-                a_total_biz_sale_amt: salesDetailData.a_total_biz_sale_amt,
-                a_total_cor_sale_amt: salesDetailData.a_total_biz_sale_amt,
-
                 a_session_user_id: auth.userId,
                 biz_opp_detail_sale: [
                     // ...prevInput.biz_opp_detail_sale,  
-                    result
+                    result.flat()
                 ],
                 biz_opp_detail: { 
                     ...prevInput.biz_opp_detail,
-                    a_product_name: salesDetailData.a_product_name
+                    a_product_name: salesDetailData.a_product_name,
+                    a_sale_amt: salesDetailData.total
                 }
             };
         });

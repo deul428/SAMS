@@ -160,7 +160,9 @@
                         }
                         &.inputTree {
                             input {
-                                cursor: pointer;
+                                cursor: pointer;    
+                                padding-right: 2rem;
+                                text-overflow: ellipsis;
                             }
                             svg.bi-search {
                                 width: 1.1rem;

@@ -28,6 +28,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             const corData = listData.data.search_last_client_com_code;
             setBizTreeData(bizData);
             setCorTreeData(corData);
+            console.log(corData);
             if (v_modalPropsData) {
                 console.log(v_modalPropsData);
                 bizData.some((e, index) => {
@@ -260,34 +261,11 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     };
     
     const transformedData = transformData(sampleData);
-    const compareAndUpdateModes = (initialData, updatedData) => {
-        let result = JSON.parse(JSON.stringify(updatedData));
+    console.log(transformedData);
     
-        Object.keys(initialData).forEach(greatClassiCode => {
-            if (!updatedData.hasOwnProperty(greatClassiCode)) return;
-    
-            Object.keys(initialData[greatClassiCode]).forEach(smallClassiCode => {
-                if (updatedData[greatClassiCode]?.hasOwnProperty(smallClassiCode)) {
-                    if (JSON.stringify(initialData[greatClassiCode][smallClassiCode]) !== JSON.stringify(updatedData[greatClassiCode][smallClassiCode])) {
-                        result[greatClassiCode][smallClassiCode].push('U');
-                    }
-                } else {
-                    result[greatClassiCode][smallClassiCode] = [...initialData[greatClassiCode][smallClassiCode], 'D'];
-                }
-            });
-    
-            Object.keys(updatedData[greatClassiCode]).forEach(smallClassiCode => {
-                if (!initialData[greatClassiCode]?.hasOwnProperty(smallClassiCode)) {
-                    result[greatClassiCode][smallClassiCode].push('I');
-                }
-            });
-        });
-    
-        console.log("compareAndUpdateModes result: ", result);
-        return result;
-    };
-    
-    
+    if (sampleData) {
+        transformData(sampleData);
+    }
     const handleInputChange = (e, type, key, isRadio = false) => {
         setInputValues((prev) => {
             // ✅ `a_product_name`일 경우 단순 값 저장
@@ -327,7 +305,6 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
         });
     };
     
-
     
     const inputValuesRef = useRef(inputValues);
     // --------------------- input value 합산 ---------------------  
@@ -353,74 +330,41 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
         setSumBiz(bizTotal);
         setSumCor(corTotal);
         inputValuesRef.current = inputValues;
-        // console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
+        console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
     }, [inputValues]);
     // --------------------- input value 합산 끝 ---------------------  
     // =================== input value 받아오기 끝 ===================
       
     // =================== 선택 버튼 클릭 시 매출 금액과 총 합산 금액 비교 ===================
-    const hasDelegateTrue = (data) => {
-        const result = {};
-    
-        Object.keys(data).forEach(greatClassiCode => {
-            if (typeof data[greatClassiCode] !== "object") return;
-    
-            result[greatClassiCode] = Object.values(data[greatClassiCode]).some(
-                (arr) => arr[1] === true && arr[2] !== "D"
-            );
-        });
-    
-        console.log("hasDelegateTrue result: ", result);
-        return result;
-    };
-    
+
     const saveData = () => {
         const current = inputValuesRef.current;
-        const result = compareAndUpdateModes(transformedData, current); // ✅ `compareAndUpdateModes`의 result를 받음
-        const checkNull = hasDelegateTrue(result); // ✅ `hasDelegateTrue`의 결과도 받아서 사용
-        console.log(result, checkNull);
-        
-        let total;
-
-        console.log(typeof totalSaleAmt);
-        if (typeof totalSaleAmt === 'number' && !isNaN(totalSaleAmt)) {
-            total = totalSaleAmt;
-        } else {
-            total = Number(totalSaleAmt.replace(/,/g, ''));
-        }
-
+        console.log("saveData에서의 current inputValues", current);
+        const total = Number(totalSaleAmt.replace(/,/g, ''));
+        console.log(total);
         if (sumBiz !== total) {
-            alert('사업 구분 필드의 총 금액은 매출 금액과 일치해야 합니다.');
+            alert ('사업 구분 필드의 총 금액은 매출 금액과 일치해야 합니다.');
             return;
         }
         if (sumCor !== total) {
-            alert('제조사명 필드의 총 금액은 매출 금액과 일치해야 합니다.');
+            alert ('제조사명 필드의 총 금액은 매출 금액과 일치해야 합니다.');
             return;
         }
-        if (checkNull.biz === false) {
-            alert('대표 사업 구분을 지정하세요.');
+        if (!current.a_product_name) {
+            alert ('제품명을 입력하세요.');
             return;
         }
-        if (checkNull.cor === false) {
-            alert('대표 제조사명을 지정하세요.');
-            return;
-        }
-        if (!result.a_product_name) {
-            alert('제품명을 입력하세요.');
-            return;
-        }
-
+        
         setSalesDetailData(() => ({
-            // ...current,
-            // total: total,
-            ...result, // ✅ `compareAndUpdateModes`의 결과를 함께 저장
-        }));
+            ...current,
+            total: total,
+        }))
 
         setTimeout(() => {
             onHide(true);
         }, 100);
-    };
-
+    }
+    
     // 초기화
     useEffect(()=> {
         console.log(show);
@@ -436,10 +380,10 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     }, [show])
 
     const [totalSaleAmt, setTotalSaleAmt] = useState(0);
-/*     useEffect(() => {
+    useEffect(() => {
         console.log(totalSaleAmt);
     }, [totalSaleAmt])
- */
+
     const handleTotalChange = (e) => {
         const value = e.target.value;
         const localeValue = value.replace(/,/g, '');
@@ -449,7 +393,6 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             setTotalSaleAmt(""); // ✅ 빈 값 처리
         }
     }
-    
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
     useEffect(() => {
         const updateUI = () => { 

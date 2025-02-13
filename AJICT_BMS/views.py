@@ -730,14 +730,21 @@ def f_select_popup_biz_opp(request):
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
 def f_insert_biz_opp(request):
+
+
+   #test
    v_session_user_id = ''
+
+   # v_session_user_id = 'leecj'
+
+
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
 
 
       #test
-      #print(f"{v_body}")
+      print(f"{v_body}")
 
 
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
@@ -784,6 +791,35 @@ def f_insert_biz_opp(request):
             v_dept_id = v_data_session[0]['dept_id']
          v_biz_opp_id = ''
          with transaction.atomic():
+
+
+            #test
+            # v_body = {'a_session_user_id':'leecj',
+            #           'a_biz_opp_id':'20250034',
+            #           'a_detail_no':1,
+            #           'biz_opp':{'a_biz_opp_name':'수정이 잘 되기를 바래.',
+            #                      #'a_contract_date':'20250202',
+            #                      'a_progress2_rate_code':'0002',
+            #                      'a_essential_achievement_tf':False},
+            #           'biz_opp_detail':{},
+            # 'biz_opp_detail':{'a_user_id':'leecj',
+            #                   'a_change_preparation_dept_id':'98000',
+            #                   'a_change_preparation_dept_name':'신사업추진본부',
+            #                   'a_last_client_com2_code':'0002',
+            #                   'a_sale_com2_code':'0001',
+            #                   'a_sale_item_no':'',
+            #                  #'a_sale_date':'20250215',
+            #                   'a_sale_amt':567890,
+            #                   'a_sale_profit':9999999,
+            #                   'a_purchase_date':'20250219',
+            #                   'a_purchase_amt':567,
+            #                   'a_collect_money_date':'20250225',
+            #                   'a_biz_section2_code':'0003',
+            #                   'a_principal_product2_code':'0008'},
+            # 'biz_opp_activity':{'a_activity_details':'세번째!',
+            #                     'a_activity_date':'20250204'}}
+
+
             v_sql_max = """SELECT CASE WHEN (SELECT COUNT(*) FROM ajict_bms_schema.biz_opp WHERE SUBSTRING(biz_opp_id FROM 1 FOR 4) = TO_CHAR(NOW(),'YYYY')) > 0
                                        THEN (SELECT TO_CHAR(NOW(),'YYYY') || LPAD(MAX(SUBSTRING(biz_opp_id FROM 5 FOR 4)::INTEGER + 1)::TEXT,4,'0')
                                              FROM ajict_bms_schema.biz_opp
@@ -1195,6 +1231,46 @@ def f_insert_biz_opp(request):
 
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_activity,v_param_insert_biz_opp_activity)
+
+
+               #test
+         # if v_biz_opp_detail_sale:
+         #    v_sql_insert_biz_opp_detail_sale = """INSERT INTO ajict_bms_schema.biz_opp_detail_sale (biz_opp_id,
+         #                                                                                            detail_no,
+         #                                                                                            great_classi_code,
+         #                                                                                            small_classi_code,
+         #                                                                                            sale_amt,
+         #                                                                                            delegate_tf,
+         #                                                                                            create_user)
+         #                                                                                           VALUES (%s,
+         #                                                                                                   1,
+         #                                                                                                   %s,
+         #                                                                                                   %s,
+         #                                                                                                   %s,
+         #                                                                                                   %s,
+         #                                                                                                   %s)"""
+         #    v_param_insert_biz_opp_detail_sale = []
+         #    for v_item in v_biz_opp_detail_sale:
+         #       v_param_insert_biz_opp_detail_sale.append(v_biz_opp_id)
+         #       if not v_item.get('great_class_code'):
+         #          transaction.set_rollback(True)
+         #          v_return = {'STATUS':'FAIL','MESSAGE':"'a_great_class_code' 매개변수에 빈 값이 올 수 없습니다!"}
+         #          v_square_bracket_return = [v_return]
+         #          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+         #       v_param_insert_biz_opp_detail_sale.append(v_item.get('great_class_code'))
+         #       if not v_item.get('small_class_code'):
+         #          transaction.set_rollback(True)
+         #          v_return = {'STATUS':'FAIL','MESSAGE':"'a_small_class_code' 매개변수에 빈 값이 올 수 없습니다!"}
+         #          v_square_bracket_return = [v_return]
+         #          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+         #       v_param_insert_biz_opp_detail_sale.append(v_item.get('small_class_code'))
+         #       v_param_insert_biz_opp_detail_sale.append(v_item.get('sale_amt'))
+         #       v_param_insert_biz_opp_detail_sale.append(v_item.get('delegate_tf'))
+         #       with connection.cursor() as v_cursor:
+         #          v_cursor.execute(v_sql_insert_biz_opp_detail_sale,v_param_insert_biz_opp_detail_sale)
+         #       v_param_insert_biz_opp_detail_sale.clear()
+
+
                v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
                v_square_bracket_return = [v_return]
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})

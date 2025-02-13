@@ -480,14 +480,14 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                             <Button variant='info'>조회</Button>
                                         </div> */}
                                         <div className="mb-4">
-                                            <h3>매출 금액: &#65510;{saleMsg.toLocaleString('ko-KR')}</h3>
+                                            <h3>매출 금액: &#65510;{saleMsg ? saleMsg.toLocaleString('ko-KR') : ''}</h3>
                                             <h4 style={{'textAlign':'center'}}>[사업 구분] 필드의 총 금액 / [제조사명] 필드의 총 금액은 각각 [총 매출 금액] 필드 값과 반드시 일치해야 합니다.</h4>
                                             <h4 style={{'textAlign':'center'}}>항목 앞 라디오 버튼으로 대표 사업 구분 / 대표 제조사명을 지정할 수 있습니다. &#40;필수&#41;</h4>
                                         </div>
                                         
                                         <Row className="cntntArea">
                                             <Col xs={12} md={6} lg={6} xl={6} className='col d-flex align-items-center floating'>
-                                                <h4>총 매출 금액 &#40;현재 값, &#65510;&#41;: {saleMsg.toLocaleString('ko-KR')}</h4>
+                                                <h4>총 매출 금액 &#40;현재 값, &#65510;&#41;: {saleMsg ? saleMsg.toLocaleString('ko-KR') : ''}</h4>
                                             </Col>
                                             <Col xs={12} md={6} lg={6} xl={6} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='총 매출 금액 &#40;변경 값, &#65510;&#41;'>
@@ -509,7 +509,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                                 <Tree ref={treeRef} multiple checkStrictly 
                                                 treeData={treeRender(bizTreeData, 'biz')} 
                                                 onSelect={(selectedKeys, info) => onSelect('biz')(selectedKeys, info)} 
-                                                defaultSelectedKeys={[`${lowerCase(v_modalPropsData.biz_section1_code)}-${propsBizIndex}`]}
+                                                defaultSelectedKeys={v_modalPropsData ? [`${lowerCase(v_modalPropsData.biz_section1_code)}-${propsBizIndex}`] : ''}
                                                 /> 
                                             </Col>
                                             <Col className="cntnt">
@@ -519,7 +519,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                                 <Tree ref={treeRef} multiple checkStrictly 
                                                 treeData={treeRender(corTreeData, 'cor')} 
                                                 onSelect={(selectedKeys, info) => onSelect('cor')(selectedKeys, info)} 
-                                                defaultSelectedKeys={[`${lowerCase(v_modalPropsData.sale_com1_code)}-${propsCorIndex}`]}
+                                                defaultSelectedKeys={v_modalPropsData ? [`${lowerCase(v_modalPropsData.sale_com1_code)}-${propsCorIndex}`] : ''}
                                                 /> 
                                             </Col>
                                         </Row>

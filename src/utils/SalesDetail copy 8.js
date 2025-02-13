@@ -74,8 +74,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                         <input
                             type="number"
                             placeholder="세부 금액"
-                            defaultValue={0}
-                            value={inputValues[type]?.[item.small_classi_code]?.[0] ?? 0}
+                            value={inputValues[type]?.[item.small_classi_code]?.[0] ?? ''}
                             onChange={(e) => handleInputChange(e, type, item.small_classi_code)}
                             onClick={(e) => e.stopPropagation()}
                         />
@@ -101,30 +100,30 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     const treeRef = useRef(null);
     // onSelect로 호출한 node가 selected true인 경우 inputValues 객체에 키와 값을 추가 / false일 경우 키와 값을 삭제
     const onSelect = (type) => (selectedKeys, info) => {
+        // ✅ `type`이 'biz' 또는 'cor'이 아닐 경우 실행하지 않음
         if (type !== 'biz' && type !== 'cor') return;
-    
+        console.log(info);
         const key = info.node.small_classi_code;
         type === "biz" ? setSelectedBizKeys(selectedKeys) : setSelectedCorKeys(selectedKeys);
         setIsSelected(info.selected);
-    
+        
         setInputValues((prev) => {
-            const updatedType = prev[type] ? { ...prev[type] } : {};
+            // ✅ `prev[type]`이 `undefined`일 경우, 항상 빈 객체 `{}`로 초기화
+            const updatedType = prev[type] && typeof prev[type] === 'object' ? { ...prev[type] } : {};
     
             if (info.selected) {
-                // ✅ 기존 `boolean` 값 유지
-                updatedType[key] = Array.isArray(updatedType[key])
-                    ? [updatedType[key][0], updatedType[key][1] ?? false]  // 기존 boolean 값 유지
-                    : [0, false];  // 기본값 설정
+                updatedType[key] = 0;  // ✅ 선택된 경우 값 추가
             } else {
-                delete updatedType[key];
+                delete updatedType[key];  // ✅ 선택 해제된 경우 값 삭제
             }
     
             return {
-                ...prev,
-                [type]: updatedType
+                ...prev,  // ✅ 기존 데이터 유지
+                [type]: updatedType  // ✅ biz, cor만 업데이트 (a_product_name은 영향 X)
             };
         });
     };
+    
     
     /* const onSelect = (type) => (selectedKeys, info) => {
         const key = info.node.small_classi_code; // ✅ small_classi_code 사용
@@ -185,35 +184,22 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     const [inputValues, setInputValues] = useState({biz: {}, cor: {}, a_product_name: ''});
 
     const handleInputChange = (e, type, key, isRadio = false) => {
-        setInputValues((prev) => {
-            // ✅ `a_product_name`일 경우 단순 값 저장
-            if (type === "a_product_name") {
-                return {
-                    ...prev,
-                    a_product_name: e.target.value
-                };
-            }
+        const value = isRadio ? true : Number(e.target.value); // ✅ radio는 true, number는 숫자로 변환
     
-            // ✅ `biz`, `cor`일 경우 `[num, boolean]` 형태 유지
+        setInputValues((prev) => {
             const updatedType = { ...prev[type] };
     
             if (isRadio) {
-                // 모든 기존 항목을 false로 변경 (라디오 버튼 단일 선택 유지)
+                // ✅ 모든 항목을 false로 초기화하여 단일 선택 유지
                 Object.keys(updatedType).forEach((existingKey) => {
-                    updatedType[existingKey] = Array.isArray(updatedType[existingKey])
-                        ? [updatedType[existingKey][0], false]
-                        : [0, false];
+                    updatedType[existingKey] = [updatedType[existingKey]?.[0] ?? 0, false];
                 });
     
-                // 선택된 항목만 true로 설정
-                updatedType[key] = Array.isArray(updatedType[key])
-                    ? [updatedType[key][0], true]
-                    : [0, true];
+                // ✅ 선택된 항목을 [금액, true]로 설정
+                updatedType[key] = [updatedType[key]?.[0] ?? 0, true];
             } else {
-                // 숫자 입력 시, 기존 boolean 값 유지
-                updatedType[key] = Array.isArray(updatedType[key])
-                    ? [Number(e.target.value), updatedType[key][1] ?? false]
-                    : [Number(e.target.value), false];
+                // ✅ 기존 배열이 있으면 true/false 값 유지, 없으면 [값, false]로 설정
+                updatedType[key] = [value, updatedType[key]?.[1] ?? false];
             }
     
             return {
@@ -222,7 +208,6 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             };
         });
     };
-    
     
     const inputValuesRef = useRef(inputValues);
     // --------------------- input value 합산 ---------------------  

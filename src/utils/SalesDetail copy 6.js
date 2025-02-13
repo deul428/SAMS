@@ -8,7 +8,7 @@ import '../styles/_tree.scss';
 import '../styles/_button.scss';
 import { endsWith, lowerCase, sum, toLower } from "lodash";
 
-const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, setSalesDetailData }) => {
+const Trees = ({ v_treeName, show, onHide, listData, v_modalPropsData, setSalesDetailData }) => {
     // =================== 렌더 시 세팅 ===================  
     const [saleMsg, setSaleMsg] = useState(null);
     useEffect(() => {
@@ -21,7 +21,6 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     const [corTreeData, setCorTreeData] = useState([]);
     const [propsBizIndex, setPropsBizIndex] = useState(null);
     const [propsCorIndex, setPropsCorIndex] = useState(null);
-
     useEffect(() => {
         if (listData) {
             const bizData = listData.data.search_biz_section_code;
@@ -54,39 +53,26 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
         }
     }, [listData]);
 
+
     const treeRender = (data, type) => (
         data.map((item, index) => ({
             title: (
-                <div className="titleArea">
-                    {/* ✅ radio 버튼 클릭 시 `handleInputChange` 실행 (isRadio=true) */}
-                    <input 
-                        type="radio"
-                        name={`radio-${type}`}
-                        value={item.small_classi_code}
-                        // defaultChecked={true}
-                        // defaultValue={true}
-                        // checked={inputValues[type]?.[item.small_classi_code]?.[1] ?? false}
-                        onChange={() => handleInputChange(null, type, item.small_classi_code, true)}
-                        onClick={(e) => e.stopPropagation()} // ✅ onSelect 방지
+                <div className={`${index}`} data-key={`${type}-${index}`}>
+                    <span>{item.small_classi_name}</span>
+                    <input
+                        type="number"
+                        placeholder="세부 금액"
+                        defaultValue={0}
+                        value={inputValues[type]?.[item.small_classi_code] ?? ''}
+                        onChange={(e) => handleInputChange(e, type, item.small_classi_code)}
+                        onClick={(e) => e.stopPropagation()}
                     />
-                    <div className={`${index} titleItem`} data-key={`${type}-${index}`}>
-                        <span>{item.small_classi_name}</span>
-                        <input
-                            type="number"
-                            placeholder="세부 금액"
-                            defaultValue={0}
-                            value={inputValues[type]?.[item.small_classi_code]?.[0] ?? 0}
-                            onChange={(e) => handleInputChange(e, type, item.small_classi_code)}
-                            onClick={(e) => e.stopPropagation()}
-                        />
-                    </div>
                 </div>
             ),
-            key: `${type}-${index}`,
-            small_classi_code: item.small_classi_code
+            key: `${type}-${index}`, // ✅ rc-tree에서 사용하는 key
+            small_classi_code: item.small_classi_code, // ✅ onSelect에서 사용할 key 추가
         }))
     );
-    
     // =================== 렌더 시 세팅 끝 ===================  
 
     
@@ -101,27 +87,18 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     const treeRef = useRef(null);
     // onSelect로 호출한 node가 selected true인 경우 inputValues 객체에 키와 값을 추가 / false일 경우 키와 값을 삭제
     const onSelect = (type) => (selectedKeys, info) => {
-        if (type !== 'biz' && type !== 'cor') return;
-    
         const key = info.node.small_classi_code;
+    
         type === "biz" ? setSelectedBizKeys(selectedKeys) : setSelectedCorKeys(selectedKeys);
         setIsSelected(info.selected);
     
         setInputValues((prev) => {
-            const updatedType = prev[type] ? { ...prev[type] } : {};
-    
-            if (info.selected) {
-                // ✅ 기존 `boolean` 값 유지
-                updatedType[key] = Array.isArray(updatedType[key])
-                    ? [updatedType[key][0], updatedType[key][1] ?? false]  // 기존 boolean 값 유지
-                    : [0, false];  // 기본값 설정
-            } else {
-                delete updatedType[key];
-            }
-    
             return {
-                ...prev,
-                [type]: updatedType
+                ...prev,  // ✅ 기존 값 유지
+                [type]: {
+                    ...prev[type],
+                    ...(info.selected ? { [key]: 0 } : {}),
+                }
             };
         });
     };
@@ -134,7 +111,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     
         setInputValues((prev) => {
             const updatedInput = { ...prev };
-            
+
             if (info.selected) {
                 // ✅ 선택된 경우 inputValues에 추가 (기본값 0)
                 if (!updatedInput[type]?.[key]) {
@@ -184,70 +161,30 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     // input key: 해당 객체의 code 값 / value: e.target.value
     const [inputValues, setInputValues] = useState({biz: {}, cor: {}, a_product_name: ''});
 
-    const handleInputChange = (e, type, key, isRadio = false) => {
+    // 입력 시마다 inputValues 객체의 키와 값 업데이트
+    const handleInputChange = (e, type, key) => {
+        const value = e.target.value;
         setInputValues((prev) => {
-            // ✅ `a_product_name`일 경우 단순 값 저장
-            if (type === "a_product_name") {
-                return {
-                    ...prev,
-                    a_product_name: e.target.value
-                };
-            }
-    
-            // ✅ `biz`, `cor`일 경우 `[num, boolean]` 형태 유지
-            const updatedType = { ...prev[type] };
-    
-            if (isRadio) {
-                // 모든 기존 항목을 false로 변경 (라디오 버튼 단일 선택 유지)
-                Object.keys(updatedType).forEach((existingKey) => {
-                    updatedType[existingKey] = Array.isArray(updatedType[existingKey])
-                        ? [updatedType[existingKey][0], false]
-                        : [0, false];
-                });
-    
-                // 선택된 항목만 true로 설정
-                updatedType[key] = Array.isArray(updatedType[key])
-                    ? [updatedType[key][0], true]
-                    : [0, true];
-            } else {
-                // 숫자 입력 시, 기존 boolean 값 유지
-                updatedType[key] = Array.isArray(updatedType[key])
-                    ? [Number(e.target.value), updatedType[key][1] ?? false]
-                    : [Number(e.target.value), false];
-            }
-    
             return {
                 ...prev,
-                [type]: updatedType
-            };
+                ...(type === 'a_product_name' 
+                    ? { a_product_name: value }  // ✅ a_product_name을 문자열로 업데이트
+                    : { [type]: { ...prev[type], [key]: Number(value) } }
+                )
+            }
         });
     };
     
-    
-    const inputValuesRef = useRef(inputValues);
     // --------------------- input value 합산 ---------------------  
     const [sumBiz, setSumBiz] = useState(0);
     const [sumCor, setSumCor] = useState(0);
     useEffect(() => {
-        const bizValueArr = Object.values(inputValues.biz).map(value =>
-            Array.isArray(value) ? value[0] : value // ✅ 배열이면 금액(value[0]), 아니면 그대로 사용
-        );
-        
-        const corValueArr = Object.values(inputValues.cor).map(value =>
-            Array.isArray(value) ? value[0] : value // ✅ 배열이면 금액(value[0]), 아니면 그대로 사용
-        );
-        
-       /*  const bizValueArr = Object.values(inputValues.biz);
-        const corValueArr = Object.values(inputValues.cor); */
-        // const bizValueArr = Object.values(inputValues.biz).map(value => value[0]); // ✅ 금액 값만 추출
-        // const corValueArr = Object.values(inputValues.cor).map(value => value[0]); // ✅ 금액 값만 추출
-
-        const bizTotal = bizValueArr.reduce((acc, cur) => acc + cur, 0);
-        const corTotal = corValueArr.reduce((acc, cur) => acc + cur, 0);
-        
+        const bizValueArr = Object.values(inputValues.biz);
+        const corValueArr = Object.values(inputValues.cor);
+        const bizTotal = bizValueArr.reduce((acc, cur) => acc + cur, 0); 
+        const corTotal = corValueArr.reduce((acc, cur) => acc + cur, 0); 
         setSumBiz(bizTotal);
         setSumCor(corTotal);
-        inputValuesRef.current = inputValues;
         console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
     }, [inputValues]);
     // --------------------- input value 합산 끝 ---------------------  
@@ -255,9 +192,8 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
       
     // =================== 선택 버튼 클릭 시 매출 금액과 총 합산 금액 비교 ===================
 
-    const saveData = () => {
-        const current = inputValuesRef.current;
-        console.log("saveData에서의 current inputValues", current);
+    const saveData = (e) => {
+        console.log('saveData에서의 inputValues', inputValues);
         if (sumBiz !== saleMsg) {
             alert ('사업 구분 필드의 총 금액은 매출 금액과 일치해야 합니다.');
             return;
@@ -266,16 +202,18 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             alert ('제조사명 필드의 총 금액은 매출 금액과 일치해야 합니다.');
             return;
         }
-        if (!current.a_product_name) {
+        if (!inputValues.a_product_name) {
             alert ('제품명을 입력하세요.');
             return;
         }
         
-        setSalesDetailData(() => ({
-            ...current,
-            a_total_biz_sale_amt: sumBiz,
-            a_total_cor_sale_amt: sumCor,
-        }))
+        setSalesDetailData((prev) => ({
+            ...prev,
+            biz: { ...inputValues.biz },
+            cor: { ...inputValues.cor },
+            a_product_name: inputValues.a_product_name, // ✅ 값 유지
+        }));
+    
         setTimeout(() => {
             onHide(true);
         }, 100);
@@ -283,13 +221,12 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     
     // 초기화
     useEffect(()=> {
-        console.log(show);
-        if (show === false) {
-            setSumBiz(0);
-            setSumCor(0);
+        if (!show) {
             setInputValues({biz: {}, cor: {}, a_product_name: ''});
             setSelectedBizKeys([]);
             setSelectedCorKeys([]);
+            setSumBiz(0);
+            setSumCor(0);
             setIsSelected(false);
         }
     }, [show])
@@ -326,27 +263,20 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                         <div className="mb-4">
                                             <h3>매출 금액: &#65510;{saleMsg.toLocaleString('ko-KR')}</h3>
                                             <h4 style={{'textAlign':'center'}}>사업 구분 필드의 총 금액 / 제조사명 필드의 총 금액은 각각 매출 금액과 반드시 일치해야 합니다.</h4>
-                                            <h4 style={{'textAlign':'center'}}>항목 앞 라디오 버튼으로 대표 사업 구분 / 대표 제조사명을 지정할 수 있습니다. &#40;필수&#41;</h4>
                                         </div>
                                         <Row className="cntntArea">
                                             <Col className="cntnt textArea">
                                                 <h3 className="mb-4">사업 구분</h3>
                                                 <h4>매출 금액: &#65510;{saleMsg.toLocaleString('ko-KR')}</h4>
                                                 <h4>현재 사업 구분 금액: &#65510;{sumBiz.toLocaleString('ko-KR')}</h4>
-                                                <Tree ref={treeRef} multiple checkStrictly 
-                                                treeData={treeRender(bizTreeData, 'biz')} 
-                                                onSelect={(selectedKeys, info) => onSelect('biz')(selectedKeys, info)} 
-                                                defaultSelectedKeys={[`${lowerCase(v_modalPropsData.biz_section1_code)}-${propsBizIndex}`]}
+                                                <Tree ref={treeRef} multiple checkStrictly treeData={treeRender(bizTreeData, 'biz')} onSelect={(selectedKeys, info) => onSelect('biz')(selectedKeys, info)} defaultSelectedKeys={`${lowerCase(v_modalPropsData.biz_section1_code)}-${propsBizIndex}`}
                                                 /> 
                                             </Col>
                                             <Col className="cntnt">
                                                 <h3 className="mb-4">제조사명</h3>
                                                 <h4>매출 금액: &#65510;{saleMsg.toLocaleString('ko-KR')}</h4>
                                                 <h4>현재 제조사명 금액: &#65510;{sumCor.toLocaleString('ko-KR')}</h4>
-                                                <Tree ref={treeRef} multiple checkStrictly 
-                                                treeData={treeRender(corTreeData, 'cor')} 
-                                                onSelect={(selectedKeys, info) => onSelect('cor')(selectedKeys, info)} 
-                                                defaultSelectedKeys={[`${lowerCase(v_modalPropsData.sale_com1_code)}-${propsCorIndex}`]}
+                                                <Tree ref={treeRef} multiple checkStrictly treeData={treeRender(corTreeData, 'cor')} onSelect={(selectedKeys, info) => onSelect('cor')(selectedKeys, info)} defaultSelectedKeys={`${lowerCase(v_modalPropsData.sale_com1_code)}-${propsCorIndex}`}
                                                 /> 
                                             </Col>
                                         </Row>
@@ -373,7 +303,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                 </div>
                             </Modal.Body>
                             <Modal.Footer className="btnArea justify-content-center">
-                                <Button variant='primary' onClick={saveData}>선택</Button>
+                                <Button variant='primary' onClick={(e) => saveData(e)}>선택</Button>
                                 <Button variant="secondary" onClick={onHide}>
                                 닫기
                                 </Button>
@@ -396,4 +326,4 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     )
 }
 
-export default SalesDetail;
+export default Trees;

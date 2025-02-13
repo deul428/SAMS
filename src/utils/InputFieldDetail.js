@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { setLocation } from '../redux/reducers/LocationSlice';
 import { apiMethods } from './api';
 
-import Trees from './SalesDetail';
+import SalesDetail from './SalesDetail';
 
 import roots from './datas/Roots';
 import '../styles/_customModal.scss';
@@ -58,6 +58,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         a_session_user_id: auth.userId,
         a_user_name: (auth.userAuthCode === '0003' && auth.userResCode === '0001') ?
         auth.userName : '',
+        a_total_biz_sale_amt: 0,
+        a_total_cor_sale_amt: 0,
         biz_opp: { 
             a_biz_opp_name: '',
             a_progress2_rate_code: '',
@@ -75,13 +77,15 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_purchase_date: '',
             a_purchase_amt: "0",
             a_collect_money_date: '',
-            a_biz_section2_code: '',
-            a_principal_product2_code: '',
+            a_product_name: '',
+            // a_biz_section2_code: '',
+            // a_principal_product2_code: '',
         },
         biz_opp_activity: {
             a_activity_details: '',
             a_activity_date: '',
-        }
+        },
+        biz_opp_detail_sale: []
     }
     const [insertInput, setInsertInput] = useState(p_bizopp);
     // 변화 감지 추출
@@ -581,8 +585,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             { key: 'a_sale_amt', validator: () => validateNum(input.biz_opp_detail, 'a_sale_amt')},
                             { key: 'a_purchase_amt', validator: () => validateNum(input.biz_opp_detail, 'a_purchase_amt')},
                             { key: 'a_sale_profit', validator: () => validateNum(input.biz_opp_detail, 'a_sale_profit')},
-                            { key: 'a_biz_section2_code', validator: () => validateStr(input.biz_opp_detail, 'a_biz_section2_code')},
-                            { key: 'a_principal_product2_code', validator: () => validateStr(input.biz_opp_detail, 'a_principal_product2_code')},
+                            /* { key: 'a_biz_section2_code', validator: () => validateStr(input.biz_opp_detail, 'a_biz_section2_code')},
+                            { key: 'a_principal_product2_code', validator: () => validateStr(input.biz_opp_detail, 'a_principal_product2_code')}, */
 
                             { key: 'a_activity_details', validator: () => validateStr(input.biz_opp_activity, 'a_activity_details')},
                             { key: 'a_activity_date', validator: () => validateStr(input.biz_opp_activity, 'a_activity_date')},
@@ -623,8 +627,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             { key: 'a_sale_profit', parent: 'biz_opp_detail', type: 'number', essential: false },
                             { key: 'a_purchase_date', parent: 'biz_opp_detail', essential: false },
                             { key: 'a_purchase_amt', parent: 'biz_opp_detail', type: 'number', essential: false },
-                            { key: 'a_biz_section2_code', parent: 'biz_opp_detail', essential: false },
-                            { key: 'a_principal_product2_code', parent: 'biz_opp_detail', essential: false },
+                            /* { key: 'a_biz_section2_code', parent: 'biz_opp_detail', essential: false },
+                            { key: 'a_principal_product2_code', parent: 'biz_opp_detail', essential: false }, */
 
                             { key: 'a_activity_details', parent: 'biz_opp_activity', essential: true, },
                             { key: 'a_activity_date', parent: 'biz_opp_activity', essential: true, },
@@ -785,9 +789,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         } else {
             setInsertInput(p_bizopp);
             setUpdateInput([]);
-            /* setUpdateInput([]);
-            setInsertInput(p_bizopp); */
-            // v_modalPropsData = {};
         }
     }, [show]); // show가 변경될 때만 실행되도록 보장
     useEffect(() => {
@@ -1219,6 +1220,24 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         </Form.Select>
                                                     </FloatingLabel>
                                                 </Col>
+                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='사업 구분 (매출 상세가 반영될 곳)'>
+                                                        <Form.Control size='sm' className=''
+                                                        value={salesDetailData && salesDetailData.biz ? salesDetailData?.biz : a_v_modalPropsData?.a_biz_section2_name}
+                                                        readOnly
+                                                        >
+                                                        </Form.Control>
+                                                    </FloatingLabel>
+                                                </Col>
+                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='제품 (매출 상세가 반영될 곳)'>
+                                                        <Form.Control size='sm' className='' 
+                                                        value={salesDetailData && salesDetailData.biz ? salesDetailData?.biz : a_v_modalPropsData?.a_biz_section2_name}
+                                                        readOnly
+                                                        >
+                                                        </Form.Control>
+                                                    </FloatingLabel>
+                                                </Col>
 
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <h4>매출 상세(팝업) 작업 중</h4>
@@ -1426,15 +1445,65 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     }, [/* currentPath */, show, onHide, insertInput, activityData, detailData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling, isProDisabled]);
 
     
-    const [salesDetailData, setSalesDetailData] = useState({});
+    const [salesDetailData, setSalesDetailData] = useState([]);
     useEffect(() => {
-        console.log(salesDetailData);
-    }, [salesDetailData])
+        console.log("salesDetailData: ", salesDetailData);
+        
+        // 02.13. 중복의 문제가 있음. 만약 매출 상세에서 선택 후 이 페이지로 나왔다가 다시 들어가서 변경하면 전 값 배열 + 후 값 배열이 됨. 최신 값으로 덮어쓸 필요가 있음.
+        const result = [];
+
+        Object.entries(salesDetailData)
+            .filter(([great_classi_code]) => great_classi_code === 'biz' || great_classi_code === 'cor') 
+            .forEach(([great_classi_code, smallClassiObj]) => {
+                Object.entries(smallClassiObj).forEach(([small_classi_code, value]) => {
+                    if (Array.isArray(value)) {
+                        const [sale_amt, a_deligate_tf] = value;
+                        console.log(`Processing: ${great_classi_code} - ${small_classi_code}, sale_amt: ${sale_amt}, a_deligate_tf: ${a_deligate_tf}`);
+        
+                        result.push({
+                            great_classi_code,
+                            small_classi_code,
+                            sale_amt,
+                            a_deligate_tf
+                        });
+                    }
+                });
+            });
+        
+        console.log("Final Result:", result);
+        
+        
+        
+        console.log(salesDetailData.a_product_name);
+        setInsertInput((prevInput) => {
+            return { 
+                ...prevInput, 
+                a_total_biz_sale_amt: salesDetailData.a_total_biz_sale_amt,
+                a_total_cor_sale_amt: salesDetailData.a_total_biz_sale_amt,
+
+                a_session_user_id: auth.userId,
+                biz_opp_detail_sale: [
+                    // ...prevInput.biz_opp_detail_sale,  
+                    result
+                ],
+                biz_opp_detail: { 
+                    ...prevInput.biz_opp_detail,
+                    a_product_name: salesDetailData.a_product_name
+                }
+            };
+        });
+        
+        
+    }, [salesDetailData]);
+
+    useEffect(() => {
+        console.log(insertInput);
+    }, [insertInput])
     
     return (
         <div id='inputFieldDetail'>
             {v_handlingHtml}
-            <Trees v_treeName={v_childComponent} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} setSalesDetailData={setSalesDetailData}/>
+            <SalesDetail v_treeName={v_childComponent} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} setSalesDetailData={setSalesDetailData} />
         </div>
     );
 };

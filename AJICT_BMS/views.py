@@ -693,16 +693,16 @@ def f_insert_biz_opp(request):
              'a_user_name': '이창주',
              'biz_opp': {'a_biz_opp_name': 'v_body를 수동으로...',
                          'a_progress2_rate_code': '0001',
-                         'a_contract_date': '20250001',
+                         'a_contract_date': '20250101',
                          'a_essential_achievement_tf': False},
              'biz_opp_detail': {'a_change_preparation_dept_id': '98000',
                                 'a_last_client_com2_code': '',
                                 'a_sale_item_no': '',
                                 'a_sale_date': '20250222',
                                 'a_sale_amt': '3500000',
-                                'a_sale_profit': '345999',
+                                'a_sale_profit': 345999,
                                 'a_purchase_date': '20250224',
-                                'a_purchase_amt': '789000',
+                                'a_purchase_amt': 789000,
                                 'a_collect_money_date': '',
                                 'a_product_name':''},
              'biz_opp_activity': {'a_activity_details': 'vvvvvvvvvvvvvvvvvvvvvv',
@@ -842,8 +842,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            #v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
-            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
+            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -862,6 +862,7 @@ def f_insert_biz_opp(request):
                                                                                           purchase_date,
                                                                                           purchase_amt,
                                                                                           collect_money_date,
+                                                                                          product_name,
                                                                                           create_user)
                                                                                          VALUES (%s,
                                                                                                  1,
@@ -869,6 +870,7 @@ def f_insert_biz_opp(request):
                                                                                                  %s,
                                                                                                  (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s),
                                                                                                  'COR',
+                                                                                                 %s,
                                                                                                  %s,
                                                                                                  %s,
                                                                                                  %s,
@@ -916,10 +918,10 @@ def f_insert_biz_opp(request):
                   v_param_insert_biz_opp_detail.append(v_change_preparation_dept_id)
             else:
                v_param_insert_biz_opp_detail.append(v_dept_id)
-            # if v_auth1_code == 'AUT' and v_auth2_code == '0001':
-            #    v_param_insert_biz_opp_detail.append(v_change_preparation_dept_id)
-            # else:
-            #    v_param_insert_biz_opp_detail.append(v_dept_id)
+            if v_auth1_code == 'AUT' and v_auth2_code == '0001':
+               v_param_insert_biz_opp_detail.append(v_change_preparation_dept_id)
+            else:
+               v_param_insert_biz_opp_detail.append(v_dept_id)
             v_last_client_com2_code = None if v_body.get('biz_opp_detail',{}).get('a_last_client_com2_code') == '' else v_body.get('biz_opp_detail',{}).get('a_last_client_com2_code')
             if v_last_client_com2_code is not None:
                v_last_client_com2_code = v_last_client_com2_code.strip()
@@ -948,16 +950,16 @@ def f_insert_biz_opp(request):
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:
                v_param_insert_biz_opp_detail.append(v_sale_date)
-            # v_sale_amt = None if v_body.get('biz_opp_detail',{}).get('a_sale_amt') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_amt')
-            #if v_sale_amt is not None:
-            #   v_sale_amt = v_sale_amt.strip()
-            # if not v_sale_amt:
-            #    transaction.set_rollback(True)
-            #    v_return = {'STATUS':'FAIL','MESSAGE':"'매출 금액' 항목은 필수 입력(선택) 항목입니다!"}
-            #    v_square_bracket_return = [v_return]
-            #    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-            # else:
-            #    v_param_insert_biz_opp_detail.append(v_sale_amt)
+            v_sale_amt = None if v_body.get('biz_opp_detail',{}).get('a_sale_amt') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_amt')
+            if v_sale_amt is not None:
+              v_sale_amt = v_sale_amt.strip()
+            if not v_sale_amt:
+               transaction.set_rollback(True)
+               v_return = {'STATUS':'FAIL','MESSAGE':"'매출 금액' 항목은 필수 입력(선택) 항목입니다!"}
+               v_square_bracket_return = [v_return]
+               return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+            else:
+               v_param_insert_biz_opp_detail.append(v_sale_amt)
             v_sale_profit = None if v_body.get('biz_opp_detail',{}).get('a_sale_profit') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_profit')
             if not v_sale_profit:
                transaction.set_rollback(True)
@@ -1016,12 +1018,16 @@ def f_insert_biz_opp(request):
             #    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             # else:
             #    v_param_insert_biz_opp_detail.append(v_principal_product2_code)
+            v_product_name = None if v_body.get('biz_opp_detail',{}).get('a_product_name') == '' else v_body.get('biz_opp_detail',{}).get('a_product_name')
+            if v_product_name is not None:
+               v_product_name = v_product_name.strip()
+            v_param_insert_biz_opp_detail.append(v_product_name)
             v_param_insert_biz_opp_detail.append(v_session_user_id)
 
 
             #test
-            #v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
-            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
+            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1058,58 +1064,48 @@ def f_insert_biz_opp(request):
 
 
             #test
-            #v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
-            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
+            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_history,v_param_insert_biz_opp_history)
             v_sql_insert_biz_opp_detail_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_history (history_no,
                                                                                                            biz_opp_id,
-                                                                                                          detail_no,
-                                                                                                          user_id,
-                                                                                                          change_preparation_dept_id,
-                                                                                                          change_preparation_dept_name,
-                                                                                                          last_client_com1_code,
-                                                                                                          last_client_com2_code,
-                                                                                                          sale_com1_code,
-                                                                                                          sale_com2_code,
-                                                                                                          sale_item_no,
-                                                                                                          sale_date,
-                                                                                                          sale_amt,
-                                                                                                          sale_profit,
-                                                                                                          purchase_date,
-                                                                                                          purchase_amt,
-                                                                                                          collect_money_date,
-                                                                                                          biz_section1_code,
-                                                                                                          biz_section2_code,
-                                                                                                          principal_product1_code,
-                                                                                                          principal_product2_code,
-                                                                                                          renewal_code,
-                                                                                                          create_user)
-                                                                                                         VALUES ({v_history_no},
-                                                                                                                 %s,
-                                                                                                                 1,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s AND A.delete_date IS NULL),
-                                                                                                                 'COR',
-                                                                                                                 %s,
-                                                                                                                 'COR',
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 %s,
-                                                                                                                 'BIZ',
-                                                                                                                 %s,
-                                                                                                                 'PRI',
-                                                                                                                 %s,
-                                                                                                                 'I',
-                                                                                                                 %s)"""
+                                                                                                           detail_no,
+                                                                                                           user_id,
+                                                                                                           change_preparation_dept_id,
+                                                                                                           change_preparation_dept_name,
+                                                                                                           last_client_com1_code,
+                                                                                                           last_client_com2_code,
+                                                                                                           sale_item_no,
+                                                                                                           sale_date,
+                                                                                                           sale_amt,
+                                                                                                           sale_profit,
+                                                                                                           purchase_date,
+                                                                                                           purchase_amt,
+                                                                                                           collect_money_date,
+                                                                                                           product_name,
+                                                                                                           renewal_code,
+                                                                                                           create_user)
+                                                                                                          VALUES ({v_history_no},
+                                                                                                                  %s,
+                                                                                                                  1,
+                                                                                                                  %s,
+                                                                                                                  %s,
+                                                                                                                  (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s AND A.delete_date IS NULL),
+                                                                                                                  'COR',
+                                                                                                                  %s,
+                                                                                                                  %s,
+                                                                                                                  %s,
+                                                                                                                  %s,
+                                                                                                                  %s,
+                                                                                                                  %s,
+                                                                                                                  %s,
+                                                                                                                  %s,
+                                                                                                                  %s,
+                                                                                                                  'I',
+                                                                                                                  %s)"""
             v_param_insert_biz_opp_detail_history = []
             v_param_insert_biz_opp_detail_history.append(v_biz_opp_id)
             if v_auth1_code == 'AUT' and v_auth2_code == '0001':
@@ -1125,7 +1121,6 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail_history.append(v_dept_id)
             v_param_insert_biz_opp_detail_history.append(v_last_client_com2_code)
-            v_param_insert_biz_opp_detail_history.append(v_sale_com2_code)
             v_param_insert_biz_opp_detail_history.append(v_sale_item_no)
             v_param_insert_biz_opp_detail_history.append(v_sale_date)
             v_param_insert_biz_opp_detail_history.append(v_sale_amt)
@@ -1133,14 +1128,13 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_detail_history.append(v_purchase_date)
             v_param_insert_biz_opp_detail_history.append(v_purchase_amt)
             v_param_insert_biz_opp_detail_history.append(v_collect_money_date)
-            v_param_insert_biz_opp_detail_history.append(v_biz_section2_code)
-            v_param_insert_biz_opp_detail_history.append(v_principal_product2_code)
+            v_param_insert_biz_opp_detail_history.append(v_product_name)
             v_param_insert_biz_opp_detail_history.append(v_session_user_id)
 
 
             #test
-            #v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
-            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
+            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1179,55 +1173,108 @@ def f_insert_biz_opp(request):
 
 
             #test
-            #v_formatted_sql = v_sql_insert_biz_opp_activity % tuple(map(repr,v_param_insert_biz_opp_activity))
-            #print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            v_formatted_sql = v_sql_insert_biz_opp_activity % tuple(map(repr,v_param_insert_biz_opp_activity))
+            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
                v_cursor.execute(v_sql_insert_biz_opp_activity,v_param_insert_biz_opp_activity)
+            v_biz_opp_detail_sale = v_body.get('biz_opp_detail_sale')
+            if v_biz_opp_detail_sale:
+               v_sql_insert_biz_opp_detail_sale = """INSERT INTO ajict_bms_schema.biz_opp_detail_sale (biz_opp_id,
+                                                                                                       detail_no,
+                                                                                                       great_classi_code,
+                                                                                                       small_classi_code,
+                                                                                                       sale_amt,
+                                                                                                       delegate_tf,
+                                                                                                       create_user)
+                                                                                                      VALUES (%s,
+                                                                                                              1,
+                                                                                                              %s,
+                                                                                                              %s,
+                                                                                                              %s,
+                                                                                                              %s,
+                                                                                                              %s)"""
+               v_param_insert_biz_opp_detail_sale = []
+               v_square_bracket_return = ''
+               for v_item in v_biz_opp_detail_sale:
 
 
                #test
-         # if v_biz_opp_detail_sale:
-         #    v_sql_insert_biz_opp_detail_sale = """INSERT INTO ajict_bms_schema.biz_opp_detail_sale (biz_opp_id,
-         #                                                                                            detail_no,
-         #                                                                                            great_classi_code,
-         #                                                                                            small_classi_code,
-         #                                                                                            sale_amt,
-         #                                                                                            delegate_tf,
-         #                                                                                            create_user)
-         #                                                                                           VALUES (%s,
-         #                                                                                                   1,
-         #                                                                                                   %s,
-         #                                                                                                   %s,
-         #                                                                                                   %s,
-         #                                                                                                   %s,
-         #                                                                                                   %s)"""
-         #    v_param_insert_biz_opp_detail_sale = []
-         #    for v_item in v_biz_opp_detail_sale:
-         #       v_param_insert_biz_opp_detail_sale.append(v_biz_opp_id)
-         #       if not v_item.get('great_class_code'):
-         #          transaction.set_rollback(True)
-         #          v_return = {'STATUS':'FAIL','MESSAGE':"'a_great_class_code' 매개변수에 빈 값이 올 수 없습니다!"}
-         #          v_square_bracket_return = [v_return]
-         #          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-         #       v_param_insert_biz_opp_detail_sale.append(v_item.get('great_class_code'))
-         #       if not v_item.get('small_class_code'):
-         #          transaction.set_rollback(True)
-         #          v_return = {'STATUS':'FAIL','MESSAGE':"'a_small_class_code' 매개변수에 빈 값이 올 수 없습니다!"}
-         #          v_square_bracket_return = [v_return]
-         #          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-         #       v_param_insert_biz_opp_detail_sale.append(v_item.get('small_class_code'))
-         #       v_param_insert_biz_opp_detail_sale.append(v_item.get('sale_amt'))
-         #       v_param_insert_biz_opp_detail_sale.append(v_item.get('delegate_tf'))
-         #       with connection.cursor() as v_cursor:
-         #          v_cursor.execute(v_sql_insert_biz_opp_detail_sale,v_param_insert_biz_opp_detail_sale)
-         #       v_param_insert_biz_opp_detail_sale.clear()
+                  #print(f"v_item : {v_item}")
 
 
-               v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
-               v_square_bracket_return = [v_return]
-               return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+                  v_param_insert_biz_opp_detail_sale.append(v_biz_opp_id)
+                  if not v_item.get('great_classi_code'):
+                     transaction.set_rollback(True)
+                     v_return = {'STATUS':'FAIL','MESSAGE':"'a_great_class_code' 매개변수에 빈 값이 올 수 없습니다!"}
+                     v_square_bracket_return = [v_return]
+                     return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+                  if not v_item.get('small_classi_code'):
+                     transaction.set_rollback(True)
+                     v_return = {'STATUS':'FAIL','MESSAGE':"'a_small_class_code' 매개변수에 빈 값이 올 수 없습니다!"}
+                     v_square_bracket_return = [v_return]
+                     return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+                  v_param_insert_biz_opp_detail_sale.append(v_item.get('great_classi_code'))
+                  v_param_insert_biz_opp_detail_sale.append(v_item.get('small_classi_code'))
+                  v_param_insert_biz_opp_detail_sale.append(v_item.get('sale_amt'))
+                  v_param_insert_biz_opp_detail_sale.append(v_item.get('delegate_tf'))
+                  v_param_insert_biz_opp_detail_sale.append(v_session_user_id)
+
+
+               #test
+                  v_formatted_sql = v_sql_insert_biz_opp_detail_sale % tuple(map(repr,v_param_insert_biz_opp_detail_sale))
+                  print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
+                  with connection.cursor() as v_cursor:
+                     v_cursor.execute(v_sql_insert_biz_opp_detail_sale,v_param_insert_biz_opp_detail_sale)
+                  v_param_insert_biz_opp_detail_sale.clear()
+               v_sql_insert_biz_opp_detail_sale_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
+                                                                                                                       history_assistance_no,
+                                                                                                                       biz_opp_id,
+                                                                                                                       detail_no,
+                                                                                                                       great_classi_code,
+                                                                                                                       small_classi_code,
+                                                                                                                       sale_amt,
+                                                                                                                       delegate_tf,
+                                                                                                                       renewal_code,
+                                                                                                                       create_user)
+                                                                                                                      VALUES (%s,
+                                                                                                                              %s,
+                                                                                                                              %s,
+                                                                                                                              1,
+                                                                                                                              %s,
+                                                                                                                              %s,
+                                                                                                                              %s,
+                                                                                                                              %s,
+                                                                                                                              'I',
+                                                                                                                              %s)"""
+               v_param_insert_biz_opp_detail_sale_history = []
+               v_history_assistance_no = 0
+               for v_item in v_biz_opp_detail_sale:
+                  v_param_insert_biz_opp_detail_sale_history.append(v_history_no)
+                  v_history_assistance_no = v_history_assistance_no + 1
+                  v_param_insert_biz_opp_detail_sale_history.append(v_history_assistance_no)
+                  v_param_insert_biz_opp_detail_sale_history.append(v_biz_opp_id)
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('great_classi_code'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('small_classi_code'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('sale_amt'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('delegate_tf'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_session_user_id)
+
+
+               #test
+                  v_formatted_sql = v_sql_insert_biz_opp_detail_sale_history % tuple(map(repr,v_param_insert_biz_opp_detail_sale_history))
+                  print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
+                  with connection.cursor() as v_cursor:
+                     v_cursor.execute(v_sql_insert_biz_opp_detail_sale_history,v_param_insert_biz_opp_detail_sale_history)
+                  v_param_insert_biz_opp_detail_sale_history.clear()
+            v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
+            v_square_bracket_return = [v_return]
+            return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
       except DatabaseError:
          v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
          v_square_bracket_return = [v_return]
@@ -1534,8 +1581,6 @@ def f_renewal_biz_opp(request):
                                  'change_preparation_dept_name',
                                  'last_client_com1_code',
                                  'last_client_com2_code',
-                                 'sale_com1_code',
-                                 'sale_com2_code',
                                  'sale_item_no',
                                  'sale_date',
                                  'sale_amt',
@@ -1543,10 +1588,6 @@ def f_renewal_biz_opp(request):
                                  'purchase_date',
                                  'purchase_amt',
                                  'collect_money_date',
-                                 'biz_section1_code',
-                                 'biz_section2_code',
-                                 'principal_product1_code',
-                                 'principal_product2_code',
                                  'renewal_code',
                                  'create_user']
                v_columns_str = []
@@ -1576,8 +1617,6 @@ def f_renewal_biz_opp(request):
                                                                A.change_preparation_dept_name,
                                                                A.last_client_com1_code,
                                                                A.last_client_com2_code,
-                                                               A.sale_com1_code,
-                                                               A.sale_com2_code,
                                                                A.sale_item_no,
                                                                A.sale_date,
                                                                A.sale_amt,
@@ -1585,10 +1624,6 @@ def f_renewal_biz_opp(request):
                                                                A.purchase_date,
                                                                A.purchase_amt,
                                                                A.collect_money_date,
-                                                               A.biz_section1_code,
-                                                               A.biz_section2_code,
-                                                               A.principal_product1_code,
-                                                               A.principal_product2_code,
                                                                'U',
                                                                %s{v_comma}
                                                                {v_values_str}
@@ -1746,8 +1781,6 @@ def f_delete_biz_opp(request):
                                                                                                            change_preparation_dept_name,
                                                                                                            last_client_com1_code,
                                                                                                            last_client_com2_code,
-                                                                                                           sale_com1_code,
-                                                                                                           sale_com2_code,
                                                                                                            sale_item_no,
                                                                                                            sale_date,
                                                                                                            sale_amt,
@@ -1755,10 +1788,6 @@ def f_delete_biz_opp(request):
                                                                                                            purchase_date,
                                                                                                            purchase_amt,
                                                                                                            collect_money_date,
-                                                                                                           biz_section1_code,
-                                                                                                           biz_section2_code,
-                                                                                                           principal_product1_code,
-                                                                                                           principal_product2_code,
                                                                                                            renewal_code,
                                                                                                            create_user)
                                                       SELECT {v_history_no},
@@ -1769,8 +1798,6 @@ def f_delete_biz_opp(request):
                                                              change_preparation_dept_name,
                                                              last_client_com1_code,
                                                              last_client_com2_code,
-                                                             sale_com1_code,
-                                                             sale_com2_code,
                                                              sale_item_no,
                                                              sale_date,
                                                              sale_amt,
@@ -1778,10 +1805,6 @@ def f_delete_biz_opp(request):
                                                              purchase_date,
                                                              purchase_amt,
                                                              collect_money_date,
-                                                             biz_section1_code,
-                                                             biz_section2_code,
-                                                             principal_product1_code,
-                                                             principal_product2_code,
                                                              'D',
                                                              %s
                                                       FROM ajict_bms_schema.biz_opp_detail
@@ -1884,8 +1907,6 @@ def f_clone_biz_opp(request):
                                                                                          change_preparation_dept_name,
                                                                                         last_client_com1_code,
                                                                                         last_client_com2_code,
-                                                                                        sale_com1_code,
-                                                                                        sale_com2_code,
                                                                                         sale_item_no,
                                                                                         sale_date,
                                                                                         sale_amt,
@@ -1893,10 +1914,6 @@ def f_clone_biz_opp(request):
                                                                                         purchase_date,
                                                                                         purchase_amt,
                                                                                         collect_money_date,
-                                                                                        biz_section1_code,
-                                                                                        biz_section2_code,
-                                                                                        principal_product1_code,
-                                                                                        principal_product2_code,
                                                                                         create_user)
                                            SELECT A.biz_opp_id,
                                                   {v_new_detail_no},
@@ -1905,8 +1922,6 @@ def f_clone_biz_opp(request):
                                                   A.change_preparation_dept_name,
                                                   A.last_client_com1_code,
                                                   A.last_client_com2_code,
-                                                  A.sale_com1_code,
-                                                  A.sale_com2_code,
                                                   A.sale_item_no,
                                                   A.sale_date,
                                                   A.sale_amt,
@@ -1914,10 +1929,6 @@ def f_clone_biz_opp(request):
                                                   A.purchase_date,
                                                   A.purchase_amt,
                                                   A.collect_money_date,
-                                                  A.biz_section1_code,
-                                                  A.biz_section2_code,
-                                                  A.principal_product1_code,
-                                                  A.principal_product2_code,
                                                   %s
                                            FROM ajict_bms_schema.biz_opp_detail A
                                            WHERE A.biz_opp_id = %s AND
@@ -1980,8 +1991,6 @@ def f_clone_biz_opp(request):
                                                                                                         change_preparation_dept_name,
                                                                                                         last_client_com1_code,
                                                                                                         last_client_com2_code,
-                                                                                                        sale_com1_code,
-                                                                                                        sale_com2_code,
                                                                                                         sale_item_no,
                                                                                                         sale_date,
                                                                                                         sale_amt,
@@ -1989,10 +1998,6 @@ def f_clone_biz_opp(request):
                                                                                                         purchase_date,
                                                                                                         purchase_amt,
                                                                                                         collect_money_date,
-                                                                                                        biz_section1_code,
-                                                                                                        biz_section2_code,
-                                                                                                        principal_product1_code,
-                                                                                                        principal_product2_code,
                                                                                                         renewal_code,
                                                                                                         create_user)
                                                    SELECT {v_history_no},
@@ -2003,8 +2008,6 @@ def f_clone_biz_opp(request):
                                                           change_preparation_dept_name,
                                                           last_client_com1_code,
                                                           last_client_com2_code,
-                                                          sale_com1_code,
-                                                          sale_com2_code,
                                                           sale_item_no,
                                                           sale_date,
                                                           sale_amt,
@@ -2012,10 +2015,6 @@ def f_clone_biz_opp(request):
                                                           purchase_date,
                                                           purchase_amt,
                                                           collect_money_date,
-                                                          biz_section1_code,
-                                                          biz_section2_code,
-                                                          principal_product1_code,
-                                                          principal_product2_code,
                                                           'I',
                                                           %s
                                                    FROM ajict_bms_schema.biz_opp_detail
@@ -2128,6 +2127,9 @@ def f_select_biz_opp_activity1(request):
                                                    CC.delete_date IS NULL) AS last_client_com2_name,
                                             B.sale_com1_code,
                                             B.sale_com2_code,
+                                            
+                                            
+                                            
                                             (SELECT DISTINCT DD.great_classi_name
                                              FROM ajict_bms_schema.commonness_code DD
                                              WHERE DD.great_classi_code = B.sale_com1_code AND
@@ -2978,9 +2980,7 @@ def f_select_biz_opp_history(request):
                                           A.history_no = B.history_no AND
                                           A.biz_opp_id = %s AND
                                           B.detail_no = %s
-                                    ORDER BY A.biz_opp_id,\
-                                             B.detail_no,\
-                                             B.history_no"""
+                                    ORDER BY B.history_no DESC"""
          v_param = []
          v_param.append(v_biz_opp_id)
          v_param.append(v_detail_no)

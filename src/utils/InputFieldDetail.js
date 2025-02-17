@@ -70,10 +70,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_sale_com2_code: '',
             a_sale_item_no: '',
             a_sale_date: '',
-            a_sale_amt: "0",
-            a_sale_profit: "0",
+            a_sale_amt: 0,
+            a_sale_profit: 0,
             a_purchase_date: '',
-            a_purchase_amt: "0",
+            a_purchase_amt: 0,
             a_collect_money_date: '',
             a_product_name: '',
             // a_biz_section2_code: '',
@@ -449,7 +449,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             });
             // ..................... 날짜 위젯과 매핑 YYYYMMDD -> YYYY-MM-DD 끝 .....................
             // ..................... 숫자 문자열로 변환 후 쉼표 추가 ..................... 
-            const numKeys = ['a_purchase_amt', 'a_sale_amt', 'a_sale_profit'];
+            const numKeys = ['a_purchase_amt', /* 'a_sale_amt', */ 'a_sale_profit'];
             numKeys.forEach(key => {
                 if (a_v_modalPropsData[key]) {
                     return a_v_modalPropsData[key] = a_v_modalPropsData[key].toLocaleString('ko-KR');
@@ -550,13 +550,13 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 }
             });
 
-            const numKeys = ['a_purchase_amt', 'a_sale_amt', 'a_sale_profit'];
+            const numKeys = ['a_purchase_amt', /* 'a_sale_amt', */ 'a_sale_profit'];
             if (input.biz_opp_detail) {
                 numKeys.forEach((key) => {
                     if (typeof input.biz_opp_detail[key] === 'string' /* &&  Number(input.biz_opp_detail[key]) > 999 */) {
-                        input.biz_opp_detail[key] = /* Number( */
-                            input.biz_opp_detail[key].replace(/\D/g, '');
-                       /*  ); */
+                        input.biz_opp_detail[key] = Number(
+                            input.biz_opp_detail[key].replace(/\D/g, '')
+                        );
                     }
                 });
             }
@@ -785,6 +785,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 f_handlingData('post', 'select-biz-opp-activity3/', userCheck, null, '활동조회');
             }
             setSalesDetailData([]);
+            setDeligateBiz(null);
+            setDeligateCor(null);
         } else {
             setInsertInput(p_bizopp);
             setUpdateInput([]);
@@ -887,14 +889,30 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 }
             };
         });
+        setUpdateInput((prevInput) => {
+            return { 
+                ...prevInput, 
+                a_session_user_id: auth.userId,
+                biz_opp_detail_sale: [
+                    // ...prevInput.biz_opp_detail_sale,  
+                    ...result.flat()
+                ],
+                biz_opp_detail: { 
+                    ...prevInput.biz_opp_detail,
+                    a_product_name: salesDetailData.a_product_name,
+                    a_sale_amt: salesDetailData.total
+                }
+            };
+        });
+        
         
         
     }, [salesDetailData]);
 
     useEffect(() => {
         console.log("insertInput: ", insertInput);
-        console.log(deligateBiz, deligateCor);
-    }, [insertInput, deligateBiz, deligateCor])
+        console.log("updateInput: ", updateInput);
+    }, [insertInput, updateInput])
     
     // ================= SalesDetail.js 데이터 들어온 이후 끝 ================= 
 
@@ -1524,8 +1542,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // }
         };
         updateUI();
-    }, [/* currentPath */, show, onHide, insertInput, activityData, detailData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling, isProDisabled
-        , deligateBiz, deligateCor
+    }, [/* currentPath */, show, onHide, insertInput, activityData, detailData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, 
+        v_deptHandling, v_teamHandling, v_userHandling, isProDisabled, 
+        deligateBiz, deligateCor
     ]);
 
     

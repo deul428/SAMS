@@ -353,7 +353,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
         setSumBiz(bizTotal);
         setSumCor(corTotal);
         inputValuesRef.current = inputValues;
-        // console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
+        console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
     }, [inputValues]);
     // --------------------- input value 합산 끝 ---------------------  
     // =================== input value 받아오기 끝 ===================

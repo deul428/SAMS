@@ -156,14 +156,7 @@ def f_logout(request):
    v_square_bracket_return = [v_return]
    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp1(request):
-
-
-   #test
    v_session_user_id = ''
-
-   # v_session_user_id = 'leecj'
-
-
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
@@ -250,6 +243,17 @@ def f_select_biz_opp1(request):
                                     WHERE CC.great_classi_code = B.last_client_com1_code AND
                                           CC.small_classi_code = B.last_client_com2_code AND
                                           CC.delete_date IS NULL) AS last_client_com2_name,
+                                   B.sale_com1_code,
+                                   B.sale_com2_code,
+                                   (SELECT DISTINCT DD.great_classi_name
+                                    FROM ajict_bms_schema.commonness_code DD
+                                    WHERE DD.great_classi_code = B.sale_com1_code AND
+                                          DD.delete_date IS NULL) AS sale_com1_name,
+                                   (SELECT EE.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code EE
+                                    WHERE EE.great_classi_code = B.sale_com1_code AND
+                                          EE.small_classi_code = B.sale_com2_code AND
+                                          EE.delete_date IS NULL) AS sale_com2_name,
                                    A.contract_date,
                                    A.progress1_rate_code,
                                    A.progress2_rate_code,
@@ -269,7 +273,29 @@ def f_select_biz_opp1(request):
                                    B.purchase_date,
                                    B.purchase_amt,
                                    B.collect_money_date,
+                                   B.biz_section1_code,
+                                   B.biz_section2_code,
+                                   (SELECT DISTINCT FF.great_classi_name
+                                    FROM ajict_bms_schema.commonness_code FF
+                                    WHERE FF.great_classi_code = B.biz_section1_code AND
+                                          FF.delete_date IS NULL) AS biz_section1_name,
+                                   (SELECT GG.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code GG
+                                    WHERE GG.great_classi_code = B.biz_section1_code AND
+                                          GG.small_classi_code = B.biz_section2_code AND
+                                          GG.delete_date IS NULL) AS biz_section2_name,
                                    A.essential_achievement_tf,
+                                   B.principal_product1_code,
+                                   B.principal_product2_code,
+                                   (SELECT DISTINCT HH.great_classi_name
+                                    FROM ajict_bms_schema.commonness_code HH
+                                    WHERE HH.great_classi_code = B.principal_product1_code AND
+                                          HH.delete_date IS NULL) AS principal_product1_name,
+                                   (SELECT II.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code II
+                                    WHERE II.great_classi_code = B.principal_product1_code AND
+                                          II.small_classi_code = B.principal_product2_code AND
+                                          II.delete_date IS NULL) AS principal_product2_name,
                                    (SELECT KK.high_dept_id
                                              FROM ajict_bms_schema.dept KK
                                              WHERE KK.dept_id = B.change_preparation_dept_id AND
@@ -354,14 +380,7 @@ def f_select_biz_opp1(request):
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp2(request):
-
-
-   #test
    v_session_user_id = ''
-
-   # v_session_user_id = 'leecj'
-
-
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
@@ -455,6 +474,17 @@ def f_select_biz_opp2(request):
                                     WHERE CC.great_classi_code = B.last_client_com1_code AND
                                           CC.small_classi_code = B.last_client_com2_code AND
                                           CC.delete_date IS NULL) AS last_client_com2_name,
+                                   B.sale_com1_code,
+                                   B.sale_com2_code,
+                                   (SELECT DISTINCT DD.great_classi_name
+                                    FROM ajict_bms_schema.commonness_code DD
+                                    WHERE DD.great_classi_code = B.sale_com1_code AND
+                                          DD.delete_date IS NULL) AS sale_com1_name,
+                                   (SELECT EE.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code EE
+                                    WHERE EE.great_classi_code = B.sale_com1_code AND
+                                          EE.small_classi_code = B.sale_com2_code AND
+                                          EE.delete_date IS NULL) AS sale_com2_name,
                                    A.contract_date,
                                    A.progress1_rate_code,
                                    A.progress2_rate_code,
@@ -474,7 +504,29 @@ def f_select_biz_opp2(request):
                                    B.purchase_date,
                                    B.purchase_amt,
                                    B.collect_money_date,
+                                   B.biz_section1_code,
+                                   B.biz_section2_code,
+                                   (SELECT DISTINCT FF.great_classi_name
+                                    FROM ajict_bms_schema.commonness_code FF
+                                    WHERE FF.great_classi_code = B.biz_section1_code AND
+                                          FF.delete_date IS NULL) AS biz_section1_name,
+                                   (SELECT GG.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code GG
+                                    WHERE GG.great_classi_code = B.biz_section1_code AND
+                                          GG.small_classi_code = B.biz_section2_code AND
+                                          GG.delete_date IS NULL) AS biz_section2_name,
                                    A.essential_achievement_tf,
+                                   B.principal_product1_code,
+                                   B.principal_product2_code,
+                                   (SELECT DISTINCT HH.great_classi_name
+                                    FROM ajict_bms_schema.commonness_code HH
+                                    WHERE HH.great_classi_code = B.principal_product1_code AND
+                                          HH.delete_date IS NULL) AS principal_product1_name,
+                                   (SELECT II.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code II
+                                    WHERE II.great_classi_code = B.principal_product1_code AND
+                                          II.small_classi_code = B.principal_product2_code AND
+                                          II.delete_date IS NULL) AS principal_product2_name,
                                    (SELECT KK.high_dept_id
                                              FROM ajict_bms_schema.dept KK
                                              WHERE KK.dept_id = B.change_preparation_dept_id AND

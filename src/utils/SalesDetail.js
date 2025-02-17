@@ -6,7 +6,7 @@ import Tree from 'rc-tree';
 import 'rc-tree/assets/index.css';
 import '../styles/_tree.scss';
 import '../styles/_button.scss';
-import { endsWith, lowerCase, sum, toLower } from "lodash";
+import { endsWith, lowerCase, sum, toLower, update } from "lodash";
 
 const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, setSalesDetailData }) => {
     // =================== 렌더 시 세팅 ===================  
@@ -159,7 +159,8 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             return {
                 ...prev,  // ✅ 기존 값 유지
                 biz: { ...prev.biz },
-                cor: { ...prev.cor }
+                cor: { ...prev.cor },
+                a_product_name: prev.a_product_name
             };
         });
     }, [isSelected]);
@@ -243,50 +244,120 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
         }
     ]
     const transformData = (data) => {
+        console.log("transformData function: ", data);
         const result = {};
     
-        data.forEach((item) => {
-            const { great_classi_code, small_classi_code, delegate_tf, sale_amt } = item;
+        if (data.biz || data.cor) { 
+            Object.entries(data).forEach(([key, value]) => {
+            if (typeof value === "object" && !Array.isArray(value)) { 
+                    // biz, cor 내부 객체 순회
+                    Object.entries(value).forEach(([small_classi_code, arr]) => {
+                        const [sale_amt, delegate_tf] = arr;
     
-            const lower = lowerCase(great_classi_code);
-            if (!result[lower]) {
-                result[lower] = {}; // ✅ 키가 없으면 초기화
-            }
+                        const lower = key.toLowerCase(); // great_classi_code 대체
+                        if (!result[lower]) {
+                            result[lower] = {}; // ✅ 키가 없으면 초기화
+                        }
     
-            result[lower][small_classi_code] = [sale_amt, delegate_tf]; // ✅ 값 추가
-        });
+                        result[lower][small_classi_code] = [sale_amt, delegate_tf]; // ✅ 값 추가
+                    });
+                }
+            });
+        }
     
         return result;
     };
     
-    const transformedData = transformData(sampleData);
+   /*  const transformData = (data) => {
+        console.log("transformData function: ", data);
+        const result = {};
+        
+        if (data.biz || data.cor) {
+            Object.entries(data).forEach((item) => {
+                const { great_classi_code, small_classi_code, delegate_tf, sale_amt } = item;
+        
+                const lower = lowerCase(great_classi_code);
+                if (!result[lower]) {
+                    result[lower] = {}; // ✅ 키가 없으면 초기화
+                }
+        
+                result[lower][small_classi_code] = [sale_amt, delegate_tf]; // ✅ 값 추가
+            });
+        }
+        
+        return result;
+    }; */
+    
+    // const transformedData = transformData(inputValues);
     const compareAndUpdateModes = (initialData, updatedData) => {
         let result = JSON.parse(JSON.stringify(updatedData));
     
-        Object.keys(initialData).forEach(greatClassiCode => {
-            if (!updatedData.hasOwnProperty(greatClassiCode)) return;
+        // 🟢 초기 데이터가 없는 경우 모든 값에 "I" 추가
+        if (Object.keys(initialData).length === 0) {
+            Object.keys(updatedData).forEach(greatClassiCode => {
+                if (typeof updatedData[greatClassiCode] === "string") {
+                    // 문자열 데이터 (`a_product_name`)는 변경 없이 저장
+                    result[greatClassiCode] = updatedData[greatClassiCode];
+                    return;
+                }
     
-            Object.keys(initialData[greatClassiCode]).forEach(smallClassiCode => {
-                if (updatedData[greatClassiCode]?.hasOwnProperty(smallClassiCode)) {
-                    if (JSON.stringify(initialData[greatClassiCode][smallClassiCode]) !== JSON.stringify(updatedData[greatClassiCode][smallClassiCode])) {
-                        result[greatClassiCode][smallClassiCode].push('U');
+                Object.keys(updatedData[greatClassiCode]).forEach(smallClassiCode => {
+                    if (!Array.isArray(result[greatClassiCode][smallClassiCode])) {
+                        result[greatClassiCode][smallClassiCode] = [...updatedData[greatClassiCode][smallClassiCode]];
                     }
-                } else {
-                    result[greatClassiCode][smallClassiCode] = [...initialData[greatClassiCode][smallClassiCode], 'D'];
-                }
+                    if (!result[greatClassiCode][smallClassiCode].includes('I')) {
+                        result[greatClassiCode][smallClassiCode].push('I');
+                    }
+                });
             });
     
-            Object.keys(updatedData[greatClassiCode]).forEach(smallClassiCode => {
-                if (!initialData[greatClassiCode]?.hasOwnProperty(smallClassiCode)) {
-                    result[greatClassiCode][smallClassiCode].push('I');
-                }
-            });
+            console.log("compareAndUpdateModes result (All New): ", result);
+            return result;
+        }
+    
+        // 기존 데이터가 존재하는 경우 비교 로직 실행
+        Object.keys(updatedData).forEach(greatClassiCode => {
+            if (typeof updatedData[greatClassiCode] === "string") {
+                // 🟢 `a_product_name` 같은 문자열 값은 직접 대입
+                result[greatClassiCode] = updatedData[greatClassiCode];
+                return;
+            }
+    
+            if (!initialData.hasOwnProperty(greatClassiCode)) {
+                // 🟢 새로운 대분류 항목이면 모든 값에 "I" 추가
+                Object.keys(updatedData[greatClassiCode]).forEach(smallClassiCode => {
+                    if (!result[greatClassiCode]) {
+                        result[greatClassiCode] = {}; // 🟢 대분류 초기화
+                    }
+                    if (!Array.isArray(result[greatClassiCode][smallClassiCode])) {
+                        result[greatClassiCode][smallClassiCode] = [...updatedData[greatClassiCode][smallClassiCode]];
+                    }
+                    if (!result[greatClassiCode][smallClassiCode].includes('I')) {
+                        result[greatClassiCode][smallClassiCode].push('I');
+                    }
+                });
+            } else {
+                // 기존에 존재하는 경우 세부 항목 비교
+                Object.keys(updatedData[greatClassiCode]).forEach(smallClassiCode => {
+                    if (!initialData[greatClassiCode]?.hasOwnProperty(smallClassiCode)) {
+                        // 🟢 신규 항목이면 "I" 추가
+                        if (!result[greatClassiCode]) {
+                            result[greatClassiCode] = {}; // 🟢 대분류 초기화
+                        }
+                        if (!Array.isArray(result[greatClassiCode][smallClassiCode])) {
+                            result[greatClassiCode][smallClassiCode] = [...updatedData[greatClassiCode][smallClassiCode]];
+                        }
+                        if (!result[greatClassiCode][smallClassiCode].includes('I')) {
+                            result[greatClassiCode][smallClassiCode].push('I');
+                        }
+                    }
+                });
+            }
         });
     
         console.log("compareAndUpdateModes result: ", result);
         return result;
     };
-    
     
     const handleInputChange = (e, type, key, isRadio = false) => {
         setInputValues((prev) => {
@@ -375,21 +446,28 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     };
     
     const saveData = () => {
+        const transformedData = transformData(inputValues);
         const current = inputValuesRef.current;
+        if (!transformedData) {
+            return;
+        }
+        console.log('inputValues: ', inputValues, '\ntransformedData', transformedData, '\ncurrent: ', current);
+        
         const result = compareAndUpdateModes(transformedData, current); // ✅ `compareAndUpdateModes`의 result를 받음
         const checkNull = hasDelegateTrue(result); // ✅ `hasDelegateTrue`의 결과도 받아서 사용
-        console.log(result, checkNull);
-        
+        // console.log(result, checkNull);
         let total;
 
-        console.log(typeof totalSaleAmt);
+        console.log(typeof totalSaleAmt, totalSaleAmt);
+
+
         if (typeof totalSaleAmt === 'number' && !isNaN(totalSaleAmt)) {
             total = totalSaleAmt;
         } else {
             total = Number(totalSaleAmt.replace(/,/g, ''));
         }
-
-        if (!totalSaleAmt) {
+        console.log(total);
+        if (totalSaleAmt === null || totalSaleAmt === undefined) {
             alert('총 매출 금액을 입력하세요.');
             return;
         }

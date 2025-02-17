@@ -784,6 +784,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             if (v_modalPropsData) {
                 f_handlingData('post', 'select-biz-opp-activity3/', userCheck, null, '활동조회');
             }
+            setSalesDetailData([]);
         } else {
             setInsertInput(p_bizopp);
             setUpdateInput([]);

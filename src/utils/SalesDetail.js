@@ -1,7 +1,6 @@
 import { Form, FloatingLabel, Modal, Button, Row, Col } from "react-bootstrap";
 import { useState, useEffect, useRef } from "react";
 import '../styles/_customModal.scss';
-import TreeLibrary from "../components/test/Tree";
 import Tree from 'rc-tree';
 import 'rc-tree/assets/index.css';
 import '../styles/_tree.scss';
@@ -56,17 +55,19 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     const treeRender = (data, type) => (
         data.map((item, index) => ({
             title: (
-                <div className="titleArea">
+                <div className="titleArea"
+                    data-key={item.small_classi_name}>
                     {/* ✅ radio 버튼 클릭 시 `handleInputChange` 실행 (isRadio=true) */}
                     <input 
                         type="radio"
                         name={`radio-${type}`}
-                        value={item.small_classi_code}
+                        // value={item.small_classi_code}
+                        data-key={item.small_classi_name}
                         // defaultChecked={true}
                         // defaultValue={true}
                         // checked={inputValues[type]?.[item.small_classi_code]?.[1] ?? false}
-                        onChange={() => handleInputChange(null, type, item.small_classi_code, true)}
-                        onClick={(e) => e.stopPropagation()} // ✅ onSelect 방지
+                        onChange={(e) => handleInputChange(e, type, item.small_classi_code, true)}
+                        onClick={(e) => e.stopPropagation()} 
                     />
                     <div className={`${index} titleItem`} data-key={`${type}-${index}`}>
                         <span>{item.small_classi_name}</span>
@@ -74,7 +75,8 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                             type="number"
                             placeholder="세부 금액"
                             defaultValue={0}
-                            value={inputValues[type]?.[item.small_classi_code]?.[0] ?? 0}
+                            data-key={item.small_classi_name}
+                            // value={inputValues[type]?.[item.small_classi_code]?.[0] ?? 0}
                             onChange={(e) => handleInputChange(e, type, item.small_classi_code)}
                             onClick={(e) => e.stopPropagation()}
                         />
@@ -100,8 +102,13 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     const treeRef = useRef(null);
     // onSelect로 호출한 node가 selected true인 경우 inputValues 객체에 키와 값을 추가 / false일 경우 키와 값을 삭제
     const onSelect = (type) => (selectedKeys, info) => {
+        console.log(info);
         if (type !== 'biz' && type !== 'cor') return;
+
+        const dataKey = info.node?.title?.props?.["data-key"];
+        // const dataKey = dataKeyElement ? dataKeyElement.getAttribute("data-key") : null;
     
+        console.log(dataKey);
         const key = info.node.small_classi_code;
         type === "biz" ? setSelectedBizKeys(selectedKeys) : setSelectedCorKeys(selectedKeys);
         setIsSelected(info.selected);
@@ -109,11 +116,12 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
         setInputValues((prev) => {
             const updatedType = prev[type] ? { ...prev[type] } : {};
     
+            console.log(prev[type]);
             if (info.selected) {
                 // ✅ 기존 `boolean` 값 유지
                 updatedType[key] = Array.isArray(updatedType[key])
-                    ? [updatedType[key][0], updatedType[key][1] ?? false]  // 기존 boolean 값 유지
-                    : [0, false];  // 기본값 설정
+                    ? [dataKey, updatedType[key][1], updatedType[key][2] ?? false]  // 기존 boolean 값 유지
+                    : [dataKey, 0, false];  // 기본값 설정
             } else {
                 delete updatedType[key];
             }
@@ -252,14 +260,14 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             if (typeof value === "object" && !Array.isArray(value)) { 
                     // biz, cor 내부 객체 순회
                     Object.entries(value).forEach(([small_classi_code, arr]) => {
-                        const [sale_amt, delegate_tf] = arr;
+                        const [small_classi_name, sale_amt, delegate_tf] = arr;
     
                         const lower = key.toLowerCase(); // great_classi_code 대체
                         if (!result[lower]) {
                             result[lower] = {}; // ✅ 키가 없으면 초기화
                         }
     
-                        result[lower][small_classi_code] = [sale_amt, delegate_tf]; // ✅ 값 추가
+                        result[lower][small_classi_code] = [small_classi_name, sale_amt, delegate_tf]; // ✅ 값 추가
                     });
                 }
             });
@@ -289,7 +297,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     }; */
     
     // const transformedData = transformData(inputValues);
-    const compareAndUpdateModes = (initialData, updatedData) => {
+/*     const compareAndUpdateModes = (initialData, updatedData) => {
         let result = JSON.parse(JSON.stringify(updatedData));
     
         // 🟢 초기 데이터가 없는 경우 모든 값에 "I" 추가
@@ -357,9 +365,97 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     
         console.log("compareAndUpdateModes result: ", result);
         return result;
+    }; */
+    const compareAndUpdateModes = (initialData, updatedData) => {
+        console.log("initialData: ", initialData, "\nupdatedData: ", updatedData);
+        let result = JSON.parse(JSON.stringify(updatedData));
+    
+        // 🟢 초기 데이터가 없는 경우 모든 값에 "I" 추가
+        if (Object.keys(initialData).length === 0) {
+            Object.keys(updatedData).forEach(greatClassiCode => {
+                if (typeof updatedData[greatClassiCode] === "string") {
+                    result[greatClassiCode] = updatedData[greatClassiCode]; // 문자열 값은 그대로 저장
+                    return;
+                }
+    
+                Object.keys(updatedData[greatClassiCode]).forEach(smallClassiCode => {
+                    if (!Array.isArray(result[greatClassiCode][smallClassiCode])) {
+                        result[greatClassiCode][smallClassiCode] = [...updatedData[greatClassiCode][smallClassiCode]];
+                    }
+                    if (!result[greatClassiCode][smallClassiCode].includes('I')) {
+                        result[greatClassiCode][smallClassiCode].push('I'); // ✅ 추가됨
+                    }
+                });
+            });
+    
+            console.log("compareAndUpdateModes result (All New): ", result);
+            return result;
+        }
+    
+        // 기존 데이터가 존재하는 경우 비교 로직 실행
+        Object.keys(updatedData).forEach(greatClassiCode => {
+            if (typeof updatedData[greatClassiCode] === "string") {
+                result[greatClassiCode] = updatedData[greatClassiCode]; // 문자열 값은 그대로 저장
+                return;
+            }
+    
+            if (!initialData.hasOwnProperty(greatClassiCode)) {
+                // 🟢 새로운 대분류 항목이면 모든 값에 "I" 추가
+                Object.keys(updatedData[greatClassiCode]).forEach(smallClassiCode => {
+                    if (!result[greatClassiCode]) {
+                        result[greatClassiCode] = {}; // 🟢 대분류 초기화
+                    }
+                    if (!Array.isArray(result[greatClassiCode][smallClassiCode])) {
+                        result[greatClassiCode][smallClassiCode] = [...updatedData[greatClassiCode][smallClassiCode]];
+                    }
+                    if (!result[greatClassiCode][smallClassiCode].includes('I')) {
+                        result[greatClassiCode][smallClassiCode].push('I'); // ✅ 신규 추가 감지
+                    }
+                });
+            } else {
+                // 기존에 존재하는 경우 세부 항목 비교
+                Object.keys(updatedData[greatClassiCode]).forEach(smallClassiCode => {
+                    if (!initialData[greatClassiCode]?.hasOwnProperty(smallClassiCode)) {
+                        // 🟢 신규 항목이면 "I" 추가
+                        if (!result[greatClassiCode]) {
+                            result[greatClassiCode] = {}; // 🟢 대분류 초기화
+                        }
+                        if (!Array.isArray(result[greatClassiCode][smallClassiCode])) {
+                            result[greatClassiCode][smallClassiCode] = [...updatedData[greatClassiCode][smallClassiCode]];
+                        }
+                        if (!result[greatClassiCode][smallClassiCode].includes('I')) {
+                            result[greatClassiCode][smallClassiCode].push('I'); // ✅ 신규 추가 감지
+                        }
+                    } else {
+                        // 🟢 기존 데이터가 존재할 경우, 세부 값 비교 후 "U" 추가
+                        const [prevName, prevAmount, prevRadio] = initialData[greatClassiCode][smallClassiCode] || ["", 0, false];
+                        const [newName, newAmount, newRadio] = updatedData[greatClassiCode][smallClassiCode];
+    
+                        if (prevName !== newName || prevAmount !== newAmount || prevRadio !== newRadio) {
+                            if (!result[greatClassiCode][smallClassiCode].includes('U')) {
+                                result[greatClassiCode][smallClassiCode].push('U'); // ✅ 업데이트 감지
+                            }
+                        }
+                    }
+                });
+    
+                // 기존 데이터 중 `updatedData`에 없는 항목은 삭제(`D`) 처리
+                Object.keys(initialData[greatClassiCode]).forEach(smallClassiCode => {
+                    if (!updatedData[greatClassiCode]?.hasOwnProperty(smallClassiCode)) {
+                        result[greatClassiCode][smallClassiCode] = [...initialData[greatClassiCode][smallClassiCode], 'D']; // ✅ 삭제 감지
+                    }
+                });
+            }
+        });
+    
+        console.log("compareAndUpdateModes result: ", result);
+        return result;
     };
     
+    
     const handleInputChange = (e, type, key, isRadio = false) => {
+        const dataKey = e.currentTarget.dataset.key;
+        console.log(dataKey);
         setInputValues((prev) => {
             // ✅ `a_product_name`일 경우 단순 값 저장
             if (type === "a_product_name") {
@@ -373,22 +469,23 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             const updatedType = { ...prev[type] };
     
             if (isRadio) {
+                console.log(updatedType);
                 // 모든 기존 항목을 false로 변경 (라디오 버튼 단일 선택 유지)
                 Object.keys(updatedType).forEach((existingKey) => {
                     updatedType[existingKey] = Array.isArray(updatedType[existingKey])
-                        ? [updatedType[existingKey][0], false]
-                        : [0, false];
+                        ? [updatedType[existingKey][0], updatedType[existingKey][1], false]
+                        : [updatedType[existingKey][0], 0, false];
                 });
-    
+
                 // 선택된 항목만 true로 설정
                 updatedType[key] = Array.isArray(updatedType[key])
-                    ? [updatedType[key][0], true]
-                    : [0, true];
+                    ? [updatedType[key][0], updatedType[key][1], true]
+                    : [dataKey, 0, true];
             } else {
                 // 숫자 입력 시, 기존 boolean 값 유지
                 updatedType[key] = Array.isArray(updatedType[key])
-                    ? [Number(e.target.value), updatedType[key][1] ?? false]
-                    : [Number(e.target.value), false];
+                    ? [updatedType[key][0], Number(e.target.value), updatedType[key][2] ?? false]
+                    : [dataKey, Number(e.target.value), false];
             }
     
             return {
@@ -405,18 +502,12 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     const [sumBiz, setSumBiz] = useState(0);
     const [sumCor, setSumCor] = useState(0);
     useEffect(() => {
-        const bizValueArr = Object.values(inputValues.biz).map(value =>
-            Array.isArray(value) ? value[0] : value // ✅ 배열이면 금액(value[0]), 아니면 그대로 사용
+        const bizValueArr = Object.values(inputValues.biz).map(value => 
+            Array.isArray(value) ? value[1] : value // ✅ 배열이면 금액(value[0]), 아니면 그대로 사용
         );
-        
         const corValueArr = Object.values(inputValues.cor).map(value =>
-            Array.isArray(value) ? value[0] : value // ✅ 배열이면 금액(value[0]), 아니면 그대로 사용
+            Array.isArray(value) ? value[1] : value // ✅ 배열이면 금액(value[0]), 아니면 그대로 사용
         );
-        
-       /*  const bizValueArr = Object.values(inputValues.biz);
-        const corValueArr = Object.values(inputValues.cor); */
-        // const bizValueArr = Object.values(inputValues.biz).map(value => value[0]); // ✅ 금액 값만 추출
-        // const corValueArr = Object.values(inputValues.cor).map(value => value[0]); // ✅ 금액 값만 추출
 
         const bizTotal = bizValueArr.reduce((acc, cur) => acc + cur, 0);
         const corTotal = corValueArr.reduce((acc, cur) => acc + cur, 0);
@@ -437,7 +528,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             if (typeof data[greatClassiCode] !== "object") return;
     
             result[greatClassiCode] = Object.values(data[greatClassiCode]).some(
-                (arr) => arr[1] === true && arr[2] !== "D"
+                (arr) => arr[2] === true && arr[3] !== "D"
             );
         });
     
@@ -446,20 +537,21 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
     };
     
     const saveData = () => {
-        const transformedData = transformData(inputValues);
-        const current = inputValuesRef.current;
-        if (!transformedData) {
-            return;
+        let transformedData;
+        if (v_modalPropsData) {
+            transformedData = transformData(v_modalPropsData);
+        } else {
+            transformedData = {};
         }
-        console.log('inputValues: ', inputValues, '\ntransformedData', transformedData, '\ncurrent: ', current);
+        const current = inputValuesRef.current;
+
+        // console.log('inputValues: ', inputValues, '\ntransformedData', transformedData, '\ncurrent: ', current);
         
-        const result = compareAndUpdateModes(transformedData, current); // ✅ `compareAndUpdateModes`의 result를 받음
-        const checkNull = hasDelegateTrue(result); // ✅ `hasDelegateTrue`의 결과도 받아서 사용
-        // console.log(result, checkNull);
+        const result = compareAndUpdateModes(transformedData, current);
+        const checkNull = hasDelegateTrue(result);
         let total;
 
         console.log(typeof totalSaleAmt, totalSaleAmt);
-
 
         if (typeof totalSaleAmt === 'number' && !isNaN(totalSaleAmt)) {
             total = totalSaleAmt;
@@ -467,6 +559,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             total = Number(totalSaleAmt.replace(/,/g, ''));
         }
         console.log(total);
+
         if (totalSaleAmt === null || totalSaleAmt === undefined) {
             alert('총 매출 금액을 입력하세요.');
             return;
@@ -494,7 +587,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
 
         setSalesDetailData(() => ({
             // ...current,
-            // total: total,
+            total: total,
             ...result, // ✅ `compareAndUpdateModes`의 결과를 함께 저장
         }));
 

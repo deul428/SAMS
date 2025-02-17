@@ -829,6 +829,79 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         "\nv_deptHandling: \n", v_deptHandling,
         "\nv_userHandling: \n", v_userHandling)
     }, [v_teamHandling, v_deptHandling, v_userHandling]) */
+
+    // ================= SalesDetail.js 데이터 들어온 이후 ================= 
+    const [salesDetailData, setSalesDetailData] = useState([]);
+    const [deligateBiz, setDeligateBiz] = useState(null);
+    const [deligateCor, setDeligateCor] = useState(null);
+    useEffect(() => {
+        console.log("salesDetailData: ", salesDetailData);
+        const result = [];
+
+        Object.entries(salesDetailData)
+            .filter(([great_classi_code]) => great_classi_code === 'biz' || great_classi_code === 'cor') 
+            .forEach(([great_classi_code, smallClassiObj]) => {
+                Object.entries(smallClassiObj).forEach(([small_classi_code, value]) => {
+                    if (Array.isArray(value)) {
+                        const [small_classi_name, sale_amt, a_deligate_tf, a_mode] = value;
+                        console.log(`Processing: ${great_classi_code} - ${small_classi_code}, small_classi_name: ${small_classi_name}, sale_amt: ${sale_amt}, a_deligate_tf: ${a_deligate_tf}, a_mode: ${a_mode}`);
+        
+                        result.push({
+                            a_great_classi_code: great_classi_code.toUpperCase(),
+                            a_small_classi_code: small_classi_code,
+                            a_small_classi_name: small_classi_name,
+                            a_sale_amt: sale_amt,
+                            a_deligate_tf,
+                            a_mode
+                        });
+                    }
+                });
+            });
+        
+        console.log("salesDetailData transform Result:", result);
+        result.map((e, index) => {
+            if(e.a_deligate_tf === true) {
+                console.log(index);
+                if (e.a_great_classi_code === 'BIZ') {
+                    setDeligateBiz(e);
+                } else if (e.a_great_classi_code === 'COR') {
+                    setDeligateCor(e);
+                }
+            } else {
+                console.log(e, e.a_deligate_tf);
+            }
+        })
+        
+        setInsertInput((prevInput) => {
+            return { 
+                ...prevInput, 
+                a_session_user_id: auth.userId,
+                biz_opp_detail_sale: [
+                    // ...prevInput.biz_opp_detail_sale,  
+                    result.flat()
+                ],
+                biz_opp_detail: { 
+                    ...prevInput.biz_opp_detail,
+                    a_product_name: salesDetailData.a_product_name,
+                    a_sale_amt: salesDetailData.total
+                }
+            };
+        });
+        
+        
+    }, [salesDetailData]);
+
+    useEffect(() => {
+        console.log("insertInput: ", insertInput);
+        console.log(deligateBiz, deligateCor);
+    }, [insertInput, deligateBiz, deligateCor])
+    
+    // ================= SalesDetail.js 데이터 들어온 이후 끝 ================= 
+
+
+
+
+
     // UI 업데이트
     const [isProDisabled, setIsProDisabled] = useState(true);
     useEffect(() => {
@@ -1232,7 +1305,13 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='대표 사업 구분 (매출 상세가 반영될 곳)'>
                                                         <Form.Control size='sm' className=''
-                                                        value={salesDetailData && salesDetailData.biz ? salesDetailData?.biz : a_v_modalPropsData?.a_biz_section2_name}
+                                                        value={
+                                                            deligateBiz ? 
+                                                            deligateBiz.a_small_classi_name : 
+                                                            a_v_modalPropsData ? 
+                                                            a_v_modalPropsData?.a_biz_section2_name
+                                                            : 'test'
+                                                        }
                                                         readOnly
                                                         >
                                                         </Form.Control>
@@ -1241,7 +1320,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='대표 제조사명 (매출 상세가 반영될 곳)'>
                                                         <Form.Control size='sm' className='' 
-                                                        value={salesDetailData && salesDetailData.biz ? salesDetailData?.biz : a_v_modalPropsData?.a_biz_section2_name}
+                                                        value={deligateCor ? 
+                                                            deligateCor.a_small_classi_name : 
+                                                            a_v_modalPropsData ?
+                                                            a_v_modalPropsData?.a_biz_section2_name
+                                                            : 'test'
+                                                        }
                                                         readOnly
                                                         >
                                                         </Form.Control>
@@ -1440,57 +1524,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             // }
         };
         updateUI();
-    }, [/* currentPath */, show, onHide, insertInput, activityData, detailData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling, isProDisabled]);
+    }, [/* currentPath */, show, onHide, insertInput, activityData, detailData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, v_deptHandling, v_teamHandling, v_userHandling, isProDisabled
+        , deligateBiz, deligateCor
+    ]);
 
-    
-    const [salesDetailData, setSalesDetailData] = useState([]);
-    useEffect(() => {
-        console.log("salesDetailData: ", salesDetailData);
-        const result = [];
-
-        Object.entries(salesDetailData)
-            .filter(([great_classi_code]) => great_classi_code === 'biz' || great_classi_code === 'cor') 
-            .forEach(([great_classi_code, smallClassiObj]) => {
-                Object.entries(smallClassiObj).forEach(([small_classi_code, value]) => {
-                    if (Array.isArray(value)) {
-                        const [sale_amt, a_deligate_tf, a_mode] = value;
-                        console.log(`Processing: ${great_classi_code} - ${small_classi_code}, sale_amt: ${sale_amt}, a_deligate_tf: ${a_deligate_tf}, a_mode: ${a_mode}`);
-        
-                        result.push({
-                            a_great_classi_code: great_classi_code.toUpperCase(),
-                            a_small_classi_code: small_classi_code,
-                            a_sale_amt: sale_amt,
-                            a_deligate_tf,
-                            a_mode
-                        });
-                    }
-                });
-            });
-        
-        console.log("salesDetailData transform Result:", result);
-        
-        setInsertInput((prevInput) => {
-            return { 
-                ...prevInput, 
-                a_session_user_id: auth.userId,
-                biz_opp_detail_sale: [
-                    // ...prevInput.biz_opp_detail_sale,  
-                    result.flat()
-                ],
-                biz_opp_detail: { 
-                    ...prevInput.biz_opp_detail,
-                    a_product_name: salesDetailData.a_product_name,
-                    a_sale_amt: salesDetailData.total
-                }
-            };
-        });
-        
-        
-    }, [salesDetailData]);
-
-    useEffect(() => {
-        console.log("insertInput: ", insertInput);
-    }, [insertInput])
     
     return (
         <div id='inputFieldDetail'>

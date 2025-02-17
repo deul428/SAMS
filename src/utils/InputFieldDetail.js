@@ -1466,11 +1466,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 });
             });
         
-        console.log("Final Result:", result);
+        console.log("salesDetailData transform Result:", result);
         
-        
-        
-        console.log(salesDetailData.a_product_name);
         setInsertInput((prevInput) => {
             return { 
                 ...prevInput, 
@@ -1491,7 +1488,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     }, [salesDetailData]);
 
     useEffect(() => {
-        console.log(insertInput);
+        console.log("insertInput: ", insertInput);
     }, [insertInput])
     
     return (

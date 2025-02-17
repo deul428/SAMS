@@ -389,6 +389,10 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             total = Number(totalSaleAmt.replace(/,/g, ''));
         }
 
+        if (!totalSaleAmt) {
+            alert('총 매출 금액을 입력하세요.');
+            return;
+        }
         if (sumBiz !== total) {
             alert('사업 구분 필드의 총 금액은 매출 금액과 일치해야 합니다.');
             return;

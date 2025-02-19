@@ -1,0 +1,123 @@
+@import './mixin';
+
+@include mobile335 {
+    #root #cntntArea #login.wrap {
+        #loginArea {
+            margin-bottom: 10%;
+            .title {
+                img.ci {
+
+                }
+            }
+        }
+        form {
+        }
+    }
+}
+@include tablet758 {
+    #root #cntntArea #login.wrap {
+        #loginArea {
+            .title {
+                img.ci {
+                    
+                }
+            }
+        }
+        form {
+        }
+    }
+}
+@include desktop1024 {
+    #root #cntntArea #login.wrap {
+        form {
+            .inputFields {
+                .form-label {
+                    text-align: center;
+                }
+                .form-control {
+                    width: $full;
+                }
+                .form-text.text-muted {
+                    display: block;
+                    font-size: 0.8rem;
+                }
+            }
+            .inputFields.idField {
+            }
+            .inputFields.pwField {
+            }
+            
+            button.btn-primary {
+                width: $full;
+                margin: 5% 0 0 0;
+            }
+        }
+    }
+}
+@include desktop1200 {
+    #root #cntntArea #login.wrap {
+        form {
+        }
+    }
+}
+
+#root #cntntArea #login.wrap {
+    width: 100vw !important;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    #loginArea {  
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 5% 2.5%;
+        .title {
+            width: 100%;
+            margin-bottom: 2.5%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            img.ci {
+                width: 80%;
+                display: block;
+            }
+            h1 {
+
+            }
+        }
+        
+        form {
+            width: 100%;
+            .inputFields {
+                .form-label {
+                    text-align: center;
+                }
+                .form-control {
+                    width: $full;
+                }
+                .form-text.text-muted {
+                    display: block;
+                    font-size: 0.8rem;
+                }
+            }
+            .inputFields.idField {
+            }
+            .inputFields.pwField {
+            }
+            
+            button.btn-primary {
+                width: $full;
+                margin: 5% 0 0 0;
+            }
+        }
+        
+        
+    }     
+}

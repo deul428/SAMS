@@ -1,0 +1,20 @@
+# Node.js 20 LTS 이미지 기반
+FROM node:20
+
+# 작업 디렉토리 설정
+WORKDIR /app
+
+# package.json과 package-lock.json 복사
+COPY frontend/package*.json ./
+
+# 의존성 설치
+RUN npm install
+
+# 전체 소스 복사
+COPY . .
+
+# 개발 서버 실행
+CMD ["npm", "start"]
+
+# 변경 감지 문제 해결을 위한 환경 변수 설정
+ENV WATCHPACK_POLLING=true

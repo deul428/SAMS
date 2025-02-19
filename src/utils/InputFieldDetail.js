@@ -56,8 +56,9 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
     const p_bizopp = {
         a_session_user_id: auth.userId,
-        a_user_name: (auth.userAuthCode === '0003' && auth.userResCode === '0001') ?
-        auth.userName : '',
+        a_user_name: 
+            (auth.userAuthCode === '0003' && auth.userResCode === '0001') ?
+            auth.userName : '',
         biz_opp: { 
             a_biz_opp_name: '',
             a_progress2_rate_code: '',
@@ -67,7 +68,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         biz_opp_detail: {
             a_change_preparation_dept_id: auth.userAuthCode === '0003' ? auth.userDeptCode : '',
             a_last_client_com2_code: '',
-            a_sale_com2_code: '',
+            // a_sale_com2_code: '',
             a_sale_item_no: '',
             a_sale_date: '',
             a_sale_amt: 0,
@@ -847,7 +848,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     if (Array.isArray(value)) {
                         const [small_classi_name, sale_amt, a_deligate_tf, a_mode] = value;
                         console.log(`Processing: ${great_classi_code} - ${small_classi_code}, small_classi_name: ${small_classi_name}, sale_amt: ${sale_amt}, a_deligate_tf: ${a_deligate_tf}, a_mode: ${a_mode}`);
-        
+                        
                         result.push({
                             a_great_classi_code: great_classi_code.toUpperCase(),
                             a_small_classi_code: small_classi_code,
@@ -874,13 +875,15 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             }
         })
         
+        const filteredResult = result.map(({ a_small_classi_name, ...rest }) => rest);
+
         setInsertInput((prevInput) => {
             return { 
                 ...prevInput, 
                 a_session_user_id: auth.userId,
                 biz_opp_detail_sale: [
                     // ...prevInput.biz_opp_detail_sale,  
-                    result.flat()
+                   ...filteredResult
                 ],
                 biz_opp_detail: { 
                     ...prevInput.biz_opp_detail,
@@ -895,7 +898,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 a_session_user_id: auth.userId,
                 biz_opp_detail_sale: [
                     // ...prevInput.biz_opp_detail_sale,  
-                    ...result.flat()
+                    ...filteredResult
                 ],
                 biz_opp_detail: { 
                     ...prevInput.biz_opp_detail,
@@ -1328,7 +1331,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             deligateBiz.a_small_classi_name : 
                                                             a_v_modalPropsData ? 
                                                             a_v_modalPropsData?.a_biz_section2_name
-                                                            : 'test'
+                                                            : ''
                                                         }
                                                         readOnly
                                                         >
@@ -1342,7 +1345,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                             deligateCor.a_small_classi_name : 
                                                             a_v_modalPropsData ?
                                                             a_v_modalPropsData?.a_biz_section2_name
-                                                            : 'test'
+                                                            : ''
                                                         }
                                                         readOnly
                                                         >

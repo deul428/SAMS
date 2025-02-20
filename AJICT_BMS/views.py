@@ -681,52 +681,52 @@ def f_insert_biz_opp(request):
 
 
    #test
-   #v_session_user_id = ''
+   v_session_user_id = ''
 
-   v_session_user_id = 'leecj'
+   #v_session_user_id = 'leecj'
 
 
    #test
    # v_body = ''
 
-   v_body = {'a_session_user_id': 'leecj',
-             'a_user_name': '이창주',
-             'biz_opp': {'a_biz_opp_name': 'v_body를 수동으로...',
-                         'a_progress2_rate_code': '0001',
-                         'a_contract_date': '20250101',
-                         'a_essential_achievement_tf': False},
-             'biz_opp_detail': {'a_change_preparation_dept_id': '98000',
-                                'a_last_client_com2_code': '',
-                                'a_sale_item_no': '',
-                                'a_sale_date': '20250222',
-                                'a_sale_amt': '3500000',
-                                'a_sale_profit': 345999,
-                                'a_purchase_date': '20250224',
-                                'a_purchase_amt': 789000,
-                                'a_collect_money_date': '',
-                                'a_product_name':''},
-             'biz_opp_activity': {'a_activity_details': 'vvvvvvvvvvvvvvvvvvvvvv',
-                                  'a_activity_date': '20250303'},
-             'biz_opp_detail_sale': [{'great_classi_code':'BIZ',
-                                      'small_classi_code':'0002',
-                                      'sale_amt':250000,
-                                      'delegate_tf':False,
-                                      'a_mode':''},
-                                     {'great_classi_code':'COR',
-                                      'small_classi_code':'0103',
-                                      'sale_amt':0,
-                                      'delegate_tf':False,
-                                      'a_mode':''},
-                                     {'great_classi_code':'BIZ',
-                                      'small_classi_code':'0006',
-                                      'sale_amt':300000,
-                                       'delegate_tf':False,
-                                      'a_mode':''},
-                                     {'great_classi_code':'COR',
-                                      'small_classi_code':'0001',
-                                      'sale_amt':180000,
-                                       'delegate_tf':True,
-                                      'a_mode':''}]}
+   # v_body = {'a_session_user_id': 'leecj',
+   #           'a_user_name': '이창주',
+   #           'biz_opp': {'a_biz_opp_name': 'v_body를 수동으로...',
+   #                       'a_progress2_rate_code': '0001',
+   #                       'a_contract_date': '20250101',
+   #                       'a_essential_achievement_tf': False},
+   #           'biz_opp_detail': {'a_change_preparation_dept_id': '98000',
+   #                              'a_last_client_com2_code': '',
+   #                              'a_sale_item_no': '',
+   #                              'a_sale_date': '20250222',
+   #                              'a_sale_amt': '3500000',
+   #                              'a_sale_profit': 345999,
+   #                              'a_purchase_date': '20250224',
+   #                              'a_purchase_amt': 789000,
+   #                              'a_collect_money_date': '',
+   #                              'a_product_name':''},
+   #           'biz_opp_activity': {'a_activity_details': 'vvvvvvvvvvvvvvvvvvvvvv',
+   #                                'a_activity_date': '20250303'},
+   #           'biz_opp_detail_sale': [{'great_classi_code':'BIZ',
+   #                                    'small_classi_code':'0002',
+   #                                    'sale_amt':250000,
+   #                                    'delegate_tf':False,
+   #                                    'a_mode':''},
+   #                                   {'great_classi_code':'COR',
+   #                                    'small_classi_code':'0103',
+   #                                    'sale_amt':0,
+   #                                    'delegate_tf':False,
+   #                                    'a_mode':''},
+   #                                   {'great_classi_code':'BIZ',
+   #                                    'small_classi_code':'0006',
+   #                                    'sale_amt':300000,
+   #                                     'delegate_tf':False,
+   #                                    'a_mode':''},
+   #                                   {'great_classi_code':'COR',
+   #                                    'small_classi_code':'0001',
+   #                                    'sale_amt':180000,
+   #                                     'delegate_tf':True,
+   #                                    'a_mode':''}]}
 
 
    if request.method == 'POST':
@@ -1201,7 +1201,7 @@ def f_insert_biz_opp(request):
 
 
                #test
-                  #print(f"v_item : {v_item}")
+                  print(f"v_item : {v_item}")
 
 
                   v_param_insert_biz_opp_detail_sale.append(v_biz_opp_id)

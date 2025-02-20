@@ -280,6 +280,36 @@ def f_select_biz_opp1(request):
                                                                  FROM ajict_bms_schema.dept CCC
                                                                  WHERE CCC.dept_id = B.change_preparation_dept_id AND
                                                                        CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
+                                   (SELECT PP.small_classi_code
+                                    FROM ajict_bms_schema.biz_opp_detail_sale PP
+                                    WHERE PP.biz_opp_id = '20250001' AND
+                                          PP.detail_no = 1 AND
+                                          PP.delegate_tf = TRUE AND
+                                          PP.great_classi_code = 'BIZ') AS delegate_biz_section2_code,
+                                    (SELECT QQ.small_classi_code
+                                     FROM ajict_bms_schema.biz_opp_detail_sale QQ
+                                     WHERE QQ.biz_opp_id = '20250001' AND
+                                           QQ.detail_no = 1 AND
+                                           QQ.delegate_tf = TRUE AND
+                                           QQ.great_classi_code = 'COR') AS delegate_sale_com2_code,
+                                   (SELECT RR.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code RR
+                                    WHERE RR.great_classi_code = 'BIZ' AND
+                                          RR.small_classi_code = (SELECT DDD.small_classi_code
+                                                                  FROM ajict_bms_schema.biz_opp_detail_sale DDD
+                                                                  WHERE DDD.biz_opp_id = '20250001' AND
+                                                                        DDD.detail_no = 1 AND
+                                                                        DDD.delegate_tf = TRUE AND
+                                                                        DDD.great_classi_code = 'BIZ')) AS delegate_biz_section_name,
+                                   (SELECT SS.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code SS
+                                    WHERE SS.great_classi_code = 'COR' AND
+                                          SS.small_classi_code = (SELECT EEE.small_classi_code
+                                                                  FROM ajict_bms_schema.biz_opp_detail_sale EEE
+                                                                  WHERE EEE.biz_opp_id = '20250001' AND
+                                                                        EEE.detail_no = 1 AND
+                                                                        EEE.delegate_tf = TRUE AND
+                                                                        EEE.great_classi_code = 'COR')) AS delegate_sale_com_name,
                                    A.create_user AS biz_opp_create_user,
                                    A.create_date AS biz_opp_create_date,
                                    A.update_user AS biz_opp_update_user,
@@ -485,6 +515,36 @@ def f_select_biz_opp2(request):
                                                                  FROM ajict_bms_schema.dept CCC
                                                                  WHERE CCC.dept_id = B.change_preparation_dept_id AND
                                                                        CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
+                                   (SELECT PP.small_classi_code
+                                    FROM ajict_bms_schema.biz_opp_detail_sale PP
+                                    WHERE PP.biz_opp_id = '20250001' AND
+                                          PP.detail_no = 1 AND
+                                          PP.delegate_tf = TRUE AND
+                                          PP.great_classi_code = 'BIZ') AS delegate_biz_section2_code,
+                                    (SELECT QQ.small_classi_code
+                                     FROM ajict_bms_schema.biz_opp_detail_sale QQ
+                                     WHERE QQ.biz_opp_id = '20250001' AND
+                                           QQ.detail_no = 1 AND
+                                           QQ.delegate_tf = TRUE AND
+                                           QQ.great_classi_code = 'COR') AS delegate_sale_com2_code,
+                                   (SELECT RR.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code RR
+                                    WHERE RR.great_classi_code = 'BIZ' AND
+                                          RR.small_classi_code = (SELECT DDD.small_classi_code
+                                                                  FROM ajict_bms_schema.biz_opp_detail_sale DDD
+                                                                  WHERE DDD.biz_opp_id = '20250001' AND
+                                                                        DDD.detail_no = 1 AND
+                                                                        DDD.delegate_tf = TRUE AND
+                                                                        DDD.great_classi_code = 'BIZ')) AS delegate_biz_section_name,
+                                   (SELECT SS.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code SS
+                                    WHERE SS.great_classi_code = 'COR' AND
+                                          SS.small_classi_code = (SELECT EEE.small_classi_code
+                                                                  FROM ajict_bms_schema.biz_opp_detail_sale EEE
+                                                                  WHERE EEE.biz_opp_id = '20250001' AND
+                                                                        EEE.detail_no = 1 AND
+                                                                        EEE.delegate_tf = TRUE AND
+                                                                        EEE.great_classi_code = 'COR')) AS delegate_sale_com_name,
                                    A.create_user AS biz_opp_create_user,
                                    A.create_date AS biz_opp_create_date,
                                    A.update_user AS biz_opp_update_user,
@@ -707,25 +767,25 @@ def f_insert_biz_opp(request):
    #                              'a_product_name':''},
    #           'biz_opp_activity': {'a_activity_details': 'vvvvvvvvvvvvvvvvvvvvvv',
    #                                'a_activity_date': '20250303'},
-   #           'biz_opp_detail_sale': [{'great_classi_code':'BIZ',
-   #                                    'small_classi_code':'0002',
-   #                                    'sale_amt':250000,
-   #                                    'delegate_tf':False,
+   #           'biz_opp_detail_sale': [{'a_great_classi_code':'BIZ',
+   #                                    'a_small_classi_code':'0002',
+   #                                    'a_sale_amt':250000,
+   #                                    'a_delegate_tf':False,
    #                                    'a_mode':''},
-   #                                   {'great_classi_code':'COR',
-   #                                    'small_classi_code':'0103',
-   #                                    'sale_amt':0,
-   #                                    'delegate_tf':False,
+   #                                   {'a_great_classi_code':'COR',
+   #                                    'a_small_classi_code':'0103',
+   #                                    'a_sale_amt':0,
+   #                                    'a_delegate_tf':False,
    #                                    'a_mode':''},
-   #                                   {'great_classi_code':'BIZ',
-   #                                    'small_classi_code':'0006',
-   #                                    'sale_amt':300000,
-   #                                     'delegate_tf':False,
+   #                                   {'a_great_classi_code':'BIZ',
+   #                                    'a_small_classi_code':'0006',
+   #                                    'a_sale_amt':300000,
+   #                                    'a_delegate_tf':False,
    #                                    'a_mode':''},
-   #                                   {'great_classi_code':'COR',
-   #                                    'small_classi_code':'0001',
-   #                                    'sale_amt':180000,
-   #                                     'delegate_tf':True,
+   #                                   {'a_great_classi_code':'COR',
+   #                                    'a_small_classi_code':'0001',
+   #                                    'a_sale_amt':180000,
+   #                                    'a_delegate_tf':True,
    #                                    'a_mode':''}]}
 
 
@@ -1205,20 +1265,20 @@ def f_insert_biz_opp(request):
 
 
                   v_param_insert_biz_opp_detail_sale.append(v_biz_opp_id)
-                  if not v_item.get('great_classi_code'):
+                  if not v_item.get('a_great_classi_code'):
                      transaction.set_rollback(True)
                      v_return = {'STATUS':'FAIL','MESSAGE':"'a_great_class_code' 매개변수에 빈 값이 올 수 없습니다!"}
                      v_square_bracket_return = [v_return]
                      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-                  if not v_item.get('small_classi_code'):
+                  if not v_item.get('a_small_classi_code'):
                      transaction.set_rollback(True)
                      v_return = {'STATUS':'FAIL','MESSAGE':"'a_small_class_code' 매개변수에 빈 값이 올 수 없습니다!"}
                      v_square_bracket_return = [v_return]
                      return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-                  v_param_insert_biz_opp_detail_sale.append(v_item.get('great_classi_code'))
-                  v_param_insert_biz_opp_detail_sale.append(v_item.get('small_classi_code'))
-                  v_param_insert_biz_opp_detail_sale.append(v_item.get('sale_amt'))
-                  v_param_insert_biz_opp_detail_sale.append(v_item.get('delegate_tf'))
+                  v_param_insert_biz_opp_detail_sale.append(v_item.get('a_great_classi_code'))
+                  v_param_insert_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
+                  v_param_insert_biz_opp_detail_sale.append(v_item.get('a_sale_amt'))
+                  v_param_insert_biz_opp_detail_sale.append(v_item.get('a_delegate_tf'))
                   v_param_insert_biz_opp_detail_sale.append(v_session_user_id)
 
 
@@ -1257,10 +1317,10 @@ def f_insert_biz_opp(request):
                   v_history_assistance_no = v_history_assistance_no + 1
                   v_param_insert_biz_opp_detail_sale_history.append(v_history_assistance_no)
                   v_param_insert_biz_opp_detail_sale_history.append(v_biz_opp_id)
-                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('great_classi_code'))
-                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('small_classi_code'))
-                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('sale_amt'))
-                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('delegate_tf'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('a_great_classi_code'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('a_small_classi_code'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('a_sale_amt'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('a_delegate_tf'))
                   v_param_insert_biz_opp_detail_sale_history.append(v_session_user_id)
 
 

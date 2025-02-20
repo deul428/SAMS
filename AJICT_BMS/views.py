@@ -734,7 +734,7 @@ def f_insert_biz_opp(request):
 
 
       #test
-      #print(f"{v_body}")
+      print(f"{v_body}")
 
 
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')

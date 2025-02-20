@@ -786,8 +786,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 f_handlingData('post', 'select-biz-opp-activity3/', userCheck, null, '활동조회');
             }
             setSalesDetailData([]);
-            setDeligateBiz(null);
-            setDeligateCor(null);
+            setdelegateBiz(null);
+            setdelegateCor(null);
         } else {
             setInsertInput(p_bizopp);
             setUpdateInput([]);
@@ -835,8 +835,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
     // ================= SalesDetail.js 데이터 들어온 이후 ================= 
     const [salesDetailData, setSalesDetailData] = useState([]);
-    const [deligateBiz, setDeligateBiz] = useState(null);
-    const [deligateCor, setDeligateCor] = useState(null);
+    const [delegateBiz, setdelegateBiz] = useState(null);
+    const [delegateCor, setdelegateCor] = useState(null);
     useEffect(() => {
         console.log("salesDetailData: ", salesDetailData);
         const result = [];
@@ -846,15 +846,15 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             .forEach(([great_classi_code, smallClassiObj]) => {
                 Object.entries(smallClassiObj).forEach(([small_classi_code, value]) => {
                     if (Array.isArray(value)) {
-                        const [small_classi_name, sale_amt, a_deligate_tf, a_mode] = value;
-                        console.log(`Processing: ${great_classi_code} - ${small_classi_code}, small_classi_name: ${small_classi_name}, sale_amt: ${sale_amt}, a_deligate_tf: ${a_deligate_tf}, a_mode: ${a_mode}`);
+                        const [small_classi_name, sale_amt, a_delegate_tf, a_mode] = value;
+                        console.log(`Processing: ${great_classi_code} - ${small_classi_code}, small_classi_name: ${small_classi_name}, sale_amt: ${sale_amt}, a_delegate_tf: ${a_delegate_tf}, a_mode: ${a_mode}`);
                         
                         result.push({
                             a_great_classi_code: great_classi_code.toUpperCase(),
                             a_small_classi_code: small_classi_code,
                             a_small_classi_name: small_classi_name,
                             a_sale_amt: sale_amt,
-                            a_deligate_tf,
+                            a_delegate_tf,
                             a_mode
                         });
                     }
@@ -863,15 +863,15 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         
         console.log("salesDetailData transform Result:", result);
         result.map((e, index) => {
-            if(e.a_deligate_tf === true) {
+            if(e.a_delegate_tf === true) {
                 console.log(index);
                 if (e.a_great_classi_code === 'BIZ') {
-                    setDeligateBiz(e);
+                    setdelegateBiz(e);
                 } else if (e.a_great_classi_code === 'COR') {
-                    setDeligateCor(e);
+                    setdelegateCor(e);
                 }
             } else {
-                console.log(e, e.a_deligate_tf);
+                console.log(e, e.a_delegate_tf);
             }
         })
         
@@ -1327,8 +1327,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     <FloatingLabel label='대표 사업 구분'>
                                                         <Form.Control size='sm' className=''
                                                         value={
-                                                            deligateBiz ? 
-                                                            deligateBiz.a_small_classi_name : 
+                                                            delegateBiz ? 
+                                                            delegateBiz.a_small_classi_name : 
                                                             a_v_modalPropsData ? 
                                                             a_v_modalPropsData?.a_biz_section2_name
                                                             : ''
@@ -1341,8 +1341,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='대표 제조사명'>
                                                         <Form.Control size='sm' className='' 
-                                                        value={deligateCor ? 
-                                                            deligateCor.a_small_classi_name : 
+                                                        value={delegateCor ? 
+                                                            delegateCor.a_small_classi_name : 
                                                             a_v_modalPropsData ?
                                                             a_v_modalPropsData?.a_biz_section2_name
                                                             : ''
@@ -1547,7 +1547,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         updateUI();
     }, [/* currentPath */, show, onHide, insertInput, activityData, detailData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, 
         v_deptHandling, v_teamHandling, v_userHandling, isProDisabled, 
-        deligateBiz, deligateCor
+        delegateBiz, delegateCor
     ]);
 
     

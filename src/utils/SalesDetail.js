@@ -531,7 +531,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
         return result;
     };
     
-    const [totalSaleAmt, setTotalSaleAmt] = useState(0);
+    // const [totalSaleAmt, setTotalSaleAmt] = useState(0);
     const saveData = () => {
         const current = inputValuesRef.current;
 
@@ -546,15 +546,20 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
         // console.log('inputValues: ', inputValues, '\ntransformedData', transformedData, '\ncurrent: ', current);
 
         let total;
-        if (typeof totalSaleAmt === 'number' && !isNaN(totalSaleAmt)) {
+        console.log(sumBiz, typeof sumBiz, sumCor, typeof sumCor);
+        if (sumBiz !== sumCor) {
+            alert('사업 구분 필드의 총 금액은 제조사명 필드의 총 금액과 일치해야 합니다.'); return;
+        } else {
+            total = sumBiz;
+        }
+        /* if (typeof totalSaleAmt === 'number' && !isNaN(totalSaleAmt)) {
             total = totalSaleAmt;
         } else {
             total = Number(totalSaleAmt.replace(/,/g, ''));
         }
         
-        if (totalSaleAmt === null || totalSaleAmt === undefined) { alert('총 매출 금액을 입력하세요.'); return; }
-        if (sumBiz !== total) { alert('사업 구분 필드의 총 금액은 매출 금액과 일치해야 합니다.'); return; }
-        if (sumCor !== total) { alert('제조사명 필드의 총 금액은 매출 금액과 일치해야 합니다.'); return; }
+        if (totalSaleAmt === null || totalSaleAmt === undefined) { alert('총 매출 금액을 입력하세요.'); return; } */
+        // if (sumCor !== total) { alert('제조사명 필드의 총 금액은 매출 금액과 일치해야 합니다.'); return; }
         if (finalDataCheck.biz === false) { alert('대표 사업 구분을 지정하세요.'); ; }
         if (finalDataCheck.cor === false) { alert('대표 제조사명을 지정하세요.'); return; }
         if (!finalData.a_product_name) { alert('제품명을 입력하세요.'); return; }
@@ -580,12 +585,12 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             setSelectedBizKeys([]);
             setSelectedCorKeys([]);
             setIsSelected(false);
-            setTotalSaleAmt(0);
+            // setTotalSaleAmt(0);
             // setSalesDetailData([]);
         }
     }, [show])
 
-    // UI에 total 금액 표현
+/*     // UI에 total 금액 표현
     const handleTotalChange = (e) => {
         const value = e.target.value;
         const localeValue = value.replace(/,/g, '');
@@ -595,7 +600,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             setTotalSaleAmt(""); // ✅ 빈 값 처리
         }
     }
-    
+     */
     // UI 업데이트
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
     useEffect(() => {
@@ -627,16 +632,15 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                             <Button variant='info'>조회</Button>
                                         </div> */}
                                         <div className="mb-4">
-                                            <h3>매출 금액: &#65510;{saleMsg ? saleMsg.toLocaleString('ko-KR') : ''}</h3>
-                                            <h4 style={{'textAlign':'center'}}>[사업 구분] 필드의 총 금액 / [제조사명] 필드의 총 금액은 각각 [총 매출 금액] 필드 값과 반드시 일치해야 합니다.</h4>
-                                            <h4 style={{'textAlign':'center'}}>항목 앞 라디오 버튼으로 대표 사업 구분 / 대표 제조사명을 지정할 수 있습니다. &#40;필수&#41;</h4>
+                                            <h4 style={{'textAlign':'center'}}>&#91;사업 구분&#93; 필드의 총 금액과 &#91;제조사명&#93; 필드의 총 금액은 서로 일치해야 합니다.</h4>
+                                            <h4 style={{'textAlign':'center'}}>항목 앞 라디오 버튼으로 대표 사업 구분 &#47; 대표 제조사명을 지정할 수 있습니다. &#40;필수&#41;</h4>
                                         </div>
                                         
                                         <Row className="cntntArea">
                                             <Col xs={12} md={6} lg={6} xl={6} className='col d-flex align-items-center floating'>
-                                                <h4>총 매출 금액 &#40;현재 값, &#65510;&#41;: {saleMsg ? saleMsg.toLocaleString('ko-KR') : ''}</h4>
+                                                <h3>총 매출 금액 &#40;현재 값&#41;: &#65510;{saleMsg ? saleMsg.toLocaleString('ko-KR') : ''}</h3>
                                             </Col>
-                                            <Col xs={12} md={6} lg={6} xl={6} className='col d-flex align-items-center floating'>
+                                            {/* <Col xs={12} md={6} lg={6} xl={6} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='총 매출 금액 &#40;변경 값, &#65510;&#41;'>
                                                     <Form.Control size='sm' type='text' className='' 
                                                     name='a_sale_amt' 
@@ -646,12 +650,12 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                                     defaultValue={0}
                                                     />
                                                 </FloatingLabel>
-                                            </Col>
+                                            </Col> */}
                                         </Row>
                                         <Row className="cntntArea">
                                             <Col className="cntnt textArea">
                                                 <h3 className="mb-4">사업 구분</h3>
-                                                <h4>총 매출 금액 &#40;변경 값&#41;: &#65510;{totalSaleAmt.toLocaleString('ko-KR')}</h4>
+                                                {/* <h4>총 매출 금액 &#40;변경 값&#41;: &#65510;{totalSaleAmt.toLocaleString('ko-KR')}</h4> */}
                                                 <h4>현재 사업 구분 금액: &#65510;{sumBiz.toLocaleString('ko-KR')}</h4>
                                                 <Tree ref={treeRef} multiple checkStrictly 
                                                 treeData={treeRender(bizTreeData, 'biz')} 
@@ -661,7 +665,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                             </Col>
                                             <Col className="cntnt">
                                                 <h3 className="mb-4">제조사명</h3>
-                                                <h4>총 매출 금액 &#40;변경 값&#41;: &#65510;{totalSaleAmt.toLocaleString('ko-KR')}</h4>
+                                                {/* <h4>총 매출 금액 &#40;변경 값&#41;: &#65510;{totalSaleAmt.toLocaleString('ko-KR')}</h4> */}
                                                 <h4>현재 제조사명 금액: &#65510;{sumCor.toLocaleString('ko-KR')}</h4>
                                                 <Tree ref={treeRef} multiple checkStrictly 
                                                 treeData={treeRender(corTreeData, 'cor')} 
@@ -707,7 +711,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             }
         };
         updateUI();
-    }, [listData, bizTreeData, corTreeData, show, onHide, /* selectedBizKeys */, saleMsg, sumBiz, sumCor, totalSaleAmt]);
+    }, [listData, bizTreeData, corTreeData, show, onHide, /* selectedBizKeys */, saleMsg, sumBiz, sumCor, /* totalSaleAmt */]);
   
     return (
         <>

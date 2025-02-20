@@ -575,7 +575,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         const validateFields = [
                             { key: 'a_biz_opp_name', validator: () => validateStr(input.biz_opp, 'a_biz_opp_name')},
                             { key: 'a_user_name', validator: () => validateStr(input, 'a_user_name')},
-                            { key: 'a_sale_com2_code', validator: () => validateStr(input.biz_opp_detail, 'a_sale_com2_code')},
+                            // { key: 'a_sale_com2_code', validator: () => validateStr(input.biz_opp_detail, 'a_sale_com2_code')},
                             { key: 'a_progress2_rate_code', validator: () => validateStr(input.biz_opp, 'a_progress2_rate_code')},
                             { key: 'a_essential_achievement_tf', validator: () => input.biz_opp?.a_essential_achievement_tf !== null },
                             { key: 'a_contract_date', validator: () => validateStr(input.biz_opp, 'a_contract_date')},
@@ -620,7 +620,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             { key: 'a_contract_date', parent: 'biz_opp', essential: false },
                             { key: 'a_essential_achievement_tf', parent: 'biz_opp', type: 'boolean', essential: false },
 
-                            { key: 'a_sale_com2_code', parent: 'biz_opp_detail', essential: false },
+                            // { key: 'a_sale_com2_code', parent: 'biz_opp_detail', essential: false },
                             { key: 'a_sale_date', parent: 'biz_opp_detail', essential: false },
                             { key: 'a_sale_amt', parent: 'biz_opp_detail', type: 'number', essential: false },
                             { key: 'a_sale_profit', parent: 'biz_opp_detail', type: 'number', essential: false },
@@ -1073,6 +1073,31 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='진행률'>
+                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_progress2_rate_code' 
+                                                        data-key='biz_opp'
+                                                        onChange={f_handlingInput} 
+                                                        // value={input.progress2_rate_name || ''} 
+                                                        defaultValue={a_v_modalPropsData?.a_progress2_rate_name || ''}
+                                                        >
+                                                            <option 
+                                                            value={(
+                                                                a_v_modalPropsData ? 
+                                                                a_v_modalPropsData.a_progress2_rate_code : '선택')}
+                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_progress2_rate_name : '선택') + ` (현재 값)`}</option>
+                                                            {(v_propsData ? 
+                                                                (
+                                                                    v_propsData?.data?.search_commonness_pro.map((e) => {
+                                                                        return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
+                                                                    })
+                                                                )
+                                                                :
+                                                                ('')
+                                                            )}
+                                                        </Form.Select>
+                                                    </FloatingLabel>
+                                                </Col>
+                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='판품 번호 (진행률 90% 이상일 시 기입)'>
                                                         <Form.Control size='sm' type='text' className=''
                                                         name='a_sale_item_no' 
@@ -1087,6 +1112,47 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                                 (false) : fal */)
                                                         }/>
                                                     </FloatingLabel>
+                                                </Col>
+                                            </Row>  
+                                            <Row className='d-flex justify-content-between'  
+                                            style={ 
+                                                (auth.userAuthCode === '0002') ? 
+                                                ({"pointerEvents": "none"}) : ({})
+                                            }>
+                                                {/* <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='매출처'>
+                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_sale_com2_code'
+                                                        data-key='biz_opp_detail'
+                                                        placeholder='매출처' 
+                                                        onChange={f_handlingInput} 
+                                                        // value={input.progress2_rate_name || ''} 
+                                                        defaultValue={a_v_modalPropsData?.a_sale_com2_code || ''}
+                                                        >
+                                                            <option 
+                                                            value={(
+                                                                a_v_modalPropsData ? 
+                                                                a_v_modalPropsData.a_sale_com2_code : '선택')}
+                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_sale_com2_name : '선택') + ` (현재 값)`}</option>
+                                                            {(detailData) ? 
+                                                                (
+                                                                    detailData?.data?.search_last_client_com_code.map((e) => {
+                                                                        return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
+                                                                    })
+                                                                )
+                                                                :
+                                                                ('')
+                                                            }
+                                                        </Form.Select>
+                                                    </FloatingLabel>
+                                                </Col> */}
+                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                    <Form.Label htmlFor='inputChck2' className='essentialAchievementTf'>필달 여부</Form.Label>
+                                                    <Form.Check type={`checkbox`} id={`inputChck2`} name='a_essential_achievement_tf' 
+                                                    data-key='biz_opp'
+                                                    onChange={f_handlingInput}
+                                                    // checked={input.essential_achievement_tf || false} 
+                                                    defaultChecked={a_v_modalPropsData?.a_essential_achievement_tf || false}
+                                                    />
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='최종 고객사 (선택)'>
@@ -1114,72 +1180,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         </Form.Select>
                                                     </FloatingLabel>
                                                 </Col>
-                                            </Row>  
-                                            <Row className='d-flex justify-content-between'  
-                                            style={ 
-                                                (auth.userAuthCode === '0002') ? 
-                                                ({"pointerEvents": "none"}) : ({})
-                                            }>
-                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='매출처'>
-                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_sale_com2_code'
-                                                        data-key='biz_opp_detail'
-                                                        placeholder='매출처' 
-                                                        onChange={f_handlingInput} 
-                                                        // value={input.progress2_rate_name || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_sale_com2_code || ''}
-                                                        >
-                                                            <option 
-                                                            value={(
-                                                                a_v_modalPropsData ? 
-                                                                a_v_modalPropsData.a_sale_com2_code : '선택')}
-                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_sale_com2_name : '선택') + ` (현재 값)`}</option>
-                                                            {(detailData) ? 
-                                                                (
-                                                                    detailData?.data?.search_last_client_com_code.map((e) => {
-                                                                        return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
-                                                                    })
-                                                                )
-                                                                :
-                                                                ('')
-                                                            }
-                                                        </Form.Select>
-                                                    </FloatingLabel>
-                                                </Col>
-                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='진행률'>
-                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_progress2_rate_code' 
-                                                        data-key='biz_opp'
-                                                        onChange={f_handlingInput} 
-                                                        // value={input.progress2_rate_name || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_progress2_rate_name || ''}
-                                                        >
-                                                            <option 
-                                                            value={(
-                                                                a_v_modalPropsData ? 
-                                                                a_v_modalPropsData.a_progress2_rate_code : '선택')}
-                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_progress2_rate_name : '선택') + ` (현재 값)`}</option>
-                                                            {(v_propsData ? 
-                                                                (
-                                                                    v_propsData?.data?.search_commonness_pro.map((e) => {
-                                                                        return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
-                                                                    })
-                                                                )
-                                                                :
-                                                                ('')
-                                                            )}
-                                                        </Form.Select>
-                                                    </FloatingLabel>
-                                                </Col>
-                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <Form.Label htmlFor='inputChck2' className='essentialAchievementTf'>필달 여부</Form.Label>
-                                                    <Form.Check type={`checkbox`} id={`inputChck2`} name='a_essential_achievement_tf' 
-                                                    data-key='biz_opp'
-                                                    onChange={f_handlingInput}
-                                                    // checked={input.essential_achievement_tf || false} 
-                                                    defaultChecked={a_v_modalPropsData?.a_essential_achievement_tf || false}
-                                                    />
-                                                </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='계약 일자'>
                                                         <Form.Control size='sm' type='date' className='' 
@@ -1192,12 +1192,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
-                                            </Row>
-                                            <Row className='d-flex justify-content-between'
-                                            style={ 
-                                                (auth.userAuthCode === '0002') ? 
-                                                ({"pointerEvents": "none"}) : ({})
-                                            }>
                                                 <Col xs={12} md={6} lg={6} xl={3}  className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 일자'>
                                                         <Form.Control size='sm' type='date' className='' 
@@ -1210,6 +1204,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
+                                            </Row>
+                                            <Row className='d-flex justify-content-between'
+                                            style={ 
+                                                (auth.userAuthCode === '0002') ? 
+                                                ({"pointerEvents": "none"}) : ({})
+                                            }>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매입 일자'>
                                                         <Form.Control size='sm' type='date' className='' placeholder='매입 일자'
@@ -1256,12 +1256,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
-                                            </Row>
-                                            <Row className='d-flex justify-content-start'
-                                            style={ 
-                                                (auth.userAuthCode === '0002') ? 
-                                                ({"pointerEvents": "none"}) : ({})
-                                            }>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 이익 (&#65510;)'>
                                                         <Form.Control size='sm' type='text' className='' name='a_sale_profit' 
@@ -1273,6 +1267,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
+                                            </Row>
+                                            <Row className='d-flex justify-content-start'
+                                            style={ 
+                                                (auth.userAuthCode === '0002') ? 
+                                                ({"pointerEvents": "none"}) : ({})
+                                            }>
                                                 {/* <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 구분'>
                                                         <Form.Select size='sm' aria-label='사업 구분' className='' name='a_biz_section2_code' 
@@ -1324,7 +1324,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='대표 사업 구분 (매출 상세가 반영될 곳)'>
+                                                    <FloatingLabel label='대표 사업 구분'>
                                                         <Form.Control size='sm' className=''
                                                         value={
                                                             deligateBiz ? 
@@ -1339,7 +1339,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='대표 제조사명 (매출 상세가 반영될 곳)'>
+                                                    <FloatingLabel label='대표 제조사명'>
                                                         <Form.Control size='sm' className='' 
                                                         value={deligateCor ? 
                                                             deligateCor.a_small_classi_name : 

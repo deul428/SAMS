@@ -22,7 +22,6 @@ const roots = {
         { Header: '판품 번호', accessor: 'sale_item_no' },
         { Header: '사업 (기회) 명', accessor: 'biz_opp_name' },
         { Header: '최종 고객사', accessor: 'last_client_com2_name' },
-        { Header: '매출처', accessor: 'sale_com2_name' },
         { Header: '진행률', accessor: 'progress2_rate_name' },
         { Header: '필달 여부', accessor: 'essential_achievement_tf', Cell: ({value}) => v_handlingTF(value) },
         { Header: '계약 일자', accessor: 'contract_date',
@@ -37,8 +36,8 @@ const roots = {
         Cell: ({value}) => v_handlingNum(value) },
         { Header: '매출 이익', accessor: 'sale_profit', 
         Cell: ({value}) => v_handlingNum(value) },
-        { Header: '사업 구분', accessor: 'biz_section2_name' },
-        { Header: '제품 구분', accessor: 'principal_product2_name' },
+        { Header: '대표 사업 구분', accessor: 'delegate_biz_section_name' },
+        { Header: '대표 제조사명', accessor: 'delegate_sale_com_name' },
         { Header: '활동 이력', accessor: 'activity_details'},
         { Header: '사업 복제', accessor: ''},
       ]
@@ -72,7 +71,7 @@ const roots = {
           </div>
           ),  
       },
-      { Header: '매출처', accessor: 'sale_com2_name', 
+      { Header: '매출처', accessor: 'delegate_sale_com_name', 
       Cell: ({ value, row }) => (
           <div style={dynamicCellStyle(row, 'sale_com2_code')} className='tableCell'>
             {value}
@@ -142,7 +141,7 @@ const roots = {
           </div>
           ),  
       },
-      { Header: '사업 구분', accessor: 'biz_section2_name',
+      /* { Header: '사업 구분', accessor: 'delegate_biz_section_name',
       Cell: ({ value, row }) => (
           <div style={dynamicCellStyle(row, 'biz_section2_code')} className='tableCell'>
             {value}
@@ -155,7 +154,7 @@ const roots = {
             {value}
           </div>
         ),
-      },
+      }, */
       // { Header: '활동 일자', accessor: 'activity_date'},
       // { Header: '활동 이력', accessor: 'activity_details'},
     ]
@@ -176,8 +175,8 @@ const roots = {
             Cell: ({value}) => v_handlingNum(value) },
             { Header: '매출 이익', accessor: 'sale_profit', 
             Cell: ({value}) => v_handlingNum(value) },
-            { Header: '사업 구분', accessor: 'biz_section2_name' },
-            { Header: '제품 구분', accessor: 'principal_product2_name' },
+            /* { Header: '대표 사업 구분', accessor: 'delegate_biz_section_name' },
+            { Header: '제품 구분', accessor: 'principal_product2_name' }, */
 
             { Header: '업데이트 일자', accessor: 'activity_date', 
             Cell: ({value}) => v_handlingNum(value) },

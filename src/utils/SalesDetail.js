@@ -560,7 +560,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
         
         if (totalSaleAmt === null || totalSaleAmt === undefined) { alert('총 매출 금액을 입력하세요.'); return; } */
         // if (sumCor !== total) { alert('제조사명 필드의 총 금액은 매출 금액과 일치해야 합니다.'); return; }
-        if (finalDataCheck.biz === false) { alert('대표 사업 구분을 지정하세요.'); ; }
+        if (finalDataCheck.biz === false) { alert('대표 사업 구분을 지정하세요.'); return; }
         if (finalDataCheck.cor === false) { alert('대표 제조사명을 지정하세요.'); return; }
         if (!finalData.a_product_name) { alert('제품명을 입력하세요.'); return; }
 

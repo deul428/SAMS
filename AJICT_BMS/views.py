@@ -951,8 +951,8 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail.append(v_sale_date)
             v_sale_amt = None if v_body.get('biz_opp_detail',{}).get('a_sale_amt') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_amt')
-            if v_sale_amt is not None:
-              v_sale_amt = v_sale_amt.strip()
+            # if v_sale_amt is not None:
+            #   v_sale_amt = v_sale_amt.strip()
             if not v_sale_amt:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'매출 금액' 항목은 필수 입력(선택) 항목입니다!"}

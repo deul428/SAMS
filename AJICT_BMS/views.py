@@ -1013,7 +1013,14 @@ def f_insert_biz_opp(request):
             v_sale_amt = None if v_body.get('biz_opp_detail',{}).get('a_sale_amt') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_amt')
             # if v_sale_amt is not None:
             #   v_sale_amt = v_sale_amt.strip()
-            if not v_sale_amt:
+            # if not v_sale_amt:
+            #    transaction.set_rollback(True)
+            #    v_return = {'STATUS':'FAIL','MESSAGE':"'매출 금액' 항목은 필수 입력(선택) 항목입니다!"}
+            #    v_square_bracket_return = [v_return]
+            #    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+            # else:
+            #    v_param_insert_biz_opp_detail.append(v_sale_amt)
+            if v_sale_amt is None:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'매출 금액' 항목은 필수 입력(선택) 항목입니다!"}
                v_square_bracket_return = [v_return]
@@ -1021,15 +1028,18 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail.append(v_sale_amt)
             v_sale_profit = None if v_body.get('biz_opp_detail',{}).get('a_sale_profit') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_profit')
-            if not isinstance(v_sale_profit,(int)):
-               v_return = {'STATUS':'FAIL','MESSAGE':"'매출 이익' 항목의 값이 숫자형이 아닙니다."}
-               v_square_bracket_return = [v_return]
-               return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-            if v_sale_profit < 1:
-               transaction.set_rollback(True)
-               v_return = {'STATUS':'FAIL','MESSAGE':"'매출 이익' 항목의 값은 0보다 커야 합니다!"}
-               v_square_bracket_return = [v_return]
-               return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+
+            #숫자형을 못잡는 듯...-.-;
+            # if not isinstance(v_sale_profit,(int)):
+            #    v_return = {'STATUS':'FAIL','MESSAGE':"'매출 이익' 항목의 값이 숫자형이 아닙니다."}
+            #    v_square_bracket_return = [v_return]
+            #    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+
+            # if v_sale_profit < 1:
+            #    transaction.set_rollback(True)
+            #    v_return = {'STATUS':'FAIL','MESSAGE':"'매출 이익' 항목의 값은 0보다 커야 합니다!"}
+            #    v_square_bracket_return = [v_return]
+            #    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             v_param_insert_biz_opp_detail.append(v_sale_profit)
             v_purchase_date = None if v_body.get('biz_opp_detail',{}).get('a_purchase_date') == '' else v_body.get('biz_opp_detail',{}).get('a_purchase_date')
             if v_purchase_date is not None:
@@ -1042,15 +1052,18 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail.append(v_purchase_date)
             v_purchase_amt = None if v_body.get('biz_opp_detail',{}).get('a_purchase_amt') == '' else v_body.get('biz_opp_detail',{}).get('a_purchase_amt')
-            if not isinstance(v_purchase_amt,(int)):
-               v_return = {'STATUS':'FAIL','MESSAGE':"'매입 금액' 항목의 값이 숫자형이 아닙니다."}
-               v_square_bracket_return = [v_return]
-               return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-            if v_purchase_amt < 1:
-               transaction.set_rollback(True)
-               v_return = {'STATUS':'FAIL','MESSAGE':"'매입 금액' 항목의 값은 0보다 커야 합니다!"}
-               v_square_bracket_return = [v_return]
-               return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+
+            #숫자형을 못잡는 듯...-.-;
+            # if not isinstance(v_purchase_amt,(int)):
+            #    v_return = {'STATUS':'FAIL','MESSAGE':"'매입 금액' 항목의 값이 숫자형이 아닙니다."}
+            #    v_square_bracket_return = [v_return]
+            #    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+
+            # if v_purchase_amt < 1:
+            #    transaction.set_rollback(True)
+            #    v_return = {'STATUS':'FAIL','MESSAGE':"'매입 금액' 항목의 값은 0보다 커야 합니다!"}
+            #    v_square_bracket_return = [v_return]
+            #    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             v_param_insert_biz_opp_detail.append(v_purchase_amt)
             v_collect_money_date = None if v_body.get('biz_opp_detail',{}).get('a_collect_money_date') == '' else v_body.get('biz_opp_detail',{}).get('a_collect_money_date')
             if v_collect_money_date is not None:

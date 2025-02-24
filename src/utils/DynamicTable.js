@@ -458,10 +458,10 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                         <td>{commonInfo.sale_amt.toLocaleString('ko-KR')}</td>
                         <th>매출 이익</th>
                         <td>{commonInfo.sale_profit.toLocaleString('ko-KR')}</td>
-                        <th>사업 구분</th>
-                        <td>{commonInfo.biz_section2_name}</td>
-                        <th>제품 구분</th>
-                        <td>{commonInfo.principal_product2_name}</td>
+                        <th>대표 사업 구분</th>
+                        <td>{commonInfo.biz_section2_name}파라미터 바꿔야 함</td>
+                        <th>대표 제조사명</th>
+                        <td>{commonInfo.principal_product2_name}파라미터 바꿔야 함</td>
                       </div>
                     </tbody>
                     {group.length > 5 ? 

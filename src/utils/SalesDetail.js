@@ -608,7 +608,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
             if (bizTreeData.length > 0 && corTreeData.length > 0) {
                 if (v_treeName === 'product') {
                     setVHandlingHtml(
-                        <Modal size='xl' show={show} onHide={onHide} id='commonTreeArea'>
+                        <Modal size='xl' show={show} onHide={onHide} id='commonTreeArea' scrollable>
                             <Modal.Header closeButton>
                                 <Modal.Title className='fs-3'>
                                     매출 상세 관리
@@ -637,7 +637,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                         </div>
                                         
                                         <Row className="cntntArea">
-                                            <Col xs={12} md={6} lg={6} xl={6} className='col d-flex align-items-center floating'>
+                                            <Col xs={12} md={12} lg={12} xl={12} className='col d-flex align-items-center floating'>
                                                 <h3>총 매출 금액 &#40;현재 값&#41;: &#65510;{saleMsg ? saleMsg.toLocaleString('ko-KR') : ''}</h3>
                                             </Col>
                                             {/* <Col xs={12} md={6} lg={6} xl={6} className='col d-flex align-items-center floating'>
@@ -653,7 +653,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                             </Col> */}
                                         </Row>
                                         <Row className="cntntArea">
-                                            <Col className="cntnt textArea">
+                                            <Col xs={12} md={12} lg={6} xl={6} className="cntnt textArea">
                                                 <h3 className="mb-4">사업 구분</h3>
                                                 {/* <h4>총 매출 금액 &#40;변경 값&#41;: &#65510;{totalSaleAmt.toLocaleString('ko-KR')}</h4> */}
                                                 <h4>현재 사업 구분 금액: &#65510;{sumBiz.toLocaleString('ko-KR')}</h4>
@@ -663,7 +663,7 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                                 defaultSelectedKeys={v_modalPropsData ? [`${lowerCase(v_modalPropsData.biz_section1_code)}-${propsBizIndex}`] : ''}
                                                 /> 
                                             </Col>
-                                            <Col className="cntnt">
+                                            <Col xs={12} md={12} lg={6} xl={6} className="cntnt">
                                                 <h3 className="mb-4">제조사명</h3>
                                                 {/* <h4>총 매출 금액 &#40;변경 값&#41;: &#65510;{totalSaleAmt.toLocaleString('ko-KR')}</h4> */}
                                                 <h4>현재 제조사명 금액: &#65510;{sumCor.toLocaleString('ko-KR')}</h4>

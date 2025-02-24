@@ -42,6 +42,51 @@
                     }
                 }
             }
+            &#commonTreeArea {
+                .modal-body {
+                    .modalcntnt {
+                        .inputField {
+                            .cntntArea {
+                                .cntnt {
+                                    height: 30vh;
+                                    margin-bottom: 1rem;
+                                    overflow-y: scroll;
+                                    .rc-tree {
+                                        height: 100%;
+                                        overflow-y: scroll;
+                                        .rc-tree-list {
+                                            .rc-tree-treenode {
+                                                span.rc-tree-node-content-wrapper {
+                                                    // min-width: 30%;
+                                                    width: 100%;
+                                                    height: 1.5rem;
+                                                    span.rc-tree-title {
+                                                        .titleArea {
+                                                            .titleItem {
+                                                                input[type='number'] {
+                                                                    position: absolute;
+                                                                    top: 1.5rem;
+                                                                    right: unset;
+                                                                    margin: 0;
+                                                                    left: calc(5% + 1.5rem);
+                                                                    width: calc(100% - 3rem);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    &.rc-tree-node-selected {
+                                                        height: 3rem;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -75,6 +120,35 @@
 
                                 }
                                 .activityDate {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            &#commonTreeArea {
+                .modal-body {
+                    .modalcntnt {
+                        .inputField {
+                            .cntntArea {
+                                .cntnt {
+                                    height: 30vh;
+                                    margin-bottom: 1rem;
+                                    overflow-y: hidden;
+                                    .rc-tree {
+                                        height: 100%;
+                                        overflow-y: scroll;
+                                        .rc-tree-list {
+                                            .rc-tree-treenode {
+                                                span.rc-tree-node-content-wrapper {
+                                                    min-width: 30%;
+                                                    &.rc-tree-node-selected {
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -247,7 +321,8 @@
                                         height: 1.5rem;
                                         line-height: 1.5rem;
                                         margin-left: 5%;
-                                        width: 95%;
+                                        min-width: 40%;
+                                        width: fit-content;
                                         position: unset;
                                         &.rc-tree-node-selected {
                                             background: rgba($color: $point-color, $alpha: 0.2);
@@ -274,6 +349,7 @@
                                                 }
                                                 div.titleItem {
                                                     input[type='number'] {
+                                                        width: 6rem;
                                                         position: absolute;
                                                         top: 0;
                                                         right: 1rem;

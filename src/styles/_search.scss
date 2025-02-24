@@ -2,7 +2,7 @@
 @import './mixin';
 
 @include mobile335 {
-    &.btnRow {
+    .btnRow {
         position: relative !important;
     } 
     .modal-dialog {
@@ -45,7 +45,7 @@
     }
 }
 @include tablet758 {
-    &.btnRow {
+    .btnRow {
         position: relative !important;
     } 
     .modal-dialog {

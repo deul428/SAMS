@@ -1457,7 +1457,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         (
                                             <>
                                             <Row className='d-flex justify-content-between mb-2'>
-                                                <Col xs={12} md={3} lg={3} className=''>
+                                                <Col xs={12} md={4} lg={12} className=''>
                                                     <FloatingLabel label='사업 일련 번호'>
                                                         <Form.Control size='sm' type='text' className='' 
                                                         name='a_biz_opp_id' 
@@ -1470,7 +1470,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
-                                                <Col xs={12} md={6} lg={6} className='mb-2'>
+                                                <Col xs={12} md={8} lg={12} className='mb-2'>
                                                     <FloatingLabel label='사업 (기회) 명'>
                                                         <Form.Control as='textarea' size='sm' type='text' className=''
                                                         name='a_biz_opp_name' 
@@ -1484,7 +1484,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
-                                                <Col xs={12} md={3} lg={3} className=''>
+                                                <Col xs={12} md={12} lg={12} className=''>
                                                     <FloatingLabel label='활동 일자' style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}>
                                                         <Form.Control size='sm' type='date' className='' 
                                                         name='a_activity_date' 

@@ -5,41 +5,50 @@
     .btnRow {
         position: relative !important;
     } 
-    .modal-dialog {
-        .searchItem {
+    .searchItem {
+        .row {
+            .col-12 {
+                margin-bottom: 1rem !important;
+            }
+        }
+        &.bizoppArea {
+            .row {
+                ol {
+                    li {
+                        flex-direction: column-reverse !important;
+                        &::before {
+                            top: 1.8rem !important;
+                        }
+                        div {
+                            &.activityDetails {
+                            }
+                            &.activityDate {
+                                width: 100% !important;
+                                text-align: left !important;
+                            }
+                        }
+                    }
+                }
+                .col {
+                    .essentialAchievementTf {
+                        font-size: 1rem !important;
+                    }
+                }
+
+            }
+        }
+        &.activityArea {
+            width: 100% !important;
             .row {
                 .col-12 {
-                    margin-bottom: 1rem !important;
-                }
-            }
-            &.bizoppArea {
-                .row {
-                    ol {
-                        li {
-                            flex-direction: column-reverse !important;
-                            &::before {
-                                top: 1.8rem !important;
-                            }
-                            div {
-                                &.activityDetails {
-                                }
-                                &.activityDate {
-                                    width: 100% !important;
-                                    text-align: left !important;
-                                }
-                            }
+                    padding: 0;
+                    .form-floating {
+                        textarea {
+                            min-height: calc(7rem + calc(var(--bs-border-width) * 2)) !important;
+                            height: calc(7rem + calc(var(--bs-border-width) * 2)) !important;
                         }
                     }
-                    .col {
-                        .essentialAchievementTf {
-                            font-size: 1rem !important;
-                        }
-                    }
-
                 }
-            }
-            &.activityArea {
-
             }
         }
     }
@@ -48,25 +57,27 @@
     .btnRow {
         position: relative !important;
     } 
-    .modal-dialog {
-        .searchItem {
+    .searchItem {
+        .row {
+            .col {
+                padding-right: 0;
+            }
+        }
+        &.bizoppArea {
             .row {
                 .col {
-    
-                }
-            }
-            &.bizoppArea {
-                .row {
-                    .col {
-                        .essentialAchievementTf {
-                            font-size: 1rem !important;
-                        }
+                    .essentialAchievementTf {
+                        font-size: 1rem !important;
                     }
                 }
             }
-            &.activityArea {
-    
+        }
+        &.activityArea {
+            width: 100% !important;
+            .row {
+                
             }
+            
         }
     }
 }
@@ -107,7 +118,7 @@
 .inputField {
     position: relative;
     .searchItem {
-        width: 100%;
+        width: calc(100% + 1rem);
         display: inline-flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -118,7 +129,7 @@
             }
         }
         
-        .row {
+        .row {       
             width: $full;
             &.btnRow {
                 position: absolute;
@@ -178,7 +189,6 @@
             } 
         }
         &.bizoppArea {
-            width: calc(100% + 1rem);
             .row {
                 ol {
                     li {
@@ -225,7 +235,7 @@
                         content: '';
                         width: calc(100% - 1rem);
                         height: 1px;
-                        background: black;
+                        background: $base-color;
                         margin: 1rem 0;
                     }
                     .col {

@@ -3,6 +3,9 @@
 @import './mixin';
 
 @include mobile335 {
+    td.activityDetails {
+        text-align: center !important;
+    }
     .modal {
         .modal-dialog {
             .modal-content {
@@ -17,10 +20,12 @@
                     .modalcntnt {
                     }
                     .row {
-                        .d-flex.col {
+                        .col {
                             .form-floating {
                                 textarea {
+                                    // height: 300px !important;
                                     min-height: calc(7rem + calc(var(--bs-border-width) * 2)) !important;
+                                    height: calc(7rem + calc(var(--bs-border-width) * 2)) !important;
                                 }
                             }
                         }
@@ -109,6 +114,9 @@
     }
 }
 @include tablet758 {
+    td.activityDetails {
+        text-align: center;
+    }
     .modal {
         .modal-dialog {
             max-width: 90vw;
@@ -123,7 +131,7 @@
                     .modalcntnt {
                     }
                     .row {
-                        .d-flex.col {
+                        .col {
                             .form-floating {
                                 textarea {
                                 }

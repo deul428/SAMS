@@ -902,8 +902,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
+            # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1097,8 +1097,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
+            # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1135,8 +1135,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
+            # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1204,8 +1204,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
+            # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1244,8 +1244,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_activity % tuple(map(repr,v_param_insert_biz_opp_activity))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp_activity % tuple(map(repr,v_param_insert_biz_opp_activity))
+            # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1294,8 +1294,8 @@ def f_insert_biz_opp(request):
 
 
                #test
-                  v_formatted_sql = v_sql_insert_biz_opp_detail_sale % tuple(map(repr,v_param_insert_biz_opp_detail_sale))
-                  print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                  # v_formatted_sql = v_sql_insert_biz_opp_detail_sale % tuple(map(repr,v_param_insert_biz_opp_detail_sale))
+                  # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                   with connection.cursor() as v_cursor:
@@ -1336,8 +1336,8 @@ def f_insert_biz_opp(request):
 
 
                #test
-                  v_formatted_sql = v_sql_insert_biz_opp_detail_sale_history % tuple(map(repr,v_param_insert_biz_opp_detail_sale_history))
-                  print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                  # v_formatted_sql = v_sql_insert_biz_opp_detail_sale_history % tuple(map(repr,v_param_insert_biz_opp_detail_sale_history))
+                  # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                   with connection.cursor() as v_cursor:
@@ -1413,6 +1413,47 @@ def f_renewal_biz_opp(request):
                       #                   'a_principal_product2_code':'0008'},
                       # 'biz_opp_activity':{'a_activity_details':'세번째!',
                       #                     'a_activity_date':'20250204'}}
+            v_body = {'a_session_user_id': 'leecj',
+                      'a_biz_opp_id':'20250034',
+                      'a_detail_no':1,
+                      'a_user_name': '이창주',
+                      'biz_opp': {'a_biz_opp_name': 'v_body를 수동으로...',
+                                  'a_progress2_rate_code': '0001',
+                                  'a_contract_date': '20250101',
+                                  'a_essential_achievement_tf': False},
+                      'biz_opp_detail': {'a_user_id':'leecj',
+                                         'a_change_preparation_dept_id': '98000',
+                                         'a_last_client_com2_code': '',
+                                         'a_sale_item_no': '',
+                                         'a_sale_date': '20250222',
+                                         'a_sale_amt': '3500000',
+                                         'a_sale_profit': 345999,
+                                         'a_purchase_date': '20250224',
+                                         'a_purchase_amt': 789000,
+                                         'a_collect_money_date': '',
+                                         'a_product_name':''},
+                      'biz_opp_activity': {'a_activity_details': 'vvvvvvvvvvvvvvvvvvvvvv',
+                                           'a_activity_date': '20250303'},
+                      'biz_opp_detail_sale': [{'a_great_classi_code':'BIZ',
+                                               'a_small_classi_code':'0002',
+                                               'a_sale_amt':250000,
+                                               'a_delegate_tf':False,
+                                               'a_mode':''},
+                                              {'a_great_classi_code':'COR',
+                                               'a_small_classi_code':'0103',
+                                               'a_sale_amt':0,
+                                               'a_delegate_tf':False,
+                                               'a_mode':''},
+                                              {'a_great_classi_code':'BIZ',
+                                               'a_small_classi_code':'0006',
+                                               'a_sale_amt':300000,
+                                               'a_delegate_tf':False,
+                                               'a_mode':''},
+                                              {'a_great_classi_code':'COR',
+                                               'a_small_classi_code':'0001',
+                                               'a_sale_amt':180000,
+                                               'a_delegate_tf':True,
+                                               'a_mode':''}]}
             v_biz_opp = v_body.get('biz_opp')
             v_biz_opp_detail = v_body.get('biz_opp_detail')
             v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
@@ -1464,6 +1505,7 @@ def f_renewal_biz_opp(request):
                         v_set_clauses.append(f"{v_nested_key[2:]} = %s")
                         v_set_clauses_biz_opp_detail_history.append(v_nested_key)
                         v_param.append(v_nested_value)
+               v_user_id = ''
                if v_user_name:
                   v_sql_user = """SELECT user_id FROM ajict_bms_schema.aj_user WHERE user_name = %s AND delete_date IS NULL"""
                   v_param_select_user = []
@@ -2322,8 +2364,8 @@ def f_select_biz_opp_activity1(request):
 
 
          #test
-         #v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
-         #print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+         v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
+         print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:

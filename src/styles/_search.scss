@@ -2,52 +2,70 @@
 @import './mixin';
 
 @include mobile335 {
-    .searchItem {
-        .row {
-            &.btnRow {
-                position: relative !important;
-            } 
-            .col {
-                margin-bottom: 1rem !important;
-                .essentialAchievementTf {
-                    font-size: 1rem !important;
+    &.btnRow {
+        position: relative !important;
+    } 
+    .modal-dialog {
+        .searchItem {
+            .row {
+                .col-12 {
+                    margin-bottom: 1rem !important;
                 }
             }
-        }
-
-        &.bizoppArea {
-            .row {
-                ol {
-                    li {
-                        flex-direction: column-reverse !important;
-                        &::before {
-                            top: 1.8rem !important;
-                        }
-                        div {
-                            &.activityDetails {
+            &.bizoppArea {
+                .row {
+                    ol {
+                        li {
+                            flex-direction: column-reverse !important;
+                            &::before {
+                                top: 1.8rem !important;
                             }
-                            &.activityDate {
-                                width: 100% !important;
-                                text-align: left !important;
+                            div {
+                                &.activityDetails {
+                                }
+                                &.activityDate {
+                                    width: 100% !important;
+                                    text-align: left !important;
+                                }
                             }
                         }
                     }
+                    .col {
+                        .essentialAchievementTf {
+                            font-size: 1rem !important;
+                        }
+                    }
+
                 }
+            }
+            &.activityArea {
 
             }
         }
     }
 }
 @include tablet758 {
-    .searchItem {
-        .row {
-            &.btnRow {
-                position: relative !important;
-            } 
-            .col {
-                .essentialAchievementTf {
-                    font-size: 1rem !important;
+    &.btnRow {
+        position: relative !important;
+    } 
+    .modal-dialog {
+        .searchItem {
+            .row {
+                .col {
+    
                 }
+            }
+            &.bizoppArea {
+                .row {
+                    .col {
+                        .essentialAchievementTf {
+                            font-size: 1rem !important;
+                        }
+                    }
+                }
+            }
+            &.activityArea {
+    
             }
         }
     }
@@ -89,7 +107,7 @@
 .inputField {
     position: relative;
     .searchItem {
-        width: calc(100% + 1rem);
+        width: 100%;
         display: inline-flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -99,35 +117,9 @@
                 font-weight: 500;
             }
         }
-        &.bizoppArea {
-            .row {
-                ol {
-                    li {
-                        display: inline-flex;
-                        width: 100%;
-                        justify-content: space-between;
-                        &::before {
-                            position: absolute;
-                            left: 1rem;
-                        }
-                        div {
-                            &.activityDetails {
-                                margin-left: 1.5rem;
-                                // word-break: keep-all;
-                            }
-                            &.activityDate {
-                                width: 12%;
-                                text-align: right;
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
+        
         .row {
             width: $full;
-            // margin-bottom: 1rem;
             &.btnRow {
                 position: absolute;
                 top: 0;
@@ -158,20 +150,7 @@
                             option {
                             }
                         }
-                        &.inputTree {
-                            input {
-                                cursor: pointer;    
-                                padding-right: 2rem;
-                                text-overflow: ellipsis;
-                            }
-                            svg.bi-search {
-                                width: 1.1rem;
-                                position: absolute;
-                                top: 50%;
-                                transform: translateY(-50%);
-                                right: 0.75rem;
-                            }
-                        }
+                        
                     }
                 }
                 span {
@@ -179,58 +158,102 @@
                     font-size: 1.25rem;
                     margin: 0px 0.25rem;
                 }
-                
                 > label {
                     width: 6.5rem;
                     margin: 0 0.5rem 0 0;
                 }
                 > div {
                     width: 100%;
-                    // width: calc(100% - (6.5rem + 0.5rem + 1rem));    
                     display: inline-flex; 
                     align-items: center;
                     justify-content: space-between;
-                    input {
-                    }
-                    
+                    input { }
                 }
                 > input, select {
-                    // max-width: 100%;
-                    // width: calc(100% - (6.5rem + 0.5rem + 1rem));
                     &.form-check-input {
                         width: 1em;
                         padding: 0.5em;
                     }
                 }
             } 
-            &.activityArea {
-                &:before {
-                    content: '';
-                    width: calc(100% - 1rem);
-                    height: 1px;
-                    background: black;
-                    margin: 1rem 0;
+        }
+        &.bizoppArea {
+            width: calc(100% + 1rem);
+            .row {
+                ol {
+                    li {
+                        display: inline-flex;
+                        width: 100%;
+                        justify-content: space-between;
+                        &::before {
+                            position: absolute;
+                            left: 1rem;
+                        }
+                        div {
+                            &.activityDetails {
+                                margin-left: 1.5rem;
+                            }
+                            &.activityDate {
+                                width: 12%;
+                                text-align: right;
+                            }
+                        }
+                    }
                 }
                 .col {
-                    label {
+                    &.floating { 
+                        .form-floating {
+                            &.inputTree {
+                                input {
+                                    cursor: pointer;    
+                                    padding-right: 2rem;
+                                    text-overflow: ellipsis;
+                                }
+                                svg.bi-search {
+                                    width: 1.1rem;
+                                    position: absolute;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    right: 0.75rem;
+                                }
+                            }
+                        }
                     }
-                    &.btnArea {
+                }
+                &.activity {
+                    &:before {
+                        content: '';
+                        width: calc(100% - 1rem);
+                        height: 1px;
+                        background: black;
+                        margin: 1rem 0;
+                    }
+                    .col {
+                        label {
+                        }
+                        &.btnArea {
+                        } 
+                        > div {
+                        }
+                        input, select {
+                        }
                     } 
-                    > div {
+                    h3 {
+                        padding: 0;
+                        margin: 1rem 0 0.5rem;
+                        text-align: left;
                     }
-                    input, select {
-                    }
-                } 
-                h3 {
-                    padding: 0;
-                    margin: 1rem 0 0.5rem;
-                    text-align: left;
-                }
-                ol.list-group {
-                    li {
+                    ol.list-group {
+                        li {
+                        }
                     }
                 }
+
             }
+        }
+        
+        &.activityArea {
+
         }
     }
 }

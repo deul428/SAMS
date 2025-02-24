@@ -67,6 +67,7 @@
                                             overflow-y: scroll;
                                             padding-bottom: 3rem;
                                             .rc-tree-treenode {
+                                                overflow-x: hidden;
                                                 span.rc-tree-node-content-wrapper {
                                                     // min-width: 30%;
                                                     width: 100%;
@@ -355,6 +356,7 @@
                             overflow-x: hidden;
                             .rc-tree-list {
                                 .rc-tree-treenode {
+                                    overflow-x: hidden;
                                     width: 100%;
                                     margin: 0;
                                     border: 1px solid $base-color;
@@ -409,7 +411,6 @@
                                                 }
                                             }
                                         }
-                                        
                                     }
                                 }
                             }

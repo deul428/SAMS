@@ -431,103 +431,77 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                   <>
                   <div key={groupIndex} className='mb-4 d-flex flex-column'>
                     <tbody>
-                      <div className='row'>
-                        <div className='col col_oppId col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>사업 번호</th>
-                          <td>{commonInfo.biz_opp_id}</td>
-                        </div>
-                        <div className='col col_oppName col-xl-8 col-lg-8 col-md-8 col-12'>
-                          <th>사업명</th>
-                          <td>{commonInfo.biz_opp_name}</td>
-                        </div>
+                      <div>
+                        <th>사업 번호</th>
+                        <td>{commonInfo.biz_opp_id}</td>
+                        <th>사업명</th>
+                        <td style={{'width':'calc(100% - (8.66666% + 8%*2))', 'textAlign':'left'}} colSpan={9}>{commonInfo.biz_opp_name}</td>
                       </div>
                     </tbody>
                     <tbody>
-                      <div className='row'>
-                        <div className='col col_dept col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>소속 본부</th>
-                          <td>{commonInfo.change_preparation_high_dept_name}</td>
-                        </div>
-                        <div className='col col_team col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>팀</th>
-                          <td>{commonInfo.change_preparation_dept_name}</td>
-                        </div>
-                        <div className='col col_user col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>담당자</th>
-                          <td>{commonInfo.user_name}</td>
-                        </div>
+                      <div>
+                        <th>소속 본부</th>
+                        <td colSpan={3}>{commonInfo.change_preparation_high_dept_name}</td>
+                        <th>팀</th>
+                        <td colSpan={3}>{commonInfo.change_preparation_dept_name}</td>
+                        <th>담당자</th>
+                        <td colSpan={3}>{commonInfo.user_name}</td>
                       </div>
                     </tbody>
                     <tbody>
-                      <div className='row'>
-                        <div className='col col_contractDate col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>계약 일자</th>
-                          <td>{commonInfo.contract_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                        </div>
-                        <div className='col col_saleDate col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>매출 일자</th>
-                          <td>{commonInfo.sale_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
-                        </div>
-                        <div className='col col_saleAmt col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>매출 금액</th>
-                          <td>{commonInfo.sale_amt.toLocaleString('ko-KR')}</td>
-                        </div>
-                      </div>
-                    </tbody>
-                    <tbody>
-                      <div className='row'>
-                        <div className='col col_saleProfit col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>매출 이익</th>
-                          <td>{commonInfo.sale_profit.toLocaleString('ko-KR')}</td>
-                        </div>
-                        <div className='col col_sectionName col_10 col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>대표 사업 구분</th>
-                          <td>{commonInfo.delegate_biz_section2_name}</td>
-                        </div>
-                        <div className='col col_comName col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>대표 제조사명</th>
-                          <td>{commonInfo.delegate_sale_com2_name}</td>
-                        </div>
+                      <div>
+                        <th>계약 일자</th>
+                        <td>{commonInfo.contract_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                        <th>매출 일자</th>
+                        <td>{commonInfo.sale_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
+                        <th>매출 금액</th>
+                        <td>{commonInfo.sale_amt.toLocaleString('ko-KR')}</td>
+                        <th>매출 이익</th>
+                        <td>{commonInfo.sale_profit.toLocaleString('ko-KR')}</td>
+                        <th>대표 사업 구분</th>
+                        <td>{commonInfo.biz_section2_name}파라미터 바꿔야 함</td>
+                        <th>대표 제조사명</th>
+                        <td>{commonInfo.principal_product2_name}파라미터 바꿔야 함</td>
                       </div>
                     </tbody>
                     {group.length > 5 ? 
                       (
                         <>
-                        <tbody>
+                        <tbody >
                           {group.map((item, index) => (
                             index > 4 ? 
                             <Collapse in={openStates[biz_opp_id] || false}>
-                              <div className='row'>
+                              <div>
                                 <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                                  <div className='col col_detailNo col-xl-2 col-lg-2 col-md-4 col-12'>
+                                  <div>
                                     <th>상세 번호</th>
                                     <td>{item.detail_no}</td>
                                   </div>
-                                  <div className='col col_actDate col-xl-2 col-lg-2 col-md-4 col-12'>
+                                  <div>
                                     <th>활동 일자</th>
                                     <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                                   </div>
-                                  <div className='col col_actDetail col-xl-8 col-lg-8 col-md-4 col-12'>
+                                  <div>
                                     <th>활동 내역</th>
-                                    <td className='activityDetails'>{item.activity_details}</td>
+                                    <td className='activityDetails' colSpan={6}>{item.activity_details}</td>
                                   </div>
                                 </div>
                               </div>
                             </Collapse> : 
                             
-                            <div className='row'>
+                            <div>
                               <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                                <div className='col col_detailNo col-xl-2 col-lg-4 col-md-4 col-12'>
+                                <div>
                                   <th>상세 번호</th>
                                   <td>{item.detail_no}</td>
                                 </div>
-                                <div className='col col_actDate col-xl-2 col-lg-4 col-md-4 col-12'>
+                                <div>
                                   <th>활동 일자</th>
                                   <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                                 </div>
-                                <div className='col col_actDetail col-xl-8 col-lg-4 col-md-4 col-12'>
+                                <div>
                                   <th>활동 내역</th>
-                                  <td className='activityDetails'>{item.activity_details}</td>
+                                  <td className='activityDetails' colSpan={6}>{item.activity_details}</td>
                                 </div>
                               </div>
                             </div>
@@ -548,19 +522,19 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                       (
                       <tbody>
                         {group.map((item, index) => (
-                          <div className='row'>
+                          <div>
                             <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                              <div className='col col_detailNo col-xl-2 col-lg-4 col-md-4 col-12'>
+                              <div>
                                 <th>상세 번호</th>
                                 <td>{item.detail_no}</td>
                               </div>
-                              <div className='col col_actDate col-xl-2 col-lg-4 col-md-4 col-12'>
+                              <div>
                                 <th>활동 일자</th>
                                 <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                               </div>
-                              <div className='col col_actDetail col-xl-8 col-lg-4 col-md-4 col-12'>
+                              <div>
                                 <th>활동 내역</th>
-                                <td className='activityDetails'>
+                                <td className='activityDetails' colSpan={6}>
                                   <div type='textarea'>
                                     {item.activity_details}
                                   </div>

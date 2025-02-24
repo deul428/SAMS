@@ -2249,6 +2249,40 @@ def f_select_biz_opp_activity1(request):
                                              WHERE EE.great_classi_code = B.sale_com1_code AND
                                                    EE.small_classi_code = B.sale_com2_code AND
                                                    EE.delete_date IS NULL) AS sale_com2_name,*/
+                                            CASE WHEN (SELECT COUNT(*)
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale PP
+                                                       WHERE B.biz_opp_id = PP.biz_opp_id AND
+                                                             B.detail_no = PP.detail_no AND
+                                                             PP.great_classi_code = 'COR' AND
+                                                             PP.delete_date IS NULL) > 0
+                                                 THEN (SELECT QQ.small_classi_code
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale QQ
+                                                       WHERE B.biz_opp_id = QQ.biz_opp_id AND
+                                                             B.detail_no = QQ.detail_no AND
+                                                             QQ.great_classi_code = 'COR' AND
+                                                             QQ.delete_date IS NULL AND
+                                                             QQ.delegate_tf = TRUE)
+                                                 ELSE '대표 매출처 code가 존재하지 않습니다.'
+                                            END AS delegate_sale_com2_code,
+                                            CASE WHEN (SELECT COUNT(*)
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale RR
+                                                       WHERE B.biz_opp_id = RR.biz_opp_id AND
+                                                             B.detail_no = RR.detail_no AND
+                                                             RR.great_classi_code = 'COR' AND
+                                                             RR.delete_date IS NULL) > 0
+                                                 THEN (SELECT SS.small_classi_name
+                                                       FROM ajict_bms_schema.commonness_code SS
+                                                       WHERE SS.great_classi_code = 'COR' AND
+                                                             SS.delete_date IS NULL AND
+                                                             SS.small_classi_code = (SELECT DDD.small_classi_code
+                                                                                     FROM ajict_bms_schema.biz_opp_detail_sale DDD
+                                                                                     WHERE B.biz_opp_id = DDD.biz_opp_id AND
+                                                                                           B.detail_no = DDD.detail_no AND
+                                                                                           DDD.great_classi_code = 'COR' AND
+                                                                                           DDD.delete_date IS NULL AND
+                                                                                           DDD.delegate_tf = TRUE))
+                                                 ELSE '대표 매출처명이 존재하지 않습니다.'
+                                            END AS delegate_sale_com2_name,
                                             A.contract_date,
                                             A.progress1_rate_code,
                                             A.progress2_rate_code,
@@ -2279,6 +2313,40 @@ def f_select_biz_opp_activity1(request):
                                              WHERE GG.great_classi_code = B.biz_section1_code AND
                                                    GG.small_classi_code = B.biz_section2_code AND
                                                    GG.delete_date IS NULL) AS biz_section2_name,*/
+                                            CASE WHEN (SELECT COUNT(*)
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale TT
+                                                       WHERE B.biz_opp_id = TT.biz_opp_id AND
+                                                             B.detail_no = TT.detail_no AND
+                                                             TT.great_classi_code = 'BIZ' AND
+                                                             TT.delete_date IS NULL) > 0
+                                                 THEN (SELECT UU.small_classi_code
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale UU
+                                                       WHERE B.biz_opp_id = UU.biz_opp_id AND
+                                                             B.detail_no = UU.detail_no AND
+                                                             UU.great_classi_code = 'BIZ' AND
+                                                             UU.delete_date IS NULL AND
+                                                             UU.delegate_tf = TRUE)
+                                                 ELSE '대표 사업 구분 code가 존재하지 않습니다.'
+                                            END AS delegate_biz_section2_code,
+                                            CASE WHEN (SELECT COUNT(*)
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale VV
+                                                       WHERE B.biz_opp_id = VV.biz_opp_id AND
+                                                             B.detail_no = VV.detail_no AND
+                                                             VV.great_classi_code = 'BIZ' AND
+                                                             VV.delete_date IS NULL) > 0
+                                                 THEN (SELECT WW.small_classi_name
+                                                       FROM ajict_bms_schema.commonness_code WW
+                                                       WHERE WW.great_classi_code = 'BIZ' AND
+                                                             WW.delete_date IS NULL AND
+                                                             WW.small_classi_code = (SELECT EEE.small_classi_code
+                                                                                     FROM ajict_bms_schema.biz_opp_detail_sale EEE
+                                                                                     WHERE B.biz_opp_id = EEE.biz_opp_id AND
+                                                                                           B.detail_no = EEE.detail_no AND
+                                                                                           EEE.great_classi_code = 'BIZ' AND
+                                                                                           EEE.delete_date IS NULL AND
+                                                                                           EEE.delegate_tf = TRUE))
+                                                 ELSE '대표 사업 구분명이 존재하지 않습니다.'
+                                            END AS delegate_biz_section2_name,
                                             A.essential_achievement_tf,
                                             /*B.principal_product1_code,
                                             B.principal_product2_code,
@@ -2508,7 +2576,7 @@ def f_select_biz_opp_activity2(request):
                                              WHERE CC.great_classi_code = B.last_client_com1_code AND
                                                    CC.small_classi_code = B.last_client_com2_code AND
                                                    CC.delete_date IS NULL) AS last_client_com2_name,
-                                            B.sale_com1_code,
+                                            /*B.sale_com1_code,
                                             B.sale_com2_code,
                                             (SELECT DISTINCT DD.great_classi_name
                                              FROM ajict_bms_schema.commonness_code DD
@@ -2518,7 +2586,41 @@ def f_select_biz_opp_activity2(request):
                                              FROM ajict_bms_schema.commonness_code EE
                                              WHERE EE.great_classi_code = B.sale_com1_code AND
                                                    EE.small_classi_code = B.sale_com2_code AND
-                                                   EE.delete_date IS NULL) AS sale_com2_name,
+                                                   EE.delete_date IS NULL) AS sale_com2_name,*/
+                                            CASE WHEN (SELECT COUNT(*)
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale PP
+                                                       WHERE B.biz_opp_id = PP.biz_opp_id AND
+                                                             B.detail_no = PP.detail_no AND
+                                                             PP.great_classi_code = 'COR' AND
+                                                             PP.delete_date IS NULL) > 0
+                                                 THEN (SELECT QQ.small_classi_code
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale QQ
+                                                       WHERE B.biz_opp_id = QQ.biz_opp_id AND
+                                                             B.detail_no = QQ.detail_no AND
+                                                             QQ.great_classi_code = 'COR' AND
+                                                             QQ.delete_date IS NULL AND
+                                                             QQ.delegate_tf = TRUE)
+                                                 ELSE '대표 매출처 code가 존재하지 않습니다.'
+                                            END AS delegate_sale_com2_code,
+                                            CASE WHEN (SELECT COUNT(*)
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale RR
+                                                       WHERE B.biz_opp_id = RR.biz_opp_id AND
+                                                             B.detail_no = RR.detail_no AND
+                                                             RR.great_classi_code = 'COR' AND
+                                                             RR.delete_date IS NULL) > 0
+                                                 THEN (SELECT SS.small_classi_name
+                                                       FROM ajict_bms_schema.commonness_code SS
+                                                       WHERE SS.great_classi_code = 'COR' AND
+                                                             SS.delete_date IS NULL AND
+                                                             SS.small_classi_code = (SELECT DDD.small_classi_code
+                                                                                     FROM ajict_bms_schema.biz_opp_detail_sale DDD
+                                                                                     WHERE B.biz_opp_id = DDD.biz_opp_id AND
+                                                                                           B.detail_no = DDD.detail_no AND
+                                                                                           DDD.great_classi_code = 'COR' AND
+                                                                                           DDD.delete_date IS NULL AND
+                                                                                           DDD.delegate_tf = TRUE))
+                                                 ELSE '대표 매출처명이 존재하지 않습니다.'
+                                            END AS delegate_sale_com2_name,
                                             A.contract_date,
                                             A.progress1_rate_code,
                                             A.progress2_rate_code,
@@ -2538,7 +2640,7 @@ def f_select_biz_opp_activity2(request):
                                             B.purchase_date,
                                             B.purchase_amt,
                                             B.collect_money_date,
-                                            B.biz_section1_code,
+                                            /*B.biz_section1_code,
                                             B.biz_section2_code,
                                             (SELECT DISTINCT FF.great_classi_name
                                              FROM ajict_bms_schema.commonness_code FF
@@ -2548,9 +2650,43 @@ def f_select_biz_opp_activity2(request):
                                              FROM ajict_bms_schema.commonness_code GG
                                              WHERE GG.great_classi_code = B.biz_section1_code AND
                                                    GG.small_classi_code = B.biz_section2_code AND
-                                                   GG.delete_date IS NULL) AS biz_section2_name,
+                                                   GG.delete_date IS NULL) AS biz_section2_name,*/
+                                            CASE WHEN (SELECT COUNT(*)
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale TT
+                                                       WHERE B.biz_opp_id = TT.biz_opp_id AND
+                                                             B.detail_no = TT.detail_no AND
+                                                             TT.great_classi_code = 'BIZ' AND
+                                                             TT.delete_date IS NULL) > 0
+                                                 THEN (SELECT UU.small_classi_code
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale UU
+                                                       WHERE B.biz_opp_id = UU.biz_opp_id AND
+                                                             B.detail_no = UU.detail_no AND
+                                                             UU.great_classi_code = 'BIZ' AND
+                                                             UU.delete_date IS NULL AND
+                                                             UU.delegate_tf = TRUE)
+                                                 ELSE '대표 사업 구분 code가 존재하지 않습니다.'
+                                            END AS delegate_biz_section2_code,
+                                            CASE WHEN (SELECT COUNT(*)
+                                                       FROM ajict_bms_schema.biz_opp_detail_sale VV
+                                                       WHERE B.biz_opp_id = VV.biz_opp_id AND
+                                                             B.detail_no = VV.detail_no AND
+                                                             VV.great_classi_code = 'BIZ' AND
+                                                             VV.delete_date IS NULL) > 0
+                                                 THEN (SELECT WW.small_classi_name
+                                                       FROM ajict_bms_schema.commonness_code WW
+                                                       WHERE WW.great_classi_code = 'BIZ' AND
+                                                             WW.delete_date IS NULL AND
+                                                             WW.small_classi_code = (SELECT EEE.small_classi_code
+                                                                                     FROM ajict_bms_schema.biz_opp_detail_sale EEE
+                                                                                     WHERE B.biz_opp_id = EEE.biz_opp_id AND
+                                                                                           B.detail_no = EEE.detail_no AND
+                                                                                           EEE.great_classi_code = 'BIZ' AND
+                                                                                           EEE.delete_date IS NULL AND
+                                                                                           EEE.delegate_tf = TRUE))
+                                                 ELSE '대표 사업 구분명이 존재하지 않습니다.'
+                                            END AS delegate_biz_section2_name,
                                             A.essential_achievement_tf,
-                                            B.principal_product1_code,
+                                            /*B.principal_product1_code,
                                             B.principal_product2_code,
                                             (SELECT DISTINCT HH.great_classi_name
                                              FROM ajict_bms_schema.commonness_code HH
@@ -2560,7 +2696,7 @@ def f_select_biz_opp_activity2(request):
                                              FROM ajict_bms_schema.commonness_code II
                                              WHERE II.great_classi_code = B.principal_product1_code AND
                                                    II.small_classi_code = B.principal_product2_code AND
-                                                   II.delete_date IS NULL) AS principal_product2_name,
+                                                   II.delete_date IS NULL) AS principal_product2_name,*/
                                             (SELECT KK.high_dept_id
                                              FROM ajict_bms_schema.dept KK
                                              WHERE KK.dept_id = B.change_preparation_dept_id AND

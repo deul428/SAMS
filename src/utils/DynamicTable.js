@@ -357,7 +357,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                       {headerGroup.headers.map((column) => {
                         const { key, ...restProps } = column.getHeaderProps(column.getSortByToggleProps());
                         return (
-                          <th key={key} {...restProps}>
+                          <th key={key} {...restProps} className={key.slice(7)}>
                             {column.render('Header')}
                             <span className='ms-1' /* style={sortStyle} onClick={(e) => f_sortStyle(e, column)} */>
                               {/* test */}
@@ -388,7 +388,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                         num += 1;
                         // console.log(row.index)
                         return (
-                          <td key={key} {...restProps}>
+                          <td key={key} {...restProps} className={key.slice(7)}>
                             {index === row.cells.length - 1
                             ? 
                             (

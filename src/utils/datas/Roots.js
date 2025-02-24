@@ -13,8 +13,8 @@ const roots = {
     adminProduct: {depth1: 'admin', depth2: 'product', component: Home},
     bizoppSelect1: {depth1: 'biz-opp', depth2: '', endpoint: 'select-biz-opp1/', component: BizOpp, 
       props: [
-        { Header: '행 번호', accessor: ''},
-        { Header: '사업 일련 번호', accessor: 'biz_opp_id'},
+        { Header: '행 번호', accessor: 'no', },
+        { Header: '사업 일련 번호', accessor: 'biz_opp_id' },
         { Header: '사업 복제 번호', accessor: 'detail_no'},
         { Header: '본부', accessor: 'change_preparation_high_dept_name' },
         { Header: '팀', accessor: 'change_preparation_dept_name' },
@@ -38,8 +38,8 @@ const roots = {
         Cell: ({value}) => v_handlingNum(value) },
         { Header: '대표 사업 구분', accessor: 'delegate_biz_section_name' },
         { Header: '대표 제조사명', accessor: 'delegate_sale_com_name' },
-        { Header: '활동 이력', accessor: 'activity_details'},
-        { Header: '사업 복제', accessor: ''},
+        { Header: '활동 이력', accessor: 'bizopp_history'},
+        { Header: '사업 복제', accessor: 'bizopp_copy'},
       ]
     },
     bizoppSelect2: {depth1: 'biz-opp', depth2: '', endpoint: 'select-biz-opp2/', component: BizOpp, 

@@ -4,6 +4,28 @@
 @include mobile335 {
     table {
         font-size: 0.9rem !important;
+        &.bizopp {
+            th, td {
+                width: 130px !important;
+                min-width: 130px !important;
+                max-width: 130px !important;
+                &.biz_opp_name {
+                    width: 220px !important;
+                    min-width: 220px !important;
+                    max-width: 220px !important;
+                }
+                &.change_preparation_high_dept_name,
+                &.sale_item_no,
+                &.essential_achievement_tf,
+                &.purchase_date,
+                &.purchase_amt,
+                &.sale_profit,
+                &.last_client_com2_name
+                {
+                    display: none;
+                }
+            }
+        }
         &.activity {
             div.d-flex.flex-column {
                 overflow-x: scroll;
@@ -62,6 +84,28 @@
 @include tablet758 {
     table {
         font-size: 0.9rem !important;
+        &.bizopp {
+            th, td {
+                width: 130px !important;
+                min-width: 130px !important;
+                max-width: 130px !important;
+                &.biz_opp_name {
+                    width: 220px !important;
+                    min-width: 220px !important;
+                    max-width: 220px !important;
+                }
+                &.change_preparation_high_dept_name,
+                &.sale_item_no,
+                &.essential_achievement_tf,
+                &.purchase_date,
+                &.purchase_amt,
+                &.sale_profit,
+                &.last_client_com2_name
+                {
+                    display: none;
+                }
+            }
+        }
         &.activity {
             div.d-flex.flex-column {
                 overflow-x: scroll;
@@ -141,18 +185,19 @@ table {
                     width: 104px;
                     min-width: 104px;
                     max-width: 104px;
-                    &:nth-child(8) {
+                    &.biz_opp_name {
                         width: 200px;
                         min-width: 200px;
                         max-width: 200px;
                     }
-                    &:nth-last-child(-n+2) {
+                    &.bizopp_history, &.bizopp_copy {
                         padding: 0 !important;
                         width: 80px;
                         min-width: 80px;
                         max-width: 80px;
                         button {
                             width: inherit;
+                            height: 100%;
                         }
                     }
                 }

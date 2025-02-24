@@ -2238,11 +2238,8 @@ def f_select_biz_opp_activity1(request):
                                              WHERE CC.great_classi_code = B.last_client_com1_code AND
                                                    CC.small_classi_code = B.last_client_com2_code AND
                                                    CC.delete_date IS NULL) AS last_client_com2_name,
-                                            B.sale_com1_code,
+                                            /*B.sale_com1_code,
                                             B.sale_com2_code,
-                                            
-                                            
-                                            
                                             (SELECT DISTINCT DD.great_classi_name
                                              FROM ajict_bms_schema.commonness_code DD
                                              WHERE DD.great_classi_code = B.sale_com1_code AND
@@ -2251,7 +2248,7 @@ def f_select_biz_opp_activity1(request):
                                              FROM ajict_bms_schema.commonness_code EE
                                              WHERE EE.great_classi_code = B.sale_com1_code AND
                                                    EE.small_classi_code = B.sale_com2_code AND
-                                                   EE.delete_date IS NULL) AS sale_com2_name,
+                                                   EE.delete_date IS NULL) AS sale_com2_name,*/
                                             A.contract_date,
                                             A.progress1_rate_code,
                                             A.progress2_rate_code,
@@ -2271,7 +2268,7 @@ def f_select_biz_opp_activity1(request):
                                             B.purchase_date,
                                             B.purchase_amt,
                                             B.collect_money_date,
-                                            B.biz_section1_code,
+                                            /*B.biz_section1_code,
                                             B.biz_section2_code,
                                             (SELECT DISTINCT FF.great_classi_name
                                              FROM ajict_bms_schema.commonness_code FF
@@ -2281,9 +2278,9 @@ def f_select_biz_opp_activity1(request):
                                              FROM ajict_bms_schema.commonness_code GG
                                              WHERE GG.great_classi_code = B.biz_section1_code AND
                                                    GG.small_classi_code = B.biz_section2_code AND
-                                                   GG.delete_date IS NULL) AS biz_section2_name,
+                                                   GG.delete_date IS NULL) AS biz_section2_name,*/
                                             A.essential_achievement_tf,
-                                            B.principal_product1_code,
+                                            /*B.principal_product1_code,
                                             B.principal_product2_code,
                                             (SELECT DISTINCT HH.great_classi_name
                                              FROM ajict_bms_schema.commonness_code HH
@@ -2293,7 +2290,7 @@ def f_select_biz_opp_activity1(request):
                                              FROM ajict_bms_schema.commonness_code II
                                              WHERE II.great_classi_code = B.principal_product1_code AND
                                                    II.small_classi_code = B.principal_product2_code AND
-                                                   II.delete_date IS NULL) AS principal_product2_name,
+                                                   II.delete_date IS NULL) AS principal_product2_name,*/
                                             (SELECT KK.high_dept_id
                                              FROM ajict_bms_schema.dept KK
                                              WHERE KK.dept_id = B.change_preparation_dept_id AND

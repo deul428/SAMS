@@ -282,13 +282,13 @@ def f_select_biz_opp1(request):
                                                                        CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
                                    (SELECT PP.small_classi_code
                                     FROM ajict_bms_schema.biz_opp_detail_sale PP
-                                    WHERE PP.biz_opp_id = '20250001' AND
+                                    WHERE PP.biz_opp_id = B.biz_opp_id AND
                                           PP.detail_no = 1 AND
                                           PP.delegate_tf = TRUE AND
                                           PP.great_classi_code = 'BIZ') AS delegate_biz_section2_code,
                                     (SELECT QQ.small_classi_code
                                      FROM ajict_bms_schema.biz_opp_detail_sale QQ
-                                     WHERE QQ.biz_opp_id = '20250001' AND
+                                     WHERE QQ.biz_opp_id = B.biz_opp_id AND
                                            QQ.detail_no = 1 AND
                                            QQ.delegate_tf = TRUE AND
                                            QQ.great_classi_code = 'COR') AS delegate_sale_com2_code,
@@ -297,7 +297,7 @@ def f_select_biz_opp1(request):
                                     WHERE RR.great_classi_code = 'BIZ' AND
                                           RR.small_classi_code = (SELECT DDD.small_classi_code
                                                                   FROM ajict_bms_schema.biz_opp_detail_sale DDD
-                                                                  WHERE DDD.biz_opp_id = '20250001' AND
+                                                                  WHERE DDD.biz_opp_id = B.biz_opp_id AND
                                                                         DDD.detail_no = 1 AND
                                                                         DDD.delegate_tf = TRUE AND
                                                                         DDD.great_classi_code = 'BIZ')) AS delegate_biz_section_name,
@@ -306,7 +306,7 @@ def f_select_biz_opp1(request):
                                     WHERE SS.great_classi_code = 'COR' AND
                                           SS.small_classi_code = (SELECT EEE.small_classi_code
                                                                   FROM ajict_bms_schema.biz_opp_detail_sale EEE
-                                                                  WHERE EEE.biz_opp_id = '20250001' AND
+                                                                  WHERE EEE.biz_opp_id = B.biz_opp_id AND
                                                                         EEE.detail_no = 1 AND
                                                                         EEE.delegate_tf = TRUE AND
                                                                         EEE.great_classi_code = 'COR')) AS delegate_sale_com_name,

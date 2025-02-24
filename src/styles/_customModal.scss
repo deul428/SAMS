@@ -46,9 +46,18 @@
                 .modal-body {
                     .modalcntnt {
                         .inputField {
+                            h4 {
+                                text-align: left;
+                                font-size: 0.75rem;
+                            }
                             .cntntArea {
+                                &.row.mb-2 {
+                                    h3 {
+                                        font-size: 1rem;
+                                    }
+                                }
                                 .cntnt {
-                                    height: 30vh;
+                                    height: 25vh;
                                     margin-bottom: 1rem;
                                     overflow-y: scroll;
                                     .rc-tree {
@@ -59,23 +68,29 @@
                                                 span.rc-tree-node-content-wrapper {
                                                     // min-width: 30%;
                                                     width: 100%;
-                                                    height: 1.5rem;
+                                                    height: 2rem;
+                                                    line-height: 2rem;
                                                     span.rc-tree-title {
                                                         .titleArea {
+                                                            input[type='radio'] {
+                                                                left: 0.35rem;
+                                                            }
                                                             .titleItem {
                                                                 input[type='number'] {
+                                                                    height: 1.75rem;
+                                                                    line-height: 1.75rem;
                                                                     position: absolute;
-                                                                    top: 1.5rem;
+                                                                    top: 2rem;
                                                                     right: unset;
                                                                     margin: 0;
-                                                                    left: calc(5% + 1.5rem);
-                                                                    width: calc(100% - 3rem);
+                                                                    left: calc(5% + 2rem);
+                                                                    width: calc(100% - 4rem);
                                                                 }
                                                             }
                                                         }
                                                     }
                                                     &.rc-tree-node-selected {
-                                                        height: 3rem;
+                                                        height: 4rem;
                                                     }
                                                 }
                                             }
@@ -130,20 +145,51 @@
                 .modal-body {
                     .modalcntnt {
                         .inputField {
+                            h4 {
+                                text-align: left;
+                                font-size: 0.75rem;
+                            }
                             .cntntArea {
+                                &.row.mb-2 {
+                                    h3 {
+                                        font-size: 1rem;
+                                    }
+                                }
                                 .cntnt {
-                                    height: 30vh;
+                                    height: 25vh;
                                     margin-bottom: 1rem;
-                                    overflow-y: hidden;
+                                    overflow-y: scroll;
                                     .rc-tree {
                                         height: 100%;
                                         overflow-y: scroll;
                                         .rc-tree-list {
                                             .rc-tree-treenode {
                                                 span.rc-tree-node-content-wrapper {
-                                                    min-width: 30%;
+                                                    // min-width: 30%;
+                                                    width: 100%;
+                                                    height: 2rem;
+                                                    line-height: 2rem;
+                                                    span.rc-tree-title {
+                                                        .titleArea {
+                                                            input[type='radio'] {
+                                                                left: 0.35rem;
+                                                            }
+                                                            .titleItem {
+                                                                input[type='number'] {
+                                                                    height: 1.75rem;
+                                                                    line-height: 1.75rem;
+                                                                    position: absolute;
+                                                                    top: 2rem;
+                                                                    right: unset;
+                                                                    margin: 0;
+                                                                    left: calc(5% + 2rem);
+                                                                    width: calc(100% - 4rem - 2.5%);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                     &.rc-tree-node-selected {
-
+                                                        height: 4rem;
                                                     }
                                                 }
                                             }

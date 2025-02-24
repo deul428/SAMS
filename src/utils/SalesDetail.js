@@ -632,11 +632,11 @@ const SalesDetail = ({ v_treeName, show, onHide, listData, v_modalPropsData, set
                                             <Button variant='info'>조회</Button>
                                         </div> */}
                                         <div className="mb-4">
-                                            <h4 style={{'textAlign':'center'}}>&#91;사업 구분&#93; 필드의 총 금액과 &#91;제조사명&#93; 필드의 총 금액은 서로 일치해야 합니다.</h4>
-                                            <h4 style={{'textAlign':'center'}}>항목 앞 라디오 버튼으로 대표 사업 구분 &#47; 대표 제조사명을 지정할 수 있습니다. &#40;필수&#41;</h4>
+                                            <h4>&#91;사업 구분&#93; 필드의 총 금액과 &#91;제조사명&#93; 필드의 총 금액은 서로 일치해야 합니다.</h4>
+                                            <h4>항목 앞 라디오 버튼으로 대표 사업 구분 &#47; 대표 제조사명을 지정할 수 있습니다. &#40;필수&#41;</h4>
                                         </div>
                                         
-                                        <Row className="cntntArea">
+                                        <Row className="cntntArea mb-2">
                                             <Col xs={12} md={12} lg={12} xl={12} className='col d-flex align-items-center floating'>
                                                 <h3>총 매출 금액 &#40;현재 값&#41;: &#65510;{saleMsg ? saleMsg.toLocaleString('ko-KR') : ''}</h3>
                                             </Col>

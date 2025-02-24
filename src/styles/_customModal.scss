@@ -58,12 +58,14 @@
                                 }
                                 .cntnt {
                                     height: 25vh;
+                                    padding-bottom: 2rem;
                                     margin-bottom: 1rem;
                                     overflow-y: hidden;
                                     .rc-tree {
                                         height: 100%;
                                         .rc-tree-list {
                                             overflow-y: scroll;
+                                            padding-bottom: 3rem;
                                             .rc-tree-treenode {
                                                 span.rc-tree-node-content-wrapper {
                                                     // min-width: 30%;

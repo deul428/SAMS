@@ -499,15 +499,15 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             <Collapse in={openStates[biz_opp_id] || false}>
                               <div className='row'>
                                 <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                                  <div className='col col_detailNo col-xl-2 col-lg-2 col-md-4 col-12'>
+                                  <div className='col col_detailNo col-xl-4 col-lg-4 col-md-4 col-12'>
                                     <th>상세 번호</th>
                                     <td>{item.detail_no}</td>
                                   </div>
-                                  <div className='col col_actDate col-xl-2 col-lg-2 col-md-4 col-12'>
+                                  <div className='col col_actDate col-xl-4 col-lg-4 col-md-4 col-12'>
                                     <th>활동 일자</th>
                                     <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                                   </div>
-                                  <div className='col col_actDetail col-xl-8 col-lg-8 col-md-4 col-12'>
+                                  <div className='col col_actDetail col-xl-4 col-lg-4 col-md-4 col-12'>
                                     <th>활동 내역</th>
                                     <td className='activityDetails'>{item.activity_details}</td>
                                   </div>
@@ -517,15 +517,15 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             
                             <div className='row'>
                               <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                                <div className='col col_detailNo col-xl-2 col-lg-4 col-md-4 col-12'>
+                                <div className='col col_detailNo col-xl-4 col-lg-4 col-md-4 col-12'>
                                   <th>상세 번호</th>
                                   <td>{item.detail_no}</td>
                                 </div>
-                                <div className='col col_actDate col-xl-2 col-lg-4 col-md-4 col-12'>
+                                <div className='col col_actDate col-xl-4 col-lg-4 col-md-4 col-12'>
                                   <th>활동 일자</th>
                                   <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                                 </div>
-                                <div className='col col_actDetail col-xl-8 col-lg-4 col-md-4 col-12'>
+                                <div className='col col_actDetail col-xl-4 col-lg-4 col-md-4 col-12'>
                                   <th>활동 내역</th>
                                   <td className='activityDetails'>{item.activity_details}</td>
                                 </div>
@@ -550,15 +550,15 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                         {group.map((item, index) => (
                           <div className='row'>
                             <div id={`collapse-${biz_opp_id}`} className='collapseBox' key={index} onClick={(e) => openModal(e, group[index], 'activity')}>
-                              <div className='col col_detailNo col-xl-2 col-lg-4 col-md-4 col-12'>
+                              <div className='col col_detailNo col-xl-4 col-lg-4 col-md-4 col-12'>
                                 <th>상세 번호</th>
                                 <td>{item.detail_no}</td>
                               </div>
-                              <div className='col col_actDate col-xl-2 col-lg-4 col-md-4 col-12'>
+                              <div className='col col_actDate col-xl-4 col-lg-4 col-md-4 col-12'>
                                 <th>활동 일자</th>
                                 <td>{item.activity_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                               </div>
-                              <div className='col col_actDetail col-xl-8 col-lg-4 col-md-4 col-12'>
+                              <div className='col col_actDetail col-xl-4 col-lg-4 col-md-4 col-12'>
                                 <th>활동 내역</th>
                                 <td className='activityDetails'>
                                   <div type='textarea'>

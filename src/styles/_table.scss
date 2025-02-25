@@ -74,7 +74,6 @@
                     }
                     &:hover {
                         filter: brightness(0.95);
-                        
                     }
                 }
             }
@@ -224,15 +223,19 @@ table {
                         padding: 0;
                         display: inline-flex;
                         width: 100%;
+                        
+                        background-color: #fff;
+                        @include hover(rgba($color: $primary-color, $alpha: 0.5), #000);
                         word-break: break-all;
-                        cursor: pointer;
                         .col {
+                            background-color: transparent;
                             th, td {
-
+                                
                             }
                         }
                     }
                     .col {
+                        background-color: rgba($color: $base-color, $alpha: 0.4);
                         display: table !important;
                         padding: 0;
                         // overflow-x: hidden;

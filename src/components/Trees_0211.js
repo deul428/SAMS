@@ -109,7 +109,7 @@ const Trees = ({ v_treeName, show, onHide, data }) => {
             if (data) {
                 if (v_treeName === 'product') {
                     setVHandlingHtml(
-                        <Modal size='xl' show={show} onHide={onHide} id='commonTreeArea'>
+                        <Modal size='xl' show={show} onHide={onHide} id='salesDetail'>
                             <Modal.Header closeButton>
                                 <Modal.Title className='fs-3'>
                                     매출 상세 관리

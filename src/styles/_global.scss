@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
-// 재사용 Style 선언부
-@mixin display-flex($display: inline-flex){
-    display: $display !important;
-    justify-content: center;
-    align-items: center;
-}
+@import './mixin';
 
 $full: 100%;
 $auto: 0 auto;
@@ -13,39 +8,23 @@ $margin-bottom-10: 0 0 10% 0;
 $primary-color: #ccc;
 $base-color: #eee;
 $point-color: #1a8ef3;
-@import './mixin';
 
 @include mobile335 {
+    .form-select-sm, .form-control-sm {
+        font-size: 1rem !important;
+        height: 4rem !important;
+        min-height: 4rem !important;
+        line-height: 2 !important;
+    }
     #cntntArea {
         width: 100% !important;
-        // z-index: 1;
-        .wrap {
-            position: relative;
-            margin: 0 auto 2.5%;
-            width: 95%;
-            padding: 2.5%; 
-            border-radius: 10px;
-            background: white;
-        }
     }
-    h1 { 
-        // fontSize 2.5rem
-        font-size: 2rem;
-    }
+    @include heading(2rem, 1.7rem, 1.25rem, 1rem, 0.75rem);
     h2 {
-        // fontSize 2rem, 기본 heading 값
         margin: 5% 2.5% !important;
-        font-size: 1.7rem;
-        // text-align: center !important;
     }
-    h3 {
-        font-size: 1.25rem;
-    }
-    h4, label {
+    label {
         font-size: 1rem;
-    }
-    h5, button.btn-sm {
-        font-size: 0.75rem;
     }
     .pagination {
         .paginationList {
@@ -57,34 +36,21 @@ $point-color: #1a8ef3;
     }
 }
 @include tablet758 {
+    .form-select-sm, .form-control-sm {
+        font-size: 1rem !important;
+        height: 4rem !important;
+        min-height: 4rem !important;
+        line-height: 2 !important;
+    }
     #cntntArea {
         width: 100% !important;
-        // z-index: 1;
-        .wrap {
-            position: relative;
-            margin: 0 auto 2.5%;
-            width: 95%;
-            padding: 2.5%; 
-            border-radius: 10px;
-            background: white;
-        }
     }
-    h1 { 
-        // fontSize 2.5rem
-        font-size: 2rem;
-    }
+    @include heading(2rem, 1.7rem, 1.25rem, 1rem, 0.75rem);
     h2 {
-        // fontSize 2rem, 기본 heading 값
         margin: 2.5% !important;
     }
-    h3 {
-        font-size: 1.25rem;
-    }
-    h4, label {
+    label {
         font-size: 1rem;
-    }
-    h5, button.btn-sm {
-        font-size: 0.75rem;
     }
     
 }
@@ -96,47 +62,27 @@ $point-color: #1a8ef3;
         position: absolute;
         top: 0;
         right: 0;
-        .wrap {
-            position: relative;
-            margin: 0 auto 2.5%;
-            width: 95%;
-            padding: 2.5%; 
-            border-radius: 10px;
-            background: white;
-        }
     }
     
 }
 @include desktop1200 {
-    
 }
 
+@include heading(2.5rem, 2rem, 1.25rem, 1rem, 0.75rem);
+    
 h1 { 
-    // fontSize 2.5rem
-    font-weight: 700;
     text-align: center;
 }
 h2 {
-    // fontSize 2rem, 기본 heading 값
-    font-weight: 700;
     margin: 1.25% 2.5%;
-    text-align: left;
 }
 h3 {
-    font-size: 1.25rem;
-    font-weight: 500;
     text-align: center;
 }
-h4, label {
+label {
     font-size: 1rem;
     font-weight: 400;
 }
-h5, button.btn-sm {
-    font-size: 0.75rem;
-    font-weight: 400;
-}
-// #1a8ef3
-
 
 // pagination
 .pagination {    
@@ -165,25 +111,19 @@ h5, button.btn-sm {
             &.paginationBtnNext {
                 &.paginationBtnNextEnd {}
             }
-    
         }
-
     }
     .paginationControll {
         span {
             &.paginationGoToPageText {
-
             }
             input {
-                // min-width: 2rem;
                 max-width: 3rem;
                 margin: 0 0.5rem;
             }
         }
         select.paginationSelect {
-
         }
-
     }
 }
 
@@ -201,9 +141,6 @@ body {
 
     #root {
         width: $full;
-        // 기본값 약 1000p
-        // max-width: 1200px;
-        // min-width: 1000px;
         #cntntArea {
             width: 82%;
             // height: 100vh;
@@ -226,14 +163,13 @@ body {
             white-space: pre-wrap;
         }
         .row { 
-            align-items: center; 
-        }
-        .row div.col { 
-            display: flex;
-            flex-direction: row;
-            flex-direction: row;
-            align-items: center;
-            
+            align-items: center;  
+            .col { 
+                display: flex;
+                flex-direction: row;
+                flex-direction: row;
+                align-items: center;
+            }
         }
         label.me-2 {
             white-space: nowrap;
@@ -242,8 +178,6 @@ body {
             width: auto;
             font-weight: 500;
         }
-        
-        
     }
 
 }

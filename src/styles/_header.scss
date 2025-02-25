@@ -158,9 +158,8 @@ nav#header, .offcanvas {
             font-size: 1.2rem;
             font-weight: 500;
             color: $primary-color;
+            @include hover(#007bff);
             &.active, &:hover {
-                color: #fff; 
-                background-color: #007bff;
                 border-radius: 5px; 
             }
             &.disabled, &.disabled * {

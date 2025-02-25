@@ -107,17 +107,6 @@ const BizOppDetail = () => {
     return (
         <div id='bizOppDetail'>
             <InputFieldDetail/>
-            {/* <Form.Control type='text' name='biz_opp_name' placeholder='사업명을 입력하세요.' value={input.biz_opp_name} onChange={f_handlingInput}/>
-            <Form.Control type='text' name='user_name' placeholder='유저 이름을 입력하세요.' value={input.user_name} onChange={f_handlingInput}/>
-            <Form.Control type='text' name='last_client_com2_name' placeholder='최종 고객사 상호를 입력하세요.' value={input.last_client_com2_name} onChange={f_handlingInput}/>
-            <div>
-                <Button style={{ margin: '0 10px' }} variant='primary' onClick={() => f_handlingData('get', endpoint)}>Refresh</Button>
-                <Button style={{ margin: '0 10px' }} variant='success' onClick={() => f_handlingData('post', endpoint, input)}>Post</Button>
-                <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('put', endpoint, input)}>Put</Button>
-                <Button style={{ margin: '0 10px' }} variant='warning' onClick={() => f_handlingData('patch', endpoint, input)}>Patch</Button>
-                <Button style={{ margin: '0 10px' }} variant='danger' onClick={() => f_handlingData('del', endpoint)}>Delete</Button>
-            </div>
-            <h1>안녕하세요?</h1> */}
         </div>
     )
 }

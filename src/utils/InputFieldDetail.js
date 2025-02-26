@@ -783,8 +783,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const userCheck = {
         a_session_user_id: auth.userId,
     }
+
+    const [isParentHide, setIsParentHide] = useState(false);
     useEffect(() => {
         if (show) {
+            setIsParentHide(false);
             setIsRefresh(false);
             setIsProDisabled(true);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
@@ -798,6 +801,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         } else {
             setInsertInput(p_bizopp);
             setUpdateInput([]);
+            setIsParentHide(true);
         }
     }, [show]); // show가 변경될 때만 실행되도록 보장
     useEffect(() => {
@@ -1562,13 +1566,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         delegateBiz, delegateCor
     ]);
 
-    
     return (
         <div id='inputFieldDetail'>
             {v_handlingHtml}
             {
                 (v_componentName === 'bizOpp') ?
-                <SalesDetail v_treeName={v_childComponent} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} v_propsSaleData={[saleBizData, saleCorData]} setSalesDetailData={setSalesDetailData} />
+                <SalesDetail v_treeName={v_childComponent} isParentHide={isParentHide} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} v_propsSaleData={[saleBizData, saleCorData]} setSalesDetailData={setSalesDetailData} />
                 : ''
             }
         </div>

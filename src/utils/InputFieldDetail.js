@@ -9,7 +9,7 @@ import SalesDetail from './SalesDetail';
 import roots from './datas/Roots';
 import '../styles/_customModal.scss';
 import '../styles/_search.scss';
-import { Modal, Button, Form, Row, Col, ListGroup, FloatingLabel } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col, ListGroup, FloatingLabel, CloseButton } from 'react-bootstrap';
 import { FileArrowDownFill, Search } from 'react-bootstrap-icons';
 
 const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalPropsData, authLevel, setIsRefresh}) => {
@@ -684,8 +684,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 }
             } else if (v_componentName === 'activity') {
                 if (msg === '수정' && a_v_modalPropsData) {
-                    console.log(input);
-                    if (!input.biz_opp_activity?.a_activity_details) {
+                    if (!input.biz_opp_activity?.a_activity_details || !input.biz_opp_activity?.a_activity_date) {
+                        alert('수정할 내용을 입력해 주십시오.');
                         return;
                     }
                     const updateInput = { 
@@ -884,8 +884,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         })
         
         const filteredResult = result.map(({ a_small_classi_name, ...rest }) => rest);
-
-        if (salesDetailData.length > 0 ) {
+        console.log(filteredResult);
+        if (filteredResult.length > 0) {
             setInsertInput((prevInput) => {
                 return { 
                     ...prevInput, 
@@ -933,7 +933,13 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
 
 
-
+    const hideMsg = () => {
+        if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
+            onHide(true);
+        } else {
+            return;
+        }
+    }
     // UI 업데이트
     const [isProDisabled, setIsProDisabled] = useState(true);
     useEffect(() => {
@@ -950,7 +956,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     case `bizOpp`:
                         setVHandlingHtml(
                             <Modal size='xl' show={show} onHide={onHide} scrollable centered>
-                                <Modal.Header closeButton>
+                                <Modal.Header>
                                     <Modal.Title className='fs-3'>
                                         {
                                             (auth.userAuthCode === '0002') ? 
@@ -958,6 +964,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             ((a_v_modalPropsData ? '사업 (기회) 수정': '사업 (기회) 등록'))
                                         }
                                     </Modal.Title>
+                                    <CloseButton onClick={hideMsg} />
                                 </Modal.Header> 
                                 <Modal.Body>
                                     <div className='inputField modalcntnt'> 
@@ -1442,7 +1449,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             </>)
                                         )
                                     }
-                                    <Button variant='secondary' onClick={onHide}>닫기</Button>
+                                    <Button variant='secondary' onClick={hideMsg}>닫기</Button>
                                 </Modal.Footer>
                             </Modal>
                         );
@@ -1451,13 +1458,14 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     case `activity`: 
                         setVHandlingHtml(
                         <Modal size='xl' show={show} onHide={onHide} scrollable centered>
-                            <Modal.Header closeButton>
+                            <Modal.Header>
                             <Modal.Title className='fs-3'>
                                 {
                                 (auth.userAuthCode !== '0001') ? 
                                 '영업 활동 상세 조회' : '영업 활동 갱신'
                                 }
                             </Modal.Title>
+                            <CloseButton onClick={hideMsg} />
                             </Modal.Header> 
                             <Modal.Body>
                                 <div className='inputField modalcntnt'> 
@@ -1546,7 +1554,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 (<></>)
                                             )
                                         }
-                                    <Button variant='secondary' onClick={onHide}>닫기</Button>
+                                    <Button variant='secondary' onClick={hideMsg}>닫기</Button>
                                 </Modal.Footer>
                         </Modal>
                         );

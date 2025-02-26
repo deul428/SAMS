@@ -1,4 +1,4 @@
-import { Form, FloatingLabel, Modal, Button, Row, Col } from "react-bootstrap";
+import { Form, FloatingLabel, Modal, Button, Row, Col, CloseButton } from "react-bootstrap";
 import { useState, useEffect, useRef } from "react";
 import '../styles/_customModal.scss';
 import Tree from 'rc-tree';
@@ -505,6 +505,13 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         }, 100);
     };
 
+    const hideMsg = () => {
+        if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
+            onHide(true);
+        } else {
+            return;
+        }
+    }
     // 초기화
     useEffect(()=> {
         if (isParentHide === true) {
@@ -528,11 +535,12 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             if (listBizData.length > 0 && listCorData.length > 0) {
                 if (v_treeName === 'product') {
                     setVHandlingHtml(
-                        <Modal size='xl' show={show} onHide={onHide} id='salesDetail' scrollable>
-                            <Modal.Header closeButton>
+                        <Modal size='xl' show={show} onHide={onHide} id='salesDetail' scrollable backdrop='static'>
+                            <Modal.Header>
                                 <Modal.Title className='fs-3'>
                                     매출 상세 관리
                                 </Modal.Title>
+                                <CloseButton onClick={hideMsg} />
                             </Modal.Header> 
                             <Modal.Body>
                             {/* <input
@@ -627,7 +635,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                             </Modal.Body>
                             <Modal.Footer className="btnArea justify-content-center">
                                 <Button variant='primary' onClick={saveData}>선택</Button>
-                                <Button variant="secondary" onClick={onHide}>
+                                <Button variant="secondary" onClick={hideMsg}>
                                 닫기
                                 </Button>
                             </Modal.Footer>

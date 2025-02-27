@@ -1137,32 +1137,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 (auth.userAuthCode === '0002') ? 
                                                 ({"pointerEvents": "none"}) : ({})
                                             }>
-                                                {/* <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='매출처'>
-                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_sale_com2_code'
-                                                        data-key='biz_opp_detail'
-                                                        placeholder='매출처' 
-                                                        onChange={f_handlingInput} 
-                                                        // value={input.progress2_rate_name || ''} 
-                                                        defaultValue={a_v_modalPropsData?.a_sale_com2_code || ''}
-                                                        >
-                                                            <option 
-                                                            value={(
-                                                                a_v_modalPropsData ? 
-                                                                a_v_modalPropsData.a_sale_com2_code : '선택')}
-                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_sale_com2_name : '선택') + ` (현재 값)`}</option>
-                                                            {(detailData) ? 
-                                                                (
-                                                                    detailData?.data?.search_last_client_com_code.map((e) => {
-                                                                        return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
-                                                                    })
-                                                                )
-                                                                :
-                                                                ('')
-                                                            }
-                                                        </Form.Select>
-                                                    </FloatingLabel>
-                                                </Col> */}
                                                 <Col xs={12} sm={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <Form.Label htmlFor='inputChck2' className='essentialAchievementTf'>필달 여부</Form.Label>
                                                     <Form.Check type={`checkbox`} id={`inputChck2`} name='a_essential_achievement_tf' 
@@ -1331,6 +1305,33 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         </Form.Select>
                                                     </FloatingLabel>
                                                 </Col> */}
+                                                {/* 매출처 파라미터에 맞게 변경해 줘야 함 */}
+                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='매출처'>
+                                                        <Form.Select size='sm' aria-label='selectBox' className='' name='a_sale_com2_code'
+                                                        data-key='biz_opp_detail'
+                                                        placeholder='매출처' 
+                                                        onChange={f_handlingInput} 
+                                                        // value={input.progress2_rate_name || ''} 
+                                                        defaultValue={a_v_modalPropsData?.a_sale_com2_code || ''}
+                                                        >
+                                                            <option 
+                                                            value={(
+                                                                a_v_modalPropsData ? 
+                                                                a_v_modalPropsData.a_sale_com2_code : '선택')}
+                                                            >{(a_v_modalPropsData ? a_v_modalPropsData.a_sale_com2_name : '선택') + ` (현재 값)`}</option>
+                                                            {(detailData) ? 
+                                                                (
+                                                                    detailData?.data?.search_last_client_com_code.map((e) => {
+                                                                        return <option key={e.small_classi_code} value={e.small_classi_code || ''}>{e.small_classi_name}</option>
+                                                                    })
+                                                                )
+                                                                :
+                                                                ('')
+                                                            }
+                                                        </Form.Select>
+                                                    </FloatingLabel>
+                                                </Col>
                                                 <Col xs={12} sm={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='매출 상세' className='inputTree' onClick={(e) => openModal(e, 'product')}>
                                                         <Form.Control readOnly size='sm' aria-label='selectBox' className='' name='a_principal_product2_code'

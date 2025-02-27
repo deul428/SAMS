@@ -8,6 +8,21 @@ import '../styles/_button.scss';
 import { endsWith, lowerCase, sum, toLower, update } from "lodash";
 
 const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modalPropsData, v_propsSaleData, setSalesDetailData }) => {
+    // 나중에 small classi name 들어오면 이 객체 삭제
+    const bizClassiNameMap = {
+        "0001": "H/W 유통",
+        "0002": "S/W 유통",
+        "0003": "solution",
+        "0004": "Infra SI",
+        "0005": "컨텍센터",
+        "0006": "유지보수"
+    };
+    const corClassiNameMap = {
+        "0252": "(주)유니와이드",
+        "0103": "주식회사 레몬헬스케어",
+        "0002": "현대오토에버",
+        "0001": "현대자동차"
+    };
     // =================== 렌더 시 세팅 ===================  
     // -------------------- 기본 데이터 핸들링 --------------------
     /* 
@@ -44,21 +59,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 cor: {},  // cor는 빈 객체 유지
                 a_product_name: ""
             };
-            // 나중에 small classi name 들어오면 이 객체 삭제
-            const bizClassiNameMap = {
-                "0001": "H/W 유통",
-                "0002": "S/W 유통",
-                "0003": "solution",
-                "0004": "Infra SI",
-                "0005": "컨텍센터",
-                "0006": "유지보수"
-            };
-            const corClassiNameMap = {
-                "0252": "(주)유니와이드",
-                "0103": "주식회사 레몬헬스케어",
-                "0002": "현대오토에버",
-                "0001": "현대자동차"
-            };
+            
             
             v_propsSaleData[0].forEach(item => {
                 if (item.great_classi_code === "BIZ") {
@@ -273,7 +274,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
  */
     const handleInputChange = (e, type, classiCode, isRadio = false) => {
         const classiName = e.currentTarget.dataset.key;
-        console.log(e, type, classiCode, isRadio);
+        // console.log(e, type, classiCode, isRadio);
         setInputValues((prev) => {
             // type이 `a_product_name`일 경우 단순히값 저장 후 return
             if (type === "a_product_name") {
@@ -332,18 +333,40 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
 
         inputValuesRef.current = inputValues; //최신 값 보장
         
-        console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
+        // console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
     }, [inputValues]);
     // --------------------- input value 합산 끝 ---------------------  
     // =================== input value 받아와서 업데이트 끝 ===================
       
     // =================== 선택 버튼 클릭 시 ===================
     // inputValues로 저장해 둔 데이터 구조 변경
-    const transformData = (data) => {
-        console.log("transformData function: ", data);
+    const transformPrevData = (data) => {
+        console.log("transformData func, raw data: ", data);
         const result = {};
     
-        if (data.biz || data.cor) { 
+        if (data.length > 0) { 
+            data.forEach((value) => {
+                value.map((e) => {
+                    // console.log(e, typeof e);
+                    const lowerCode = e.great_classi_code ? e.great_classi_code.toLowerCase() : null; 
+                    if (!lowerCode) { return; }
+                    if (!result[lowerCode]) {
+                        result[lowerCode] = {};
+                    }
+                    const small_classi_code = e.small_classi_code;
+                    if (!small_classi_code) {
+                        console.warn("small_classi_code가 없음:", e);
+                        return;
+                    }
+                    const small_classi_name = e.small_classi_name;
+                    const sale_amt = e.sale_amt;
+                    const delegate_tf = e.delegate_tf;
+                    result[lowerCode][small_classi_code] = [small_classi_name, sale_amt, delegate_tf];
+                    console.log([small_classi_name, sale_amt, delegate_tf]);
+                })
+            });
+        }
+        /* if (data.biz || data.cor) { 
             Object.entries(data).forEach(([key, value]) => {
             if (typeof value === "object" && !Array.isArray(value)) { 
                     // biz, cor 내부 객체 순회
@@ -359,8 +382,9 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                     });
                 }
             });
-        }
-    
+        } */
+        console.log("transformData func, data: ", result);
+        
         return result;
     };
 
@@ -445,7 +469,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 });
             }
         });
-
+        console.log('addmode result: ', result);
         return result;
     };
     
@@ -466,14 +490,14 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         const current = inputValuesRef.current;
 
         let transformedData;
-        if (v_modalPropsData) {
-            transformedData = transformData(v_modalPropsData);
+        if (v_propsSaleData.length > 0 && (v_propsSaleData[0].length > 0 || v_propsSaleData[1].length > 0)) {
+            transformedData = transformPrevData(v_propsSaleData);
         } else {
             transformedData = {};
         }
         const finalData = addMode(transformedData, current);
         const finalDataCheck = hasDelegateTrue(finalData);
-        // console.log('inputValues: ', inputValues, '\ntransformedData', transformedData, '\ncurrent: ', current);
+        console.log('inputValues: ', inputValues, '\ntransformedData', transformedData, '\ncurrent: ', current);
 
         let total;
         console.log(sumBiz, typeof sumBiz, sumCor, typeof sumCor);
@@ -514,7 +538,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     }
     // 초기화
     useEffect(()=> {
-        if (isParentHide === true) {
+        if (show === false) {
             console.log(isParentHide);
             setSumBiz(0);
             setSumCor(0);
@@ -526,7 +550,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             setDefaultCorKeys([]);
             setSalesDetailData([]);
         }
-    }, [isParentHide])
+    }, [show])
 
     // UI 업데이트
     const [v_handlingHtml, setVHandlingHtml] = useState(null);

@@ -1361,8 +1361,6 @@ def f_renewal_biz_opp(request):
    #test
    v_session_user_id = ''
 
-
-   #test
    #v_session_user_id = 'leecj'
 
 
@@ -1412,47 +1410,47 @@ def f_renewal_biz_opp(request):
                       #                   'a_principal_product2_code':'0008'},
                       # 'biz_opp_activity':{'a_activity_details':'세번째!',
                       #                     'a_activity_date':'20250204'}}
-            v_body = {'a_session_user_id': 'leecj',
-                      'a_biz_opp_id':'20250034',
-                      'a_detail_no':1,
-                      'a_user_name': '이창주',
-                      'biz_opp': {'a_biz_opp_name': 'v_body를 수동으로...',
-                                  'a_progress2_rate_code': '0001',
-                                  'a_contract_date': '20250101',
-                                  'a_essential_achievement_tf': False},
-                      'biz_opp_detail': {'a_user_id':'leecj',
-                                         'a_change_preparation_dept_id': '98000',
-                                         'a_last_client_com2_code': '',
-                                         'a_sale_item_no': '',
-                                         'a_sale_date': '20250222',
-                                         'a_sale_amt': '3500000',
-                                         'a_sale_profit': 345999,
-                                         'a_purchase_date': '20250224',
-                                         'a_purchase_amt': 789000,
-                                         'a_collect_money_date': '',
-                                         'a_product_name':''},
-                      'biz_opp_activity': {'a_activity_details': 'vvvvvvvvvvvvvvvvvvvvvv',
-                                           'a_activity_date': '20250303'},
-                      'biz_opp_detail_sale': [{'a_great_classi_code':'BIZ',
-                                               'a_small_classi_code':'0002',
-                                               'a_sale_amt':250000,
-                                               'a_delegate_tf':False,
-                                               'a_mode':''},
-                                              {'a_great_classi_code':'COR',
-                                               'a_small_classi_code':'0103',
-                                               'a_sale_amt':0,
-                                               'a_delegate_tf':False,
-                                               'a_mode':''},
-                                              {'a_great_classi_code':'BIZ',
-                                               'a_small_classi_code':'0006',
-                                               'a_sale_amt':300000,
-                                               'a_delegate_tf':False,
-                                               'a_mode':''},
-                                              {'a_great_classi_code':'COR',
-                                               'a_small_classi_code':'0001',
-                                               'a_sale_amt':180000,
-                                               'a_delegate_tf':True,
-                                               'a_mode':''}]}
+            # v_body = {'a_session_user_id': 'leecj',
+            #           'a_biz_opp_id':'20250001',
+            #           'a_detail_no':1,
+            #           'a_user_name': '이창주',
+            #           'biz_opp': {'a_biz_opp_name': 'v_body를 수동으로...!!!!',
+            #                       'a_progress2_rate_code': '0001',
+            #                       'a_contract_date': '20250101',
+            #                       'a_essential_achievement_tf': False},
+            #           'biz_opp_detail': {'a_user_id':'leecj',
+            #                              'a_change_preparation_dept_id': '98000',
+            #                              'a_last_client_com2_code': '',
+            #                              'a_sale_item_no': '',
+            #                              'a_sale_date': '20250222',
+            #                              'a_sale_profit': 6500000,
+            #                              'a_purchase_date': '20250224',
+            #                              'a_purchase_amt': 789000,
+            #                              'a_collect_money_date': '',
+            #                              'a_product_name':''},
+            #           # 'biz_opp_detail':{},
+            #           'biz_opp_activity': {'a_activity_details': 'vvvvvvvvvvvvvvvvvvvvvv',
+            #                                'a_activity_date': '20250303'},
+            #           'biz_opp_detail_sale': [{'a_great_classi_code':'BIZ',
+            #                                    'a_small_classi_code':'0002',
+            #                                    'a_sale_amt':250000,
+            #                                    'a_delegate_tf':False,
+            #                                    'a_mode':'U'},
+            #                                   {'a_great_classi_code':'COR',
+            #                                    'a_small_classi_code':'0103',
+            #                                    'a_sale_amt':0,
+            #                                    'a_delegate_tf':False,
+            #                                    'a_mode':'D'},
+            #                                   {'a_great_classi_code':'BIZ',
+            #                                    'a_small_classi_code':'0006',
+            #                                    'a_sale_amt':300000,
+            #                                    'a_delegate_tf':True,
+            #                                    'a_mode':'U'},
+            #                                   {'a_great_classi_code':'COR',
+            #                                    'a_small_classi_code':'0002',
+            #                                    'a_sale_amt':550000,
+            #                                    'a_delegate_tf':True,
+            #                                    'a_mode':'I'}]}
             v_biz_opp = v_body.get('biz_opp')
             v_biz_opp_detail = v_body.get('biz_opp_detail')
             v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
@@ -1505,6 +1503,7 @@ def f_renewal_biz_opp(request):
                         v_set_clauses_biz_opp_detail_history.append(v_nested_key)
                         v_param.append(v_nested_value)
                v_user_id = ''
+               v_section = ''
                if v_user_name:
                   v_sql_user = """SELECT user_id FROM ajict_bms_schema.aj_user WHERE user_name = %s AND delete_date IS NULL"""
                   v_param_select_user = []
@@ -1515,18 +1514,20 @@ def f_renewal_biz_opp(request):
                      v_user_id = v_row1[0]
                   if v_biz_opp_detail:
                      v_sql_update_biz_opp_detail = f"UPDATE ajict_bms_schema.biz_opp_detail\
-                                                     SET " + ",".join(v_set_clauses) + ",user_id = %s,update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
+                                                     SET " + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
                                                      WHERE biz_opp_id = %s AND detail_no = %s"
                   else:
                      v_sql_update_biz_opp_detail = f"UPDATE ajict_bms_schema.biz_opp_detail\
                                                      SET " + ",".join(v_set_clauses) + "user_id = %s,update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
                                                      WHERE biz_opp_id = %s AND detail_no = %s"
+                     v_section = 'Y'
                else:
                   v_sql_update_biz_opp_detail = f"UPDATE ajict_bms_schema.biz_opp_detail\
                                                   SET " + ",".join(v_set_clauses) + ",update_user = %s,update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'\
                                                   WHERE biz_opp_id = %s AND detail_no = %s"
                if v_user_name:
-                  v_param.append(v_user_id)
+                  if v_section == 'Y':
+                     v_param.append(v_user_id)
                v_param.append(v_session_user_id)
                v_param.append(v_biz_opp_id)
                v_param.append(v_detail_no)
@@ -1643,6 +1644,7 @@ def f_renewal_biz_opp(request):
 
                v_sql_update_biz_opp_history = f"""INSERT INTO ajict_bms_schema.biz_opp_history ({v_columns_str})
                                                   SELECT %s,
+                                                         A.biz_opp_id,
                                                          A.biz_opp_name,
                                                          A.progress1_rate_code,
                                                          A.progress2_rate_code,
@@ -1685,9 +1687,9 @@ def f_renewal_biz_opp(request):
                   v_cursor.execute(v_sql_update_biz_opp_history,v_param_update_biz_opp_history)
                v_new_set_clauses_biz_opp_detail_history = ['u_' + v_item.replace('a_','',1) for v_item in v_set_clauses_biz_opp_detail_history]
                v_base_columns = []
-               v_base_columns = ['biz_opp_id',
+               v_base_columns = ['history_no',
+                                 'biz_opp_id',
                                  'detail_no',
-                                 'history_no',
                                  'user_id',
                                  'change_preparation_dept_id',
                                  'change_preparation_dept_name',
@@ -1714,37 +1716,36 @@ def f_renewal_biz_opp(request):
                #test
                # print(f"v_new_set_clauses_biz_opp_detail_history : {v_new_set_clauses_biz_opp_detail_history}")
                # print(f"v_base_columns : {v_base_columns}")
-               # print(f"v_columns_str : {v_columns_str}")
-               # print(f"v_values_str : {v_values_str}")
+               print(f"v_columns_str : {v_columns_str}")
+               print(f"v_values_str : {v_values_str}")
                # print(f"v_set_clauses_biz_opp_detail_history : {v_set_clauses_biz_opp_detail_history}")
 
 
                v_sql_update_biz_opp_detail_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_history ({v_columns_str})
-                                                        SELECT {v_history_no},
-                                                               A.biz_opp_id,
-                                                               A.detail_no,
-                                                               (SELECT COALESCE(MAX(AA.history_no),0) + 1 FROM ajict_bms_schema.biz_opp_detail_history AA WHERE AA.biz_opp_id = %s AND AA.detail_no = %s),
-                                                               A.user_id,
-                                                               A.change_preparation_dept_id,
-                                                               A.change_preparation_dept_name,
-                                                               A.last_client_com1_code,
-                                                               A.last_client_com2_code,
-                                                               A.sale_item_no,
-                                                               A.sale_date,
-                                                               A.sale_amt,
-                                                               A.sale_profit,
-                                                               A.purchase_date,
-                                                               A.purchase_amt,
-                                                               A.collect_money_date,
-                                                               'U',
-                                                               %s{v_comma}
-                                                               {v_values_str}
-                                                        FROM ajict_bms_schema.biz_opp_detail A
-                                                        WHERE A.biz_opp_id = %s AND
-                                                              A.detail_no = %s"""
+                                                         SELECT {v_history_no},
+                                                                A.biz_opp_id,
+                                                                A.detail_no,
+                                                                A.user_id,
+                                                                A.change_preparation_dept_id,
+                                                                A.change_preparation_dept_name,
+                                                                A.last_client_com1_code,
+                                                                A.last_client_com2_code,
+                                                                A.sale_item_no,
+                                                                A.sale_date,
+                                                                A.sale_amt,
+                                                                A.sale_profit,
+                                                                A.purchase_date,
+                                                                A.purchase_amt,
+                                                                A.collect_money_date,
+                                                                'U',
+                                                                %s{v_comma}
+                                                                {v_values_str}
+                                                         FROM ajict_bms_schema.biz_opp_detail A
+                                                         WHERE A.biz_opp_id = %s AND
+                                                               A.detail_no = %s"""
                v_param_update_biz_opp_detail_history = []
-               v_param_update_biz_opp_detail_history.append(v_biz_opp_id)
-               v_param_update_biz_opp_detail_history.append(v_detail_no)
+               # v_param_update_biz_opp_detail_history.append(v_biz_opp_id)
+               # v_param_update_biz_opp_detail_history.append(v_detail_no)
                v_param_update_biz_opp_detail_history.append(v_session_user_id)
                v_param_update_biz_opp_detail_history.append(v_biz_opp_id)
                v_param_update_biz_opp_detail_history.append(v_detail_no)
@@ -1767,17 +1768,23 @@ def f_renewal_biz_opp(request):
                v_param_insert_biz_opp_detail_sale_history = []
                v_param_select_biz_opp_detail_sale = []
                v_param_update_biz_opp_detail_sale = []
+               v_param_update_biz_opp_detail_sale_history = []
                v_columns = []
                v_rows = []
                v_data_session = []
+               v_max_history_assistance_no = 0
+               v_sql_max = """SELECT COALESCE(MAX(history_assistance_no),0) FROM ajict_bms_schema.biz_opp_detail_sale_history WHERE history_no = %s"""
+               v_param_max = []
+               v_param_max.append(v_history_no)
+               with connection.cursor() as v_cursor:
+                  v_cursor.execute(v_sql_max,v_param_max)
+                  v_row = v_cursor.fetchone()
+                  v_max_history_assistance_no = int(v_row[0])
                for v_item in v_biz_opp_detail_sale:
-                  v_param_insert_biz_opp_detail_sale.clear()
-                  v_param_insert_biz_opp_detail_sale_history.clear()
-                  v_param_select_biz_opp_detail_sale.clear()
-                  v_param_update_biz_opp_detail_sale.clear()
                   v_columns.clear()
                   v_rows.clear()
                   v_data_session.clear()
+                  v_max_history_assistance_no = v_max_history_assistance_no + 1
                   if v_item.get('a_mode') == 'I':
                      v_sql_insert_biz_opp_detail_sale = """INSERT INTO ajict_bms_schema.biz_opp_detail_sale (biz_opp_id,
                                                                                                              detail_no,
@@ -1793,7 +1800,7 @@ def f_renewal_biz_opp(request):
                                                                                                                     %s,
                                                                                                                     %s,
                                                                                                                     %s)"""
-                     v_sql_insert_biz_opp_detail_sale_history = """INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
+                     v_sql_insert_biz_opp_detail_sale_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
                                                                                                                              history_assistance_no,
                                                                                                                              biz_opp_id,
                                                                                                                              detail_no,
@@ -1804,8 +1811,7 @@ def f_renewal_biz_opp(request):
                                                                                                                              renewal_code,
                                                                                                                              create_user)
                                                                                                                             VALUES (%s,
-                                                                                                                                      MAX()를 사용하면 안되네. INSERT 건이 여럿 있으면 안되니까...따로 변수로 빼야 함!!!
-                                                                                                                                    (SELECT COALESCE(MAX(history_assistance_no),0) + 1 FROM ajict_bms_schema.biz_opp_detail_sale_history WHERE history_no = %s),
+                                                                                                                                    {v_max_history_assistance_no},
                                                                                                                                     %s,
                                                                                                                                     %s,
                                                                                                                                     %s,
@@ -1833,7 +1839,7 @@ def f_renewal_biz_opp(request):
                      v_param_insert_biz_opp_detail_sale.append(v_session_user_id)
                      with connection.cursor() as v_cursor:
                         v_cursor.execute(v_sql_insert_biz_opp_detail_sale,v_param_insert_biz_opp_detail_sale)
-                     v_param_insert_biz_opp_detail_sale_history.append(v_history_no)
+                     v_param_insert_biz_opp_detail_sale.clear()
                      v_param_insert_biz_opp_detail_sale_history.append(v_history_no)
                      v_param_insert_biz_opp_detail_sale_history.append(v_biz_opp_id)
                      v_param_insert_biz_opp_detail_sale_history.append(v_detail_no)
@@ -1844,14 +1850,16 @@ def f_renewal_biz_opp(request):
                      v_param_insert_biz_opp_detail_sale_history.append(v_session_user_id)
                      with connection.cursor() as v_cursor:
                         v_cursor.execute(v_sql_insert_biz_opp_detail_sale_history,v_param_insert_biz_opp_detail_sale_history)
+                     v_param_insert_biz_opp_detail_sale_history.clear()
                   if v_item.get('a_mode') == 'U':
+                     v_max_history_assistance_no = v_max_history_assistance_no + 1
                      v_sql_select_biz_opp_detail_sale = """SELECT sale_amt,
                                                                   delegate_tf
                                                            FROM ajict_bms_schema.biz_opp_detail_sale
                                                            WHERE biz_opp_id = %s AND
                                                                  detail_no = %s AND
                                                                  great_classi_code = %s AND
-                                                                 small_classi_code = %s AND     
+                                                                 small_classi_code = %s AND
                                                                  delete_date IS NULL"""
                      v_param_select_biz_opp_detail_sale.append(v_biz_opp_id)
                      v_param_select_biz_opp_detail_sale.append(v_detail_no)
@@ -1862,6 +1870,7 @@ def f_renewal_biz_opp(request):
                         v_columns = [v_column[0] for v_column in v_cursor.description]
                         v_rows = v_cursor.fetchall()
                         v_data_session = [dict(zip(v_columns,row)) for row in v_rows]
+                     v_param_select_biz_opp_detail_sale.clear()
                      if v_item.get('a_sale_amt') != v_data_session[0]['sale_amt'] and v_item.get('a_delegate_tf') != v_data_session[0]['delegate_tf']:
                         v_sql_update_biz_opp_detail_sale = """UPDATE ajict_bms_schema.biz_opp_detail_sale
                                                               SET sale_amt = %s,
@@ -1871,7 +1880,7 @@ def f_renewal_biz_opp(request):
                                                               WHERE biz_opp_id = %s AND
                                                                     detail_no = %s AND
                                                                     great_classi_code = %s AND
-                                                                    small_classi_code = %s AND     
+                                                                    small_classi_code = %s AND
                                                                     delete_date IS NULL"""
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_sale_amt'))
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_delegate_tf'))
@@ -1882,6 +1891,41 @@ def f_renewal_biz_opp(request):
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale,v_param_update_biz_opp_detail_sale)
+                        v_param_update_biz_opp_detail_sale.clear()
+                        v_sql_update_biz_opp_detail_sale_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
+                                                                                                                                 history_assistance_no,
+                                                                                                                                 biz_opp_id,
+                                                                                                                                 detail_no,
+                                                                                                                                 great_classi_code,
+                                                                                                                                 small_classi_code,
+                                                                                                                                 sale_amt,
+                                                                                                                                 u_sale_amt,
+                                                                                                                                 delegate_tf,
+                                                                                                                                 u_delegate_tf,
+                                                                                                                                 renewal_code,
+                                                                                                                                 create_user)
+                                                                                                                                VALUES ({v_history_no},
+                                                                                                                                        {v_max_history_assistance_no},
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        TRUE,
+                                                                                                                                        %s,
+                                                                                                                                        TRUE,
+                                                                                                                                        'U',
+                                                                                                                                        %s)"""
+                        v_param_update_biz_opp_detail_sale_history.append(v_biz_opp_id)
+                        v_param_update_biz_opp_detail_sale_history.append(v_detail_no)
+                        v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_great_classi_code'))
+                        v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_small_classi_code'))
+                        v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_sale_amt'))
+                        v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_delegate_tf'))
+                        v_param_update_biz_opp_detail_sale_history.append(v_session_user_id)
+                        with connection.cursor() as v_cursor:
+                           v_cursor.execute(v_sql_update_biz_opp_detail_sale_history,v_param_update_biz_opp_detail_sale_history)
+                        v_param_update_biz_opp_detail_sale_history.clear()
                      if v_item.get('a_sale_amt') != v_data_session[0]['sale_amt'] and v_item.get('a_delegate_tf') == v_data_session[0]['delegate_tf']:
                         v_sql_update_biz_opp_detail_sale = """UPDATE ajict_bms_schema.biz_opp_detail_sale
                                                               SET sale_amt = %s,
@@ -1890,7 +1934,7 @@ def f_renewal_biz_opp(request):
                                                               WHERE biz_opp_id = %s AND
                                                                     detail_no = %s AND
                                                                     great_classi_code = %s AND
-                                                                    small_classi_code = %s AND     
+                                                                    small_classi_code = %s AND
                                                                     delete_date IS NULL"""
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_sale_amt'))
                         v_param_update_biz_opp_detail_sale.append(v_session_user_id)
@@ -1900,6 +1944,36 @@ def f_renewal_biz_opp(request):
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale,v_param_update_biz_opp_detail_sale)
+                        v_param_update_biz_opp_detail_sale.clear()
+                        v_sql_update_biz_opp_detail_sale_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
+                                                                                                                                 history_assistance_no,
+                                                                                                                                 biz_opp_id,
+                                                                                                                                 detail_no,
+                                                                                                                                 great_classi_code,
+                                                                                                                                 small_classi_code,
+                                                                                                                                 sale_amt,
+                                                                                                                                 u_sale_amt,
+                                                                                                                                 renewal_code,
+                                                                                                                                 create_user)
+                                                                                                                                VALUES ({v_history_no},
+                                                                                                                                        {v_max_history_assistance_no},
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        TRUE,
+                                                                                                                                        'U',
+                                                                                                                                        %s)"""
+                        v_param_update_biz_opp_detail_sale_history.append(v_biz_opp_id)
+                        v_param_update_biz_opp_detail_sale_history.append(v_detail_no)
+                        v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_great_classi_code'))
+                        v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_small_classi_code'))
+                        v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_sale_amt'))
+                        v_param_update_biz_opp_detail_sale_history.append(v_session_user_id)
+                        with connection.cursor() as v_cursor:
+                           v_cursor.execute(v_sql_update_biz_opp_detail_sale_history,v_param_update_biz_opp_detail_sale_history)
+                        v_param_update_biz_opp_detail_sale_history.clear()
                      if v_item.get('a_sale_amt') == v_data_session[0]['sale_amt'] and v_item.get('a_delegate_tf') != v_data_session[0]['delegate_tf']:
                         v_sql_update_biz_opp_detail_sale = """UPDATE ajict_bms_schema.biz_opp_detail_sale
                                                               SET delegate_tf = %s,
@@ -1908,7 +1982,7 @@ def f_renewal_biz_opp(request):
                                                               WHERE biz_opp_id = %s AND
                                                                     detail_no = %s AND
                                                                     great_classi_code = %s AND
-                                                                    small_classi_code = %s AND     
+                                                                    small_classi_code = %s AND
                                                                     delete_date IS NULL"""
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_delegate_tf'))
                         v_param_update_biz_opp_detail_sale.append(v_session_user_id)
@@ -1918,6 +1992,36 @@ def f_renewal_biz_opp(request):
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale,v_param_update_biz_opp_detail_sale)
+                        v_param_update_biz_opp_detail_sale.clear()
+                        v_sql_update_biz_opp_detail_sale_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
+                                                                                                                                 history_assistance_no,
+                                                                                                                                 biz_opp_id,
+                                                                                                                                 detail_no,
+                                                                                                                                 great_classi_code,
+                                                                                                                                 small_classi_code,
+                                                                                                                                 delegate_tf,
+                                                                                                                                 u_delegate_tf,
+                                                                                                                                 renewal_code,
+                                                                                                                                 create_user)
+                                                                                                                                VALUES ({v_history_no},
+                                                                                                                                        {v_max_history_assistance_no},
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        %s,
+                                                                                                                                        TRUE,
+                                                                                                                                        'U',
+                                                                                                                                        %s)"""
+                        v_param_update_biz_opp_detail_sale_history.append(v_biz_opp_id)
+                        v_param_update_biz_opp_detail_sale_history.append(v_detail_no)
+                        v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_great_classi_code'))
+                        v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_small_classi_code'))
+                        v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_delegate_tf'))
+                        v_param_update_biz_opp_detail_sale_history.append(v_session_user_id)
+                        with connection.cursor() as v_cursor:
+                           v_cursor.execute(v_sql_update_biz_opp_detail_sale_history,v_param_update_biz_opp_detail_sale_history)
+                        v_param_update_biz_opp_detail_sale_history.clear()
                   if v_item.get('a_mode') == 'D':
                      print(f"test")
 
@@ -2186,7 +2290,7 @@ def f_clone_biz_opp(request):
                                                                                         detail_no,
                                                                                         user_id,
                                                                                         change_preparation_dept_id,
-                                                                                         change_preparation_dept_name,
+                                                                                        change_preparation_dept_name,
                                                                                         last_client_com1_code,
                                                                                         last_client_com2_code,
                                                                                         sale_item_no,
@@ -2206,7 +2310,7 @@ def f_clone_biz_opp(request):
                                                   A.last_client_com2_code,
                                                   A.sale_item_no,
                                                   A.sale_date,
-                                                  A.sale_amt,
+                                                  0,
                                                   A.sale_profit,
                                                   A.purchase_date,
                                                   A.purchase_amt,
@@ -2292,7 +2396,7 @@ def f_clone_biz_opp(request):
                                                           last_client_com2_code,
                                                           sale_item_no,
                                                           sale_date,
-                                                          sale_amt,
+                                                          0,
                                                           sale_profit,
                                                           purchase_date,
                                                           purchase_amt,

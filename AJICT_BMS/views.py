@@ -1837,6 +1837,13 @@ def f_renewal_biz_opp(request):
                      v_param_insert_biz_opp_detail_sale.append(v_item.get('a_sale_amt'))
                      v_param_insert_biz_opp_detail_sale.append(v_item.get('a_delegate_tf'))
                      v_param_insert_biz_opp_detail_sale.append(v_session_user_id)
+
+
+                     #test
+                     v_formatted_sql = v_sql_insert_biz_opp_detail_sale % tuple(map(repr,v_param_insert_biz_opp_detail_sale))
+                     print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                      with connection.cursor() as v_cursor:
                         v_cursor.execute(v_sql_insert_biz_opp_detail_sale,v_param_insert_biz_opp_detail_sale)
                      v_param_insert_biz_opp_detail_sale.clear()
@@ -1848,6 +1855,13 @@ def f_renewal_biz_opp(request):
                      v_param_insert_biz_opp_detail_sale_history.append(v_item.get('a_sale_amt'))
                      v_param_insert_biz_opp_detail_sale_history.append(v_item.get('a_delegate_tf'))
                      v_param_insert_biz_opp_detail_sale_history.append(v_session_user_id)
+
+
+                     #test
+                     v_formatted_sql = v_sql_insert_biz_opp_detail_sale_history % tuple(map(repr,v_param_insert_biz_opp_detail_sale_history))
+                     print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                      with connection.cursor() as v_cursor:
                         v_cursor.execute(v_sql_insert_biz_opp_detail_sale_history,v_param_insert_biz_opp_detail_sale_history)
                      v_param_insert_biz_opp_detail_sale_history.clear()
@@ -1865,6 +1879,13 @@ def f_renewal_biz_opp(request):
                      v_param_select_biz_opp_detail_sale.append(v_detail_no)
                      v_param_select_biz_opp_detail_sale.append(v_item.get('a_great_classi_code'))
                      v_param_select_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
+
+
+                     #test
+                     v_formatted_sql = v_sql_select_biz_opp_detail_sale % tuple(map(repr,v_param_select_biz_opp_detail_sale))
+                     print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                      with connection.cursor() as v_cursor:
                         v_cursor.execute(v_sql_select_biz_opp_detail_sale,v_param_select_biz_opp_detail_sale)
                         v_columns = [v_column[0] for v_column in v_cursor.description]
@@ -1889,6 +1910,13 @@ def f_renewal_biz_opp(request):
                         v_param_update_biz_opp_detail_sale.append(v_detail_no)
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_great_classi_code'))
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
+
+
+                        #test
+                        v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
+                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale,v_param_update_biz_opp_detail_sale)
                         v_param_update_biz_opp_detail_sale.clear()
@@ -1923,6 +1951,13 @@ def f_renewal_biz_opp(request):
                         v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_sale_amt'))
                         v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_delegate_tf'))
                         v_param_update_biz_opp_detail_sale_history.append(v_session_user_id)
+
+
+                        #test
+                        v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
+                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale_history,v_param_update_biz_opp_detail_sale_history)
                         v_param_update_biz_opp_detail_sale_history.clear()
@@ -1942,6 +1977,13 @@ def f_renewal_biz_opp(request):
                         v_param_update_biz_opp_detail_sale.append(v_detail_no)
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_great_classi_code'))
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
+
+
+                        #test
+                        v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
+                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale,v_param_update_biz_opp_detail_sale)
                         v_param_update_biz_opp_detail_sale.clear()
@@ -1971,6 +2013,13 @@ def f_renewal_biz_opp(request):
                         v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_small_classi_code'))
                         v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_sale_amt'))
                         v_param_update_biz_opp_detail_sale_history.append(v_session_user_id)
+
+
+                        #test
+                        v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
+                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale_history,v_param_update_biz_opp_detail_sale_history)
                         v_param_update_biz_opp_detail_sale_history.clear()
@@ -1990,6 +2039,13 @@ def f_renewal_biz_opp(request):
                         v_param_update_biz_opp_detail_sale.append(v_detail_no)
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_great_classi_code'))
                         v_param_update_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
+
+
+                        #test
+                        v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
+                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale,v_param_update_biz_opp_detail_sale)
                         v_param_update_biz_opp_detail_sale.clear()
@@ -2019,6 +2075,13 @@ def f_renewal_biz_opp(request):
                         v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_small_classi_code'))
                         v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_delegate_tf'))
                         v_param_update_biz_opp_detail_sale_history.append(v_session_user_id)
+
+
+                        #test
+                        v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
+                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale_history,v_param_update_biz_opp_detail_sale_history)
                         v_param_update_biz_opp_detail_sale_history.clear()

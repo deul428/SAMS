@@ -310,6 +310,7 @@ def f_select_biz_opp1(request):
                                                                         EEE.detail_no = 1 AND
                                                                         EEE.delegate_tf = TRUE AND
                                                                         EEE.great_classi_code = 'COR')) AS delegate_sale_com_name,
+                                   B.product_name,
                                    A.create_user AS biz_opp_create_user,
                                    A.create_date AS biz_opp_create_date,
                                    A.update_user AS biz_opp_update_user,
@@ -545,6 +546,7 @@ def f_select_biz_opp2(request):
                                                                         EEE.detail_no = 1 AND
                                                                         EEE.delegate_tf = TRUE AND
                                                                         EEE.great_classi_code = 'COR')) AS delegate_sale_com_name,
+                                   B.product_name,
                                    A.create_user AS biz_opp_create_user,
                                    A.create_date AS biz_opp_create_date,
                                    A.update_user AS biz_opp_update_user,
@@ -3220,7 +3222,8 @@ def f_select_biz_opp_activity3(request):
             v_columns = [v_column[0] for v_column in v_cursor.description]
             v_rows = v_cursor.fetchall()
             v_data["select_biz_opp_activity"] = [dict(zip(v_columns,row)) for row in v_rows]
-         v_sql_biz_opp_detail_sale_biz = """SELECT A.*
+         v_sql_biz_opp_detail_sale_biz = """SELECT A.*,
+                                                   B.small_classi_name
                                             FROM ajict_bms_schema.biz_opp_detail_sale A,
                                                  ajict_bms_schema.commonness_code B
                                             WHERE A.great_classi_code = 'BIZ' AND
@@ -3236,7 +3239,8 @@ def f_select_biz_opp_activity3(request):
             v_columns = [v_column[0] for v_column in v_cursor.description]
             v_rows = v_cursor.fetchall()
             v_data["select_biz_opp_detail_sale_biz"] = [dict(zip(v_columns,row)) for row in v_rows]
-         v_sql_biz_opp_detail_sale_cor = """SELECT A.*
+         v_sql_biz_opp_detail_sale_cor = """SELECT A.*,
+                                                   B.small_classi_name
                                             FROM ajict_bms_schema.biz_opp_detail_sale A,
                                                  ajict_bms_schema.commonness_code B
                                             WHERE A.great_classi_code = 'COR' AND

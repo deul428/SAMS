@@ -184,12 +184,12 @@ table {
                     width: 104px;
                     min-width: 104px;
                     max-width: 104px;
-                    &.biz_opp_name {
+                    &.biz_opp_name, &:nth-child(8) {
                         width: 200px;
                         min-width: 200px;
                         max-width: 200px;
                     }
-                    &.bizopp_history, &.bizopp_copy {
+                    &:nth-last-child(-n+2) {
                         padding: 0 !important;
                         width: 80px;
                         min-width: 80px;

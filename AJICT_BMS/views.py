@@ -772,44 +772,44 @@ def f_insert_biz_opp(request):
    #test
    # v_body = ''
 
-   # v_body = {'a_session_user_id': 'leecj',
-   #           'a_user_name': '이창주',
-   #           'biz_opp': {'a_biz_opp_name': 'v_body를 수동으로...',
-   #                       'a_progress2_rate_code': '0001',
-   #                       'a_contract_date': '20250101',
-   #                       'a_essential_achievement_tf': False},
-   #           'biz_opp_detail': {'a_change_preparation_dept_id': '98000',
-   #                              'a_last_client_com2_code': '',
-   #                              'a_sale_item_no': '',
-   #                              'a_sale_date': '20250222',
-   #                              'a_sale_amt': '3500000',
-   #                              'a_sale_profit': 345999,
-   #                              'a_purchase_date': '20250224',
-   #                              'a_purchase_amt': 789000,
-   #                              'a_collect_money_date': '',
-   #                              'a_product_name':''},
-   #           'biz_opp_activity': {'a_activity_details': 'vvvvvvvvvvvvvvvvvvvvvv',
-   #                                'a_activity_date': '20250303'},
-   #           'biz_opp_detail_sale': [{'a_great_classi_code':'BIZ',
-   #                                    'a_small_classi_code':'0002',
-   #                                    'a_sale_amt':250000,
-   #                                    'a_delegate_tf':False,
-   #                                    'a_mode':''},
-   #                                   {'a_great_classi_code':'COR',
-   #                                    'a_small_classi_code':'0103',
-   #                                    'a_sale_amt':0,
-   #                                    'a_delegate_tf':False,
-   #                                    'a_mode':''},
-   #                                   {'a_great_classi_code':'BIZ',
-   #                                    'a_small_classi_code':'0006',
-   #                                    'a_sale_amt':300000,
-   #                                    'a_delegate_tf':False,
-   #                                    'a_mode':''},
-   #                                   {'a_great_classi_code':'COR',
-   #                                    'a_small_classi_code':'0001',
-   #                                    'a_sale_amt':180000,
-   #                                    'a_delegate_tf':True,
-   #                                    'a_mode':''}]}
+   v_body = {'a_session_user_id': 'leecj',
+             'a_user_name': '이창주',
+             'biz_opp': {'a_biz_opp_name': 'v_body를 수동으로...',
+                         'a_progress2_rate_code': '0001',
+                         'a_contract_date': '20250101',
+                         'a_essential_achievement_tf': False},
+             'biz_opp_detail': {'a_change_preparation_dept_id': '98000',
+                                'a_last_client_com2_code': '',
+                                'a_sale_item_no': '',
+                                'a_sale_date': '20250222',
+                                'a_sale_amt': '3500000',
+                                'a_sale_profit': 345999,
+                                'a_purchase_date': '20250224',
+                                'a_purchase_amt': 789000,
+                                'a_collect_money_date': '',
+                                'a_product_name':''},
+             'biz_opp_activity': {'a_activity_details': 'vvvvvvvvvvvvvvvvvvvvvv',
+                                  'a_activity_date': '20250303'},
+             'biz_opp_detail_sale': [{'a_great_classi_code':'BIZ',
+                                      'a_small_classi_code':'0002',
+                                      'a_sale_amt':250000,
+                                      'a_delegate_tf':False,
+                                      'a_mode':''},
+                                     {'a_great_classi_code':'COR',
+                                      'a_small_classi_code':'0103',
+                                      'a_sale_amt':0,
+                                      'a_delegate_tf':False,
+                                      'a_mode':''},
+                                     {'a_great_classi_code':'BIZ',
+                                      'a_small_classi_code':'0006',
+                                      'a_sale_amt':300000,
+                                      'a_delegate_tf':False,
+                                      'a_mode':''},
+                                     {'a_great_classi_code':'COR',
+                                      'a_small_classi_code':'0001',
+                                      'a_sale_amt':180000,
+                                      'a_delegate_tf':True,
+                                      'a_mode':''}]}
 
 
    if request.method == 'POST':
@@ -1037,7 +1037,7 @@ def f_insert_biz_opp(request):
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:
                v_param_insert_biz_opp_detail.append(v_sale_date)
-            v_sale_amt = None if v_body.get('biz_opp_detail',{}).get('a_sale_amt') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_amt')
+            v_total_sale_amt = None if v_body.get('biz_opp_detail',{}).get('a_total_sale_amt') == '' else v_body.get('biz_opp_detail',{}).get('a_total_sale_amt')
             # if v_sale_amt is not None:
             #   v_sale_amt = v_sale_amt.strip()
             # if not v_sale_amt:
@@ -1047,13 +1047,13 @@ def f_insert_biz_opp(request):
             #    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             # else:
             #    v_param_insert_biz_opp_detail.append(v_sale_amt)
-            if v_sale_amt is None:
+            if v_total_sale_amt is None:
                transaction.set_rollback(True)
                v_return = {'STATUS':'FAIL','MESSAGE':"'매출 금액' 항목은 필수 입력(선택) 항목입니다!"}
                v_square_bracket_return = [v_return]
                return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
             else:
-               v_param_insert_biz_opp_detail.append(v_sale_amt)
+               v_param_insert_biz_opp_detail.append(v_total_sale_amt)
             v_sale_profit = None if v_body.get('biz_opp_detail',{}).get('a_sale_profit') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_profit')
 
             #숫자형을 못잡는 듯...-.-;

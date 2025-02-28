@@ -22,6 +22,10 @@ $point-color: #1a8ef3;
     @include heading(2rem, 1.7rem, 1.25rem, 1rem, 0.75rem);
     h2 {
         margin: 5% 2.5% !important;
+        width: 80%;
+    }
+    body #root #cntntArea #home.wrap h2 { 
+        width: 100%;
     }
     label {
         font-size: 1rem;
@@ -48,6 +52,10 @@ $point-color: #1a8ef3;
     @include heading(2rem, 1.7rem, 1.25rem, 1rem, 0.75rem);
     h2 {
         margin: 2.5% !important;
+        width: 80%;
+    }
+    body #root #cntntArea #home.wrap h2 { 
+        width: 100%;
     }
     label {
         font-size: 1rem;
@@ -82,6 +90,7 @@ h3 {
 label {
     font-size: 1rem;
     font-weight: 400;
+    cursor: pointer;
 }
 
 // pagination

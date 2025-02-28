@@ -84,20 +84,21 @@
                                                             }
                                                             .titleItem {
                                                                 input[type='number'] {
-                                                                    height: 1.75rem;
-                                                                    line-height: 1.75rem;
-                                                                    position: absolute;
-                                                                    top: 2rem;
-                                                                    right: unset;
-                                                                    margin: 0;
-                                                                    left: calc(5% + 2rem);
-                                                                    width: calc(100% - 4rem);
+                                                                    height: 1.75rem !important;
+                                                                    line-height: 1.75rem !important;
+                                                                    position: absolute ;
+                                                                    top: 2rem !important;
+                                                                    right: unset !important;
+                                                                    margin: 0 !important;
+                                                                    left: calc(5% + 2rem) !important;
+                                                                    width: calc(100% - 4rem) !important;
                                                                 }
                                                             }
                                                         }
                                                     }
                                                     &.rc-tree-node-selected {
                                                         height: 4rem;
+                                                        width: 100%;
                                                     }
                                                 }
                                             }
@@ -186,20 +187,21 @@
                                                             }
                                                             .titleItem {
                                                                 input[type='number'] {
-                                                                    height: 1.75rem;
-                                                                    line-height: 1.75rem;
-                                                                    position: absolute;
-                                                                    top: 2rem;
-                                                                    right: unset;
-                                                                    margin: 0;
-                                                                    left: calc(5% + 2rem);
-                                                                    width: calc(100% - 4rem - 2.5%);
+                                                                    height: 1.75rem !important;
+                                                                    line-height: 1.75rem !important;
+                                                                    position: absolute ;
+                                                                    top: 2rem !important;
+                                                                    right: unset !important;
+                                                                    margin: 0 !important;
+                                                                    left: calc(5% + 2rem) !important;
+                                                                    width: calc(100% - 4rem) !important;
                                                                 }
                                                             }
                                                         }
                                                     }
                                                     &.rc-tree-node-selected {
                                                         height: 4rem;
+                                                        width: 100%;
                                                     }
                                                 }
                                             }

@@ -968,7 +968,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                 </Modal.Header> 
                                 <Modal.Body>
                                     <div className='inputField modalcntnt'> 
-                                        <div className='searchItem bizoppArea'>
+                                        <div className='searchItem bizoppDetailArea'>
                                             <>
                                             <Row className='d-flex justify-content-between'>
                                                 <Col xs={12} sm={12} md={3} lg={4} xl={3} className='col d-flex align-items-center floating'  
@@ -1470,7 +1470,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             </Modal.Header> 
                             <Modal.Body>
                                 <div className='inputField modalcntnt'> 
-                                    <div className='searchItem activityArea'>
+                                    <div className='searchItem activityDetailArea'>
                                     {
                                         (v_modalPropsData && auth.userAuthCode === '0002') ? 
                                         (<></>) : 

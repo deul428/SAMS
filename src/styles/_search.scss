@@ -7,11 +7,20 @@
     } 
     .searchItem {
         .row {
-            .col-12 {
+            .col {
                 margin-bottom: 1rem !important;
             }
         }
         &.bizoppArea {
+            .col {
+                &.checkbox {
+                    label {
+                        width: 10rem !important;
+                    }
+                }
+            }
+        }
+        &.bizoppDetailArea {
             .row {
                 ol {
                     li {
@@ -29,15 +38,9 @@
                         }
                     }
                 }
-                .col {
-                    .essentialAchievementTf {
-                        font-size: 1rem !important;
-                    }
-                }
-
             }
         }
-        &.activityArea {
+        &.activityDetailArea {
             margin-left: 0 !important;
             width: 100% !important;
             .row {
@@ -65,23 +68,29 @@
             }
         }
         &.bizoppArea {
-            .row {
-                .col {
-                    .essentialAchievementTf {
-                        font-size: 1rem !important;
+            .col {
+                &.checkbox {
+                    label {
+                        width: 10rem !important;
                     }
                 }
             }
         }
-        &.activityArea {
+        &.bizoppDetailArea {
+            .row {
+                .col {
+                    &.checkbox {
+                    }
+                }
+            }
+        }
+        &.activityDetailArea {
             margin-left: 0 !important;
             width: 100% !important;
             .row {
-                .col-12 {
+                .col {
                 }
-                
             }
-            
         }
     }
 }
@@ -121,6 +130,9 @@
 }
 .inputField {
     position: relative;
+    input[type='checkbox'] {
+        font-size: 1rem !important;
+    }
     .searchItem {
         width: calc(100% + 1rem);
         display: inline-flex;
@@ -131,11 +143,6 @@
             span {
                 font-weight: 500;
             }
-        }
-        
-        
-        &.activityArea {
-            margin-left: -0.5rem;
         }
         .row {       
             width: $full;
@@ -177,8 +184,8 @@
                     font-size: 1.25rem;
                     margin: 0px 0.25rem;
                 }
-                > label {
-                    width: 6.5rem;
+                label {
+                    width: 8rem;
                     margin: 0 0.5rem 0 0;
                 }
                 > div {
@@ -196,7 +203,7 @@
                 }
             } 
         }
-        &.bizoppArea {
+        &.bizoppDetailArea {
             .row {
                 ol {
                     li {
@@ -237,6 +244,14 @@
                             }
                         }
                     }
+                    &.checkbox {
+                        /* label {
+                            width: fit-content;
+                        }
+                        input[type='checkbox'] {
+                            width: auto;
+                        } */
+                    }
                 }
                 &.activity {
                     &:before {
@@ -268,6 +283,9 @@
                 }
 
             }
+        }
+        &.activityDetailArea {
+            margin-left: -0.5rem;
         }
     }
 }

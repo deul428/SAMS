@@ -110,6 +110,20 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
 
 
 
+  // 사업 기회 복제
+  const f_copyBizOpp = (e, row) => {
+    e.stopPropagation();
+    console.log(row);
+    if (row.biz_opp_detail_delete_date) {
+      alert('삭제된 사업 (기회)는 복제할 수 없습니다.');
+      return;
+    }
+    if (window.confirm(`${row.biz_opp_id}번 사업 (기회)를 복제하시겠습니까?`)) {
+      f_handlingData('post', 'clone-biz-opp/', row, e);
+    } else {
+      return;
+    }
+  }
   const f_handlingData = async (method, endpoint, input = null, e) => {
     const copy = {
       a_session_user_id: auth.userId,
@@ -393,7 +407,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             ? 
                             (
                             <>
-                            <Button size="sm" variant='warning' className='btnCell' onClick={(e) => f_handlingData('post', 'clone-biz-opp/', row.original, e)} >복제</Button>
+                            <Button size="sm" variant='warning' className='btnCell' onClick={(e) => f_copyBizOpp(e, row.original)} >복제</Button>
                             </>
                             )
                             : 

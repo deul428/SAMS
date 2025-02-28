@@ -661,10 +661,10 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     setVHandlingHtml(
                         <>
                         <div className='inputField'>
-                            <div className='searchItem'>
+                            <div className='searchItem bizoppArea'>
                                 <>
                                 <Row className='d-flex justify-content-end btnRow'>
-                                    <Col xs={12} md={12} lg={4} className='btnCol col d-flex justify-content-end floating'>
+                                    <Col xs={12} md={12} lg={12} xl={4} className='btnCol col d-flex justify-content-end floating'>
                                         <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e, null)}>조회</Button>
                                         {/* <Button variant='dark' className='ms-2' onClick={(e) => f_resetData('cancel')}>초기화</Button> */}
                                     </Col>
@@ -673,7 +673,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                     {/* <Col xs={12} md={12} lg={4} className='btnArea col d-flex justify-content-end floating'>
                                         <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e, null)}>조회</Button>
                                     </Col> */}
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={6} lg={6} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='계약 일자 From'>
                                             <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' defaultValue={input?.a_contract_date_from || ''} onChange={f_handlingInput}
                                             />
@@ -683,7 +683,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' defaultValue={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={6} lg={6} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='매출 일자 From'>
                                             <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' defaultValue={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
@@ -694,7 +694,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                     </Col>
                                 </Row>
                                 <Row className='d-flex justify-content-start'>
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={6} lg={6} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='진행률 From'>
                                             <Form.Select size='sm' aria-label='selectBox' className='pro_1 ' id='fromSelect' value={input?.a_progress_rate_code_from || ''} name='a_progress_rate_code_from' onChange={f_handleFromChange}>
                                                 <option value=''>선택</option>
@@ -725,15 +725,19 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                             </Form.Select>
                                         </FloatingLabel>
                                     </Col>
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
-                                        <Form.Label htmlFor='inputChck' className='essentialAchievementTf'>필달 여부</Form.Label>
-                                        <Form.Check type={`checkbox`} id={`inputChck`} checked={input?.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
+                                    <Col xs={6} md={3} lg={3} xl={4}className='col d-flex align-items-center justify-content-start floating checkbox'>
+                                        <Form.Label htmlFor='chckEA'>필달 여부</Form.Label>
+                                        <Form.Check type={`checkbox`} id={`chckEA`} checked={input?.a_essential_achievement_tf || false} name='a_essential_achievement_tf' onChange={f_handlingInput}/>
                                     </Col>
-                                   {/*  <Col xs={12} md={0} lg={4} className='col d-flex align-items-center justify-content-start floating' style={{'marginBottom':'0'}}>
+                                    <Col xs={6} md={3} lg={3} xl={4}className='col d-flex align-items-center justify-content-start floating checkbox'>
+                                        <Form.Label htmlFor='chckDelete'>삭제된 것만</Form.Label>
+                                        <Form.Check type={`checkbox`} id={`chckDelete`} /* checked={input?.a_essential_achievement_tf || false}  */name='' onChange={f_handlingInput}/>
+                                    </Col>
+                                   {/*  <Col xs={12} md={0} lg={4} xl={4}className='col d-flex align-items-center justify-content-start floating' style={{'marginBottom':'0'}}>
                                     </Col> */}
                                 </Row>
                                 <Row className='d-flex justify-content-between' >
-                                    <Col xs={12} md={4} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={4} lg={4} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='본부'>
                                             <Form.Select id='select1' size='sm' aria-label='selectBox' value={input?.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept} disabled={v_deptHandling.deptDisabled}>
                                                 <option value={v_deptHandling.deptValue || ''} onChange={f_handlingDept} >{v_deptHandling.deptMsg || '-- 본부를 선택하세요 --'}</option>
@@ -751,7 +755,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                             </Form.Select>
                                         </FloatingLabel>
                                     </Col>
-                                    <Col xs={12} md={4} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={4} lg={4} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='팀'>
                                             <Form.Select id='select2' size='sm' aria-label='selectBox' value={input?.a_dept_id || ''}  name='a_dept_id' onChange={f_handlingDept} disabled={v_teamHandling.teamDisabled}>
                                                 <option value={v_teamHandling.teamValue || ''}>{v_teamHandling.teamMsg || '-- 팀을 선택하세요 --'}</option>
@@ -763,7 +767,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                             </Form.Select>
                                         </FloatingLabel>
                                     </Col>
-                                    <Col xs={12} md={4} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={4} lg={4} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='담당자'>
                                             <Form.Control size='sm' type='text' id='userName' defaultValue={v_userHandling.userValue || ''} name='a_user_name' onChange={f_handlingInput} disabled={v_userHandling.userDisabled}/>
                                         </FloatingLabel>
@@ -779,19 +783,19 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     setVHandlingHtml(
                         <>
                         <div className='inputField'>
-                            <div className='searchItem'>
+                            <div className='searchItem activityArea'>
                                 <>
                                 <Row className='d-flex justify-content-end btnRow'>
-                                    <Col xs={12} md={12} lg={4} className='btnCol col d-flex justify-content-end floating'>
+                                    <Col xs={12} md={12} lg={4} xl={4}className='btnCol col d-flex justify-content-end floating'>
                                         <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e, null)}>조회</Button>
                                         {/* <Button variant='dark' className='ms-2' onClick={(e) => f_resetData('cancel')}>초기화</Button> */}
                                     </Col>
                                 </Row>
                                 <Row className='d-flex justify-content-start'>
-                                    {/* <Col xs={12} md={12} lg={4} className='btnArea col d-flex justify-content-end floating'>
+                                    {/* <Col xs={12} md={12} lg={4} xl={4}className='btnArea col d-flex justify-content-end floating'>
                                         <Button variant='info' onClick={(e) => f_submitData('post', endpoint, input, e, null)}>조회</Button>
                                     </Col> */}
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={6} lg={4} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='계약 일자 From'>
                                             <Form.Control type='date' size='sm' label='FROM' className='' name='a_contract_date_from' defaultValue={input?.a_contract_date_from || ''} onChange={f_handlingInput}
                                             />
@@ -801,7 +805,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                             <Form.Control size='sm' type='date' label='TO' className='' name='a_contract_date_to' defaultValue={input?.a_contract_date_to || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
                                     </Col>
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={6} lg={4} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='매출 일자 From'>
                                             <Form.Control size='sm' type='date' label='FROM' className='' name='a_sale_date_from' defaultValue={input?.a_sale_date_from || ''} onChange={f_handlingInput}/>
                                         </FloatingLabel>
@@ -812,7 +816,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                     </Col>
                                 </Row>
                                 <Row className='d-flex justify-content-between'>
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={6} lg={4} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='본부'>
                                             <Form.Select id='select1' size='sm' aria-label='selectBox' value={input?.a_headquarters_dept_id || ''} name='a_headquarters_dept_id' onChange={f_handlingDept} disabled={v_deptHandling.deptDisabled}>
                                                 <option value={/* v_deptHandling.deptValue ||  */''}>{v_deptHandling.deptMsg || '-- 본부를 선택하세요 --'}</option>
@@ -830,7 +834,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                             </Form.Select>
                                         </FloatingLabel>
                                     </Col>
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={6} lg={4} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='팀'>
                                             <Form.Select id='select2' size='sm' aria-label='selectBox' value={input?.a_dept_id || ''}  name='a_dept_id' onChange={f_handlingDept} disabled={v_teamHandling.teamDisabled}>
                                                 <option value={/* v_teamHandling.teamValue ||  */''}>{v_teamHandling.teamMsg || '-- 팀을 선택하세요 --'}</option>
@@ -842,7 +846,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                             </Form.Select>
                                         </FloatingLabel>
                                     </Col>
-                                    <Col xs={12} md={6} lg={4} className='col d-flex align-items-center justify-content-start floating'>
+                                    <Col xs={12} md={6} lg={4} xl={4}className='col d-flex align-items-center justify-content-start floating'>
                                         <FloatingLabel label='담당자'>
                                             <Form.Control size='sm' type='text' id='userName' defaultValue={v_userHandling.userValue || ''} name='a_user_name' onChange={f_handlingInput} disabled={v_userHandling.userDisabled}/>
                                         </FloatingLabel>

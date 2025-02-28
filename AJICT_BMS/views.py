@@ -1379,6 +1379,12 @@ def f_insert_biz_opp(request):
                   v_param_insert_biz_opp_detail_sale_history.clear()
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
             v_square_bracket_return = [v_return]
+
+
+#test
+            print(f"f_insert_biz_opp()에서의 v_square_bracket_return : {v_square_bracket_return}")
+
+
             return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
       except DatabaseError:
          v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}

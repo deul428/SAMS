@@ -250,6 +250,17 @@ def f_select_biz_opp1(request):
                                     WHERE CC.great_classi_code = B.last_client_com1_code AND
                                           CC.small_classi_code = B.last_client_com2_code AND
                                           CC.delete_date IS NULL) AS last_client_com2_name,
+                                   B.sale_com1_code,
+                                   B.sale_com2_code,
+                                   (SELECT DISTINCT TT.great_classi_name
+                                    FROM ajict_bms_schema.commonness_code TT
+                                    WHERE TT.great_classi_code = B.last_client_com1_code AND
+                                          TT.delete_date IS NULL) AS sale_com1_name,
+                                   (SELECT UU.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code UU
+                                    WHERE UU.great_classi_code = B.last_client_com1_code AND
+                                          UU.small_classi_code = B.last_client_com2_code AND
+                                          UU.delete_date IS NULL) AS sale_com2_name,
                                    A.contract_date,
                                    A.progress1_rate_code,
                                    A.progress2_rate_code,
@@ -264,7 +275,7 @@ def f_select_biz_opp1(request):
                                           OO.delete_date IS NULL) AS progress2_rate_name,
                                    B.sale_item_no,
                                    B.sale_date,
-                                   B.sale_amt,
+                                   B.total_sale_amt,
                                    B.sale_profit,
                                    B.purchase_date,
                                    B.purchase_amt,
@@ -283,13 +294,13 @@ def f_select_biz_opp1(request):
                                    (SELECT PP.small_classi_code
                                     FROM ajict_bms_schema.biz_opp_detail_sale PP
                                     WHERE PP.biz_opp_id = B.biz_opp_id AND
-                                          PP.detail_no = 1 AND
+                                          PP.detail_no = B.detail_no AND
                                           PP.delegate_tf = TRUE AND
                                           PP.great_classi_code = 'BIZ') AS delegate_biz_section2_code,
                                     (SELECT QQ.small_classi_code
                                      FROM ajict_bms_schema.biz_opp_detail_sale QQ
                                      WHERE QQ.biz_opp_id = B.biz_opp_id AND
-                                           QQ.detail_no = 1 AND
+                                           QQ.detail_no = B.detail_no AND
                                            QQ.delegate_tf = TRUE AND
                                            QQ.great_classi_code = 'COR') AS delegate_sale_com2_code,
                                    (SELECT RR.small_classi_name
@@ -298,7 +309,7 @@ def f_select_biz_opp1(request):
                                           RR.small_classi_code = (SELECT DDD.small_classi_code
                                                                   FROM ajict_bms_schema.biz_opp_detail_sale DDD
                                                                   WHERE DDD.biz_opp_id = B.biz_opp_id AND
-                                                                        DDD.detail_no = 1 AND
+                                                                        DDD.detail_no = B.detail_no AND
                                                                         DDD.delegate_tf = TRUE AND
                                                                         DDD.great_classi_code = 'BIZ')) AS delegate_biz_section_name,
                                    (SELECT SS.small_classi_name
@@ -307,7 +318,7 @@ def f_select_biz_opp1(request):
                                           SS.small_classi_code = (SELECT EEE.small_classi_code
                                                                   FROM ajict_bms_schema.biz_opp_detail_sale EEE
                                                                   WHERE EEE.biz_opp_id = B.biz_opp_id AND
-                                                                        EEE.detail_no = 1 AND
+                                                                        EEE.detail_no = B.detail_no AND
                                                                         EEE.delegate_tf = TRUE AND
                                                                         EEE.great_classi_code = 'COR')) AS delegate_sale_com_name,
                                    B.product_name,
@@ -486,6 +497,17 @@ def f_select_biz_opp2(request):
                                     WHERE CC.great_classi_code = B.last_client_com1_code AND
                                           CC.small_classi_code = B.last_client_com2_code AND
                                           CC.delete_date IS NULL) AS last_client_com2_name,
+                                   B.sale_com1_code,
+                                   B.sale_com2_code,
+                                   (SELECT DISTINCT TT.great_classi_name
+                                    FROM ajict_bms_schema.commonness_code TT
+                                    WHERE TT.great_classi_code = B.last_client_com1_code AND
+                                          TT.delete_date IS NULL) AS sale_com1_name,
+                                   (SELECT UU.small_classi_name
+                                    FROM ajict_bms_schema.commonness_code UU
+                                    WHERE UU.great_classi_code = B.last_client_com1_code AND
+                                          UU.small_classi_code = B.last_client_com2_code AND
+                                          UU.delete_date IS NULL) AS sale_com2_name,
                                    A.contract_date,
                                    A.progress1_rate_code,
                                    A.progress2_rate_code,
@@ -500,7 +522,7 @@ def f_select_biz_opp2(request):
                                           OO.delete_date IS NULL) AS progress2_rate_name,
                                    B.sale_item_no,
                                    B.sale_date,
-                                   B.sale_amt,
+                                   B.total_sale_amt,
                                    B.sale_profit,
                                    B.purchase_date,
                                    B.purchase_amt,
@@ -518,14 +540,14 @@ def f_select_biz_opp2(request):
                                                                        CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
                                    (SELECT PP.small_classi_code
                                     FROM ajict_bms_schema.biz_opp_detail_sale PP
-                                    WHERE PP.biz_opp_id = '20250001' AND
-                                          PP.detail_no = 1 AND
+                                    WHERE PP.biz_opp_id = B.biz_opp_id AND
+                                          PP.detail_no = B.detail_no AND
                                           PP.delegate_tf = TRUE AND
                                           PP.great_classi_code = 'BIZ') AS delegate_biz_section2_code,
                                     (SELECT QQ.small_classi_code
                                      FROM ajict_bms_schema.biz_opp_detail_sale QQ
-                                     WHERE QQ.biz_opp_id = '20250001' AND
-                                           QQ.detail_no = 1 AND
+                                     WHERE QQ.biz_opp_id = B.biz_opp_id AND
+                                           QQ.detail_no = B.detail_no AND
                                            QQ.delegate_tf = TRUE AND
                                            QQ.great_classi_code = 'COR') AS delegate_sale_com2_code,
                                    (SELECT RR.small_classi_name
@@ -533,8 +555,8 @@ def f_select_biz_opp2(request):
                                     WHERE RR.great_classi_code = 'BIZ' AND
                                           RR.small_classi_code = (SELECT DDD.small_classi_code
                                                                   FROM ajict_bms_schema.biz_opp_detail_sale DDD
-                                                                  WHERE DDD.biz_opp_id = '20250001' AND
-                                                                        DDD.detail_no = 1 AND
+                                                                  WHERE DDD.biz_opp_id = B.biz_opp_id AND
+                                                                        DDD.detail_no = B.detail_no AND
                                                                         DDD.delegate_tf = TRUE AND
                                                                         DDD.great_classi_code = 'BIZ')) AS delegate_biz_section_name,
                                    (SELECT SS.small_classi_name
@@ -542,8 +564,8 @@ def f_select_biz_opp2(request):
                                     WHERE SS.great_classi_code = 'COR' AND
                                           SS.small_classi_code = (SELECT EEE.small_classi_code
                                                                   FROM ajict_bms_schema.biz_opp_detail_sale EEE
-                                                                  WHERE EEE.biz_opp_id = '20250001' AND
-                                                                        EEE.detail_no = 1 AND
+                                                                  WHERE EEE.biz_opp_id = B.biz_opp_id AND
+                                                                        EEE.detail_no = B.detail_no AND
                                                                         EEE.delegate_tf = TRUE AND
                                                                         EEE.great_classi_code = 'COR')) AS delegate_sale_com_name,
                                    B.product_name,
@@ -932,6 +954,8 @@ def f_insert_biz_opp(request):
                                                                                                  (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s),
                                                                                                  'COR',
                                                                                                  %s,
+                                                                                                 'COR',
+                                                                                                 %s,
                                                                                                  %s,
                                                                                                  %s,
                                                                                                  %s,
@@ -987,16 +1011,16 @@ def f_insert_biz_opp(request):
             if v_last_client_com2_code is not None:
                v_last_client_com2_code = v_last_client_com2_code.strip()
             v_param_insert_biz_opp_detail.append(v_last_client_com2_code)
-            # v_sale_com2_code = None if v_body.get('biz_opp_detail',{}).get('a_sale_com2_code') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_com2_code')
-            # if v_sale_com2_code is not None:
-            #    v_sale_com2_code = v_sale_com2_code.strip()
-            # if not v_sale_com2_code:
-            #    transaction.set_rollback(True)
-            #    v_return = {'STATUS':'FAIL','MESSAGE':"'매출처' 항목은 필수 입력(선택) 항목입니다!"}
-            #    v_square_bracket_return = [v_return]
-            #    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-            # else:
-            #    v_param_insert_biz_opp_detail.append(v_sale_com2_code)
+            v_sale_com2_code = None if v_body.get('biz_opp_detail',{}).get('a_sale_com2_code') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_com2_code')
+            if v_sale_com2_code is not None:
+               v_sale_com2_code = v_sale_com2_code.strip()
+            if not v_sale_com2_code:
+               transaction.set_rollback(True)
+               v_return = {'STATUS':'FAIL','MESSAGE':"'매출처' 항목은 필수 입력(선택) 항목입니다!"}
+               v_square_bracket_return = [v_return]
+               return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
+            else:
+               v_param_insert_biz_opp_detail.append(v_sale_com2_code)
             v_sale_item_no = None if v_body.get('biz_opp_detail',{}).get('a_sale_item_no') == '' else v_body.get('biz_opp_detail',{}).get('a_sale_item_no')
             if v_sale_item_no is not None:
                v_sale_item_no = v_sale_item_no.strip()
@@ -1117,6 +1141,7 @@ def f_insert_biz_opp(request):
                                                                                              progress2_rate_code,
                                                                                              contract_date,
                                                                                              essential_achievement_tf,
+                                                                                             renewal_code,
                                                                                              create_user)
                                                                                            VALUES ({v_history_no},
                                                                                                    %s,
@@ -1125,6 +1150,7 @@ def f_insert_biz_opp(request):
                                                                                                    %s,
                                                                                                    %s,
                                                                                                    %s,
+                                                                                                   'I',
                                                                                                    %s)"""
             v_param_insert_biz_opp_history = []
             v_param_insert_biz_opp_history.append(v_biz_opp_id)
@@ -1168,6 +1194,8 @@ def f_insert_biz_opp(request):
                                                                                                                   (SELECT A.dept_name FROM ajict_bms_schema.dept A WHERE A.dept_id = %s AND A.delete_date IS NULL),
                                                                                                                   'COR',
                                                                                                                   %s,
+                                                                                                                  'COR',
+                                                                                                                  %s,
                                                                                                                   %s,
                                                                                                                   %s,
                                                                                                                   %s,
@@ -1193,6 +1221,7 @@ def f_insert_biz_opp(request):
             else:
                v_param_insert_biz_opp_detail_history.append(v_dept_id)
             v_param_insert_biz_opp_detail_history.append(v_last_client_com2_code)
+            v_param_insert_biz_opp_detail_history.append(v_sale_com2_code)
             v_param_insert_biz_opp_detail_history.append(v_sale_item_no)
             v_param_insert_biz_opp_detail_history.append(v_sale_date)
             v_param_insert_biz_opp_detail_history.append(v_sale_amt)
@@ -1628,7 +1657,7 @@ def f_renewal_biz_opp(request):
                v_history_no = v_row[0]
             if v_biz_opp or v_biz_opp_detail:
                v_new_set_clauses_biz_opp_history = ['u_' + v_item.replace('a_','',1) for v_item in v_set_clauses_biz_opp_history]
-               v_base_columns = ['history_no','biz_opp_id','biz_opp_name','progress1_rate_code','progress2_rate_code','contract_date','essential_achievement_tf','create_user']
+               v_base_columns = ['history_no','biz_opp_id','biz_opp_name','progress1_rate_code','progress2_rate_code','contract_date','essential_achievement_tf','renewal_code','create_user']
                v_columns_str = ',\n '.join(v_base_columns + v_new_set_clauses_biz_opp_history)
                v_values_str = ',\n '.join(['TRUE' for _ in v_new_set_clauses_biz_opp_history])
                v_comma = ''
@@ -1652,6 +1681,7 @@ def f_renewal_biz_opp(request):
                                                          A.progress2_rate_code,
                                                          A.contract_date,
                                                          A.essential_achievement_tf,
+                                                         'U',
                                                          %s{v_comma}
                                                          {v_values_str}
                                                   FROM ajict_bms_schema.biz_opp A
@@ -1697,6 +1727,8 @@ def f_renewal_biz_opp(request):
                                  'change_preparation_dept_name',
                                  'last_client_com1_code',
                                  'last_client_com2_code',
+                                 'sale_com1_code',
+                                 'sale_com2_code',
                                  'sale_item_no',
                                  'sale_date',
                                  'sale_amt',
@@ -1732,6 +1764,8 @@ def f_renewal_biz_opp(request):
                                                                 A.change_preparation_dept_name,
                                                                 A.last_client_com1_code,
                                                                 A.last_client_com2_code,
+                                                                A.sale_com1_code,
+                                                                B.sale_com2_code,
                                                                 A.sale_item_no,
                                                                 A.sale_date,
                                                                 A.sale_amt,
@@ -2202,6 +2236,7 @@ def f_delete_biz_opp(request):
                                                                                              progress2_rate_code,
                                                                                              contract_date,
                                                                                              essential_achievement_tf,
+                                                                                             renewal_code,
                                                                                              create_user)
                                                SELECT {v_history_no},
                                                       A.biz_opp_id,
@@ -2210,6 +2245,7 @@ def f_delete_biz_opp(request):
                                                       A.progress2_rate_code,
                                                       A.contract_date,
                                                       A.essential_achievement_tf,
+                                                      'D',
                                                       %s
                                                FROM ajict_bms_schema.biz_opp A
                                                WHERE A.biz_opp_id = %s"""
@@ -2232,6 +2268,8 @@ def f_delete_biz_opp(request):
                                                                                                            change_preparation_dept_name,
                                                                                                            last_client_com1_code,
                                                                                                            last_client_com2_code,
+                                                                                                           sale_com1_code,
+                                                                                                           sale_com2_code,
                                                                                                            sale_item_no,
                                                                                                            sale_date,
                                                                                                            sale_amt,
@@ -2249,6 +2287,8 @@ def f_delete_biz_opp(request):
                                                              change_preparation_dept_name,
                                                              last_client_com1_code,
                                                              last_client_com2_code,
+                                                             sale_com1_code,
+                                                             sale_com2_code,
                                                              sale_item_no,
                                                              sale_date,
                                                              sale_amt,
@@ -2358,6 +2398,8 @@ def f_clone_biz_opp(request):
                                                                                         change_preparation_dept_name,
                                                                                         last_client_com1_code,
                                                                                         last_client_com2_code,
+                                                                                        sale_com1_code,
+                                                                                        sale_com2_code,
                                                                                         sale_item_no,
                                                                                         sale_date,
                                                                                         sale_amt,
@@ -2373,6 +2415,8 @@ def f_clone_biz_opp(request):
                                                   A.change_preparation_dept_name,
                                                   A.last_client_com1_code,
                                                   A.last_client_com2_code,
+                                                  A.sale_com1_code,
+                                                  A.sale_com2_code,
                                                   A.sale_item_no,
                                                   A.sale_date,
                                                   0,
@@ -2411,6 +2455,7 @@ def f_clone_biz_opp(request):
                                                                                           progress2_rate_code,
                                                                                           contract_date,
                                                                                           essential_achievement_tf,
+                                                                                          renewal_code,
                                                                                           create_user)
                                             SELECT {v_history_no},
                                                    biz_opp_id,
@@ -2419,6 +2464,7 @@ def f_clone_biz_opp(request):
                                                    progress2_rate_code,
                                                    contract_date,
                                                    essential_achievement_tf,
+                                                   'I',
                                                    %s
                                             FROM ajict_bms_schema.biz_opp
                                             WHERE biz_opp_id = %s"""
@@ -2442,6 +2488,8 @@ def f_clone_biz_opp(request):
                                                                                                         change_preparation_dept_name,
                                                                                                         last_client_com1_code,
                                                                                                         last_client_com2_code,
+                                                                                                        sale_com1_code,
+                                                                                                        sale_com2_code,
                                                                                                         sale_item_no,
                                                                                                         sale_date,
                                                                                                         sale_amt,
@@ -2459,6 +2507,8 @@ def f_clone_biz_opp(request):
                                                           change_preparation_dept_name,
                                                           last_client_com1_code,
                                                           last_client_com2_code,
+                                                          sale_com1_code,
+                                                          sale_com2_code,
                                                           sale_item_no,
                                                           sale_date,
                                                           0,
@@ -2576,7 +2626,7 @@ def f_select_biz_opp_activity1(request):
                                              WHERE CC.great_classi_code = B.last_client_com1_code AND
                                                    CC.small_classi_code = B.last_client_com2_code AND
                                                    CC.delete_date IS NULL) AS last_client_com2_name,
-                                            /*B.sale_com1_code,
+                                            B.sale_com1_code,
                                             B.sale_com2_code,
                                             (SELECT DISTINCT DD.great_classi_name
                                              FROM ajict_bms_schema.commonness_code DD
@@ -2586,7 +2636,7 @@ def f_select_biz_opp_activity1(request):
                                              FROM ajict_bms_schema.commonness_code EE
                                              WHERE EE.great_classi_code = B.sale_com1_code AND
                                                    EE.small_classi_code = B.sale_com2_code AND
-                                                   EE.delete_date IS NULL) AS sale_com2_name,*/
+                                                   EE.delete_date IS NULL) AS sale_com2_name,
                                             CASE WHEN (SELECT COUNT(*)
                                                        FROM ajict_bms_schema.biz_opp_detail_sale PP
                                                        WHERE B.biz_opp_id = PP.biz_opp_id AND
@@ -2914,7 +2964,7 @@ def f_select_biz_opp_activity2(request):
                                              WHERE CC.great_classi_code = B.last_client_com1_code AND
                                                    CC.small_classi_code = B.last_client_com2_code AND
                                                    CC.delete_date IS NULL) AS last_client_com2_name,
-                                            /*B.sale_com1_code,
+                                            B.sale_com1_code,
                                             B.sale_com2_code,
                                             (SELECT DISTINCT DD.great_classi_name
                                              FROM ajict_bms_schema.commonness_code DD
@@ -2924,7 +2974,7 @@ def f_select_biz_opp_activity2(request):
                                              FROM ajict_bms_schema.commonness_code EE
                                              WHERE EE.great_classi_code = B.sale_com1_code AND
                                                    EE.small_classi_code = B.sale_com2_code AND
-                                                   EE.delete_date IS NULL) AS sale_com2_name,*/
+                                                   EE.delete_date IS NULL) AS sale_com2_name,
                                             CASE WHEN (SELECT COUNT(*)
                                                        FROM ajict_bms_schema.biz_opp_detail_sale PP
                                                        WHERE B.biz_opp_id = PP.biz_opp_id AND
@@ -3550,6 +3600,22 @@ def f_select_biz_opp_history(request):
                                            A.history_no,
                                            A.biz_opp_name,
                                            A.u_biz_opp_name,
+                                           A.progress1_rate_code,
+                                           A.progress2_rate_code,
+                                           A.u_progress2_rate_code,
+                                           (SELECT DISTINCT NN.great_classi_name
+                                            FROM ajict_bms_schema.commonness_code NN
+                                            WHERE NN.great_classi_code = A.progress1_rate_code AND
+                                                  NN.delete_date IS NULL) AS progress1_rate_name,
+                                           (SELECT OO.small_classi_name
+                                            FROM ajict_bms_schema.commonness_code OO
+                                            WHERE OO.great_classi_code = A.progress1_rate_code AND
+                                                  OO.small_classi_code = A.progress2_rate_code AND
+                                                  OO.delete_date IS NULL) AS progress2_rate_name,
+                                           A.contract_date,
+                                           A.u_contract_date,
+                                           A.essential_achievement_tf,
+                                           A.u_essential_achievement_tf,
                                            B.user_id,
                                            (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = B.user_id AND AA.delete_date IS NULL) AS user_name,
                                            B.change_preparation_dept_id,
@@ -3578,26 +3644,12 @@ def f_select_biz_opp_history(request):
                                             WHERE EE.great_classi_code = B.sale_com1_code AND
                                                   EE.small_classi_code = B.sale_com2_code AND
                                                   EE.delete_date IS NULL) AS sale_com2_name,
-                                           A.contract_date,
-                                           A.u_contract_date,
-                                           A.progress1_rate_code,
-                                           A.progress2_rate_code,
-                                           A.u_progress2_rate_code,
-                                           (SELECT DISTINCT NN.great_classi_name
-                                            FROM ajict_bms_schema.commonness_code NN
-                                            WHERE NN.great_classi_code = A.progress1_rate_code AND
-                                                  NN.delete_date IS NULL) AS progress1_rate_name,
-                                           (SELECT OO.small_classi_name
-                                            FROM ajict_bms_schema.commonness_code OO
-                                            WHERE OO.great_classi_code = A.progress1_rate_code AND
-                                                  OO.small_classi_code = A.progress2_rate_code AND
-                                                  OO.delete_date IS NULL) AS progress2_rate_name,
                                            B.sale_item_no,
                                            B.u_sale_item_no,
                                            B.sale_date,
                                            B.u_sale_date,
-                                           B.sale_amt,
-                                           B.u_sale_amt,
+                                           B.total_sale_amt,
+                                           B.u_total_sale_amt,
                                            B.sale_profit,
                                            B.u_sale_profit,
                                            B.purchase_date,
@@ -3606,7 +3658,7 @@ def f_select_biz_opp_history(request):
                                            B.u_purchase_amt,
                                            B.collect_money_date,
                                            B.u_collect_money_date,
-                                           B.biz_section1_code,
+                                           /*B.biz_section1_code,
                                            B.biz_section2_code,
                                            B.u_biz_section2_code,
                                            (SELECT DISTINCT FF.great_classi_name
@@ -3618,8 +3670,6 @@ def f_select_biz_opp_history(request):
                                             WHERE GG.great_classi_code = B.biz_section1_code AND
                                                   GG.small_classi_code = B.biz_section2_code AND
                                                   GG.delete_date IS NULL) AS biz_section2_name,
-                                           A.essential_achievement_tf,
-                                           A.u_essential_achievement_tf,
                                            B.principal_product1_code,
                                            B.principal_product2_code,
                                            B.u_principal_product2_code,
@@ -3631,42 +3681,79 @@ def f_select_biz_opp_history(request):
                                             FROM ajict_bms_schema.commonness_code II
                                             WHERE II.great_classi_code = B.principal_product1_code AND
                                                   II.small_classi_code = B.principal_product2_code AND
-                                                  II.delete_date IS NULL) AS principal_product2_name,
+                                                  II.delete_date IS NULL) AS principal_product2_name,*/
+                                           B.product_name,
+                                           B.u_product_name,
                                            (SELECT KK.high_dept_id
                                             FROM ajict_bms_schema.dept KK
                                             WHERE KK.dept_id = B.change_preparation_dept_id AND
                                                   KK.delete_date IS NULL) AS change_preparation_high_dept_id,      
                                            (SELECT MM.dept_name
-                                             FROM ajict_bms_schema.dept MM
-                                             WHERE MM.dept_id = (SELECT CCC.high_dept_id
-                                                                 FROM ajict_bms_schema.dept CCC
-                                                                 WHERE CCC.dept_id = B.change_preparation_dept_id AND
-                                                                       CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
-                                           B.renewal_code,
-                                           CASE WHEN B.renewal_code = 'I'
+                                            FROM ajict_bms_schema.dept MM
+                                            WHERE MM.dept_id = (SELECT CCC.high_dept_id
+                                                                FROM ajict_bms_schema.dept CCC
+                                                                WHERE CCC.dept_id = B.change_preparation_dept_id AND
+                                                                      CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
+                                           C.history_assistance_no,
+                                           C.great_classi_code,
+                                           C.small_classi_code,
+                                           CASE WHEN C.great_classi_code IS NOT NULL
+                                                THEN (SELECT DISTINCT PP.great_classi_name
+                                                      FROM ajict_bms_schema.commonness_code PP
+                                                      WHERE PP.great_classi_code = C.great_classi_code AND
+                                                            PP.delete_date IS NULL)
+                                                ELSE NULL
+                                           END AS great_classi_name,
+                                           CASE WHEN C.small_classi_code IS NOT NULL
+                                                THEN (SELECT QQ.small_classi_name
+                                                      FROM ajict_bms_schema.commonness_code QQ
+                                                      WHERE QQ.great_classi_code = B.great_classi_code AND
+                                                            QQ.small_classi_code = B.small_classi_code AND
+                                                            QQ.delete_date IS NULL)
+                                                ELSE NULL
+                                           END AS small_classi_name,
+                                           C.sale_amt,
+                                           C.u_sale_amt,
+                                           /*B.renewal_code,*/
+                                           CASE WHEN C.history_assistance_no IS NOT NULL
+                                                THEN C.renewal_code
+                                                WHEN A.biz_opp_name IS NOT NULL
+                                                THEN A.renewal_code
+                                                ELSE B.renewal_code
+                                           END AS renewal_code,
+                                           /*CASE WHEN B.renewal_code = 'I'
                                                 THEN (SELECT PP.create_date FROM ajict_bms_schema.biz_opp PP WHERE PP.biz_opp_id = A.biz_opp_id)
                                                 WHEN B.renewal_code = 'U'
                                                 THEN (SELECT QQ.update_date FROM ajict_bms_schema.biz_opp QQ WHERE QQ.biz_opp_id = A.biz_opp_id)
                                                 WHEN B.renewal_code = 'D'
                                                 THEN (SELECT RR.delete_date FROM ajict_bms_schema.biz_opp RR WHERE RR.biz_opp_id = A.biz_opp_id)
                                                 ELSE NULL
-                                            END AS renewal_date
+                                            END AS renewal_date*/
+                                            CASE WHEN C.history_assistance_no IS NOT NULL
+                                                THEN C.create_date
+                                                WHEN A.biz_opp_name IS NOT NULL
+                                                THEN A.create_date
+                                                ELSE B.create_date
+                                           END AS renewal_date
                                     FROM ajict_bms_schema.biz_opp_history A,
-                                         ajict_bms_schema.biz_opp_detail_history B
+                                         ajict_bms_schema.biz_opp_detail_history B,
+                                         ajict_bms_schema.biz_opp_detail_sale_history C
                                     WHERE 1 = 1 AND
                                           A.biz_opp_id = B.biz_opp_id AND
                                           A.history_no = B.history_no AND
+                                          A.biz_opp_id = C.biz_opp_id AND
+                                          A.history_no = C.history_no AND
                                           A.biz_opp_id = %s AND
                                           B.detail_no = %s
-                                    ORDER BY B.history_no DESC"""
+                                    ORDER BY renewal_date DESC"""
          v_param = []
          v_param.append(v_biz_opp_id)
          v_param.append(v_detail_no)
 
 
          #test
-         #v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
-         #print(f"f_select_biz_history()에서의 v_formatted_sql : {v_formatted_sql}")
+         v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
+         print(f"f_select_biz_history()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:

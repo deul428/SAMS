@@ -917,9 +917,14 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 };
             });
         }
-        
-        
-        
+        console.log('salesDetailData:' , salesDetailData);
+/*         
+        if (salesDetailData.length > 0) {
+            console.log('salesDetailData:' , salesDetailData);
+        } else {
+            console.log('salesDetailData 아직 없음');
+        }
+         */
         
     }, [salesDetailData]);
 

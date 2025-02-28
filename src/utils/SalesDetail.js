@@ -33,72 +33,78 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     const [defaultCorKeys, setDefaultCorKeys] = useState([]);
     useEffect(() => {
         // 수정 시
-        if (v_propsSaleData.length !== 0 && v_propsSaleData.some(el => el)) {
-            // console.log("v_propsSaleData: ", v_propsSaleData);
-            setPropsBizData(v_propsSaleData[0]);
-            setPropsCorData(v_propsSaleData[1]);
-            // console.log("propsBizData", propsBizData, "propsCorData:", propsCorData);
-            // 변환 로직 실행
-            // 변환된 데이터 구조
-            const transformedData = {
-                biz: {},
-                cor: {},  // cor는 빈 객체 유지
-                a_product_name: ""
-            };
-            
-            
-            v_propsSaleData[0].forEach(item => {
-                if (item.great_classi_code === "BIZ") {
-                    const smallClassiCode = item.small_classi_code;
-                    transformedData.biz[smallClassiCode] = [
-                        item.small_classi_name || "알 수 없음",  // small_classi_name
-                        item.sale_amt,  // sale_amt
-                        item.delegate_tf // delegate_tf
-                    ];
-                }
-            });
-            v_propsSaleData[1].forEach(item => {
-                if (item.great_classi_code === "COR") {
-                    const smallClassiCode = item.small_classi_code;
-                    transformedData.cor[smallClassiCode] = [
-                        item.small_classi_name,  // small_classi_name
-                        item.sale_amt,  // sale_amt
-                        item.delegate_tf // delegate_tf
-                    ];
-                }
-            });
-
-            // 결과 출력
-            // console.log(transformedData);
-            setInputValues(prev => ({
-                ...prev,
-                biz: {
-                    ...prev.biz,  // 기존 biz 데이터 유지
-                    ...transformedData.biz // 새 데이터 추가
-                },
-                cor: {
-                    ...prev.cor,  // 기존 biz 데이터 유지
-                    ...transformedData.cor // 새 데이터 추가
-                },
-                a_product_name: v_modalPropsData?.product_name || prev.a_product_name // 새로운 값이 있으면 업데이트
-            }))
-            
-            // default selected keys 지정을 위한 인덱스 저장. 현재는 대표 사업 구분/대표 제조사명으로만 되어 있어 1:1이지만, 데이터 변경 이후 1:n이 되어야 함.
-            setTimeout(() => {
-                setDefaultBizKeys(
-                    v_propsSaleData[0]
-                        .map(e => e?.small_classi_code)
-                        .filter(Boolean)
-                );
-                setDefaultCorKeys(
-                    v_propsSaleData[1]
-                        .map(e => e?.small_classi_code)
-                        .filter(Boolean)
-                );
-            }, 0);
-        } else {
-            return;
+        /* if (inputValues.a_product_name) {
+            console.log('있어!', inputValues.a_product_name);
+        } */
+        if (!inputValues.a_product_name) {
+            if (v_propsSaleData.length !== 0 && v_propsSaleData.some(el => el)) {
+                // console.log("v_propsSaleData: ", v_propsSaleData);
+                setPropsBizData(v_propsSaleData[0]);
+                setPropsCorData(v_propsSaleData[1]);
+                // console.log("propsBizData", propsBizData, "propsCorData:", propsCorData);
+                // 변환 로직 실행
+                // 변환된 데이터 구조
+                const transformedData = {
+                    biz: {},
+                    cor: {},  // cor는 빈 객체 유지
+                    a_product_name: ""
+                };
+                
+                
+                v_propsSaleData[0].forEach(item => {
+                    if (item.great_classi_code === "BIZ") {
+                        const smallClassiCode = item.small_classi_code;
+                        transformedData.biz[smallClassiCode] = [
+                            item.small_classi_name || "알 수 없음",  // small_classi_name
+                            item.sale_amt,  // sale_amt
+                            item.delegate_tf // delegate_tf
+                        ];
+                    }
+                });
+                v_propsSaleData[1].forEach(item => {
+                    if (item.great_classi_code === "COR") {
+                        const smallClassiCode = item.small_classi_code;
+                        transformedData.cor[smallClassiCode] = [
+                            item.small_classi_name,  // small_classi_name
+                            item.sale_amt,  // sale_amt
+                            item.delegate_tf // delegate_tf
+                        ];
+                    }
+                });
+    
+                // 결과 출력
+                // console.log(transformedData);
+                setInputValues(prev => ({
+                    ...prev,
+                    biz: {
+                        ...prev.biz,  // 기존 biz 데이터 유지
+                        ...transformedData.biz // 새 데이터 추가
+                    },
+                    cor: {
+                        ...prev.cor,  // 기존 biz 데이터 유지
+                        ...transformedData.cor // 새 데이터 추가
+                    },
+                    a_product_name: v_modalPropsData?.product_name || prev.a_product_name // 새로운 값이 있으면 업데이트
+                }))
+                
+                // default selected keys 지정을 위한 인덱스 저장. 현재는 대표 사업 구분/대표 제조사명으로만 되어 있어 1:1이지만, 데이터 변경 이후 1:n이 되어야 함.
+                setTimeout(() => {
+                    setDefaultBizKeys(
+                        v_propsSaleData[0]
+                            .map(e => e?.small_classi_code)
+                            .filter(Boolean)
+                    );
+                    setDefaultCorKeys(
+                        v_propsSaleData[1]
+                            .map(e => e?.small_classi_code)
+                            .filter(Boolean)
+                    );
+                }, 0);
+            } else {
+                return;
+            }
         }
+        
     }, [v_propsSaleData])
 /* 
     useEffect(() => {
@@ -112,7 +118,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         const propsMap = new Map(propsData.map(e => [e.small_classi_code, { sale_amt: e.sale_amt, delegate_tf: e.delegate_tf }]));
         
         return listData.map((e, index) => {
-            
             const matchedData = propsMap.get(e.small_classi_code) || { sale_amt: 0, delegate_tf: false };
             const selectedRadio = isSelected
             ? inputValues[e.great_classi_code.toLowerCase()][e.small_classi_code]?.[2] ?? matchedData.delegate_tf
@@ -496,11 +501,13 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         return result;
     };
     
+    const [isSave, setIsSave] = useState(false);
     const saveData = () => {
         const current = inputValuesRef.current;
 
         let transformedData;
-        if (v_propsSaleData.length > 0 && (v_propsSaleData[0].length > 0 || v_propsSaleData[1].length > 0)) {
+        console.log(v_propsSaleData, v_propsSaleData.length);
+        if (v_propsSaleData.length > 0 && (v_propsSaleData[0]?.length > 0 || v_propsSaleData[1]?.length > 0)) {
             transformedData = transformPrevData(v_propsSaleData);
         } else {
             transformedData = {};
@@ -533,7 +540,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             total: total,
             ...finalData, //  `addMode`의 결과를 함께 저장
         }));
-
+        setIsSave(true);
         setTimeout(() => {
             onHide(true);
         }, 100);
@@ -548,19 +555,22 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     }
     // 초기화
     useEffect(()=> {
-        if (show === true) {
-            console.log(show);
-            setSumBiz(null);
-            setSumCor(null);
-            setInputValues({biz: {}, cor: {}, a_product_name: ''});
-            setSelectedBizKeys([]);
-            setSelectedCorKeys([]);
-            setIsSelected(false);
-            setDefaultBizKeys([]);
-            setDefaultCorKeys([]);
-            setSalesDetailData([]);
+        console.log('show: ', show, '\nisSave: ', isSave)
+        if (show === false) {
+            if (isSave !== true) {
+                console.log(show);
+                setSumBiz(null);
+                setSumCor(null);
+                setInputValues({biz: {}, cor: {}, a_product_name: ''});
+                setSelectedBizKeys([]);
+                setSelectedCorKeys([]);
+                setIsSelected(false);
+                setDefaultBizKeys([]);
+                setDefaultCorKeys([]);
+                setSalesDetailData([]);
+            }
         }
-    }, [show])
+    }, [show, isSave])
 
     // UI 업데이트
     const [v_handlingHtml, setVHandlingHtml] = useState(null);

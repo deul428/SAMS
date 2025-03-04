@@ -437,7 +437,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // 2. UI 표현용
     useEffect(() => {
         // a_v_modalPropsData 데이터 핸들링 후 input 객체에 복사
-        if (v_modalPropsData) {
+        if (v_modalPropsData && show) {
             // 판품번호 disabled 제어
             console.log(v_modalPropsData.progress2_rate_code);
             if (v_modalPropsData.progress2_rate_code === '0006' || v_modalPropsData.progress2_rate_code === '0007') {
@@ -493,7 +493,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 return updatedInput; 
             });
         } 
-    }, [v_modalPropsData]);
+    }, [v_modalPropsData, show]);
     // ----------------- 2) 수정 시 핸들링 끝 -----------------
     // ================= 사업 기회 조회 테이블부 핸들링 끝 ================= 
 
@@ -1007,12 +1007,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                     <div className='inputField modalcntnt'> 
                                         <div className='searchItem bizoppDetailArea'>
                                             <>
-                                            <Row className='d-flex justify-content-between'>
-                                                <Col xs={12} sm={12} md={3} lg={4} xl={3} className='col d-flex align-items-center floating'  
-                                                style={ 
-                                                    (auth.userAuthCode === '0002') ? 
-                                                    ({"pointerEvents": "none"}) : ({})
-                                                }>
+                                            <Row className='d-flex justify-content-between'
+                                            style={ 
+                                                (auth.userAuthCode === '0002') ? 
+                                                ({"pointerEvents": "none"}) : ({})
+                                            }>
+                                                <Col xs={12} sm={12} md={3} lg={4} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 (기회) 일련 번호'>
                                                         <Form.Control size='sm' type='text' className=''
                                                         name='a_biz_opp_id' 
@@ -1171,7 +1171,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 (auth.userAuthCode === '0002') ? 
                                                 ({"pointerEvents": "none"}) : ({})
                                             }>
-                                                <Col xs={12} sm={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                <Col xs={12} sm={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating checkbox'>
                                                     <Form.Label htmlFor='inputChck2' className='essentialAchievementTf'>필달 여부</Form.Label>
                                                     <Form.Check type={`checkbox`} id={`inputChck2`} name='a_essential_achievement_tf' 
                                                     data-key='biz_opp'
@@ -1504,69 +1504,67 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             </Modal.Header> 
                             <Modal.Body>
                                 <div className='inputField modalcntnt'> 
-                                    <div className='searchItem activityDetailArea'>
-                                    {
-                                        (v_modalPropsData && auth.userAuthCode === '0002') ? 
-                                        (<></>) : 
-                                        (
-                                            <>
-                                            <Row className='d-flex justify-content-between mb-2'>
-                                                <Col xs={12} sm={12} md={3} lg={3} xl={2} className=''>
-                                                    <FloatingLabel label='사업 일련 번호'>
-                                                        <Form.Control size='sm' type='text' className='' 
-                                                        name='a_biz_opp_id' 
-                                                        data-key='biz_opp' 
-                                                        placeholder='사업 일련 번호'
-                                                        onChange={f_handlingInput}
-                                                        defaultValue={a_v_modalPropsData?.a_biz_opp_id || ''} 
-                                                        style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}
-                                                        disabled={auth.userAuthCode === '0001' ? true : false}
-                                                        />
-                                                    </FloatingLabel>
-                                                </Col>
-                                                <Col xs={12} sm={12} md={6} lg={6} xl={8} className='mb-2'>
-                                                    <FloatingLabel label='사업 (기회) 명'>
-                                                        <Form.Control as='textarea' size='sm' type='text' className=''
-                                                        name='a_biz_opp_name' 
-                                                        data-key='biz_opp'
-                                                        placeholder='사업 (기회) 명'
-                                                        onChange={f_handlingInput} 
-                                                        // value={input.biz_opp_name || ''}
-                                                        defaultValue={a_v_modalPropsData?.a_biz_opp_name || ''}
-                                                        style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}
-                                                        disabled={auth.userAuthCode === '0001' ? true : false}
-                                                        />
-                                                    </FloatingLabel>
-                                                </Col>
-                                                <Col xs={12} sm={12} md={3} lg={3} xl={2} className=''>
-                                                    <FloatingLabel label='활동 일자' style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}>
-                                                        <Form.Control size='sm' type='date' className='' 
-                                                        name='a_activity_date' 
-                                                        data-key='biz_opp_activity' 
-                                                        placeholder='활동 일자'
-                                                        onChange={f_handlingInput}
-                                                        defaultValue={a_v_modalPropsData?.a_activity_date || ''}
-                                                        />
-                                                    </FloatingLabel>
-                                                </Col>
-                                            </Row>
-                                            <Row className='d-flex justify-content-between'>
-                                                <Col xs={12} sm={12} md={12} lg={12} className=''>
-                                                    <FloatingLabel label='활동 내역' >
-                                                        <Form.Control as='textarea' size='sm' type='text' className='activityDetails' 
-                                                        name='a_activity_details' 
-                                                        data-key='biz_opp_activity'
-                                                        placeholder='활동 내역' 
-                                                        onChange={f_handlingInput} 
-                                                        style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}
-                                                        defaultValue={a_v_modalPropsData?.a_activity_details || ''}
-                                                        />
-                                                    </FloatingLabel>
-                                                </Col>
-                                            </Row>
-                                            </>
-                                        )
-                                    }
+                                    <div className='searchItem activityDetailArea' 
+                                    style={ 
+                                        (auth.userAuthCode === '0002') ? 
+                                        ({"pointerEvents": "none"}) : ({})
+                                    }>
+                                        <>
+                                        <Row className='d-flex justify-content-between mb-2' >
+                                            <Col xs={12} sm={12} md={3} lg={3} xl={2} className=''>
+                                                <FloatingLabel label='사업 일련 번호'>
+                                                    <Form.Control size='sm' type='text' className='' 
+                                                    name='a_biz_opp_id' 
+                                                    data-key='biz_opp' 
+                                                    placeholder='사업 일련 번호'
+                                                    onChange={f_handlingInput}
+                                                    defaultValue={a_v_modalPropsData?.a_biz_opp_id || ''} 
+                                                    style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}
+                                                    disabled={auth.userAuthCode === '0001' ? true : false}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col xs={12} sm={12} md={6} lg={6} xl={8} className='mb-2'>
+                                                <FloatingLabel label='사업 (기회) 명'>
+                                                    <Form.Control as='textarea' size='sm' type='text' className=''
+                                                    name='a_biz_opp_name' 
+                                                    data-key='biz_opp'
+                                                    placeholder='사업 (기회) 명'
+                                                    onChange={f_handlingInput} 
+                                                    // value={input.biz_opp_name || ''}
+                                                    defaultValue={a_v_modalPropsData?.a_biz_opp_name || ''}
+                                                    style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}
+                                                    disabled={auth.userAuthCode === '0001' ? true : false}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col xs={12} sm={12} md={3} lg={3} xl={2} className=''>
+                                                <FloatingLabel label='활동 일자' style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}>
+                                                    <Form.Control size='sm' type='date' className='' 
+                                                    name='a_activity_date' 
+                                                    data-key='biz_opp_activity' 
+                                                    placeholder='활동 일자'
+                                                    onChange={f_handlingInput}
+                                                    defaultValue={a_v_modalPropsData?.a_activity_date || ''}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                        </Row>
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col xs={12} sm={12} md={12} lg={12} className=''>
+                                                <FloatingLabel label='활동 내역' >
+                                                    <Form.Control as='textarea' size='sm' type='text' className='activityDetails' 
+                                                    name='a_activity_details' 
+                                                    data-key='biz_opp_activity'
+                                                    placeholder='활동 내역' 
+                                                    onChange={f_handlingInput} 
+                                                    style={auth.userAuthCode === '0001' ? { 'pointerEvents':'auto' } : {'pointerEvents':'none'}}
+                                                    defaultValue={a_v_modalPropsData?.a_activity_details || ''}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                        </Row>
+                                        </>
                                     </div>
                                 </div>
                                     

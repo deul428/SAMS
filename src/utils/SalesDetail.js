@@ -632,7 +632,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                                 // style={isDisabled ? {"display":"none"} : {"display":"inline-block"}}
                                 disabled={isDisabled ? false : true }
                             /> */}
-                                <div className='modalcntnt'>
+                                <div className='modalcntnt' style={(auth.userAuthCode === '0002') ? ({"pointerEvents": "none"}) : ({})}>
                                     <div className="inputField">
                                         {/* <div className="searchItem">
                                             <FloatingLabel label='검색' controlId="floatingInput">

@@ -159,6 +159,11 @@
                 margin-bottom: 0.5rem;
                 padding: 0;
                 padding-right: 1rem;
+                &.checkbox {
+                    label {
+                        width: 10rem !important;
+                    }
+                }
                 &.floating {
                     label {
                         font-size: 0.9rem;
@@ -205,11 +210,6 @@
         }
         &.bizoppArea {
             .col {
-                &.checkbox {
-                    label {
-                        width: 10rem !important;
-                    }
-                }
             }
         }
         &.bizoppDetailArea {

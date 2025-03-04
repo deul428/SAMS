@@ -1,13 +1,16 @@
 import { Form, FloatingLabel, Modal, Button, Row, Col, CloseButton } from "react-bootstrap";
 import { useState, useEffect, useRef } from "react";
-import '../styles/_customModal.scss';
+import { useDispatch, useSelector } from 'react-redux';
 import Tree from 'rc-tree';
+
 import 'rc-tree/assets/index.css';
+import '../styles/_customModal.scss';
 import '../styles/_tree.scss';
 import '../styles/_button.scss';
 import { endsWith, lowerCase, sum, toLower, update } from "lodash";
 
 const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modalPropsData, v_propsSaleData, setSalesDetailData }) => {
+    const auth = useSelector((state) => state.auth);
     // =================== 렌더 시 세팅 ===================  
     // -------------------- 기본 데이터 핸들링 --------------------
     /* 
@@ -566,11 +569,15 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     };
 
     const hideMsg = () => {
-        if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
-            onHide(true);
-            setIsSave(false);
+        if (auth.userAuthCode !== '0002') {
+            if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
+                onHide(true);
+                setIsSave(false);
+            } else {
+                return;
+            }
         } else {
-            return;
+            onHide(true);
         }
     }
     // 초기화
@@ -708,7 +715,9 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                                 </div>
                             </Modal.Body>
                             <Modal.Footer className="btnArea justify-content-center">
-                                <Button variant='primary' onClick={saveData}>선택</Button>
+                                {(auth.userAuthCode === '0002') ?
+                                    <></> :
+                                    <Button variant='primary' onClick={saveData}>선택</Button>}
                                 <Button variant="secondary" onClick={hideMsg}>
                                 닫기
                                 </Button>

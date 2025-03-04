@@ -5,9 +5,14 @@ import BizOpp from '../../components/BizOpp';
 import Activity from '../../components/Activity';
 import BizOppHistory from '../../components/BizOppHistory';
 import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
+const auth = (function getAuth() {
+  const state = JSON.parse(localStorage.getItem('persist:root')); // Redux의 `persisted state`에서 auth 가져오기
+  return state ? JSON.parse(state.auth) : {};
+})();
 const roots = {
-    login: {depth1: 'login', depth2: '', component: AuthLogin, endpoint: 'login/'},
+  login: {depth1: 'login', depth2: '', component: AuthLogin, endpoint: 'login/'},
     adminUser: {depth1: 'admin', depth2: 'user', component: Home},
     adminCode: {depth1: 'admin', depth2: 'code', component: Home},
     adminProduct: {depth1: 'admin', depth2: 'product', component: Home},
@@ -38,7 +43,7 @@ const roots = {
         Cell: ({value}) => v_handlingNum(value) },
         { Header: '대표 사업 구분', accessor: 'delegate_biz_section_name' },
         { Header: '대표 제조사명', accessor: 'delegate_sale_com_name' },
-        { Header: '활동 이력', accessor: 'bizopp_history'},
+        { Header: '활동 이력', accessor: 'bizopp_history'}, 
         { Header: '사업 복제', accessor: 'bizopp_copy'},
       ]
     },
@@ -164,7 +169,7 @@ const roots = {
             { Header: '본부', accessor: 'change_preparation_high_dept_name' },
             { Header: '팀', accessor: 'change_preparation_dept_name' },
             { Header: '담당자', accessor: 'user_name' },
-
+  
             { Header: '사업 일련 번호', accessor: 'biz_opp_id'},
             { Header: '사업 (기회) 명', accessor: 'biz_opp_name' },
             { Header: '계약 일자', accessor: 'contract_date',
@@ -177,7 +182,7 @@ const roots = {
             Cell: ({value}) => v_handlingNum(value) },
             /* { Header: '대표 사업 구분', accessor: 'delegate_biz_section_name' },
             { Header: '제품 구분', accessor: 'principal_product2_name' }, */
-
+  
             { Header: '업데이트 일자', accessor: 'activity_date', 
             Cell: ({value}) => v_handlingNum(value) },
             { Header: '활동 내역', accessor: 'activity_details'},
@@ -189,6 +194,9 @@ const roots = {
     aimacheive: {depth1: 'aim', depth2: 'achievement', component: Home},
     home: {depth1: 'home', depth2: '', url: 'home/', component: Home}, 
 }
+
+
+
 function applyFunctions(value, ...functions) {
   return functions.reduce((acc, func) => func(acc), value);
 }

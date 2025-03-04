@@ -113,6 +113,10 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // 사업 기회 복제
   const f_copyBizOpp = (e, row) => {
     e.stopPropagation();
+    if (auth.userAuthCode === '0002') {
+      alert('Guest 권한은 데이터를 복제할 수 없습니다.');
+      return;
+    }
     console.log(row);
     if (row.biz_opp_detail_delete_date) {
       alert('삭제된 사업 (기회)는 복제할 수 없습니다.');
@@ -406,9 +410,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                             {index === row.cells.length - 1
                             ? 
                             (
-                            <>
-                            <Button size="sm" variant='warning' className='btnCell' onClick={(e) => f_copyBizOpp(e, row.original)} >복제</Button>
-                            </>
+                              <Button size="sm" variant='warning' className='btnCell' onClick={(e) => f_copyBizOpp(e, row.original)}>복제</Button>
                             )
                             : 
                             (index === row.cells.length - 2 ? 

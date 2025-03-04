@@ -967,10 +967,14 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
 
     const hideMsg = () => {
-        if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
-            onHide(true);
+        if (auth.userAuthCode !== '0002') {
+            if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
+                onHide(true);
+            } else {
+                return;
+            }
         } else {
-            return;
+            onHide(true);
         }
     }
     // UI 업데이트
@@ -1290,11 +1294,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>
-                                            <Row className='d-flex justify-content-start'
-                                            style={ 
-                                                (auth.userAuthCode === '0002') ? 
-                                                ({"pointerEvents": "none"}) : ({})
-                                            }>
+                                            <Row className='d-flex justify-content-start'>
                                                 {/* <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 구분'>
                                                         <Form.Select size='sm' aria-label='사업 구분' className='' name='a_biz_section2_code' 
@@ -1336,7 +1336,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                     </FloatingLabel>
                                                 </Col> */}
                                                 {/* 매출처 파라미터에 맞게 변경해 줘야 함 */}
-                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
+                                                <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating' 
+                                                style={ 
+                                                    (auth.userAuthCode === '0002') ? 
+                                                    ({"pointerEvents": "none"}) : ({})
+                                                }>
                                                     <FloatingLabel label='매출처'>
                                                         <Form.Select size='sm' aria-label='selectBox' className='' name='a_sale_com2_code'
                                                         data-key='biz_opp_detail'
@@ -1610,7 +1614,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             {v_handlingHtml}
             {
                 (v_componentName === 'bizOpp') ?
-                <SalesDetail v_treeName={v_childComponent} isParentHide={isParentHide} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} v_propsSaleData={[saleBizData, saleCorData]} setSalesDetailData={setSalesDetailData} />
+                <SalesDetail v_treeName={v_childComponent} isParentHide={isParentHide} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} v_propsSaleData={[saleBizData, saleCorData]} setSalesDetailData={setSalesDetailData}/>
                 : ''
             }
         </div>

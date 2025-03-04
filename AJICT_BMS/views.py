@@ -939,7 +939,7 @@ def f_insert_biz_opp(request):
                                                                                           last_client_com1_code,
                                                                                           last_client_com2_code,
                                                                                           sale_com1_code,
-                                                                                          sale_cod2_code,
+                                                                                          sale_com2_code,
                                                                                           sale_item_no,
                                                                                           sale_date,
                                                                                           total_sale_amt,

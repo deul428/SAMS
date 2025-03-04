@@ -851,7 +851,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const [delegateBiz, setdelegateBiz] = useState(null);
     const [delegateCor, setdelegateCor] = useState(null);
     useEffect(() => {
-        console.log('props된 salesDetailData:' , salesDetailData);
+        console.log('props된 salesDetailData:' , salesDetailData, '\na_v_modalPropsData: ', a_v_modalPropsData);
         const salesDetailDataArr = Object.entries(salesDetailData);
         const result = [];
         if (salesDetailDataArr.length > 0) {
@@ -899,16 +899,34 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         a_session_user_id: auth.userId,
                         biz_opp_detail_sale: [
                             // ...prevInput.biz_opp_detail_sale,  
-                        ...filteredResult
+                            ...filteredResult
                         ],
                         biz_opp_detail: { 
                             ...prevInput.biz_opp_detail,
+                            /* ...(a_v_modalPropsData.a_product_name !== salesDetailData.a_product_name && {
+                                a_product_name: salesDetailData.a_product_name
+                            }),
+                            ...(a_v_modalPropsData.a_total_sale_amt !== salesDetailData.total && {
+                                a_total_sale_amt: salesDetailData.total
+                            }) */
+                            
                             a_product_name: salesDetailData.a_product_name,
                             a_total_sale_amt: salesDetailData.total
                         }
                     };
                 });
                 setUpdateInput((prevInput) => {
+                    const updatedBizOppDetail = {
+                        ...(a_v_modalPropsData?.a_product_name !== salesDetailData?.a_product_name && {
+                            a_product_name: salesDetailData.a_product_name
+                        }),
+                        ...(a_v_modalPropsData?.a_total_sale_amt !== salesDetailData?.total && {
+                            a_total_sale_amt: salesDetailData.total
+                        })
+                    };
+                
+                    // 변경된 값이 없으면 `biz_opp_detail` 키를 삭제
+                    const hasChanges = Object.keys(updatedBizOppDetail).length > 0;
                     return { 
                         ...prevInput, 
                         a_session_user_id: auth.userId,
@@ -916,11 +934,16 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             // ...prevInput.biz_opp_detail_sale,  
                             ...filteredResult
                         ],
-                        biz_opp_detail: { 
+                        ...(hasChanges && { biz_opp_detail: updatedBizOppDetail })
+                        /* biz_opp_detail: { 
                             ...prevInput.biz_opp_detail,
-                            a_product_name: salesDetailData.a_product_name,
-                            a_total_sale_amt: salesDetailData.total
-                        }
+                            ...(a_v_modalPropsData?.a_product_name !== salesDetailData?.a_product_name && {
+                                a_product_name: salesDetailData.a_product_name
+                            }),
+                            ...(a_v_modalPropsData?.a_total_sale_amt !== salesDetailData?.total && {
+                                a_total_sale_amt: salesDetailData.total
+                            })
+                        } */
                     };
                 });
             }

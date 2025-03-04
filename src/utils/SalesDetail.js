@@ -120,7 +120,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             if (isSave === true) {
                 if (prepareCode?.[2] === true) {
                     selectedRadio = prepareCode?.[2];
-                    console.log("변경했는데 왜?", prepareCode, selectedRadio);
                 }
             } else {
                 selectedRadio = matchedData.delegate_tf;
@@ -139,7 +138,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                             onClick={(e) => checkSelect(e)} 
                             defaultChecked={
                                 isSave ?
-                                selectedRadio:
+                                selectedRadio :
                                 v_propsSaleData[1]?.length > 0 ?
                                 matchedData.delegate_tf : 
                                 false

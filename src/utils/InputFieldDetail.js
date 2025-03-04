@@ -852,9 +852,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const [delegateCor, setdelegateCor] = useState(null);
     useEffect(() => {
         console.log('props된 salesDetailData:' , salesDetailData);
+        const salesDetailDataArr = Object.entries(salesDetailData);
         const result = [];
-        if (salesDetailData.length > 0) {
-            Object.entries(salesDetailData)
+        if (salesDetailDataArr.length > 0) {
+            salesDetailDataArr
                 .filter(([great_classi_code]) => great_classi_code === 'biz' || great_classi_code === 'cor') 
                 .forEach(([great_classi_code, smallClassiObj]) => {
                     Object.entries(smallClassiObj).forEach(([small_classi_code, value]) => {
@@ -932,6 +933,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         console.log("updateInput: ", updateInput);
     }, [insertInput, updateInput])
     
+    useEffect(() => {
+
+        console.log(delegateBiz, delegateCor);
+    }, [delegateBiz, delegateCor])
     // ================= SalesDetail.js 데이터 들어온 이후 끝 ================= 
 
 

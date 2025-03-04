@@ -638,7 +638,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             { key: 'a_activity_date', parent: 'biz_opp_activity', essential: true, },
                         ];
 
-                        if (input.biz_opp_detail?.a_total_sale_amt) {
+                        /* if (input.biz_opp_detail?.a_total_sale_amt) {
                             console.log(`a_total_sale_amt ${typeof input.biz_opp_detail.a_total_sale_amt}`);
                         }
                         if (input.biz_opp_detail?.a_sale_profit) {
@@ -646,7 +646,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         }
                         if (input.biz_opp_detail?.a_purchase_amt) {
                             console.log(`a_purchase_amt ${typeof input.biz_opp_detail.a_purchase_amt}`);
-                        }
+                        } */
 
                         const nullField = validateFields.find(({ key, parent, type, essential }) => {
                             let obj;
@@ -662,7 +662,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             
                             // 필드 유형에 따라 검사
                             if (type === 'number') {
-                                console.log(validateNum(obj, key));
+                                // console.log(validateNum(obj, key));
                                 return !validateNum(obj, key);
                             } else if (type === 'boolean') return obj[key] == null;
                             
@@ -862,6 +862,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         const [small_classi_name, sale_amt, a_delegate_tf, a_mode] = value;
                         // console.log(`Processing: ${great_classi_code} - ${small_classi_code}, small_classi_name: ${small_classi_name}, sale_amt: ${sale_amt}, a_delegate_tf: ${a_delegate_tf}, a_mode: ${a_mode}`);
                         
+                        if (!a_mode) {
+                            console.log('a_mode 오류: ', value);
+                            return;
+                        }
                         result.push({
                             a_great_classi_code: great_classi_code.toUpperCase(),
                             a_small_classi_code: small_classi_code,
@@ -886,7 +890,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         })
         
         const filteredResult = result.map(({ a_small_classi_name, ...rest }) => rest);
-        console.log(filteredResult);
+        console.log("filteredResult: ", filteredResult);
         if (filteredResult.length > 0) {
             setInsertInput((prevInput) => {
                 return { 

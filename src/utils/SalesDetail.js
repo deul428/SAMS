@@ -8,7 +8,6 @@ import '../styles/_button.scss';
 import { endsWith, lowerCase, sum, toLower, update } from "lodash";
 
 const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modalPropsData, v_propsSaleData, setSalesDetailData }) => {
-    console.log(v_modalPropsData, v_propsSaleData);
     // =================== 렌더 시 세팅 ===================  
     // -------------------- 기본 데이터 핸들링 --------------------
     /* 
@@ -124,9 +123,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 selectedRadio = matchedData.delegate_tf;
             }
             
-            if (selectedRadio) {
-                console.log(inputValues, selectedRadio);
-            }
             return {
                 title: (
                     <div className="titleArea"
@@ -214,9 +210,9 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
 
     // 선택 해제된 classiCode는 UI에서 0으로 유지. 이 코드가 없을 시 selected된 요소를 false했다 true할 시 inputValues 객체는 숫자가 0으로 초기화되지만 UI는 초기화되지 않음. inputValues 값 및 UI 표현 값을 보존하기 위해 사용.
     useEffect(() => {
-        console.log("isSelected: ", isSelected, /* inputNumValue */);
+        // console.log("isSelected: ", isSelected, /* inputNumValue */);
         setForceRender(n => n+1);
-        console.log(forceRender);
+        // console.log(forceRender);
         if (isSelected === false) {
             setInputValues((prev) => {
                 return {
@@ -398,7 +394,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                     const sale_amt = e.sale_amt;
                     const delegate_tf = e.delegate_tf;
                     result[lowerCode][small_classi_code] = [small_classi_name, sale_amt, delegate_tf];
-                    console.log([small_classi_name, sale_amt, delegate_tf]);
+                    // console.log([small_classi_name, sale_amt, delegate_tf]);
                 })
             });
         }
@@ -527,7 +523,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         const current = inputValuesRef.current;
 
         let transformedData;
-        console.log(v_propsSaleData, v_propsSaleData.length);
+        // console.log(v_propsSaleData, v_propsSaleData.length);
         if (v_propsSaleData.length > 0 && (v_propsSaleData[0]?.length > 0 || v_propsSaleData[1]?.length > 0)) {
             transformedData = transformPrevData(v_propsSaleData);
         } else {
@@ -538,7 +534,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         console.log('inputValues: ', inputValues, '\ntransformedData', transformedData, '\ncurrent: ', current);
 
         let total;
-        console.log(sumBiz, typeof sumBiz, sumCor, typeof sumCor);
         if (sumBiz !== sumCor) {
             alert('사업 구분 필드의 총 금액은 제조사명 필드의 총 금액과 일치해야 합니다.'); return;
         } else {

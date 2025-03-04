@@ -17,7 +17,6 @@ import { transposeData } from './TransposeTable';
 
 function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColumns, setIsRefresh }) {
   const auth = useSelector((state) => state.auth);
-
   const [showModal, setShowModal] = useState(false);
   const [v_modalPropsData, setVModalPropsData] = useState(null);
   const [v_childComponent, setVChildComponent] = useState(null);
@@ -360,6 +359,12 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
 /*     if (!data && (Array.isArray(res) && res.length === 0)) {
       return <div>Loading...</div>;
     } */
+    console.log("v_propsData: ", v_propsData)
+    if (v_propsData?.status?.STATUS === 'NONE') {
+      htmlContent = <div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>;
+      setVHandlingHtml(htmlContent);
+      return;
+    }
     if ((typeof(data) === 'object' && data) || (Array.isArray(data) && data.length > 0)) {
       // console.log("data: ", data, "res: ", res);
       switch (v_componentName) {
@@ -440,7 +445,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         case `activity`: 
           htmlContent = (
             <>
-            <Table hover responsive className='activity' >
+            <Table hover responsive className='activity'>
               {Object.entries(groupedData).map(([biz_opp_id, group], groupIndex) => {
                 const commonInfo = group[0]; // 그룹의 첫 번째 데이터를 공통 정보로 사용
                 return (
@@ -599,7 +604,8 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
           setVHandlingHtml(htmlContent);
           break;
         default:
-          setVHandlingHtml(<h1>안녕하세요 DynamicTable.js 작업 중입니다.</h1>);
+          htmlContent = <div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>;
+          setVHandlingHtml(htmlContent);
           break;
       }
     }

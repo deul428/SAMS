@@ -484,7 +484,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                         </div>
                         <div className='col col_saleAmt col-xl-4 col-lg-4 col-md-4 col-12'>
                           <th>매출 금액</th>
-                          <td>{commonInfo.sale_amt.toLocaleString('ko-KR')}</td>
+                          <td>{commonInfo.total_sale_amt.toLocaleString('ko-KR')}</td>
                         </div>
                       </div>
                     </tbody>

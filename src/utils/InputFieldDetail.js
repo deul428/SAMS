@@ -366,7 +366,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         a_session_user_id: auth.userId,
                         a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id,
                         a_detail_no: a_v_modalPropsData.a_detail_no,
-                        a_user_name: prevInput.a_user_name
+                        a_user_name: a_v_modalPropsData.a_user_name
                     }
                 } else {
                     updatedInput = { 
@@ -439,6 +439,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         // a_v_modalPropsData 데이터 핸들링 후 input 객체에 복사
         if (v_modalPropsData) {
             // 판품번호 disabled 제어
+            console.log(v_modalPropsData.progress2_rate_code);
             if (v_modalPropsData.progress2_rate_code === '0006' || v_modalPropsData.progress2_rate_code === '0007') {
                 setIsProDisabled(false);
             } else {
@@ -686,7 +687,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 }
             } else if (v_componentName === 'activity') {
                 if (msg === '수정' && a_v_modalPropsData) {
-                    if (!input.biz_opp_activity?.a_activity_details || !input.biz_opp_activity?.a_activity_date) {
+                    console.log(input.biz_opp_activity.a_activity_details);
+                    if (!input.biz_opp_activity?.a_activity_details && !input.biz_opp_activity?.a_activity_date) {
                         alert('수정할 내용을 입력해 주십시오.');
                         return;
                     }
@@ -791,7 +793,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         if (show) {
             setIsParentHide(false);
             setIsRefresh(false);
-            setIsProDisabled(true);
             f_handlingData('post', 'select-popup-biz-opp/', userCheck, null, '조회');
             authCheck();
             if (v_modalPropsData) {
@@ -1156,11 +1157,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         onChange={f_handlingInput} 
                                                         // value={input.sale_item_no || ''} 
                                                         defaultValue={a_v_modalPropsData?.a_sale_item_no || ''}
-                                                        disabled={
-                                                            (isProDisabled === true ? true : false /* 
-                                                                (auth.userAuthCode === '0002') ? 
-                                                                (false) : fal */)
-                                                        }/>
+                                                        disabled={isProDisabled === true ? true : false}
+                                                    />
                                                     </FloatingLabel>
                                                 </Col>
                                             </Row>  

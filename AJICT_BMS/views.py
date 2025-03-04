@@ -254,12 +254,12 @@ def f_select_biz_opp1(request):
                                    B.sale_com2_code,
                                    (SELECT DISTINCT TT.great_classi_name
                                     FROM ajict_bms_schema.commonness_code TT
-                                    WHERE TT.great_classi_code = B.last_client_com1_code AND
+                                    WHERE TT.great_classi_code = B.sale_com1_code AND
                                           TT.delete_date IS NULL) AS sale_com1_name,
                                    (SELECT UU.small_classi_name
                                     FROM ajict_bms_schema.commonness_code UU
-                                    WHERE UU.great_classi_code = B.last_client_com1_code AND
-                                          UU.small_classi_code = B.last_client_com2_code AND
+                                    WHERE UU.great_classi_code = B.sale_com1_code AND
+                                          UU.small_classi_code = B.sale_com2_code AND
                                           UU.delete_date IS NULL) AS sale_com2_name,
                                    A.contract_date,
                                    A.progress1_rate_code,
@@ -501,12 +501,12 @@ def f_select_biz_opp2(request):
                                    B.sale_com2_code,
                                    (SELECT DISTINCT TT.great_classi_name
                                     FROM ajict_bms_schema.commonness_code TT
-                                    WHERE TT.great_classi_code = B.last_client_com1_code AND
+                                    WHERE TT.great_classi_code = B.sale_com1_code AND
                                           TT.delete_date IS NULL) AS sale_com1_name,
                                    (SELECT UU.small_classi_name
                                     FROM ajict_bms_schema.commonness_code UU
-                                    WHERE UU.great_classi_code = B.last_client_com1_code AND
-                                          UU.small_classi_code = B.last_client_com2_code AND
+                                    WHERE UU.great_classi_code = B.sale_com1_code AND
+                                          UU.small_classi_code = B.sale_com2_code AND
                                           UU.delete_date IS NULL) AS sale_com2_name,
                                    A.contract_date,
                                    A.progress1_rate_code,
@@ -942,7 +942,7 @@ def f_insert_biz_opp(request):
                                                                                           sale_cod2_code,
                                                                                           sale_item_no,
                                                                                           sale_date,
-                                                                                          sale_amt,
+                                                                                          total_sale_amt,
                                                                                           sale_profit,
                                                                                           purchase_date,
                                                                                           purchase_amt,
@@ -1182,7 +1182,7 @@ def f_insert_biz_opp(request):
                                                                                                            sale_com2_code,
                                                                                                            sale_item_no,
                                                                                                            sale_date,
-                                                                                                           sale_amt,
+                                                                                                           total_sale_amt,
                                                                                                            sale_profit,
                                                                                                            purchase_date,
                                                                                                            purchase_amt,
@@ -1228,7 +1228,7 @@ def f_insert_biz_opp(request):
             v_param_insert_biz_opp_detail_history.append(v_sale_com2_code)
             v_param_insert_biz_opp_detail_history.append(v_sale_item_no)
             v_param_insert_biz_opp_detail_history.append(v_sale_date)
-            v_param_insert_biz_opp_detail_history.append(v_sale_amt)
+            v_param_insert_biz_opp_detail_history.append(v_total_sale_amt)
             v_param_insert_biz_opp_detail_history.append(v_sale_profit)
             v_param_insert_biz_opp_detail_history.append(v_purchase_date)
             v_param_insert_biz_opp_detail_history.append(v_purchase_amt)
@@ -1741,7 +1741,7 @@ def f_renewal_biz_opp(request):
                                  'sale_com2_code',
                                  'sale_item_no',
                                  'sale_date',
-                                 'sale_amt',
+                                 'total_sale_amt',
                                  'sale_profit',
                                  'purchase_date',
                                  'purchase_amt',
@@ -1778,7 +1778,7 @@ def f_renewal_biz_opp(request):
                                                                 B.sale_com2_code,
                                                                 A.sale_item_no,
                                                                 A.sale_date,
-                                                                A.sale_amt,
+                                                                A.total_sale_amt,
                                                                 A.sale_profit,
                                                                 A.purchase_date,
                                                                 A.purchase_amt,
@@ -2282,7 +2282,7 @@ def f_delete_biz_opp(request):
                                                                                                            sale_com2_code,
                                                                                                            sale_item_no,
                                                                                                            sale_date,
-                                                                                                           sale_amt,
+                                                                                                           total_sale_amt,
                                                                                                            sale_profit,
                                                                                                            purchase_date,
                                                                                                            purchase_amt,
@@ -2301,7 +2301,7 @@ def f_delete_biz_opp(request):
                                                              sale_com2_code,
                                                              sale_item_no,
                                                              sale_date,
-                                                             sale_amt,
+                                                             total_sale_amt,
                                                              sale_profit,
                                                              purchase_date,
                                                              purchase_amt,
@@ -2412,7 +2412,7 @@ def f_clone_biz_opp(request):
                                                                                         sale_com2_code,
                                                                                         sale_item_no,
                                                                                         sale_date,
-                                                                                        sale_amt,
+                                                                                        total_sale_amt,
                                                                                         sale_profit,
                                                                                         purchase_date,
                                                                                         purchase_amt,
@@ -2429,7 +2429,7 @@ def f_clone_biz_opp(request):
                                                   A.sale_com2_code,
                                                   A.sale_item_no,
                                                   A.sale_date,
-                                                  0,
+                                                  A.total_sale_amt,
                                                   A.sale_profit,
                                                   A.purchase_date,
                                                   A.purchase_amt,
@@ -2502,7 +2502,7 @@ def f_clone_biz_opp(request):
                                                                                                         sale_com2_code,
                                                                                                         sale_item_no,
                                                                                                         sale_date,
-                                                                                                        sale_amt,
+                                                                                                        total_sale_amt,
                                                                                                         sale_profit,
                                                                                                         purchase_date,
                                                                                                         purchase_amt,
@@ -2521,7 +2521,7 @@ def f_clone_biz_opp(request):
                                                           sale_com2_code,
                                                           sale_item_no,
                                                           sale_date,
-                                                          0,
+                                                          total_sale_amt,
                                                           sale_profit,
                                                           purchase_date,
                                                           purchase_amt,
@@ -2695,7 +2695,7 @@ def f_select_biz_opp_activity1(request):
                                                    OO.delete_date IS NULL) AS progress2_rate_name,
                                             B.sale_item_no,
                                             B.sale_date,
-                                            B.sale_amt,
+                                            B.total_sale_amt,
                                             B.sale_profit,
                                             B.purchase_date,
                                             B.purchase_amt,
@@ -3033,7 +3033,7 @@ def f_select_biz_opp_activity2(request):
                                                    OO.delete_date IS NULL) AS progress2_rate_name,
                                             B.sale_item_no,
                                             B.sale_date,
-                                            B.sale_amt,
+                                            B.total_sale_amt,
                                             B.sale_profit,
                                             B.purchase_date,
                                             B.purchase_amt,

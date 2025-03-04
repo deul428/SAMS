@@ -851,86 +851,79 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const [delegateBiz, setdelegateBiz] = useState(null);
     const [delegateCor, setdelegateCor] = useState(null);
     useEffect(() => {
-        // console.log("salesDetailData: ", salesDetailData);
+        console.log('props된 salesDetailData:' , salesDetailData);
         const result = [];
-
-        Object.entries(salesDetailData)
-            .filter(([great_classi_code]) => great_classi_code === 'biz' || great_classi_code === 'cor') 
-            .forEach(([great_classi_code, smallClassiObj]) => {
-                Object.entries(smallClassiObj).forEach(([small_classi_code, value]) => {
-                    if (Array.isArray(value)) {
-                        const [small_classi_name, sale_amt, a_delegate_tf, a_mode] = value;
-                        // console.log(`Processing: ${great_classi_code} - ${small_classi_code}, small_classi_name: ${small_classi_name}, sale_amt: ${sale_amt}, a_delegate_tf: ${a_delegate_tf}, a_mode: ${a_mode}`);
-                        
-                        if (!a_mode) {
-                            console.log('a_mode 오류: ', value);
-                            return;
-                        }
-                        result.push({
-                            a_great_classi_code: great_classi_code.toUpperCase(),
-                            a_small_classi_code: small_classi_code,
-                            a_small_classi_name: small_classi_name,
-                            a_sale_amt: sale_amt,
-                            a_delegate_tf,
-                            a_mode
-                        });
-                    }
-                });
-            });
-        
-        console.log("salesDetailData transform Result:", result);
-        result.map((e, index) => {
-            if (e.a_delegate_tf === true) {
-                if (e.a_great_classi_code === 'BIZ') {
-                    setdelegateBiz(e);
-                } else if (e.a_great_classi_code === 'COR') {
-                    setdelegateCor(e);
-                }
-            }
-        })
-        
-        const filteredResult = result.map(({ a_small_classi_name, ...rest }) => rest);
-        console.log("filteredResult: ", filteredResult);
-        if (filteredResult.length > 0) {
-            setInsertInput((prevInput) => {
-                return { 
-                    ...prevInput, 
-                    a_session_user_id: auth.userId,
-                    biz_opp_detail_sale: [
-                        // ...prevInput.biz_opp_detail_sale,  
-                       ...filteredResult
-                    ],
-                    biz_opp_detail: { 
-                        ...prevInput.biz_opp_detail,
-                        a_product_name: salesDetailData.a_product_name,
-                        a_total_sale_amt: salesDetailData.total
-                    }
-                };
-            });
-            setUpdateInput((prevInput) => {
-                return { 
-                    ...prevInput, 
-                    a_session_user_id: auth.userId,
-                    biz_opp_detail_sale: [
-                        // ...prevInput.biz_opp_detail_sale,  
-                        ...filteredResult
-                    ],
-                    biz_opp_detail: { 
-                        ...prevInput.biz_opp_detail,
-                        a_product_name: salesDetailData.a_product_name,
-                        a_total_sale_amt: salesDetailData.total
-                    }
-                };
-            });
-        }
-        console.log('salesDetailData:' , salesDetailData);
-/*         
         if (salesDetailData.length > 0) {
-            console.log('salesDetailData:' , salesDetailData);
-        } else {
-            console.log('salesDetailData 아직 없음');
+            Object.entries(salesDetailData)
+                .filter(([great_classi_code]) => great_classi_code === 'biz' || great_classi_code === 'cor') 
+                .forEach(([great_classi_code, smallClassiObj]) => {
+                    Object.entries(smallClassiObj).forEach(([small_classi_code, value]) => {
+                        if (Array.isArray(value)) {
+                            const [small_classi_name, sale_amt, a_delegate_tf, a_mode] = value;
+                            // console.log(`Processing: ${great_classi_code} - ${small_classi_code}, small_classi_name: ${small_classi_name}, sale_amt: ${sale_amt}, a_delegate_tf: ${a_delegate_tf}, a_mode: ${a_mode}`);
+                            
+                            if (!a_mode) {
+                                console.log('a_mode 오류: ', value);
+                                return;
+                            }
+                            result.push({
+                                a_great_classi_code: great_classi_code.toUpperCase(),
+                                a_small_classi_code: small_classi_code,
+                                a_small_classi_name: small_classi_name,
+                                a_sale_amt: sale_amt,
+                                a_delegate_tf,
+                                a_mode
+                            });
+                        }
+                    });
+                });
+            
+            console.log("salesDetailData transform Result:", result);
+            result.map((e, index) => {
+                if (e.a_delegate_tf === true) {
+                    if (e.a_great_classi_code === 'BIZ') {
+                        setdelegateBiz(e);
+                    } else if (e.a_great_classi_code === 'COR') {
+                        setdelegateCor(e);
+                    }
+                }
+            })
+            
+            const filteredResult = result.map(({ a_small_classi_name, ...rest }) => rest);
+            console.log("filteredResult: ", filteredResult);
+            if (filteredResult.length > 0) {
+                setInsertInput((prevInput) => {
+                    return { 
+                        ...prevInput, 
+                        a_session_user_id: auth.userId,
+                        biz_opp_detail_sale: [
+                            // ...prevInput.biz_opp_detail_sale,  
+                        ...filteredResult
+                        ],
+                        biz_opp_detail: { 
+                            ...prevInput.biz_opp_detail,
+                            a_product_name: salesDetailData.a_product_name,
+                            a_total_sale_amt: salesDetailData.total
+                        }
+                    };
+                });
+                setUpdateInput((prevInput) => {
+                    return { 
+                        ...prevInput, 
+                        a_session_user_id: auth.userId,
+                        biz_opp_detail_sale: [
+                            // ...prevInput.biz_opp_detail_sale,  
+                            ...filteredResult
+                        ],
+                        biz_opp_detail: { 
+                            ...prevInput.biz_opp_detail,
+                            a_product_name: salesDetailData.a_product_name,
+                            a_total_sale_amt: salesDetailData.total
+                        }
+                    };
+                });
+            }
         }
-         */
         
     }, [salesDetailData]);
 

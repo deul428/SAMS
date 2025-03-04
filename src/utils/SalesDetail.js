@@ -118,7 +118,10 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             const prepareCode = inputValues[e.great_classi_code.toLowerCase()][e.small_classi_code];
             let selectedRadio;
             if (isSave === true) {
-                selectedRadio = prepareCode?.[2];
+                if (prepareCode?.[2] === true) {
+                    selectedRadio = prepareCode?.[2];
+                    console.log("변경했는데 왜?", prepareCode, selectedRadio);
+                }
             } else {
                 selectedRadio = matchedData.delegate_tf;
             }
@@ -135,9 +138,10 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                             onChange={(e) => handleInputChange(e, type, e.target.dataset.code, true)}
                             onClick={(e) => checkSelect(e)} 
                             defaultChecked={
+                                isSave ?
+                                selectedRadio:
                                 v_propsSaleData[1]?.length > 0 ?
                                 matchedData.delegate_tf : 
-                                isSave ? selectedRadio :
                                 false
                             }
                         />

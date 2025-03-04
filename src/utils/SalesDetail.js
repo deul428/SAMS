@@ -33,9 +33,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     const [defaultCorKeys, setDefaultCorKeys] = useState([]);
     useEffect(() => {
         // 수정 시
-        /* if (inputValues.a_product_name) {
-            console.log('있어!', inputValues.a_product_name);
-        } */
         if (!inputValues.a_product_name) {
             if (v_propsSaleData.length !== 0 && v_propsSaleData.some(el => el)) {
                 // console.log("v_propsSaleData: ", v_propsSaleData);
@@ -87,7 +84,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                     a_product_name: v_modalPropsData?.product_name || prev.a_product_name // 새로운 값이 있으면 업데이트
                 }))
                 
-                // default selected keys 지정을 위한 인덱스 저장. 현재는 대표 사업 구분/대표 제조사명으로만 되어 있어 1:1이지만, 데이터 변경 이후 1:n이 되어야 함.
+                // default selected keys 지정을 위한 인덱스 저장.
                 setTimeout(() => {
                     setDefaultBizKeys(
                         v_propsSaleData[0]
@@ -349,6 +346,20 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         inputValuesRef.current = inputValues; //최신 값 보장
         
         console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
+
+        // 이 모달 저장 후 나갔다가 다시 모달 열 경우 selected 유지
+        setTimeout(() => {
+            setDefaultBizKeys(
+                Object.keys(inputValues.biz)
+                    .map(e => e/* ?.small_classi_code */)
+                    .filter(Boolean)
+            );
+            setDefaultCorKeys(
+                Object.keys(inputValues.cor)
+                    .map(e => e/* ?.small_classi_code */)
+                    .filter(Boolean)
+            );
+        }, 0);
     }, [inputValues]);
     // --------------------- input value 합산 끝 ---------------------  
     // =================== input value 받아와서 업데이트 끝 ===================
@@ -558,9 +569,16 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     useEffect(()=> {
         console.log('show: ', show, '\nisSave: ', isSave)
         if (show === false) {
+            // 부모 모달이 닫혔으면 isSave 플래그도 false
             if (isParentHide === true) {
-                setIsSave(false);
+                setIsSave(false); 
             }
+
+            /* 
+            초기화
+            1) 부모 모달은 살아 있지만 이 모달을 저장하지 않고 나가서 모달 플래그가 false일 경우우
+            2) 부모 모달이 닫혀서 이 모달 플래그도 false일 경우
+             */ 
             if (isSave === false) {
                 console.log(show);
                 setSumBiz(null);
@@ -574,7 +592,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 setSalesDetailData([]);
             }
         }
-    
     }, [show, isSave, isParentHide])
 
     // UI 업데이트

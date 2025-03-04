@@ -1775,7 +1775,7 @@ def f_renewal_biz_opp(request):
                                                                 A.last_client_com1_code,
                                                                 A.last_client_com2_code,
                                                                 A.sale_com1_code,
-                                                                B.sale_com2_code,
+                                                                A.sale_com2_code,
                                                                 A.sale_item_no,
                                                                 A.sale_date,
                                                                 A.total_sale_amt,

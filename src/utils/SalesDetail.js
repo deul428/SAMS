@@ -549,6 +549,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     const hideMsg = () => {
         if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
             onHide(true);
+            setIsSave(false);
         } else {
             return;
         }
@@ -557,7 +558,10 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     useEffect(()=> {
         console.log('show: ', show, '\nisSave: ', isSave)
         if (show === false) {
-            if (isSave !== true) {
+            if (isParentHide === true) {
+                setIsSave(false);
+            }
+            if (isSave === false) {
                 console.log(show);
                 setSumBiz(null);
                 setSumCor(null);
@@ -570,7 +574,8 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 setSalesDetailData([]);
             }
         }
-    }, [show, isSave])
+    
+    }, [show, isSave, isParentHide])
 
     // UI 업데이트
     const [v_handlingHtml, setVHandlingHtml] = useState(null);

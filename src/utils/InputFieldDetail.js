@@ -352,6 +352,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     
         if (e.target.name === 'a_progress2_rate_code' && (e.target.value === '0006' || e.target.value === '0007')) {
             setIsProDisabled(false);
+        } else {
+            setIsProDisabled(true);
         }
         const updateValue = (setState) => {
             setState((prevInput) => {
@@ -584,7 +586,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             { key: 'a_contract_date', validator: () => validateStr(input.biz_opp, 'a_contract_date')},
                             { key: 'a_sale_date', validator: () => validateStr(input.biz_opp_detail, 'a_sale_date')},
                             { key: 'a_purchase_date', validator: () => validateStr(input.biz_opp_detail, 'a_purchase_date')},
-                            { key: 'a_sale_amt', validator: () => validateNum(input.biz_opp_detail, 'a_sale_amt')},
+                            { key: 'a_total_sale_amt', validator: () => validateNum(input.biz_opp_detail, 'a_total_sale_amt')},
                             { key: 'a_purchase_amt', validator: () => validateNum(input.biz_opp_detail, 'a_purchase_amt')},
                             { key: 'a_sale_profit', validator: () => validateNum(input.biz_opp_detail, 'a_sale_profit')},
                             /* { key: 'a_biz_section2_code', validator: () => validateStr(input.biz_opp_detail, 'a_biz_section2_code')},
@@ -625,7 +627,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
 
                             // { key: 'a_sale_com2_code', parent: 'biz_opp_detail', essential: false },
                             { key: 'a_sale_date', parent: 'biz_opp_detail', essential: false },
-                            { key: 'a_sale_amt', parent: 'biz_opp_detail', type: 'number', essential: false },
+                            { key: 'a_total_sale_amt', parent: 'biz_opp_detail', type: 'number', essential: false },
                             { key: 'a_sale_profit', parent: 'biz_opp_detail', type: 'number', essential: false },
                             { key: 'a_purchase_date', parent: 'biz_opp_detail', essential: false },
                             { key: 'a_purchase_amt', parent: 'biz_opp_detail', type: 'number', essential: false },
@@ -636,8 +638,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             { key: 'a_activity_date', parent: 'biz_opp_activity', essential: true, },
                         ];
 
-                        if (input.biz_opp_detail?.a_sale_amt) {
-                            console.log(`a_sale_amt ${typeof input.biz_opp_detail.a_sale_amt}`);
+                        if (input.biz_opp_detail?.a_total_sale_amt) {
+                            console.log(`a_total_sale_amt ${typeof input.biz_opp_detail.a_total_sale_amt}`);
                         }
                         if (input.biz_opp_detail?.a_sale_profit) {
                             console.log(`a_sale_profit ${typeof input.biz_opp_detail.a_sale_profit}`);
@@ -897,7 +899,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     biz_opp_detail: { 
                         ...prevInput.biz_opp_detail,
                         a_product_name: salesDetailData.a_product_name,
-                        a_sale_amt: salesDetailData.total
+                        a_total_sale_amt: salesDetailData.total
                     }
                 };
             });
@@ -912,7 +914,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     biz_opp_detail: { 
                         ...prevInput.biz_opp_detail,
                         a_product_name: salesDetailData.a_product_name,
-                        a_sale_amt: salesDetailData.total
+                        a_total_sale_amt: salesDetailData.total
                     }
                 };
             });

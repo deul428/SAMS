@@ -8,6 +8,7 @@ import '../styles/_button.scss';
 import { endsWith, lowerCase, sum, toLower, update } from "lodash";
 
 const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modalPropsData, v_propsSaleData, setSalesDetailData }) => {
+    console.log(v_modalPropsData, v_propsSaleData);
     // =================== 렌더 시 세팅 ===================  
     // -------------------- 기본 데이터 핸들링 --------------------
     /* 
@@ -113,13 +114,19 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     const [inputNumValue, setInputNumValue] = useState(0);
     const treeRender = (listData, propsData, type) => {
         const propsMap = new Map(propsData.map(e => [e.small_classi_code, { sale_amt: e.sale_amt, delegate_tf: e.delegate_tf }]));
-        
         return listData.map((e, index) => {
             const matchedData = propsMap.get(e.small_classi_code) || { sale_amt: 0, delegate_tf: false };
-            const selectedRadio = isSelected
-            ? inputValues[e.great_classi_code.toLowerCase()][e.small_classi_code]?.[2] ?? matchedData.delegate_tf
-            : false;
-            // console.log(/* propsMap, matchedData, */ inputValues[e.great_classi_code.toLowerCase()][e.small_classi_code][1]);
+            const prepareCode = inputValues[e.great_classi_code.toLowerCase()][e.small_classi_code];
+            let selectedRadio;
+            if (isSave === true) {
+                selectedRadio = prepareCode?.[2];
+            } else {
+                selectedRadio = matchedData.delegate_tf;
+            }
+            
+            if (selectedRadio) {
+                console.log(inputValues, selectedRadio);
+            }
             return {
                 title: (
                     <div className="titleArea"
@@ -131,16 +138,19 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                             data-code={e.small_classi_code}
                             onChange={(e) => handleInputChange(e, type, e.target.dataset.code, true)}
                             onClick={(e) => checkSelect(e)} 
-                            // onClick={(e) => e.stopPropagation()}
-                            defaultChecked={matchedData.delegate_tf}
-                            // checked={isSelected && selectedRadio}
+                            defaultChecked={
+                                v_propsSaleData[1]?.length > 0 ?
+                                matchedData.delegate_tf : 
+                                isSave ? selectedRadio :
+                                false
+                            }
                         />
                         <div className={`${index} titleItem`} data-key={`${type}-${index}`}>
                             <span>{e.small_classi_name}</span>
                             <input
                                 type="number"
                                 placeholder="세부 금액"
-                                value={inputValues[e.great_classi_code.toLowerCase()][e.small_classi_code]?.[1] ?? 0}
+                                value={prepareCode?.[1] ?? 0}
                                 defaultValue={matchedData.sale_amt}
                                 data-key={e.small_classi_name}
                                 data-code={e.small_classi_code}
@@ -419,7 +429,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         console.log("addMode \ninitialData: ", initialData, "\nupdatedData: ", updatedData);
         let result = JSON.parse(JSON.stringify(updatedData));
     
-        // 🟢 초기 데이터가 없는 경우 모든 값에 "I" 추가
+        // 초기 데이터가 없는 경우 모든 값에 "I" 추가
         if (Object.keys(initialData).length === 0) {
             Object.keys(updatedData).forEach(great => {
                 if (typeof updatedData[great] === "string") {
@@ -448,10 +458,10 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             }
     
             if (!initialData.hasOwnProperty(great)) {
-                // 🟢 새로운 대분류 항목이면 모든 값에 "I" 추가
+                // 새로운 대분류 항목이면 모든 값에 "I" 추가
                 Object.keys(updatedData[great]).forEach(small => {
                     if (!result[great]) {
-                        result[great] = {}; // 🟢 대분류 초기화
+                        result[great] = {}; // 대분류 초기화
                     }
                     if (!Array.isArray(result[great][small])) {
                         result[great][small] = [...updatedData[great][small]];
@@ -464,9 +474,9 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 // 기존에 존재하는 경우 세부 항목 비교
                 Object.keys(updatedData[great]).forEach(small => {
                     if (!initialData[great]?.hasOwnProperty(small)) {
-                        // 🟢 신규 항목이면 "I" 추가
+                        // 신규 항목이면 "I" 추가
                         if (!result[great]) {
-                            result[great] = {}; // 🟢 대분류 초기화
+                            result[great] = {}; // 대분류 초기화
                         }
                         if (!Array.isArray(result[great][small])) {
                             result[great][small] = [...updatedData[great][small]];
@@ -475,7 +485,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                             result[great][small].push('I'); //  신규 추가 감지
                         }
                     } else {
-                        // 🟢 기존 데이터가 존재할 경우, 세부 값 비교 후 "U" 추가
+                        // 기존 데이터가 존재할 경우, 세부 값 비교 후 "U" 추가
                         const [prevName, prevAmount, prevRadio] = initialData[great][small] || ["", 0, false];
                         const [newName, newAmount, newRadio] = updatedData[great][small];
     
@@ -576,7 +586,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
 
             /* 
             초기화
-            1) 부모 모달은 살아 있지만 이 모달을 저장하지 않고 나가서 모달 플래그가 false일 경우우
+            1) 부모 모달은 살아 있지만 이 모달을 저장하지 않고 나가서 모달 플래그가 false일 경우
             2) 부모 모달이 닫혀서 이 모달 플래그도 false일 경우
              */ 
             if (isSave === false) {
@@ -632,7 +642,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                                         
                                         <Row className="cntntArea mb-2">
                                             <Col xs={12} md={12} lg={12} xl={12} className='col d-flex align-items-center floating'>
-                                                <h3>총 매출 금액 &#40;수정 전 값&#41;: &#65510;{v_modalPropsData ? v_modalPropsData?.sale_amt.toLocaleString('ko-KR') : ''}</h3>
+                                                <h3>총 매출 금액 &#40;수정 전 값&#41;: &#65510;{v_modalPropsData ? v_modalPropsData?.total_sale_amt.toLocaleString('ko-KR') : ''}</h3>
                                             </Col>
                                             {/* <Col xs={12} md={6} lg={6} xl={6} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='총 매출 금액 &#40;변경 값, &#65510;&#41;'>
@@ -651,7 +661,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                                                 <h3 className="mb-4">사업 구분</h3>
                                                 {/* <h4>총 매출 금액 &#40;변경 값&#41;: &#65510;{totalSaleAmt.toLocaleString('ko-KR')}</h4> */}
                                                 <h4>현재 사업 구분 금액: &#65510;
-                                                    {typeof sumBiz === 'number' && sumBiz >= 0 ? sumBiz.toLocaleString('ko-KR') : v_modalPropsData?.sale_amt.toLocaleString('ko-KR')}
+                                                    {typeof sumBiz === 'number' && sumBiz >= 0 ? sumBiz.toLocaleString('ko-KR') : v_modalPropsData?.total_sale_amt.toLocaleString('ko-KR')}
                                                 </h4>
                                                 <Tree ref={treeRef} multiple checkStrictly 
                                                 treeData={treeRender(listBizData, propsBizData, 'biz')} 
@@ -666,10 +676,10 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                                                 {/* <h4>총 매출 금액 &#40;변경 값&#41;: &#65510;{totalSaleAmt.toLocaleString('ko-KR')}</h4> */}
                                                 <h4>
                                                     현재 제조사명 금액: &#65510;
-                                                    {typeof sumCor === 'number' && sumCor >= 0 ? sumCor.toLocaleString('ko-KR') : v_modalPropsData?.sale_amt.toLocaleString('ko-KR')}
+                                                    {typeof sumCor === 'number' && sumCor >= 0 ? sumCor.toLocaleString('ko-KR') : v_modalPropsData?.total_sale_amt.toLocaleString('ko-KR')}
                                                 </h4>
                                                 <Tree ref={treeRef} multiple checkStrictly 
-                                                treeData={treeRender(listCorData, propsCorData,'cor')} 
+                                                treeData={treeRender(listCorData, propsCorData, 'cor')} 
                                                 onSelect={(selectedKeys, info) => onSelect('cor')(selectedKeys, info)} 
                                                 defaultSelectedKeys={defaultCorKeys.map((e) => `cor-${e}`)}
                                                 // defaultSelectedKeys={v_modalPropsData ? [`cor-${propsCorIndex}`] : ''}
@@ -684,7 +694,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                                                     name='a_product_name' 
                                                     placeholder='제품명 (제품 비고)'
                                                     onChange={(e) => handleInputChange(e, 'a_product_name', null)}
-                                                    defaultValue={v_modalPropsData?.product_name || ''}
+                                                    defaultValue={v_modalPropsData?.product_name || inputValues.a_product_name || ''}
                                                     /* onChange={f_handlingInput} 
                                                     // value={input.biz_opp_id}
                                                     defaultValue={a_v_modalPropsData?.a_biz_opp_id || ''} 

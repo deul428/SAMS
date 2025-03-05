@@ -64,7 +64,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
       columns,
       data,
       initialState: { pageIndex: 0, pageSize: 10, 
-        sortBy: [ {id: 'history_no', desc: true} ] 
+        sortBy: [ {id: 'renewal_date', desc: true} ] 
       }, // 초기 페이지 설정
     },
     useSortBy, usePagination

@@ -490,7 +490,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                           <td>{commonInfo.sale_date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</td>
                         </div>
                         <div className='col col_saleAmt col-xl-4 col-lg-4 col-md-4 col-12'>
-                          <th>매출 금액</th>
+                          <th>총 매출 금액</th>
                           <td>{commonInfo.total_sale_amt.toLocaleString('ko-KR')}</td>
                         </div>
                       </div>

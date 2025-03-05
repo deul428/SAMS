@@ -502,6 +502,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const [activityData, setActivityData] = useState(null);
     const [saleBizData, setSaleBizData] = useState(null);
     const [saleCorData, setSaleCorData] = useState(null);
+    const [saleData, setSaleData] = useState([]);
     const f_handlingData = async (method, endpoint, input = null, e, msg) => {
         let confirmMsg;
         let confirmResult = true;
@@ -741,6 +742,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             setActivityData('');
                             setSaleBizData([]);
                             setSaleCorData([]);
+                            setSaleData([]);
                         } else {
                             alert(response.status.MESSAGE);
                         }
@@ -753,6 +755,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         setActivityData(response.data.select_biz_opp_activity);
                         setSaleBizData(response.data.select_biz_opp_detail_sale_biz);
                         setSaleCorData(response.data.select_biz_opp_detail_sale_cor);
+                        setSaleData([response.data.select_biz_opp_detail_sale_biz, response.data.select_biz_opp_detail_sale_cor])
                         return response;
                     } else if (msg === '조회') {
                         setDetailData(response);
@@ -948,6 +951,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     };
                 });
             }
+        } else {
+            return;
         }
         
     }, [salesDetailData]);
@@ -1617,7 +1622,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             {v_handlingHtml}
             {
                 (v_componentName === 'bizOpp') ?
-                <SalesDetail v_treeName={v_childComponent} isParentHide={isParentHide} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} v_propsSaleData={(saleBizData && Object.entries(saleBizData).length > 0) && (saleCorData && Object.entries(saleCorData).length > 0) ? [saleBizData, saleCorData] : null} setSalesDetailData={setSalesDetailData}/>
+                <SalesDetail v_treeName={v_childComponent} isParentHide={isParentHide} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} /* v_propsSaleList={(saleBizData && Object.entries(saleBizData).length > 0) && (saleCorData && Object.entries(saleCorData).length > 0) ? [saleBizData, saleCorData] : null}  */saleData
+                v_propsSaleList={
+                    saleData.length === 0 ? null : 
+                    saleData.some(e => e.length > 0) ? saleData : null}
+                setSalesDetailData={setSalesDetailData}/>
                 : ''
             }
         </div>

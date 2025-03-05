@@ -32,7 +32,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         }
     }, [listData]);
     
-
+    
     const [v_propsSaleData, setVPropsSaleData] = useState([]);
     useEffect(() => {
         console.log("v_propsSaleList: ", v_propsSaleList);
@@ -48,126 +48,87 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
 
     const [defaultBizKeys, setDefaultBizKeys] = useState([]);
     const [defaultCorKeys, setDefaultCorKeys] = useState([]);
-    // props 데이터가 있지만 isSave / show false일 경우에 propsSaleData를 의존성 배열로 사용하는 useEffect 훅이 감지할 수 있도록 보낼 플래그
-    const [isRecover, setIsRecover] = useState(false);
-    // ✅ v_propsSaleData 변경 감지 (기존 로직 유지)
     useEffect(() => {
+        // 수정 모드
         if (v_propsSaleData.length !== 0 && v_modalPropsData) {
             console.log("v_propsSaleData:", v_propsSaleData, "v_modalPropsData: ", v_modalPropsData);
-
-            if (v_propsSaleData[0][0].biz_opp_id !== v_modalPropsData.biz_opp_id) {
-                console.log("⏳ Loading...");
+            // if (!inputValues.a_product_name) {
+                // 비동기 오류 처리: biz_opp_id가 다를 경우 return
+            if ((v_propsSaleData[0][0].biz_opp_id !== v_modalPropsData.biz_opp_id)) {
+                console.log('loading....');
                 return;
             }
-            if (v_propsSaleData[0][0].detail_no !== v_modalPropsData.detail_no) {
-                console.log("⏳ Loading...");
+            // 복제 데이터 바인딩: biz_opp_id는 같지만 detail_no가 다를 경우 return
+            if ((v_propsSaleData[0][0].detail_no !== v_modalPropsData.detail_no)) {
+                console.log('loading....');
                 return;
             }
-
             setPropsBizData(v_propsSaleData[0]);
             setPropsCorData(v_propsSaleData[1]);
 
+            // 변환 로직 실행
+            // 변환된 데이터 구조
             const transformedData = {
                 biz: {},
-                cor: {},
+                cor: {},  // cor는 빈 객체 유지
                 a_product_name: ""
             };
-
             v_propsSaleData[0].forEach(item => {
                 if (item.great_classi_code === "BIZ") {
                     const smallClassiCode = item.small_classi_code;
                     transformedData.biz[smallClassiCode] = [
-                        item.small_classi_name || "알 수 없음",
-                        item.sale_amt,
-                        item.delegate_tf
+                        item.small_classi_name || "알 수 없음",  // small_classi_name
+                        item.sale_amt,  // sale_amt
+                        item.delegate_tf // delegate_tf
                     ];
                 }
             });
-
             v_propsSaleData[1].forEach(item => {
                 if (item.great_classi_code === "COR") {
                     const smallClassiCode = item.small_classi_code;
                     transformedData.cor[smallClassiCode] = [
-                        item.small_classi_name,
-                        item.sale_amt,
-                        item.delegate_tf
+                        item.small_classi_name,  // small_classi_name
+                        item.sale_amt,  // sale_amt
+                        item.delegate_tf // delegate_tf
                     ];
                 }
             });
 
-            console.log("✅ 변환된 데이터:", transformedData);
+            // 결과 출력
+            // console.log(v_modalPropsData?.biz_opp_id, '\n', v_propsSaleData,'\n', transformedData, '\n','\n',inputValues);
+            // console.log(transformedData);
 
-            // ✅ 초기 로딩 또는 데이터 업데이트
-            if (!isRecover) {
-                console.log('🌟 v_propsData가 초기에 들어왔음', v_propsSaleData);
-                setInputValues(prev => ({
-                    ...prev,
-                    biz: {
-                        ...prev.biz,
-                        ...transformedData.biz
-                    },
-                    cor: {
-                        ...prev.cor,
-                        ...transformedData.cor
-                    },
-                    a_product_name: v_modalPropsData?.product_name || prev.a_product_name
-                }));
-            }
+            // inputValues 업데이트
+            setInputValues(prev => ({
+                ...prev,
+                biz: {
+                    ...prev.biz,  // 기존 biz 데이터 유지
+                    ...transformedData.biz // 새 데이터 추가
+                },
+                cor: {
+                    ...prev.cor,  // 기존 biz 데이터 유지
+                    ...transformedData.cor // 새 데이터 추가
+                },
+                a_product_name: v_modalPropsData?.product_name || prev.a_product_name // 새로운 값이 있으면 업데이트
+            }))
+            
+            // default selected keys 지정을 위한 인덱스 저장.
+            setTimeout(() => {
+                setDefaultBizKeys(
+                    v_propsSaleData[0]
+                        .map(e => e?.small_classi_code)
+                        .filter(Boolean)
+                );
+                setDefaultCorKeys(
+                    v_propsSaleData[1]
+                        .map(e => e?.small_classi_code)
+                        .filter(Boolean)
+                );
+            }, 0);
         } else {
-            console.log('loading...');
             return;
         }
-    }, [v_propsSaleData, v_modalPropsData]);
-
-
-    // ✅ isRecover 변경 감지: 기존 데이터로 강제 원복
-    useEffect(() => {
-        if (isRecover) {
-            console.log("🔄 isRecover 활성화: 수정 전 데이터로 복원!", v_propsSaleData);
-
-            if (v_propsSaleData.length !== 0) {
-                const transformedData = {
-                    biz: {},
-                    cor: {},
-                    a_product_name: ""
-                };
-
-                v_propsSaleData[0].forEach(item => {
-                    if (item.great_classi_code === "BIZ") {
-                        const smallClassiCode = item.small_classi_code;
-                        transformedData.biz[smallClassiCode] = [
-                            item.small_classi_name || "알 수 없음",
-                            item.sale_amt,
-                            item.delegate_tf
-                        ];
-                    }
-                });
-
-                v_propsSaleData[1].forEach(item => {
-                    if (item.great_classi_code === "COR") {
-                        const smallClassiCode = item.small_classi_code;
-                        transformedData.cor[smallClassiCode] = [
-                            item.small_classi_name,
-                            item.sale_amt,
-                            item.delegate_tf
-                        ];
-                    }
-                });
-
-                console.log("🛠 원복할 데이터:", transformedData);
-
-                setInputValues({
-                    biz: transformedData.biz,
-                    cor: transformedData.cor,
-                    a_product_name: v_modalPropsData?.product_name || ""
-                });
-
-                // ✅ 원복 완료 후 isRecover 해제
-                setIsRecover(false);
-            }
-        }
-    }, [isRecover]);
-
+    }, [v_propsSaleData])
     // -------------------- 트리 UI 렌더링 --------------------
     const treeRender = (listData, propsData, type) => {
         const propsMap = new Map(propsData.map(e => [e.small_classi_code, { sale_amt: e.sale_amt, delegate_tf: e.delegate_tf }]));
@@ -636,18 +597,8 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             onHide(true);
         }
     }
-
-
-    const prevShow = useRef(false);
     // 초기화
-    useEffect(() => {
-        console.log(prevShow.current, show);
-        // 초기 렌더링 시 초기화 방지
-        if (!prevShow.current && show === false) {
-            console.log("모달이 처음 로드됨 (초기화 방지)");
-            prevShow.current = show;  // 이전 상태 업데이트
-            return;
-        }
+    useEffect(()=> {
         // console.log('isParentHide?: ', isParentHide, '\nSalesDetail show: ', show, '\nisSave: ', isSave);
         /* 
             초기화
@@ -665,36 +616,37 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         case 2는 데이터 그대로 유지.
         case 3은 부모 컴포넌트에서 온 propsData가 있을 경우 그 데이터로 렌더링(3-1). 없을 경우 select 안 된 UI로 렌더링.(3-2)
         */
-        if (isParentHide === true) {
+        /* if (isParentHide === true) {
             console.log('isParentHide false');
             setIsSave(false); 
-            setIsRecover(false);
-        } 
+        }  */
         // 이 모달을 저장하지 않고 나간 경우
         if (show === false && isSave === false) {
-            console.log("모달 닫힘 & 저장 안 함: 이전 데이터 복원");
+            console.log('show false, isSave false start');
+            // 직전 데이터가 없으면 모두 초기화
             if (!v_propsSaleList || v_propsSaleList.length === 0) {
-                console.log("데이터 없음 → 초기화");
+                console.log('show false, isSave false, propsData X');
                 setVPropsSaleData([]);
                 setSumBiz(null);
                 setSumCor(null);
-                setInputValues({ biz: {}, cor: {}, a_product_name: "" });
+                setInputValues({biz: {}, cor: {}, a_product_name: ''});
                 setSelectedBizKeys([]);
                 setSelectedCorKeys([]);
                 setIsSelected(false);
                 setDefaultBizKeys([]);
                 setDefaultCorKeys([]);
                 setSalesDetailData([]);
-                setIsRecover(false);
-            } else {
-                console.log("propsData 기반으로 상태 복원");
-                setVPropsSaleData(v_propsSaleList);
-                setIsRecover(true);
+            } else { // 직전 데이터가 있으면 직전 데이터로 대체 
+                console.log('show false, isSave false, propsData O');
+                
+                setVPropsSaleData([]);
+                setTimeout(() => {
+                    
+                    setVPropsSaleData(v_propsSaleList);
+                }, 0);
             }
         }
-        // 이전 상태 업데이트
-        prevShow.current = show;
-    }, [show, isSave, v_propsSaleList, isParentHide]);
+    }, [show, isSave, isParentHide])
 
     // UI 업데이트
     const [v_handlingHtml, setVHandlingHtml] = useState(null);

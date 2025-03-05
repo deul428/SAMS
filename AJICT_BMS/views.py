@@ -2393,7 +2393,7 @@ def f_clone_biz_opp(request):
             return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
       v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
       v_new_detail_no = 0
-      v_sql_new_detail_no = """SELECT COALESCE(MAX(AA.detail_no),0) + 1 AS v_new_detail_no FROM ajict_bms_schema.biz_opp_detail AA WHERE AA.biz_opp_id = %s"""
+      v_sql_new_detail_no = """SELECT COALESCE(MAX(detail_no),0) + 1 AS v_new_detail_no FROM ajict_bms_schema.biz_opp_detail WHERE biz_opp_id = %s"""
       v_param_new_detail_no = []
       v_param_new_detail_no.append(v_biz_opp_id)
       with connection.cursor() as v_cursor:
@@ -2417,6 +2417,7 @@ def f_clone_biz_opp(request):
                                                                                         purchase_date,
                                                                                         purchase_amt,
                                                                                         collect_money_date,
+                                                                                        product_name,
                                                                                         create_user)
                                            SELECT A.biz_opp_id,
                                                   {v_new_detail_no},
@@ -2429,11 +2430,12 @@ def f_clone_biz_opp(request):
                                                   A.sale_com2_code,
                                                   A.sale_item_no,
                                                   A.sale_date,
-                                                  A.total_sale_amt,
+                                                  0,
                                                   A.sale_profit,
                                                   A.purchase_date,
                                                   A.purchase_amt,
                                                   A.collect_money_date,
+                                                  A.product_name,
                                                   %s
                                            FROM ajict_bms_schema.biz_opp_detail A
                                            WHERE A.biz_opp_id = %s AND
@@ -2474,7 +2476,7 @@ def f_clone_biz_opp(request):
                                                    progress2_rate_code,
                                                    contract_date,
                                                    essential_achievement_tf,
-                                                   'I',
+                                                   'C',
                                                    %s
                                             FROM ajict_bms_schema.biz_opp
                                             WHERE biz_opp_id = %s"""
@@ -2507,6 +2509,7 @@ def f_clone_biz_opp(request):
                                                                                                         purchase_date,
                                                                                                         purchase_amt,
                                                                                                         collect_money_date,
+                                                                                                        product_name,
                                                                                                         renewal_code,
                                                                                                         create_user)
                                                    SELECT {v_history_no},
@@ -2526,7 +2529,8 @@ def f_clone_biz_opp(request):
                                                           purchase_date,
                                                           purchase_amt,
                                                           collect_money_date,
-                                                          'I',
+                                                          product_name,
+                                                          'C',
                                                           %s
                                                    FROM ajict_bms_schema.biz_opp_detail
                                                    WHERE biz_opp_id = %s AND
@@ -3606,157 +3610,355 @@ def f_select_biz_opp_history(request):
          v_data = {"retrieve_biz_opp_history":[]}
          v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
          v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
-         v_sql_biz_opp_history = """SELECT A.biz_opp_id,
-                                           A.history_no,
+         # v_sql_biz_opp_history = """SELECT A.biz_opp_id,
+         #                                   A.history_no,
+         #                                   A.biz_opp_name,
+         #                                   A.u_biz_opp_name,
+         #                                   A.progress1_rate_code,
+         #                                   A.progress2_rate_code,
+         #                                   A.u_progress2_rate_code,
+         #                                   (SELECT DISTINCT NN.great_classi_name
+         #                                    FROM ajict_bms_schema.commonness_code NN
+         #                                    WHERE NN.great_classi_code = A.progress1_rate_code AND
+         #                                          NN.delete_date IS NULL) AS progress1_rate_name,
+         #                                   (SELECT OO.small_classi_name
+         #                                    FROM ajict_bms_schema.commonness_code OO
+         #                                    WHERE OO.great_classi_code = A.progress1_rate_code AND
+         #                                          OO.small_classi_code = A.progress2_rate_code AND
+         #                                          OO.delete_date IS NULL) AS progress2_rate_name,
+         #                                   A.contract_date,
+         #                                   A.u_contract_date,
+         #                                   A.essential_achievement_tf,
+         #                                   A.u_essential_achievement_tf,
+         #                                   B.user_id,
+         #                                   (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = B.user_id AND AA.delete_date IS NULL) AS user_name,
+         #                                   B.change_preparation_dept_id,
+         #                                   B.change_preparation_dept_name,
+         #                                   B.last_client_com1_code,
+         #                                   B.last_client_com2_code,
+         #                                   B.u_last_client_com2_code,
+         #                                   (SELECT DISTINCT BB.great_classi_name
+         #                                    FROM ajict_bms_schema.commonness_code BB
+         #                                    WHERE BB.great_classi_code = B.last_client_com1_code AND
+         #                                          BB.delete_date IS NULL) AS last_client_com1_name,
+         #                                   (SELECT CC.small_classi_name
+         #                                    FROM ajict_bms_schema.commonness_code CC
+         #                                    WHERE CC.great_classi_code = B.last_client_com1_code AND
+         #                                          CC.small_classi_code = B.last_client_com2_code AND
+         #                                          CC.delete_date IS NULL) AS last_client_com2_name,
+         #                                   B.sale_com1_code,
+         #                                   B.sale_com2_code,
+         #                                   B.u_sale_com2_code,
+         #                                   (SELECT DISTINCT DD.great_classi_name
+         #                                    FROM ajict_bms_schema.commonness_code DD
+         #                                    WHERE DD.great_classi_code = B.sale_com1_code AND
+         #                                          DD.delete_date IS NULL) AS sale_com1_name,
+         #                                   (SELECT EE.small_classi_name
+         #                                    FROM ajict_bms_schema.commonness_code EE
+         #                                    WHERE EE.great_classi_code = B.sale_com1_code AND
+         #                                          EE.small_classi_code = B.sale_com2_code AND
+         #                                          EE.delete_date IS NULL) AS sale_com2_name,
+         #                                   B.sale_item_no,
+         #                                   B.u_sale_item_no,
+         #                                   B.sale_date,
+         #                                   B.u_sale_date,
+         #                                   B.total_sale_amt,
+         #                                   B.u_total_sale_amt,
+         #                                   B.sale_profit,
+         #                                   B.u_sale_profit,
+         #                                   B.purchase_date,
+         #                                   B.u_purchase_date,
+         #                                   B.purchase_amt,
+         #                                   B.u_purchase_amt,
+         #                                   B.collect_money_date,
+         #                                   B.u_collect_money_date,
+         #                                   /*B.biz_section1_code,
+         #                                   B.biz_section2_code,
+         #                                   B.u_biz_section2_code,
+         #                                   (SELECT DISTINCT FF.great_classi_name
+         #                                    FROM ajict_bms_schema.commonness_code FF
+         #                                    WHERE FF.great_classi_code = B.biz_section1_code AND
+         #                                          FF.delete_date IS NULL) AS biz_section1_name,
+         #                                   (SELECT GG.small_classi_name
+         #                                    FROM ajict_bms_schema.commonness_code GG
+         #                                    WHERE GG.great_classi_code = B.biz_section1_code AND
+         #                                          GG.small_classi_code = B.biz_section2_code AND
+         #                                          GG.delete_date IS NULL) AS biz_section2_name,
+         #                                   B.principal_product1_code,
+         #                                   B.principal_product2_code,
+         #                                   B.u_principal_product2_code,
+         #                                   (SELECT DISTINCT HH.great_classi_name
+         #                                    FROM ajict_bms_schema.commonness_code HH
+         #                                    WHERE HH.great_classi_code = B.principal_product1_code AND
+         #                                          HH.delete_date IS NULL) AS principal_product1_name,
+         #                                   (SELECT II.small_classi_name
+         #                                    FROM ajict_bms_schema.commonness_code II
+         #                                    WHERE II.great_classi_code = B.principal_product1_code AND
+         #                                          II.small_classi_code = B.principal_product2_code AND
+         #                                          II.delete_date IS NULL) AS principal_product2_name,*/
+         #                                   B.product_name,
+         #                                   B.u_product_name,
+         #                                   (SELECT KK.high_dept_id
+         #                                    FROM ajict_bms_schema.dept KK
+         #                                    WHERE KK.dept_id = B.change_preparation_dept_id AND
+         #                                          KK.delete_date IS NULL) AS change_preparation_high_dept_id,
+         #                                   (SELECT MM.dept_name
+         #                                    FROM ajict_bms_schema.dept MM
+         #                                    WHERE MM.dept_id = (SELECT CCC.high_dept_id
+         #                                                        FROM ajict_bms_schema.dept CCC
+         #                                                        WHERE CCC.dept_id = B.change_preparation_dept_id AND
+         #                                                              CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
+         #                                   C.history_assistance_no,
+         #                                   C.great_classi_code,
+         #                                   C.small_classi_code,
+         #                                   CASE WHEN C.great_classi_code IS NOT NULL
+         #                                        THEN (SELECT DISTINCT PP.great_classi_name
+         #                                              FROM ajict_bms_schema.commonness_code PP
+         #                                              WHERE PP.great_classi_code = C.great_classi_code AND
+         #                                                    PP.delete_date IS NULL)
+         #                                        ELSE NULL
+         #                                   END AS great_classi_name,
+         #                                   CASE WHEN C.small_classi_code IS NOT NULL
+         #                                        THEN (SELECT QQ.small_classi_name
+         #                                              FROM ajict_bms_schema.commonness_code QQ
+         #                                              WHERE QQ.great_classi_code = C.great_classi_code AND
+         #                                                    QQ.small_classi_code = C.small_classi_code AND
+         #                                                    QQ.delete_date IS NULL)
+         #                                        ELSE NULL
+         #                                   END AS small_classi_name,
+         #                                   C.sale_amt,
+         #                                   C.u_sale_amt,
+         #                                   /*B.renewal_code,*/
+         #                                   CASE WHEN C.history_assistance_no IS NOT NULL
+         #                                        THEN C.renewal_code
+         #                                        WHEN A.biz_opp_name IS NOT NULL
+         #                                        THEN A.renewal_code
+         #                                        ELSE B.renewal_code
+         #                                   END AS renewal_code,
+         #                                   /*CASE WHEN B.renewal_code = 'I'
+         #                                        THEN (SELECT PP.create_date FROM ajict_bms_schema.biz_opp PP WHERE PP.biz_opp_id = A.biz_opp_id)
+         #                                        WHEN B.renewal_code = 'U'
+         #                                        THEN (SELECT QQ.update_date FROM ajict_bms_schema.biz_opp QQ WHERE QQ.biz_opp_id = A.biz_opp_id)
+         #                                        WHEN B.renewal_code = 'D'
+         #                                        THEN (SELECT RR.delete_date FROM ajict_bms_schema.biz_opp RR WHERE RR.biz_opp_id = A.biz_opp_id)
+         #                                        ELSE NULL
+         #                                    END AS renewal_date*/
+         #                                    CASE WHEN C.history_assistance_no IS NOT NULL
+         #                                        THEN C.create_date
+         #                                        WHEN A.biz_opp_name IS NOT NULL
+         #                                        THEN A.create_date
+         #                                        ELSE B.create_date
+         #                                   END AS renewal_date
+         #                            FROM ajict_bms_schema.biz_opp_history A,
+         #                                 ajict_bms_schema.biz_opp_detail_history B,
+         #                                 ajict_bms_schema.biz_opp_detail_sale_history C
+         #                            WHERE 1 = 1 AND
+         #                                  A.biz_opp_id = B.biz_opp_id AND
+         #                                  A.history_no = B.history_no AND
+         #                                  A.biz_opp_id = C.biz_opp_id AND
+         #                                  A.history_no = C.history_no AND
+         #                                  A.biz_opp_id = %s AND
+         #                                  B.detail_no = %s
+         #                            ORDER BY renewal_date DESC"""
+         v_sql_biz_opp_history = """SELECT A.history_no,
+                                           A.biz_opp_id,
+                                           A.detail_no,
                                            A.biz_opp_name,
                                            A.u_biz_opp_name,
                                            A.progress1_rate_code,
                                            A.progress2_rate_code,
                                            A.u_progress2_rate_code,
-                                           (SELECT DISTINCT NN.great_classi_name
-                                            FROM ajict_bms_schema.commonness_code NN
-                                            WHERE NN.great_classi_code = A.progress1_rate_code AND
-                                                  NN.delete_date IS NULL) AS progress1_rate_name,
-                                           (SELECT OO.small_classi_name
-                                            FROM ajict_bms_schema.commonness_code OO
-                                            WHERE OO.great_classi_code = A.progress1_rate_code AND
-                                                  OO.small_classi_code = A.progress2_rate_code AND
-                                                  OO.delete_date IS NULL) AS progress2_rate_name,
+                                           A.progress1_rate_name,
+                                           A.progress2_rate_name,
                                            A.contract_date,
                                            A.u_contract_date,
                                            A.essential_achievement_tf,
                                            A.u_essential_achievement_tf,
-                                           B.user_id,
-                                           (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = B.user_id AND AA.delete_date IS NULL) AS user_name,
-                                           B.change_preparation_dept_id,
-                                           B.change_preparation_dept_name,
-                                           B.last_client_com1_code,
-                                           B.last_client_com2_code,
-                                           B.u_last_client_com2_code,
-                                           (SELECT DISTINCT BB.great_classi_name
-                                            FROM ajict_bms_schema.commonness_code BB
-                                            WHERE BB.great_classi_code = B.last_client_com1_code AND
-                                                  BB.delete_date IS NULL) AS last_client_com1_name,
-                                           (SELECT CC.small_classi_name
-                                            FROM ajict_bms_schema.commonness_code CC
-                                            WHERE CC.great_classi_code = B.last_client_com1_code AND
-                                                  CC.small_classi_code = B.last_client_com2_code AND
-                                                  CC.delete_date IS NULL) AS last_client_com2_name,
-                                           B.sale_com1_code,
-                                           B.sale_com2_code,
-                                           B.u_sale_com2_code,
-                                           (SELECT DISTINCT DD.great_classi_name
-                                            FROM ajict_bms_schema.commonness_code DD
-                                            WHERE DD.great_classi_code = B.sale_com1_code AND
-                                                  DD.delete_date IS NULL) AS sale_com1_name,
-                                           (SELECT EE.small_classi_name
-                                            FROM ajict_bms_schema.commonness_code EE
-                                            WHERE EE.great_classi_code = B.sale_com1_code AND
-                                                  EE.small_classi_code = B.sale_com2_code AND
-                                                  EE.delete_date IS NULL) AS sale_com2_name,
-                                           B.sale_item_no,
-                                           B.u_sale_item_no,
-                                           B.sale_date,
-                                           B.u_sale_date,
-                                           B.total_sale_amt,
-                                           B.u_total_sale_amt,
-                                           B.sale_profit,
-                                           B.u_sale_profit,
-                                           B.purchase_date,
-                                           B.u_purchase_date,
-                                           B.purchase_amt,
-                                           B.u_purchase_amt,
-                                           B.collect_money_date,
-                                           B.u_collect_money_date,
-                                           /*B.biz_section1_code,
-                                           B.biz_section2_code,
-                                           B.u_biz_section2_code,
-                                           (SELECT DISTINCT FF.great_classi_name
-                                            FROM ajict_bms_schema.commonness_code FF
-                                            WHERE FF.great_classi_code = B.biz_section1_code AND
-                                                  FF.delete_date IS NULL) AS biz_section1_name,
-                                           (SELECT GG.small_classi_name
-                                            FROM ajict_bms_schema.commonness_code GG
-                                            WHERE GG.great_classi_code = B.biz_section1_code AND
-                                                  GG.small_classi_code = B.biz_section2_code AND
-                                                  GG.delete_date IS NULL) AS biz_section2_name,
-                                           B.principal_product1_code,
-                                           B.principal_product2_code,
-                                           B.u_principal_product2_code,
-                                           (SELECT DISTINCT HH.great_classi_name
-                                            FROM ajict_bms_schema.commonness_code HH
-                                            WHERE HH.great_classi_code = B.principal_product1_code AND
-                                                  HH.delete_date IS NULL) AS principal_product1_name,
-                                           (SELECT II.small_classi_name
-                                            FROM ajict_bms_schema.commonness_code II
-                                            WHERE II.great_classi_code = B.principal_product1_code AND
-                                                  II.small_classi_code = B.principal_product2_code AND
-                                                  II.delete_date IS NULL) AS principal_product2_name,*/
-                                           B.product_name,
-                                           B.u_product_name,
-                                           (SELECT KK.high_dept_id
-                                            FROM ajict_bms_schema.dept KK
-                                            WHERE KK.dept_id = B.change_preparation_dept_id AND
-                                                  KK.delete_date IS NULL) AS change_preparation_high_dept_id,      
-                                           (SELECT MM.dept_name
-                                            FROM ajict_bms_schema.dept MM
-                                            WHERE MM.dept_id = (SELECT CCC.high_dept_id
-                                                                FROM ajict_bms_schema.dept CCC
-                                                                WHERE CCC.dept_id = B.change_preparation_dept_id AND
-                                                                      CCC.delete_date IS NULL)) AS change_preparation_high_dept_name,
-                                           C.history_assistance_no,
-                                           C.great_classi_code,
-                                           C.small_classi_code,
-                                           CASE WHEN C.great_classi_code IS NOT NULL
-                                                THEN (SELECT DISTINCT PP.great_classi_name
-                                                      FROM ajict_bms_schema.commonness_code PP
-                                                      WHERE PP.great_classi_code = C.great_classi_code AND
-                                                            PP.delete_date IS NULL)
-                                                ELSE NULL
-                                           END AS great_classi_name,
-                                           CASE WHEN C.small_classi_code IS NOT NULL
-                                                THEN (SELECT QQ.small_classi_name
-                                                      FROM ajict_bms_schema.commonness_code QQ
-                                                      WHERE QQ.great_classi_code = B.great_classi_code AND
-                                                            QQ.small_classi_code = B.small_classi_code AND
-                                                            QQ.delete_date IS NULL)
-                                                ELSE NULL
-                                           END AS small_classi_name,
-                                           C.sale_amt,
-                                           C.u_sale_amt,
-                                           /*B.renewal_code,*/
-                                           CASE WHEN C.history_assistance_no IS NOT NULL
-                                                THEN C.renewal_code
-                                                WHEN A.biz_opp_name IS NOT NULL
-                                                THEN A.renewal_code
-                                                ELSE B.renewal_code
-                                           END AS renewal_code,
-                                           /*CASE WHEN B.renewal_code = 'I'
-                                                THEN (SELECT PP.create_date FROM ajict_bms_schema.biz_opp PP WHERE PP.biz_opp_id = A.biz_opp_id)
-                                                WHEN B.renewal_code = 'U'
-                                                THEN (SELECT QQ.update_date FROM ajict_bms_schema.biz_opp QQ WHERE QQ.biz_opp_id = A.biz_opp_id)
-                                                WHEN B.renewal_code = 'D'
-                                                THEN (SELECT RR.delete_date FROM ajict_bms_schema.biz_opp RR WHERE RR.biz_opp_id = A.biz_opp_id)
-                                                ELSE NULL
-                                            END AS renewal_date*/
-                                            CASE WHEN C.history_assistance_no IS NOT NULL
-                                                THEN C.create_date
-                                                WHEN A.biz_opp_name IS NOT NULL
-                                                THEN A.create_date
-                                                ELSE B.create_date
-                                           END AS renewal_date
-                                    FROM ajict_bms_schema.biz_opp_history A,
-                                         ajict_bms_schema.biz_opp_detail_history B,
-                                         ajict_bms_schema.biz_opp_detail_sale_history C
-                                    WHERE 1 = 1 AND
-                                          A.biz_opp_id = B.biz_opp_id AND
-                                          A.history_no = B.history_no AND
-                                          A.biz_opp_id = C.biz_opp_id AND
-                                          A.history_no = C.history_no AND
-                                          A.biz_opp_id = %s AND
-                                          B.detail_no = %s
-                                    ORDER BY renewal_date DESC"""
+                                           A.user_id,
+                                           A.user_name,
+                                           A.change_preparation_dept_id,
+                                           A.change_preparation_dept_name,
+                                           A.last_client_com1_code,
+                                           A.last_client_com2_code,
+                                           A.u_last_client_com2_code,
+                                           A.last_client_com1_name,
+                                           A.last_client_com2_name,
+                                           A.sale_com1_code,
+                                           A.sale_com2_code,
+                                           A.u_sale_com2_code,
+                                           A.sale_com1_name,
+                                           A.sale_com2_name,
+                                           A.sale_item_no,
+                                           A.u_sale_item_no,
+                                           A.sale_date,
+                                           A.u_sale_date,
+                                           A.total_sale_amt,
+                                           A.u_total_sale_amt,
+                                           A.sale_profit,
+                                           A.u_sale_profit,
+                                           A.purchase_date,
+                                           A.u_purchase_date,
+                                           A.purchase_amt,
+                                           A.u_purchase_amt,
+                                           A.collect_money_date,
+                                           A.u_collect_money_date,
+                                           A.product_name,
+                                           A.u_product_name,
+                                           A.change_preparation_high_dept_id,      
+                                           A.change_preparation_high_dept_name,
+                                           A.history_assistance_no,
+                                           A.great_classi_code,
+                                           A.small_classi_code,
+                                           A.great_classi_name,
+                                           A.small_classi_name,
+                                           A.sale_amt,
+                                           A.u_sale_amt,
+                                           A.renewal_code,
+                                           A.renewal_date
+                                    FROM (SELECT AA1.history_no,
+                                                 AA1.biz_opp_id,
+                                                 BB1.detail_no,
+                                                 AA1.biz_opp_name,
+                                                 AA1.u_biz_opp_name,
+                                                 AA1.progress1_rate_code,
+                                                 AA1.progress2_rate_code,
+                                                 AA1.u_progress2_rate_code,
+                                                 'PRO' AS progress1_rate_name,
+                                                 (SELECT AAA1.small_classi_name
+                                                  FROM ajict_bms_schema.commonness_code AAA1
+                                                  WHERE AAA1.great_classi_code = AA1.progress1_rate_code AND
+                                                        AAA1.small_classi_code = AA1.progress2_rate_code AND
+                                                        AAA1.delete_date IS NULL) AS progress2_rate_name,
+                                                 AA1.contract_date,
+                                                 AA1.u_contract_date,
+                                                 AA1.essential_achievement_tf,
+                                                 AA1.u_essential_achievement_tf,
+                                                 BB1.user_id,
+                                                 (SELECT BBB1.user_name FROM ajict_bms_schema.aj_user BBB1 WHERE BBB1.user_id = BB1.user_id AND BBB1.delete_date IS NULL) AS user_name,
+                                                 BB1.change_preparation_dept_id,
+                                                 BB1.change_preparation_dept_name,
+                                                 BB1.last_client_com1_code,
+                                                 BB1.last_client_com2_code,
+                                                 BB1.u_last_client_com2_code,
+                                                 'COR' AS last_client_com1_name,
+                                                 (SELECT CCC1.small_classi_name
+                                                  FROM ajict_bms_schema.commonness_code CCC1
+                                                  WHERE CCC1.great_classi_code = BB1.last_client_com1_code AND
+                                                        CCC1.small_classi_code = BB1.last_client_com2_code AND
+                                                        CCC1.delete_date IS NULL) AS last_client_com2_name,
+                                                 BB1.sale_com1_code,
+                                                 BB1.sale_com2_code,
+                                                 BB1.u_sale_com2_code,
+                                                 'COR' AS sale_com1_name,
+                                                 (SELECT DDD1.small_classi_name
+                                                  FROM ajict_bms_schema.commonness_code DDD1
+                                                  WHERE DDD1.great_classi_code = BB1.sale_com1_code AND
+                                                        DDD1.small_classi_code = BB1.sale_com2_code AND
+                                                        DDD1.delete_date IS NULL) AS sale_com2_name,
+                                                 BB1.sale_item_no,
+                                                 BB1.u_sale_item_no,
+                                                 BB1.sale_date,
+                                                 BB1.u_sale_date,
+                                                 BB1.total_sale_amt,
+                                                 BB1.u_total_sale_amt,
+                                                 BB1.sale_profit,
+                                                 BB1.u_sale_profit,
+                                                 BB1.purchase_date,
+                                                 BB1.u_purchase_date,
+                                                 BB1.purchase_amt,
+                                                 BB1.u_purchase_amt,
+                                                 BB1.collect_money_date,
+                                                 BB1.u_collect_money_date,
+                                                 BB1.product_name,
+                                                 BB1.u_product_name,
+                                                 (SELECT EEE1.high_dept_id
+                                                  FROM ajict_bms_schema.dept EEE1
+                                                  WHERE EEE1.dept_id = BB1.change_preparation_dept_id AND
+                                                        EEE1.delete_date IS NULL) AS change_preparation_high_dept_id,      
+                                                 (SELECT FFF1.dept_name
+                                                  FROM ajict_bms_schema.dept FFF1
+                                                  WHERE FFF1.dept_id = (SELECT AAAA1.high_dept_id
+                                                                        FROM ajict_bms_schema.dept AAAA1
+                                                                        WHERE AAAA1.dept_id = BB1.change_preparation_dept_id AND
+                                                                              AAAA1.delete_date IS NULL)) AS change_preparation_high_dept_name,
+                                                 NULL AS history_assistance_no,
+                                                 NULL AS great_classi_code,
+                                                 NULL AS small_classi_code,
+                                                 NULL AS great_classi_name,
+                                                 NULL AS small_classi_name,
+                                                 NULL AS sale_amt,
+                                                 NULL AS u_sale_amt,
+                                                 AA1.renewal_code,
+                                                 AA1.create_date AS renewal_date
+                                          FROM ajict_bms_schema.biz_opp_history AA1,
+                                               ajict_bms_schema.biz_opp_detail_history BB1
+                                          WHERE AA1.history_no = BB1.history_no AND
+                                                AA1.biz_opp_id = BB1.biz_opp_id AND
+                                                AA1.biz_opp_id = %s AND
+                                                BB1.detail_no = %s
+                                          UNION ALL
+                                          SELECT AA2.history_no,
+                                                 AA2.biz_opp_id,
+                                                 AA2.detail_no,
+                                                 NULL AS biz_opp_name,
+                                                 NULL AS u_biz_opp_name,
+                                                 NULL AS progress1_rate_code,
+                                                 NULL AS progress2_rate_code,
+                                                 NULL AS u_progress2_rate_code,
+                                                 NULL AS progress1_rate_name,
+                                                 NULL AS progress2_rate_name,
+                                                 NULL AS contract_date,
+                                                 NULL AS u_contract_date,
+                                                 NULL AS essential_achievement_tf,
+                                                 NULL AS u_essential_achievement_tf,
+                                                 NULL AS user_id,
+                                                 NULL AS user_name,
+                                                 NULL AS change_preparation_dept_id,
+                                                 NULL AS change_preparation_dept_name,
+                                                 NULL AS last_client_com1_code,
+                                                 NULL AS last_client_com2_code,
+                                                 NULL AS u_last_client_com2_code,
+                                                 NULL AS last_client_com1_name,
+                                                 NULL AS last_client_com2_name,
+                                                 NULL AS sale_com1_code,
+                                                 NULL AS sale_com2_code,
+                                                 NULL AS u_sale_com2_code,
+                                                 NULL AS sale_com1_name,
+                                                 NULL AS sale_com2_name,
+                                                 NULL AS sale_item_no,
+                                                 NULL AS u_sale_item_no,
+                                                 NULL AS sale_date,
+                                                 NULL AS u_sale_date,
+                                                 NULL AS total_sale_amt,
+                                                 NULL AS u_total_sale_amt,
+                                                 NULL AS sale_profit,
+                                                 NULL AS u_sale_profit,
+                                                 NULL AS purchase_date,
+                                                 NULL AS u_purchase_date,
+                                                 NULL AS purchase_amt,
+                                                 NULL AS u_purchase_amt,
+                                                 NULL AS collect_money_date,
+                                                 NULL AS u_collect_money_date,
+                                                 NULL AS product_name,
+                                                 NULL AS u_product_name,
+                                                 NULL AS change_preparation_high_dept_id,      
+                                                 NULL AS change_preparation_high_dept_name,
+                                                 AA2.history_assistance_no,
+                                                 AA2.great_classi_code,
+                                                 AA2.small_classi_code,
+                                                 AA2.sale_amt,
+                                                 AA2.u_sale_amt,
+                                                 AA2.delegate_tf,
+                                                 AA2.u_delegate_tf,
+                                                 AA2.renewal_code,
+                                                 AA2.create_date AS renewal_date
+                                          FROM ajict_bms_schema.biz_opp_detail_sale_history AA2
+                                          WHERE AA2.biz_opp_id = %s AND
+                                                AA2.detail_no = %s) A
+                                    ORDER BY A.renewal_date DESC"""
          v_param = []
+         v_param.append(v_biz_opp_id)
+         v_param.append(v_detail_no)
          v_param.append(v_biz_opp_id)
          v_param.append(v_detail_no)
 

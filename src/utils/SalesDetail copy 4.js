@@ -681,12 +681,13 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 setIsRecover(false);
             } else {
                 console.log("propsData 기반으로 상태 복원");
+                setVPropsSaleData(v_propsSaleList);
                 setIsRecover(true);
             }
         }
         // 이전 상태 업데이트
         prevShow.current = show;
-    }, [show, isSave, v_propsSaleList]);
+    }, [show, isSave, v_propsSaleList, isParentHide]);
 
     // UI 업데이트
     const [v_handlingHtml, setVHandlingHtml] = useState(null);

@@ -53,7 +53,7 @@ const roots = {
     props: [
       { Header: '이력 번호', accessor: 'history_no' },
       { Header: '갱신 일시', accessor: 'renewal_date', Cell: ({value}) => value ? moment(value).format('YYYY-MM-DD') : '' },
-      { Header: '갱신 구분', accessor: 'renewal_code', Cell: ({value}) => value === 'I'? value = '등록' : value === 'U'? value = '수정' : '삭제' },
+      { Header: '갱신 구분', accessor: 'renewal_code', Cell: ({value}) => value === 'I'? value = '등록' : value === 'U'? value = '수정' : value === 'D'? value = '삭제' : value === 'C'? value = '등록(복제)' : '' },
       { Header: '담당자', accessor: 'user_name' },
       { Header: '판품 번호', accessor: 'sale_item_no',
       Cell: ({ value, row }) => (
@@ -76,7 +76,7 @@ const roots = {
           </div>
           ),  
       },
-      { Header: '매출처', accessor: 'delegate_sale_com_name', 
+      { Header: '매출처', accessor: 'sale_com2_name', 
       Cell: ({ value, row }) => (
           <div style={dynamicCellStyle(row, 'sale_com2_code')} className='tableCell'>
             {value}
@@ -125,9 +125,9 @@ const roots = {
           </div>
           ),  
       },
-      { Header: '매출 금액', accessor: 'sale_amt', 
+      { Header: '매출 금액', accessor: 'total_sale_amt', 
       Cell: ({ value, row }) => (
-          <div style={dynamicCellStyle(row, 'sale_amt')} className='tableCell'>
+          <div style={dynamicCellStyle(row, 'total_sale_amt')} className='tableCell'>
             {applyFunctions(value, v_handlingNum)}
           </div>
           ),  

@@ -35,73 +35,86 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     const [defaultBizKeys, setDefaultBizKeys] = useState([]);
     const [defaultCorKeys, setDefaultCorKeys] = useState([]);
     useEffect(() => {
-        // 수정 시
-        if (!inputValues.a_product_name) {
-            if (v_propsSaleData.length !== 0 && v_propsSaleData.some(el => el)) {
-                // console.log("v_propsSaleData: ", v_propsSaleData);
-                setPropsBizData(v_propsSaleData[0]);
-                setPropsCorData(v_propsSaleData[1]);
-                // console.log("propsBizData", propsBizData, "propsCorData:", propsCorData);
-                // 변환 로직 실행
-                // 변환된 데이터 구조
-                const transformedData = {
-                    biz: {},
-                    cor: {},  // cor는 빈 객체 유지
-                    a_product_name: ""
-                };
-                
-                
-                v_propsSaleData[0].forEach(item => {
-                    if (item.great_classi_code === "BIZ") {
-                        const smallClassiCode = item.small_classi_code;
-                        transformedData.biz[smallClassiCode] = [
-                            item.small_classi_name || "알 수 없음",  // small_classi_name
-                            item.sale_amt,  // sale_amt
-                            item.delegate_tf // delegate_tf
-                        ];
+        // 수정 모드
+        if (v_propsSaleData && v_modalPropsData) {
+            console.log("v_propsSaleData:", v_propsSaleData, "v_modalPropsData: ", v_modalPropsData);
+            if (!inputValues.a_product_name) {
+                if (v_propsSaleData.length !== 0 && v_propsSaleData.some(el => el)) {
+                    console.log(v_propsSaleData[0][0]?.biz_opp_id, v_modalPropsData.biz_opp_id);
+                    // 비동기 오류 처리: biz_opp_id가 다를 경우 return
+                    if ((v_propsSaleData[0][0].biz_opp_id !== v_modalPropsData.biz_opp_id)) {
+                        console.log('loading....');
+                        return;
                     }
-                });
-                v_propsSaleData[1].forEach(item => {
-                    if (item.great_classi_code === "COR") {
-                        const smallClassiCode = item.small_classi_code;
-                        transformedData.cor[smallClassiCode] = [
-                            item.small_classi_name,  // small_classi_name
-                            item.sale_amt,  // sale_amt
-                            item.delegate_tf // delegate_tf
-                        ];
+                    // 복제 데이터 바인딩: biz_opp_id는 같지만 detail_no가 다를 경우 return
+                    if ((v_propsSaleData[0][0].detail_no !== v_modalPropsData.detail_no)) {
+                        console.log('loading....');
+                        return;
                     }
-                });
-    
-                // 결과 출력
-                // console.log(transformedData);
-                setInputValues(prev => ({
-                    ...prev,
-                    biz: {
-                        ...prev.biz,  // 기존 biz 데이터 유지
-                        ...transformedData.biz // 새 데이터 추가
-                    },
-                    cor: {
-                        ...prev.cor,  // 기존 biz 데이터 유지
-                        ...transformedData.cor // 새 데이터 추가
-                    },
-                    a_product_name: v_modalPropsData?.product_name || prev.a_product_name // 새로운 값이 있으면 업데이트
-                }))
-                
-                // default selected keys 지정을 위한 인덱스 저장.
-                setTimeout(() => {
-                    setDefaultBizKeys(
-                        v_propsSaleData[0]
-                            .map(e => e?.small_classi_code)
-                            .filter(Boolean)
-                    );
-                    setDefaultCorKeys(
-                        v_propsSaleData[1]
-                            .map(e => e?.small_classi_code)
-                            .filter(Boolean)
-                    );
-                }, 0);
-            } else {
-                return;
+                    setPropsBizData(v_propsSaleData[0]);
+                    setPropsCorData(v_propsSaleData[1]);
+                    // 변환 로직 실행
+                    // 변환된 데이터 구조
+                    const transformedData = {
+                        biz: {},
+                        cor: {},  // cor는 빈 객체 유지
+                        a_product_name: ""
+                    };
+                    
+                    
+                    v_propsSaleData[0].forEach(item => {
+                        if (item.great_classi_code === "BIZ") {
+                            const smallClassiCode = item.small_classi_code;
+                            transformedData.biz[smallClassiCode] = [
+                                item.small_classi_name || "알 수 없음",  // small_classi_name
+                                item.sale_amt,  // sale_amt
+                                item.delegate_tf // delegate_tf
+                            ];
+                        }
+                    });
+                    v_propsSaleData[1].forEach(item => {
+                        if (item.great_classi_code === "COR") {
+                            const smallClassiCode = item.small_classi_code;
+                            transformedData.cor[smallClassiCode] = [
+                                item.small_classi_name,  // small_classi_name
+                                item.sale_amt,  // sale_amt
+                                item.delegate_tf // delegate_tf
+                            ];
+                        }
+                    });
+        
+                    // 결과 출력
+                    console.log(v_modalPropsData?.biz_opp_id, '\n', v_propsSaleData,'\n', transformedData, '\n','\n',inputValues);
+                    // console.log(transformedData);
+                    setInputValues(prev => ({
+                        ...prev,
+                        biz: {
+                            ...prev.biz,  // 기존 biz 데이터 유지
+                            ...transformedData.biz // 새 데이터 추가
+                        },
+                        cor: {
+                            ...prev.cor,  // 기존 biz 데이터 유지
+                            ...transformedData.cor // 새 데이터 추가
+                        },
+                        a_product_name: v_modalPropsData?.product_name || prev.a_product_name // 새로운 값이 있으면 업데이트
+                    }))
+                    
+                    // default selected keys 지정을 위한 인덱스 저장.
+                    setTimeout(() => {
+                        setDefaultBizKeys(
+                            v_propsSaleData[0]
+                                .map(e => e?.small_classi_code)
+                                .filter(Boolean)
+                        );
+                        setDefaultCorKeys(
+                            v_propsSaleData[1]
+                                .map(e => e?.small_classi_code)
+                                .filter(Boolean)
+                        );
+                    }, 0);
+                } else {
+                    return;
+                }
             }
         }
         
@@ -142,7 +155,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                             defaultChecked={
                                 isSave ?
                                 selectedRadio :
-                                v_propsSaleData[1]?.length > 0 ?
+                                v_propsSaleData && v_propsSaleData[1]?.length > 0 ?
                                 matchedData.delegate_tf : 
                                 false
                             }
@@ -582,19 +595,18 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     }
     // 초기화
     useEffect(()=> {
-        console.log('show: ', show, '\nisSave: ', isSave)
-        if (show === false) {
-            // 부모 모달이 닫혔으면 isSave 플래그도 false
-            if (isParentHide === true) {
-                setIsSave(false); 
-            }
-
-            /* 
+        console.log('isParentHide?: ', isParentHide, '\nSalesDetail show: ', show, '\nisSave: ', isSave);
+        /* 
             초기화
             1) 부모 모달은 살아 있지만 이 모달을 저장하지 않고 나가서 모달 플래그가 false일 경우
             2) 부모 모달이 닫혀서 이 모달 플래그도 false일 경우
-             */ 
-            if (isSave === false) {
+        */ 
+        // 부모 모달이 닫혔으면 isSave 플래그도 false
+        if (isParentHide === true) {
+            setIsSave(false); 
+        } else {
+        // 부모 모달은 살아 있지만 이 모달을 저장하지 않고 나간 경우
+            if (show === false && isSave === false) {
                 console.log(show);
                 setSumBiz(null);
                 setSumCor(null);
@@ -647,7 +659,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                                         
                                         <Row className="cntntArea mb-2">
                                             <Col xs={12} md={12} lg={12} xl={12} className='col d-flex align-items-center floating'>
-                                                <h3>총 매출 금액 &#40;수정 전 값&#41;: &#65510;{v_modalPropsData ? v_modalPropsData?.total_sale_amt.toLocaleString('ko-KR') : ''}</h3>
+                                                <h3>총 매출 금액 &#40;수정 전 값&#41;: &#65510;{v_modalPropsData ? console.log(v_modalPropsData)&&v_modalPropsData?.total_sale_amt.toLocaleString('ko-KR') : ''}</h3>
                                             </Col>
                                             {/* <Col xs={12} md={6} lg={6} xl={6} className='col d-flex align-items-center floating'>
                                                 <FloatingLabel label='총 매출 금액 &#40;변경 값, &#65510;&#41;'>

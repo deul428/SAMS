@@ -359,7 +359,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
 /*     if (!data && (Array.isArray(res) && res.length === 0)) {
       return <div>Loading...</div>;
     } */
-    console.log("v_propsData: ", v_propsData)
+   
     if (v_propsData?.status?.STATUS === 'NONE') {
       htmlContent = <div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>;
       setVHandlingHtml(htmlContent);

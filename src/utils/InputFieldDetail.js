@@ -956,11 +956,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         console.log("insertInput: ", insertInput);
         console.log("updateInput: ", updateInput);
     }, [insertInput, updateInput])
-    
-    useEffect(() => {
-
-        console.log(delegateBiz, delegateCor);
-    }, [delegateBiz, delegateCor])
     // ================= SalesDetail.js 데이터 들어온 이후 끝 ================= 
 
 
@@ -1012,12 +1007,12 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 (auth.userAuthCode === '0002') ? 
                                                 ({"pointerEvents": "none"}) : ({})
                                             }>
-                                                <Col xs={12} sm={12} md={3} lg={4} xl={3} className='col d-flex align-items-center floating'>
-                                                    <FloatingLabel label='사업 (기회) 일련 번호'>
+                                                <Col xs={12} sm={12} md={3} lg={3} xl={3} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='사업 (기회) 일련 번호 (자동 생성)'>
                                                         <Form.Control size='sm' type='text' className=''
                                                         name='a_biz_opp_id' 
                                                         /* data-key='biz_opp' */
-                                                        placeholder='사업 (기회) 일련 번호'
+                                                        placeholder='사업 (기회) 일련 번호 (자동 생성)'
                                                         onChange={f_handlingInput} 
                                                         // value={input.biz_opp_id}
                                                         defaultValue={a_v_modalPropsData?.a_biz_opp_id || ''} 
@@ -1027,7 +1022,17 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         }/>
                                                     </FloatingLabel>
                                                 </Col>
-                                                <Col xs={12} sm={12} md={9} lg={8} xl={9} className='col d-flex align-items-center floating'>
+                                                <Col xs={12} sm={12} md={3} lg={3} xl={3} className='col d-flex align-items-center floating'>
+                                                    <FloatingLabel label='사업 (기회) 상세 번호 (자동 생성)'>
+                                                        <Form.Control size='sm' type='text' className=''
+                                                        name='a_detail_no' 
+                                                        placeholder='사업 (기회) 상세 번호 (자동 생성)'
+                                                        defaultValue={a_v_modalPropsData?.a_detail_no || ''} 
+                                                        disabled={true}
+                                                        />
+                                                    </FloatingLabel>
+                                                </Col>
+                                                <Col xs={12} sm={12} md={6} lg={6} xl={6} className='col d-flex align-items-center floating'>
                                                     <FloatingLabel label='사업 (기회) 명'>
                                                         <Form.Control as='textarea' size='sm' type='text' className=''
                                                         name='a_biz_opp_name' 
@@ -1612,7 +1617,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             {v_handlingHtml}
             {
                 (v_componentName === 'bizOpp') ?
-                <SalesDetail v_treeName={v_childComponent} isParentHide={isParentHide} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} v_propsSaleData={[saleBizData, saleCorData]} setSalesDetailData={setSalesDetailData}/>
+                <SalesDetail v_treeName={v_childComponent} isParentHide={isParentHide} show={showModal} onHide={closeModal} listData={detailData} v_modalPropsData={v_modalPropsData} v_propsSaleData={(saleBizData && Object.entries(saleBizData).length > 0) && (saleCorData && Object.entries(saleCorData).length > 0) ? [saleBizData, saleCorData] : null} setSalesDetailData={setSalesDetailData}/>
                 : ''
             }
         </div>

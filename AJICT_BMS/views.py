@@ -160,14 +160,7 @@ def f_logout(request):
    v_square_bracket_return = [v_return]
    return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp1(request):
-
-
-   #test
    v_session_user_id = ''
-
-   # v_session_user_id = 'leecj'
-
-
    if request.method == 'POST':
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
@@ -380,12 +373,6 @@ def f_select_biz_opp1(request):
             v_columns = [v_column[0] for v_column in v_cursor.description]
             v_rows = v_cursor.fetchall()
             v_data["retrieve_biz_opp"] = [dict(zip(v_columns,row)) for row in v_rows]
-
-
-#test
-            #print(f"f_select_biz_opp1()에서의 v_rows_biz_opp : {v_data["retrieve_biz_opp"]}")
-
-
             if not v_data["retrieve_biz_opp"]:
                v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
             else:
@@ -400,14 +387,7 @@ def f_select_biz_opp1(request):
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params={'ensure_ascii':False})
 def f_select_biz_opp2(request):
-
-
-   #test
    v_session_user_id = ''
-
-   # v_session_user_id = 'leecj'
-
-
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
@@ -656,8 +636,8 @@ def f_select_biz_opp2(request):
 
 
          #test
-         v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
-         print(f"f_select_biz_opp2()에서의 v_formatted_sql : {v_formatted_sql}")
+         # v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
+         # print(f"f_select_biz_opp2()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:
@@ -690,10 +670,6 @@ def f_select_biz_opp2(request):
                #print(f"v_status : {v_status}")
                #print(f"v_status : {JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})}")
                #print(f"v_status : {v_data,v_status}")
-
-
-            #test
-            #print(f"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
 
 
             return JsonResponse({"data":v_data,"status":v_status},safe = False,json_dumps_params = {'ensure_ascii':False})
@@ -765,12 +741,7 @@ def f_select_popup_biz_opp(request):
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
 def f_insert_biz_opp(request):
-
-
-   #test
    v_session_user_id = ''
-
-   #v_session_user_id = 'leecj'
 
 
    #test
@@ -818,12 +789,6 @@ def f_insert_biz_opp(request):
 
    if request.method == 'POST':
       v_body = json.loads(request.body)
-
-
-      #test
-      print(f"{v_body}")
-
-
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
       if v_session_user_id is not None:
          v_session_user_id = v_session_user_id.strip()
@@ -929,8 +894,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp % tuple(map(repr,v_param_insert_biz_opp))
+            # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1128,8 +1093,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
+            # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1168,8 +1133,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
+            # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1242,8 +1207,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
+            # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1282,8 +1247,8 @@ def f_insert_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_activity % tuple(map(repr,v_param_insert_biz_opp_activity))
-            print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp_activity % tuple(map(repr,v_param_insert_biz_opp_activity))
+            # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1307,12 +1272,6 @@ def f_insert_biz_opp(request):
                v_param_insert_biz_opp_detail_sale = []
                v_square_bracket_return = ''
                for v_item in v_biz_opp_detail_sale:
-
-
-               #test
-                  print(f"v_item : {v_item}")
-
-
                   v_param_insert_biz_opp_detail_sale.append(v_biz_opp_id)
                   if not v_item.get('a_great_classi_code'):
                      transaction.set_rollback(True)
@@ -1332,8 +1291,8 @@ def f_insert_biz_opp(request):
 
 
                #test
-                  v_formatted_sql = v_sql_insert_biz_opp_detail_sale % tuple(map(repr,v_param_insert_biz_opp_detail_sale))
-                  print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                  # v_formatted_sql = v_sql_insert_biz_opp_detail_sale % tuple(map(repr,v_param_insert_biz_opp_detail_sale))
+                  # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                   with connection.cursor() as v_cursor:
@@ -1374,8 +1333,8 @@ def f_insert_biz_opp(request):
 
 
                #test
-                  v_formatted_sql = v_sql_insert_biz_opp_detail_sale_history % tuple(map(repr,v_param_insert_biz_opp_detail_sale_history))
-                  print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                  # v_formatted_sql = v_sql_insert_biz_opp_detail_sale_history % tuple(map(repr,v_param_insert_biz_opp_detail_sale_history))
+                  # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                   with connection.cursor() as v_cursor:
@@ -1383,12 +1342,6 @@ def f_insert_biz_opp(request):
                   v_param_insert_biz_opp_detail_sale_history.clear()
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
             v_square_bracket_return = [v_return]
-
-
-#test
-            print(f"f_insert_biz_opp()에서의 v_square_bracket_return : {v_square_bracket_return}")
-
-
             return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
       except DatabaseError:
          v_return = {'STATUS':'FAIL','MESSAGE':'DB에서 오류가 발생했습니다.'}
@@ -1401,27 +1354,11 @@ def f_insert_biz_opp(request):
 
 
 def f_renewal_biz_opp(request):
-
-
-   #test
    v_session_user_id = ''
-
-   #v_session_user_id = 'leecj'
-
-
    v_body = ''
    if request.method == 'POST':
-
-
-      #test
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
-
-
-#test
-      print(f"v_body : {v_body}")
-
-
       if v_session_user_id is not None:
          v_session_user_id = v_session_user_id.strip()
    if not v_session_user_id:
@@ -1522,8 +1459,8 @@ def f_renewal_biz_opp(request):
 
 
                #test
-               v_formatted_sql = v_sql_update_biz_opp % tuple(map(repr,v_param))
-               print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+               # v_formatted_sql = v_sql_update_biz_opp % tuple(map(repr,v_param))
+               # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                with connection.cursor() as v_cursor:
@@ -1579,19 +1516,13 @@ def f_renewal_biz_opp(request):
 
 
                #test
-               v_formatted_sql = v_sql_update_biz_opp_detail % tuple(map(repr,v_param))
-               print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+               # v_formatted_sql = v_sql_update_biz_opp_detail % tuple(map(repr,v_param))
+               # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                with connection.cursor() as v_cursor:
                   v_cursor.execute(v_sql_update_biz_opp_detail,v_param)
                v_change_preparation_dept_id = None if v_body.get('biz_opp_detail',{}).get('a_change_preparation_dept_id') == '' else v_body.get('biz_opp_detail',{}).get('a_change_preparation_dept_id')
-
-
-               # #test
-               # print(f"v_change_preparation_dept_id : {v_change_preparation_dept_id}")
-
-
                v_param_change_preparation_dept_name = []
                if v_change_preparation_dept_id:
                   v_sql_update_change_preparation_dept_name = """UPDATE ajict_bms_schema.biz_opp_detail
@@ -1607,8 +1538,8 @@ def f_renewal_biz_opp(request):
 
 
                   #test
-                  v_formatted_sql = v_sql_update_change_preparation_dept_name % tuple(map(repr,v_param_change_preparation_dept_name))
-                  print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                  # v_formatted_sql = v_sql_update_change_preparation_dept_name % tuple(map(repr,v_param_change_preparation_dept_name))
+                  # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                   with connection.cursor() as v_cursor:
@@ -1657,8 +1588,8 @@ def f_renewal_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_insert_biz_opp_activity % tuple(map(repr,v_param_insert_biz_opp_activity))
-            print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_insert_biz_opp_activity % tuple(map(repr,v_param_insert_biz_opp_activity))
+            # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -1677,16 +1608,6 @@ def f_renewal_biz_opp(request):
                v_comma = ''
                if v_biz_opp:
                   v_comma = ','
-
-
-               #test
-               print(f"v_new_set_clauses_biz_opp_history : {v_new_set_clauses_biz_opp_history}")
-               print(f"v_base_columns : {v_base_columns}")
-               print(f"v_columns_str : {v_columns_str}")
-               print(f"v_values_str : {v_values_str}")
-               print(f"v_set_clauses_biz_opp_history : {v_set_clauses_biz_opp_history}")
-
-
                v_sql_update_biz_opp_history = f"""INSERT INTO ajict_bms_schema.biz_opp_history ({v_columns_str})
                                                   SELECT %s,
                                                          A.biz_opp_id,
@@ -1725,8 +1646,8 @@ def f_renewal_biz_opp(request):
 
 
                #test
-               v_formatted_sql = v_sql_update_biz_opp_history % tuple(map(repr,v_param_update_biz_opp_history))
-               print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+               # v_formatted_sql = v_sql_update_biz_opp_history % tuple(map(repr,v_param_update_biz_opp_history))
+               # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                with connection.cursor() as v_cursor:
@@ -1759,16 +1680,6 @@ def f_renewal_biz_opp(request):
                v_comma = ''
                if v_biz_opp_detail:
                   v_comma = ','
-
-
-               #test
-               # print(f"v_new_set_clauses_biz_opp_detail_history : {v_new_set_clauses_biz_opp_detail_history}")
-               # print(f"v_base_columns : {v_base_columns}")
-               print(f"v_columns_str : {v_columns_str}")
-               print(f"v_values_str : {v_values_str}")
-               # print(f"v_set_clauses_biz_opp_detail_history : {v_set_clauses_biz_opp_detail_history}")
-
-
                v_sql_update_biz_opp_detail_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_history ({v_columns_str})
                                                          SELECT {v_history_no},
                                                                 A.biz_opp_id,
@@ -1802,8 +1713,8 @@ def f_renewal_biz_opp(request):
 
 
                #test
-               v_formatted_sql = v_sql_update_biz_opp_detail_history % tuple(map(repr,v_param_update_biz_opp_detail_history))
-               print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+               # v_formatted_sql = v_sql_update_biz_opp_detail_history % tuple(map(repr,v_param_update_biz_opp_detail_history))
+               # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                with connection.cursor() as v_cursor:
@@ -1813,6 +1724,12 @@ def f_renewal_biz_opp(request):
 
 
             v_biz_opp_detail_sale = v_body.get('biz_opp_detail_sale')
+
+
+            #test
+            print(f"f_renewal_biz_opp()에서의 v_biz_opp_detail_sale : {v_biz_opp_detail_sale}")
+
+
             if v_biz_opp_detail_sale:
                v_param_insert_biz_opp_detail_sale = []
                v_param_insert_biz_opp_detail_sale_history = []
@@ -1892,8 +1809,8 @@ def f_renewal_biz_opp(request):
 
 
                      #test
-                     v_formatted_sql = v_sql_insert_biz_opp_detail_sale % tuple(map(repr,v_param_insert_biz_opp_detail_sale))
-                     print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                     # v_formatted_sql = v_sql_insert_biz_opp_detail_sale % tuple(map(repr,v_param_insert_biz_opp_detail_sale))
+                     # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                      with connection.cursor() as v_cursor:
@@ -1910,8 +1827,8 @@ def f_renewal_biz_opp(request):
 
 
                      #test
-                     v_formatted_sql = v_sql_insert_biz_opp_detail_sale_history % tuple(map(repr,v_param_insert_biz_opp_detail_sale_history))
-                     print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                     # v_formatted_sql = v_sql_insert_biz_opp_detail_sale_history % tuple(map(repr,v_param_insert_biz_opp_detail_sale_history))
+                     # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                      with connection.cursor() as v_cursor:
@@ -1934,8 +1851,8 @@ def f_renewal_biz_opp(request):
 
 
                      #test
-                     v_formatted_sql = v_sql_select_biz_opp_detail_sale % tuple(map(repr,v_param_select_biz_opp_detail_sale))
-                     print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                     # v_formatted_sql = v_sql_select_biz_opp_detail_sale % tuple(map(repr,v_param_select_biz_opp_detail_sale))
+                     # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                      with connection.cursor() as v_cursor:
@@ -1965,8 +1882,8 @@ def f_renewal_biz_opp(request):
 
 
                         #test
-                        v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
-                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                        # v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
+                        # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                         with connection.cursor() as v_cursor:
@@ -2006,8 +1923,8 @@ def f_renewal_biz_opp(request):
 
 
                         #test
-                        v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
-                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                        # v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
+                        # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                         with connection.cursor() as v_cursor:
@@ -2032,8 +1949,8 @@ def f_renewal_biz_opp(request):
 
 
                         #test
-                        v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
-                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                        # v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
+                        # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                         with connection.cursor() as v_cursor:
@@ -2068,8 +1985,8 @@ def f_renewal_biz_opp(request):
 
 
                         #test
-                        v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
-                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                        # v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
+                        # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                         with connection.cursor() as v_cursor:
@@ -2094,8 +2011,8 @@ def f_renewal_biz_opp(request):
 
 
                         #test
-                        v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
-                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                        # v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
+                        # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                         with connection.cursor() as v_cursor:
@@ -2130,8 +2047,8 @@ def f_renewal_biz_opp(request):
 
 
                         #test
-                        v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
-                        print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                        # v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
+                        # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                         with connection.cursor() as v_cursor:
@@ -2149,9 +2066,11 @@ def f_renewal_biz_opp(request):
                      v_param_delete_biz_opp_detail_sale.append(v_item.get('a_great_classi_code'))
                      v_param_delete_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
 
+
                      #test
-                     v_formatted_sql = v_sql_delete_biz_opp_detail_sale % tuple(map(repr,v_param_delete_biz_opp_detail_sale))
-                     print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                     # v_formatted_sql = v_sql_delete_biz_opp_detail_sale % tuple(map(repr,v_param_delete_biz_opp_detail_sale))
+                     # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
 
                      with connection.cursor() as v_cursor:
                         v_cursor.execute(v_sql_delete_biz_opp_detail_sale,v_param_delete_biz_opp_detail_sale)
@@ -2181,9 +2100,11 @@ def f_renewal_biz_opp(request):
                      v_param_delete_biz_opp_detail_sale_history.append(v_item.get('a_delegate_tf'))
                      v_param_delete_biz_opp_detail_sale_history.append(v_session_user_id)
 
+
                      #test
-                     v_formatted_sql = v_sql_delete_biz_opp_detail_sale_history % tuple(map(repr,v_param_delete_biz_opp_detail_sale_history))
-                     print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+                     # v_formatted_sql = v_sql_delete_biz_opp_detail_sale_history % tuple(map(repr,v_param_delete_biz_opp_detail_sale_history))
+                     # print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
 
                      with connection.cursor() as v_cursor:
                         v_cursor.execute(v_sql_delete_biz_opp_detail_sale_history,v_param_delete_biz_opp_detail_sale_history)
@@ -2226,20 +2147,13 @@ def f_delete_biz_opp(request):
             #v_detail_no = None if v_body.get('biz_opp',{}).get('a_detail_no') == '' else v_body.get('biz_opp',{}).get('a_detail_no')
             v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
             v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
-
-
-            #test
-            print(f"v_biz_opp_id : {v_biz_opp_id}")
-            print(f"v_detail_no : {v_detail_no}")
-
-
             v_sql_count = """SELECT COUNT(*) AS count FROM ajict_bms_schema.biz_opp_detail WHERE biz_opp_id = %s AND delete_date IS NULL"""
             v_param_count.append(v_biz_opp_id)
 
 
             #test
-            v_formatted_sql = v_sql_count % tuple(map(repr,v_param_count))
-            print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_count % tuple(map(repr,v_param_count))
+            # print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -2255,8 +2169,8 @@ def f_delete_biz_opp(request):
 
 
                   #test
-                  v_formatted_sql = v_sql_delete_biz_opp % tuple(map(repr,v_param_delete_biz_opp))
-                  print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+                  # v_formatted_sql = v_sql_delete_biz_opp % tuple(map(repr,v_param_delete_biz_opp))
+                  # print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
                   with connection.cursor() as v_cursor_delete_biz_opp:
@@ -2275,8 +2189,8 @@ def f_delete_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_delete_biz_opp_detail % tuple(map(repr,v_param_delete_biz_opp_detail))
-            print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_delete_biz_opp_detail % tuple(map(repr,v_param_delete_biz_opp_detail))
+            # print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -2312,8 +2226,8 @@ def f_delete_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_delete_biz_opp_history % tuple(map(repr,v_param_delete_biz_opp_history))
-            print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_delete_biz_opp_history % tuple(map(repr,v_param_delete_biz_opp_history))
+            # print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -2365,8 +2279,8 @@ def f_delete_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_delete_biz_opp_detail_history % tuple(map(repr,v_param_delete_biz_opp_detail_history))
-            print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_delete_biz_opp_detail_history % tuple(map(repr,v_param_delete_biz_opp_detail_history))
+            # print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -2383,8 +2297,8 @@ def f_delete_biz_opp(request):
 
 
             #test
-            v_formatted_sql = v_sql_delete_biz_opp_activity % tuple(map(repr,v_param_delete_biz_opp_activity))
-            print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+            # v_formatted_sql = v_sql_delete_biz_opp_activity % tuple(map(repr,v_param_delete_biz_opp_activity))
+            # print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
             with connection.cursor() as v_cursor:
@@ -2435,26 +2349,11 @@ def f_delete_biz_opp(request):
 def f_clone_biz_opp(request):
    v_session_user_id = ''
    v_body = ''
-
-
-   #test
-   #v_session_user_id = 'leecj'
-
-
    if request.method == 'POST':
       v_body = json.loads(request.body)
-
-
-      #test
-      #print(f"{v_body}")
-
-
-#test
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
       if v_session_user_id is not None:
          v_session_user_id = v_session_user_id.strip()
-
-
    if not v_session_user_id:
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
@@ -2528,8 +2427,8 @@ def f_clone_biz_opp(request):
 
 
          #test
-         v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
-         print(f"f_clone_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+         # v_formatted_sql = v_sql_insert_biz_opp_detail % tuple(map(repr,v_param_insert_biz_opp_detail))
+         # print(f"f_clone_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:
@@ -2566,8 +2465,8 @@ def f_clone_biz_opp(request):
 
 
          #test
-         v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
-         print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+         # v_formatted_sql = v_sql_insert_biz_opp_history % tuple(map(repr,v_param_insert_biz_opp_history))
+         # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:
@@ -2622,8 +2521,8 @@ def f_clone_biz_opp(request):
 
 
          #test
-         v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
-         print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+         # v_formatted_sql = v_sql_insert_biz_opp_detail_history % tuple(map(repr,v_param_insert_biz_opp_detail_history))
+         # print(f"f_insert_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:
@@ -2911,8 +2810,8 @@ def f_select_biz_opp_activity1(request):
 
 
          #test
-         v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
-         print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
+         # v_formatted_sql = v_sql_biz_opp_activity % tuple(map(repr,v_param2))
+         # print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:
@@ -2946,40 +2845,16 @@ def f_select_biz_opp_activity2(request):
    v_session_user_id = ''
    v_body = ''
    if request.method == 'POST':
-
-
-      #test
-      #print(f"yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
-
-
       v_body = json.loads(request.body)
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
       if v_session_user_id is not None:
          v_session_user_id = v_session_user_id.strip()
-
-
-         #test
-         #print(f"ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
-
-
    if not v_session_user_id:
-
-
-      #test
-      #print(f"ㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐ")
-
-
       v_return = {'STATUS':'FAIL','MESSAGE':'a_session_user_id를 전달 받지 못했습니다.'}
       v_square_bracket_return = [v_return]
       return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
    else:
       try:
-
-
-         #test
-         #print(f"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-
-
          v_sql_session = """SELECT user_id,
                                    user_name,
                                    cipher,
@@ -3036,11 +2911,6 @@ def f_select_biz_opp_activity2(request):
          v_user_name = None if v_body.get('a_user_name') == '' else v_body.get('a_user_name')
          if v_user_name is not None:
             v_user_name = v_user_name.strip()
-
-         #test
-         #print(f"뭐지?")
-
-
          v_sql_biz_opp_activity = """SELECT A.biz_opp_id,
                                             A.biz_opp_name,
                                             B.user_id,
@@ -3299,14 +3169,7 @@ def f_select_biz_opp_activity2(request):
          v_square_bracket_return = [v_return]
          return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
 def f_select_biz_opp_activity3(request):
-
-
-   #test
-   #v_session_user_id = 'leecj'
-
    v_session_user_id = ''
-
-
    v_body = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
@@ -3336,28 +3199,14 @@ def f_select_biz_opp_activity3(request):
                                                   detail_no = %s AND
                                                   delete_date IS NULL
                                             ORDER BY activity_no DESC LIMIT 5"""
-
-
-         #test
          v_biz_opp_id = None if v_body.get('a_biz_opp_id') == '' else v_body.get('a_biz_opp_id')
-
-         #v_biz_opp_id = '20250001'
-
-
          if v_biz_opp_id is not None:
             v_biz_opp_id = v_biz_opp_id.strip()
          if not v_biz_opp_id:
             v_return = {'STATUS':'FAIL','MESSAGE':"'a_biz_opp_id' 매개 변수를 전달 받지 못했습니다."}
             v_square_bracket_return = [v_return]
             return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
-
-
-         #test
          v_detail_no = None if v_body.get('a_detail_no') == '' else v_body.get('a_detail_no')
-
-         #v_detail_no = 1
-
-
          v_param_select_biz_opp_activity = []
          v_param_select_biz_opp_activity.append(v_biz_opp_id)
          v_param_select_biz_opp_activity.append(v_detail_no)
@@ -3472,10 +3321,6 @@ def f_select_biz_opp_activity3(request):
          #    v_data = [dict(zip(v_columns,row)) for row in v_rows]
 
 
-            #test
-            #print(f"f_select_biz_opp_activity3()에서의 v_data : {v_data}")
-
-
             if not v_data:
                v_status = {"STATUS":"NONE","MESSAGE":"Data가 존재하지 않습니다."}
             else:
@@ -3498,12 +3343,6 @@ def f_update_biz_opp_activity(request):
    v_activity_date = ''
    if request.method == 'POST':
       v_body = json.loads(request.body)
-
-
-      #test
-      print(f"v_body : {v_body}")
-
-
       v_session_user_id = None if v_body.get('a_session_user_id') == '' else v_body.get('a_session_user_id')
       if v_session_user_id is not None:
          v_session_user_id = v_session_user_id.strip()
@@ -4057,8 +3896,8 @@ def f_select_biz_opp_history(request):
 
 
          #test
-         v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
-         print(f"f_select_biz_history()에서의 v_formatted_sql : {v_formatted_sql}")
+         # v_formatted_sql = v_sql_biz_opp_history % tuple(map(repr,v_param))
+         # print(f"f_select_biz_history()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:

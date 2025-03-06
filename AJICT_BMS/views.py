@@ -1815,6 +1815,8 @@ def f_renewal_biz_opp(request):
                v_param_select_biz_opp_detail_sale = []
                v_param_update_biz_opp_detail_sale = []
                v_param_update_biz_opp_detail_sale_history = []
+               v_param_delete_biz_opp_detail_sale = []
+               v_param_delete_biz_opp_detail_sale_history = []
                v_columns = []
                v_rows = []
                v_data_session = []
@@ -2136,37 +2138,31 @@ def f_renewal_biz_opp(request):
 
 
                   if v_item.get('a_mode') == 'D':
-                     v_sql_update_biz_opp_detail_sale = """UPDATE ajict_bms_schema.biz_opp_detail_sale
-                                                                                   SET delegate_tf = %s,
-                                                                                       update_user = %s,
-                                                                                       update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'
-                                                                                   WHERE biz_opp_id = %s AND
-                                                                                         detail_no = %s AND
-                                                                                         great_classi_code = %s AND
-                                                                                         small_classi_code = %s AND
-                                                                                         delete_date IS NULL"""
-                     v_param_update_biz_opp_detail_sale.append(v_item.get('a_delegate_tf'))
-                     v_param_update_biz_opp_detail_sale.append(v_session_user_id)
-                     v_param_update_biz_opp_detail_sale.append(v_biz_opp_id)
-                     v_param_update_biz_opp_detail_sale.append(v_detail_no)
-                     v_param_update_biz_opp_detail_sale.append(v_item.get('a_great_classi_code'))
-                     v_param_update_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
+                     v_sql_delete_biz_opp_detail_sale = """DELETE FROM ajict_bms_schema.biz_opp_detail_sale  
+                                                           WHERE biz_opp_id = %s AND
+                                                                 detail_no = %s AND
+                                                                 great_classi_code = %s AND
+                                                                 small_classi_code = %s AND
+                                                                 delete_date IS NULL"""
+                     v_param_delete_biz_opp_detail_sale.append(v_biz_opp_id)
+                     v_param_delete_biz_opp_detail_sale.append(v_detail_no)
+                     v_param_delete_biz_opp_detail_sale.append(v_item.get('a_great_classi_code'))
+                     v_param_delete_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
 
                      #test
-                     v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
+                     v_formatted_sql = v_sql_delete_biz_opp_detail_sale % tuple(map(repr,v_param_delete_biz_opp_detail_sale))
                      print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
                      with connection.cursor() as v_cursor:
-                        v_cursor.execute(v_sql_update_biz_opp_detail_sale,v_param_update_biz_opp_detail_sale)
-                     v_param_update_biz_opp_detail_sale.clear()
-                     v_sql_update_biz_opp_detail_sale_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
+                        v_cursor.execute(v_sql_delete_biz_opp_detail_sale,v_param_delete_biz_opp_detail_sale)
+                     v_param_delete_biz_opp_detail_sale.clear()
+                     v_sql_delete_biz_opp_detail_sale_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
                                                                                                                                                       history_assistance_no,
                                                                                                                                                       biz_opp_id,
                                                                                                                                                       detail_no,
                                                                                                                                                       great_classi_code,
                                                                                                                                                       small_classi_code,
                                                                                                                                                       delegate_tf,
-                                                                                                                                                      u_delegate_tf,
                                                                                                                                                       renewal_code,
                                                                                                                                                       create_user)
                                                                                                                                                      VALUES ({v_history_no},
@@ -2176,23 +2172,22 @@ def f_renewal_biz_opp(request):
                                                                                                                                                              %s,
                                                                                                                                                              %s,
                                                                                                                                                              %s,
-                                                                                                                                                             TRUE,
-                                                                                                                                                             'U',
+                                                                                                                                                             'D',
                                                                                                                                                              %s)"""
-                     v_param_update_biz_opp_detail_sale_history.append(v_biz_opp_id)
-                     v_param_update_biz_opp_detail_sale_history.append(v_detail_no)
-                     v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_great_classi_code'))
-                     v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_small_classi_code'))
-                     v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_delegate_tf'))
-                     v_param_update_biz_opp_detail_sale_history.append(v_session_user_id)
+                     v_param_delete_biz_opp_detail_sale_history.append(v_biz_opp_id)
+                     v_param_delete_biz_opp_detail_sale_history.append(v_detail_no)
+                     v_param_delete_biz_opp_detail_sale_history.append(v_item.get('a_great_classi_code'))
+                     v_param_delete_biz_opp_detail_sale_history.append(v_item.get('a_small_classi_code'))
+                     v_param_delete_biz_opp_detail_sale_history.append(v_item.get('a_delegate_tf'))
+                     v_param_delete_biz_opp_detail_sale_history.append(v_session_user_id)
 
                      #test
-                     v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
+                     v_formatted_sql = v_sql_delete_biz_opp_detail_sale_history % tuple(map(repr,v_param_delete_biz_opp_detail_sale_history))
                      print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
 
                      with connection.cursor() as v_cursor:
-                        v_cursor.execute(v_sql_update_biz_opp_detail_sale_history,v_param_update_biz_opp_detail_sale_history)
-                     v_param_update_biz_opp_detail_sale_history.clear()
+                        v_cursor.execute(v_sql_delete_biz_opp_detail_sale_history,v_param_delete_biz_opp_detail_sale_history)
+                     v_param_delete_biz_opp_detail_sale_history.clear()
 
 
 

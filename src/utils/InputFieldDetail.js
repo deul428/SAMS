@@ -450,7 +450,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             }
 
             // 판품번호 disabled 제어
-            console.log(v_modalPropsData.progress2_rate_code);
             if (v_modalPropsData.progress2_rate_code === '0006' || v_modalPropsData.progress2_rate_code === '0007') {
                 setIsProDisabled(false);
             } else {
@@ -533,12 +532,14 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 };
                 confirmMsg = `정말 ${input.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`
             } else if (v_componentName === 'activity') {
+                console.log(input, a_v_modalPropsData);
                 input = { 
                     a_session_user_id: input.a_session_user_id, 
                     a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id, 
                     a_detail_no: a_v_modalPropsData.a_detail_no,
-                    a_activity_no: a_v_modalPropsData.a_detail_no 
+                    a_activity_no: a_v_modalPropsData.a_activity_no 
                 };
+                console.log(input, a_v_modalPropsData);
                 confirmMsg = `해당 영업 활동 내역을 삭제하시겠습니까?`
 
             }
@@ -713,14 +714,18 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     // a_activity_date가 존재하면 추가
                     if (input.biz_opp_activity?.a_activity_date) {
                         updateInput.a_activity_date = input.biz_opp_activity.a_activity_date;
+                    } else {
+                        updateInput.a_activity_date = a_v_modalPropsData.a_activity_date
                     }
                     
                     // a_activity_details가 존재하면 추가
                     if (input.biz_opp_activity?.a_activity_details) {
                         updateInput.a_activity_details = input.biz_opp_activity.a_activity_details;
+                    } else {
+                        updateInput.a_activity_details = a_v_modalPropsData.a_activity_details;
                     }
                     
-                    // console.log(a_v_modalPropsData, input, updateInput);
+                    console.log(a_v_modalPropsData, input, updateInput);
                     input = updateInput;
                     if (
                         (

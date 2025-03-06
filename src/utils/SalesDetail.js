@@ -56,11 +56,9 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             console.log("v_propsSaleData:", v_propsSaleData, "v_modalPropsData: ", v_modalPropsData);
 
             if (v_propsSaleData[0][0].biz_opp_id !== v_modalPropsData.biz_opp_id) {
-                console.log("⏳ Loading...");
                 return;
             }
             if (v_propsSaleData[0][0].detail_no !== v_modalPropsData.detail_no) {
-                console.log("⏳ Loading...");
                 return;
             }
 
@@ -641,21 +639,12 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     const prevShow = useRef(false);
     // 초기화
     useEffect(() => {
-        console.log(prevShow.current, show);
         // 초기 렌더링 시 초기화 방지
         if (!prevShow.current && show === false) {
             console.log("모달이 처음 로드됨 (초기화 방지)");
             prevShow.current = show;  // 이전 상태 업데이트
             return;
         }
-        // console.log('isParentHide?: ', isParentHide, '\nSalesDetail show: ', show, '\nisSave: ', isSave);
-        /* 
-            초기화
-            1) 부모 모달은 살아 있지만 이 모달을 저장하지 않고 나가서 모달 플래그가 false일 경우
-            2) 부모 모달이 닫혀서 이 모달 플래그도 false일 경우
-        */ 
-        // 부모 모달이 닫혔으면 isSave 플래그도 false
-        
         /* 
         case 1. 부모 모달이 닫혔을 경우: show F / isSave F / isParentHide T
         case 2. 부모 모달은 열려 있지만 이 모달이 '선택' 버튼 클릭으로 닫혔을 경우: show F / isSave T / isParentHide F

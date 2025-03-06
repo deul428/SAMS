@@ -28,7 +28,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     } else if (view === 'inputDetail') {
       setVChildComponent('InputFieldDetail');
     } else if (view === 'activity') {
-      console.log("openModal() e: ", e, handling);
       // return;
     }
     setVModalPropsData(handling);
@@ -101,7 +100,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       case 'activity':
         setData(v_propsData.data.retrieve_biz_opp_activity);
         setActivityRow([...v_propsData.data.retrieve_biz_opp_activity]);
-        console.log("activityRow: ", activityRow);
+        // console.log("activityRow: ", activityRow);
         break;
       default: break;
     }

@@ -159,18 +159,18 @@ const roots = {
           ),  
         },
         // 매출 상세 데이터
-        { Header: '이력 보조 번호', accessor: 'history_assistance_no',
-          Cell: ({value}) => (<div className='tableCell'>{value}</div>)
+        { Header: '매출 상세 번호', accessor: 'history_assistance_no',
+          Cell: ({value}) => (<div className='tableCell salesDetail'>{value}</div>)
         },
         { Header: '대분류', accessor: 'great_classi_name',
-          Cell: ({value}) => (<div className='tableCell'>{value}</div>)
+          Cell: ({value}) => (<div className='tableCell salesDetail'>{value}</div>)
         }, 
         { Header: '소분류', accessor: 'small_classi_name',
-          Cell: ({value}) => (<div className='tableCell'>{value}</div>)
+          Cell: ({value}) => (<div className='tableCell salesDetail'>{value}</div>)
         }, 
         { Header: '매출 금액', accessor: 'sale_amt', 
           Cell: ({ value, row }) => 
-            (<div className='tableCell'>{value}</div>)
+            (<div className='tableCell salesDetail'>{value}</div>)
           /* (
             <div style={dynamicCellStyle(row, 'sale_amt')} className='tableCell'>
               {applyFunctions(value, v_handlingNum)}
@@ -179,7 +179,9 @@ const roots = {
         }, 
         { Header: '대표 여부', accessor: 'delegate_tf', 
           Cell: ({ value, row }) => 
-            (<div className='tableCell'>{value}</div>)
+            (<div className='tableCell salesDetail'>
+              {v_handlingTF(value)}
+            </div>)
           /* (
             <div style={dynamicCellStyle(row, 'delegate_tf')} className='tableCell'>
               {v_handlingTF(value)}
@@ -221,7 +223,7 @@ function applyFunctions(value, ...functions) {
   return functions.reduce((acc, func) => func(acc), value);
 }
   
-function v_handlingTF(value) { return value ? 'Y' : 'N'; }
+function v_handlingTF(value) { return !value ? '': value === true ? 'Y' : 'N'; }
 function v_handlingDate(value) {
   if (value) { const v_formatValue = value.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'); return v_formatValue; }
   return value;

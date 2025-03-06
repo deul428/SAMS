@@ -329,6 +329,9 @@ table {
                             height: inherit;
                             line-height: calc(30px - 0.4rem);
                             vertical-align: middle;
+                            &.salesDetail {
+                                background: rgba($color: $base-color, $alpha: 0.4);
+                            }
                         }
                     }  
                 }

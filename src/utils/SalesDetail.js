@@ -50,7 +50,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     const [defaultCorKeys, setDefaultCorKeys] = useState([]);
     // props 데이터가 있지만 isSave / show false일 경우에 propsSaleData를 의존성 배열로 사용하는 useEffect 훅이 감지할 수 있도록 보낼 플래그
     const [isRecover, setIsRecover] = useState(false);
-    // ✅ v_propsSaleData 변경 감지 (기존 로직 유지)
+    // v_propsSaleData 변경 감지 (기존 로직 유지)
     useEffect(() => {
         if (v_propsSaleData.length !== 0 && v_modalPropsData) {
             console.log("v_propsSaleData:", v_propsSaleData, "v_modalPropsData: ", v_modalPropsData);
@@ -95,9 +95,9 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 }
             });
 
-            console.log("✅ 변환된 데이터:", transformedData);
+            console.log("변환된 데이터:", transformedData);
 
-            // ✅ 초기 로딩 또는 데이터 업데이트
+            // 초기 로딩 또는 데이터 업데이트
             if (!isRecover) {
                 console.log('🌟 v_propsData가 초기에 들어왔음', v_propsSaleData);
                 setInputValues(prev => ({
@@ -115,15 +115,16 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             }
         } else {
             console.log('loading...');
+            setInputValues({ biz: {}, cor: {}, a_product_name: "" });
             return;
         }
     }, [v_propsSaleData, v_modalPropsData]);
 
 
-    // ✅ isRecover 변경 감지: 기존 데이터로 강제 원복
+    // isRecover 변경 감지: 기존 데이터로 강제 원복
     useEffect(() => {
         if (isRecover) {
-            console.log("🔄 isRecover 활성화: 수정 전 데이터로 복원!", v_propsSaleData);
+            console.log("isRecover 활성화: 수정 전 데이터로 복원!", v_propsSaleData);
 
             if (v_propsSaleData.length !== 0) {
                 const transformedData = {
@@ -154,7 +155,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                     }
                 });
 
-                console.log("🛠 원복할 데이터:", transformedData);
+                console.log("원복할 데이터:", transformedData);
 
                 setInputValues({
                     biz: transformedData.biz,
@@ -162,7 +163,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                     a_product_name: v_modalPropsData?.product_name || ""
                 });
 
-                // ✅ 원복 완료 후 isRecover 해제
+                // 원복 완료 후 isRecover 해제
                 setIsRecover(false);
             }
         }
@@ -688,6 +689,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 setIsRecover(false);
             } else {
                 console.log("propsData 기반으로 상태 복원");
+                setVPropsSaleData([]);
                 setVPropsSaleData(v_propsSaleList);
                 setIsRecover(true);
             }

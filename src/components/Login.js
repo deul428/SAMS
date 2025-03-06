@@ -94,12 +94,14 @@ const AuthLogin = () => {
                     const response = await apiMethods[method]('update-cipher-change/', pwInput);
                     await dispatch(login({ ...auth, userId: auth.userId, userPw: pwInput.a_new_cipher }));
     
-                    console.log(response);
-                    alert('비밀번호가 변경되었습니다.');
-                    // 이전 경로로 리디렉션
-                    const from = location.state?.from?.pathname || `/${roots.home.url}`;
-                    setRedirect(from);
-                    return response;
+                    setTimeout(() => {
+                        console.log(response);
+                        alert('비밀번호가 변경되었습니다.');
+                        // 이전 경로로 리디렉션
+                        const from = location.state?.from?.pathname || `/${roots.home.url}`;
+                        setRedirect(from);
+                        return response;
+                    }, 1000);
                 } else {
                     return;
                 }

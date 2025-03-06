@@ -33,8 +33,10 @@ const authSlice = createSlice({
             state.isLoggedIn = false;
             state.userId = '';
             state.userPw = '';
-            state.userResCode = '';
+            state.userName = '';
+            state.userAuthCode = '';
             state.userDeptCode = '';
+            state.userResCode = '';
         },
     },
 });

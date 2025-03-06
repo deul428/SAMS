@@ -9,14 +9,10 @@ import { apiMethods } from '../utils/api';
 import { Form, Button, FloatingLabel } from 'react-bootstrap';
 import { ArrowRight, Person } from 'react-bootstrap-icons';
 import ci from '../assets/img/AJ_ICT.svg';
+import { useRef } from 'react';
 
 const AuthLogin = () => {
-    const navigate = useNavigate(); // 페이지 이동에 사용
-    const location = useLocation(); // 현재 경로 정보를 가져옴
     const dispatch = useDispatch(); // Redux 액션 호출에 사용
-
-    const [redirect, setRedirect] = useState(null);
-    const [isBeginningLogin, setIsBeginningLogin] = useState(false);
     const auth = useSelector((state) => state.auth);
 
     const p_login = {
@@ -31,7 +27,10 @@ const AuthLogin = () => {
     }
     const [input, setInput] = useState(p_login);
     const [pwInput, setPwInput] = useState(p_changePw);
-    const endpoint = roots.login.endpoint;
+
+    useEffect(() => {
+        console.log('input:', input,'\npwInput:', pwInput);
+    }, [input, pwInput])
 
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
@@ -42,33 +41,28 @@ const AuthLogin = () => {
         }));
     
         // pwInput 업데이트
-        setPwInput((prevPwInput) => {
-            const updatedPwInput = {
-                ...prevPwInput,
-                [name]: value.trim(),
-            };
-    
-            // a_old_cipher는 input.a_cipher를 복사, a_cipher를 pwInput에서 제거
-            if (name === "a_cipher") {
-                updatedPwInput.a_old_cipher = value.trim();
-                delete updatedPwInput[name];
-            } else if (!updatedPwInput.a_old_cipher && input.a_cipher) {
-                updatedPwInput.a_old_cipher = input.a_cipher.trim();
-            } else if (!updatedPwInput.a_session_user_id) {
-                updatedPwInput.a_session_user_id = input.a_user_id.trim();
-            }
-            return updatedPwInput;
-        });
+        setPwInput((prevPwInput) => ({
+            ...prevPwInput,
+            [name]: value.trim(),
+        }));
     };
     
-    // 바닥 페이지 비우기
-    // 로그인했을 때 사용자 정보 세션마다 돌게 
-    // 사업기회조회 어드민 아니면 권한 맞는 조회 조건만 보이게 
-
+    const navigate = useNavigate(); // 페이지 이동에 사용
+    const location = useLocation(); // 현재 경로 정보를 가져옴
+    const [redirect, setRedirect] = useState(null);
+    const endpoint = roots.login.endpoint;
+    const [isBeginningLogin, setIsBeginningLogin] = useState(false);
     // 유효값 체크 및 로그인 후 경로 리디렉션
     // 11.26. 리디렉션 처리 안 되고 있으니 다시 확인해 보기.
     const f_submitData = async (method, endpoint, input = null, e, firstLoggedIn) => {
         e.preventDefault(); // submit 방지
+        setPwInput((prevPwInput) => {
+            return {
+                ...prevPwInput,
+                a_session_user_id: prevPwInput.a_user_id,
+                a_old_cipher: input.a_cipher
+            }
+        });
         try {
             // 최초 로그인 비밀번호 변경 로직
             if (firstLoggedIn) {
@@ -165,6 +159,18 @@ const AuthLogin = () => {
         }
     }, [redirect, navigate]);
 
+    const prevAuth = useRef(false);
+    useEffect(() => {
+        console.log(prevAuth.current, auth);
+        // logout시 초기화
+        if (prevAuth === true && auth.isLoggedIn === false) {
+            setInput(p_login);
+            setPwInput(p_changePw);
+            return;
+        }
+        prevAuth.current = auth;
+    }, [auth])
+
     return (
         <div id='login' className='wrap'>
             <div id='loginArea'>
@@ -177,12 +183,12 @@ const AuthLogin = () => {
                 <form id='defaultLoginArea'>
                     <div className='inputFields idField'>
                         <FloatingLabel label='ID' className='mb-3'>
-                            <Form.Control type='id' name='a_user_id' placeholder='id' id='inputId' value={input.a_user_id} onChange={f_handlingInput}/>
+                            <Form.Control type='id' name='a_user_id' placeholder='id' id='inputId' /* value={input.a_user_id} */ onChange={f_handlingInput}/>
                         </FloatingLabel>
                     </div>
                     <div className='inputFields pwField'>
                         <FloatingLabel label='Password'>
-                            <Form.Control type='password' name='a_cipher' placeholder='Password' id='inputPw' value={input.a_cipher} onChange={f_handlingInput}/>
+                            <Form.Control type='password' name='a_cipher' placeholder='Password' id='inputPw' /* value={input.a_cipher} */ onChange={f_handlingInput}/>
                         </FloatingLabel>
                         <Form.Text id='passwordHelpBlock' muted>
                             영문 소문자, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 불가)
@@ -201,12 +207,14 @@ const AuthLogin = () => {
                     <h4 style={{textAlign: 'center', marginBottom: '1rem'}}>변경할 비밀번호를 입력해 주시기 바랍니다.</h4>
                     <div className='inputFields idField'>
                         <FloatingLabel label='ID' className='mb-3'>
-                            <Form.Control type='id' name='a_user_id' placeholder='id' id='inputPwChangeId' value={pwInput.a_user_id} onChange={(e) => f_handlingInput(e, false)} disabled/>
+                            <Form.Control type='id' name='a_user_id' placeholder='id' id='inputPwChangeId' 
+                            defaultValue={pwInput?.a_user_id}
+                            disabled/>
                         </FloatingLabel>
                     </div>
                     <div className='inputFields pwField'>
                         <FloatingLabel label='Password'>
-                            <Form.Control type='password' name='a_new_cipher' placeholder='Password' id='inputPwChangePw' value={pwInput.a_new_cipher} onChange={f_handlingInput}/>
+                            <Form.Control type='password' name='a_new_cipher' placeholder='Password' id='inputPwChangePw' /* value={pwInput.a_new_cipher} */ onChange={f_handlingInput}/>
                         </FloatingLabel>
                         <Form.Text id='passwordHelpBlock' muted>
                             영문 소문자, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 불가)

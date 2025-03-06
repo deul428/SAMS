@@ -31,6 +31,9 @@ const BizOpp = () => {
     -*/
 
     const [isRefresh, setIsRefresh] = useState(false);
+    useEffect(() => {
+        console.log("isRefresh:", isRefresh);
+    }, [isRefresh])
     const [returnMsg, setReturnMsg] = useState(null);
     const f_handlingData = async (method, endpoint, input = null) => {
         try {
@@ -83,6 +86,7 @@ const BizOpp = () => {
         if (isRefresh === true) {
             setTimeout(() => {
                 f_handlingData('post', endpoint, userCheck);
+                setIsRefresh(false);
             }, 1000);
         } 
     }, [isRefresh]);

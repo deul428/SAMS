@@ -957,24 +957,37 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         
     }, [salesDetailData]);
 
-    useEffect(() => {
+/*     useEffect(() => {
         console.log("insertInput: ", insertInput);
         console.log("updateInput: ", updateInput);
-    }, [insertInput, updateInput])
+    }, [insertInput, updateInput]) */
     // ================= SalesDetail.js 데이터 들어온 이후 끝 ================= 
 
 
 
 
     const hideMsg = () => {
-        if (auth.userAuthCode !== '0002') {
-            if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
-                onHide(true);
+        // activity의 경우 수정, 삭제는 admin만 가능.
+        if (v_componentName === 'activity') {
+            if (auth.userAuthCode === '0001') {
+                if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
+                    onHide(true);
+                } else {
+                    return;
+                }
             } else {
-                return;
-            }
+                onHide(true);
+            } 
         } else {
-            onHide(true);
+            if (auth.userAuthCode !== '0002') {
+                if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
+                    onHide(true);
+                } else {
+                    return;
+                }
+            } else {
+                onHide(true);
+            }
         }
     }
     // UI 업데이트
@@ -1024,7 +1037,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         disabled={
                                                             (auth.userAuthCode === '0002') ? 
                                                             (false) : (true)
-                                                        }/>
+                                                        }
+                                                        />
                                                     </FloatingLabel>
                                                 </Col>
                                                 <Col xs={12} sm={12} md={3} lg={3} xl={3} className='col d-flex align-items-center floating'>
@@ -1033,7 +1047,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         name='a_detail_no' 
                                                         placeholder='사업 (기회) 상세 번호 (자동 생성)'
                                                         defaultValue={a_v_modalPropsData?.a_detail_no || ''} 
-                                                        disabled={true}
+                                                        disabled={
+                                                            (auth.userAuthCode === '0002') ? 
+                                                            (false) : (true)
+                                                        }
                                                         />
                                                     </FloatingLabel>
                                                 </Col>
@@ -1171,7 +1188,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         onChange={f_handlingInput} 
                                                         // value={input.sale_item_no || ''} 
                                                         defaultValue={a_v_modalPropsData?.a_sale_item_no || ''}
-                                                        disabled={isProDisabled === true ? true : false}
+                                                        disabled={
+                                                        (auth.userAuthCode === '0002') ?
+                                                        false :
+                                                        isProDisabled === true ? true : false
+                                                        }
                                                     />
                                                     </FloatingLabel>
                                                 </Col>

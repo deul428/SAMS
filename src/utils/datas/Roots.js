@@ -52,7 +52,7 @@ const roots = {
     bizoppHistory: {depth1: 'biz-opp-history', depth2: '', endpoint: 'select-biz-opp-history/', component: BizOppHistory,
       props: [
         { Header: '이력 번호', accessor: 'history_no',
-          Cell: ({value}) => <div className='tableCell'>{value}</div>
+          Cell: ({value}) => (<div className='tableCell'>{value}</div>)
         },
         { Header: '갱신 일시', accessor: 'renewal_date', 
           Cell: ({value}) => 
@@ -65,7 +65,7 @@ const roots = {
             </div> 
         },
         { Header: '담당자', accessor: 'user_name',
-          Cell: ({value}) => <div className='tableCell'>{value}</div>
+          Cell: ({value}) => (<div className='tableCell'>{value}</div>)
         },
         { Header: '판품 번호', accessor: 'sale_item_no',
           Cell: ({ value, row }) => (
@@ -160,25 +160,25 @@ const roots = {
         },
         // 매출 상세 데이터
         { Header: '이력 보조 번호', accessor: 'history_assistance_no',
-          Cell: ({value}) => <div className='tableCell'>{value}</div>
+          Cell: ({value}) => (<div className='tableCell'>{value}</div>)
         },
         { Header: '대분류', accessor: 'great_classi_name',
-          Cell: ({value}) => <div className='tableCell'>{value}</div>
+          Cell: ({value}) => (<div className='tableCell'>{value}</div>)
         }, 
         { Header: '소분류', accessor: 'small_classi_name',
-          Cell: ({value}) => <div className='tableCell'>{value}</div>
+          Cell: ({value}) => (<div className='tableCell'>{value}</div>)
         }, 
         { Header: '매출 금액', accessor: 'sale_amt', 
           Cell: ({ value, row }) => (
             <div style={dynamicCellStyle(row, 'sale_amt')} className='tableCell'>
               {applyFunctions(value, v_handlingNum)}
             </div>
-          ),  
+          )
         }, 
         { Header: '대표 여부', accessor: 'delegate_tf', 
           Cell: ({ value, row }) => (
             <div style={dynamicCellStyle(row, 'delegate_tf')} className='tableCell'>
-              {value}
+              {v_handlingTF(value)}
             </div>
           ),  
         }, 

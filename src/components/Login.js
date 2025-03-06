@@ -90,15 +90,19 @@ const AuthLogin = () => {
                     alert(`세션 아이디가 비어 있습니다. (디버깅용)`);
                     return;
                 } */
-                const response = await apiMethods[method]('update-cipher-change/', pwInput);
-                await dispatch(login({ ...auth, userId: auth.userId, userPw: pwInput.a_new_cipher }));
-
-                console.log(response);
-                
-                // 이전 경로로 리디렉션
-                const from = location.state?.from?.pathname || `/${roots.home.url}`;
-                setRedirect(from);
-                return response;
+                if(window.confirm('비밀번호를 변경하시겠습니까?')) {
+                    const response = await apiMethods[method]('update-cipher-change/', pwInput);
+                    await dispatch(login({ ...auth, userId: auth.userId, userPw: pwInput.a_new_cipher }));
+    
+                    console.log(response);
+                    alert('비밀번호가 변경되었습니다.');
+                    // 이전 경로로 리디렉션
+                    const from = location.state?.from?.pathname || `/${roots.home.url}`;
+                    setRedirect(from);
+                    return response;
+                } else {
+                    return;
+                }
             } else {
                 if (!input.a_user_id || !input.a_cipher) {
                     alert(`아이디, 패스워드를 입력하세요.`);
@@ -180,6 +184,9 @@ const AuthLogin = () => {
                         </FloatingLabel>
                         <Form.Text id='passwordHelpBlock' muted>
                             영문 소문자, 숫자를 조합하여 5자 이상 비밀번호를 입력해 주십시오. (특수문자 불가)
+                        </Form.Text>
+                        <Form.Text id='passwordHelpBlock' muted>
+                            아이디/비밀번호 분실 시 관리자에게 문의하십시오.
                         </Form.Text>
                     </div>
                     <Button type='submit' variant='primary' onClick={(e) => f_submitData('post', endpoint, input, e, false)}>로그인</Button>

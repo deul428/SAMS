@@ -2131,8 +2131,68 @@ def f_renewal_biz_opp(request):
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale_history,v_param_update_biz_opp_detail_sale_history)
                         v_param_update_biz_opp_detail_sale_history.clear()
+
+
+
+
                   if v_item.get('a_mode') == 'D':
-                     print(f"test")
+                     v_sql_update_biz_opp_detail_sale = """UPDATE ajict_bms_schema.biz_opp_detail_sale
+                                                                                   SET delegate_tf = %s,
+                                                                                       update_user = %s,
+                                                                                       update_date = CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'
+                                                                                   WHERE biz_opp_id = %s AND
+                                                                                         detail_no = %s AND
+                                                                                         great_classi_code = %s AND
+                                                                                         small_classi_code = %s AND
+                                                                                         delete_date IS NULL"""
+                     v_param_update_biz_opp_detail_sale.append(v_item.get('a_delegate_tf'))
+                     v_param_update_biz_opp_detail_sale.append(v_session_user_id)
+                     v_param_update_biz_opp_detail_sale.append(v_biz_opp_id)
+                     v_param_update_biz_opp_detail_sale.append(v_detail_no)
+                     v_param_update_biz_opp_detail_sale.append(v_item.get('a_great_classi_code'))
+                     v_param_update_biz_opp_detail_sale.append(v_item.get('a_small_classi_code'))
+
+                     #test
+                     v_formatted_sql = v_sql_update_biz_opp_detail_sale % tuple(map(repr,v_param_update_biz_opp_detail_sale))
+                     print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+                     with connection.cursor() as v_cursor:
+                        v_cursor.execute(v_sql_update_biz_opp_detail_sale,v_param_update_biz_opp_detail_sale)
+                     v_param_update_biz_opp_detail_sale.clear()
+                     v_sql_update_biz_opp_detail_sale_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
+                                                                                                                                                      history_assistance_no,
+                                                                                                                                                      biz_opp_id,
+                                                                                                                                                      detail_no,
+                                                                                                                                                      great_classi_code,
+                                                                                                                                                      small_classi_code,
+                                                                                                                                                      delegate_tf,
+                                                                                                                                                      u_delegate_tf,
+                                                                                                                                                      renewal_code,
+                                                                                                                                                      create_user)
+                                                                                                                                                     VALUES ({v_history_no},
+                                                                                                                                                             {v_max_history_assistance_no},
+                                                                                                                                                             %s,
+                                                                                                                                                             %s,
+                                                                                                                                                             %s,
+                                                                                                                                                             %s,
+                                                                                                                                                             %s,
+                                                                                                                                                             TRUE,
+                                                                                                                                                             'U',
+                                                                                                                                                             %s)"""
+                     v_param_update_biz_opp_detail_sale_history.append(v_biz_opp_id)
+                     v_param_update_biz_opp_detail_sale_history.append(v_detail_no)
+                     v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_great_classi_code'))
+                     v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_small_classi_code'))
+                     v_param_update_biz_opp_detail_sale_history.append(v_item.get('a_delegate_tf'))
+                     v_param_update_biz_opp_detail_sale_history.append(v_session_user_id)
+
+                     #test
+                     v_formatted_sql = v_sql_update_biz_opp_detail_sale_history % tuple(map(repr,v_param_update_biz_opp_detail_sale_history))
+                     print(f"f_renewal_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+                     with connection.cursor() as v_cursor:
+                        v_cursor.execute(v_sql_update_biz_opp_detail_sale_history,v_param_update_biz_opp_detail_sale_history)
+                     v_param_update_biz_opp_detail_sale_history.clear()
 
 
 
@@ -3813,6 +3873,8 @@ def f_select_biz_opp_history(request):
                                            A.small_classi_name,
                                            A.sale_amt,
                                            A.u_sale_amt,
+                                           A.delegate_tf,
+                                           A.u_delegate_tf,
                                            A.renewal_code,
                                            A.renewal_date
                                     FROM (SELECT AA1.history_no,
@@ -3888,6 +3950,8 @@ def f_select_biz_opp_history(request):
                                                  NULL AS small_classi_name,
                                                  NULL AS sale_amt,
                                                  NULL AS u_sale_amt,
+                                                 NULL AS delegate_tf,
+                                                 NULL AS u_delegate_tf,
                                                  AA1.renewal_code,
                                                  AA1.create_date AS renewal_date
                                           FROM ajict_bms_schema.biz_opp_history AA1,
@@ -3946,6 +4010,15 @@ def f_select_biz_opp_history(request):
                                                  AA2.history_assistance_no,
                                                  AA2.great_classi_code,
                                                  AA2.small_classi_code,
+                                                 (SELECT DISTINCT AAA2.great_classi_name
+                                                  FROM ajict_bms_schema.commonness_code AAA2
+                                                  WHERE AAA2.great_classi_code = AA2.great_classi_code AND
+                                                        AAA2.delete_date IS NULL) AS great_classi_name,
+                                                 (SELECT BBB2.small_classi_name
+                                                  FROM ajict_bms_schema.commonness_code BBB2
+                                                  WHERE BBB2.great_classi_code = AA2.great_classi_code AND
+                                                        BBB2.small_classi_code = AA2.small_classi_code AND
+                                                        BBB2.delete_date IS NULL) AS small_classi_name,
                                                  AA2.sale_amt,
                                                  AA2.u_sale_amt,
                                                  AA2.delegate_tf,

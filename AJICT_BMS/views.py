@@ -80,6 +80,7 @@ def f_login(request):
 
          #test
          print(f"f_login()에서의 v_rows : {v_rows}")
+         print(f"f_login()에서의 v_rows : {v_data3}")
 
 
 #Session의 값 중 일부를 추출할 수 있음.

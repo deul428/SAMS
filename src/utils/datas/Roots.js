@@ -169,19 +169,23 @@ const roots = {
           Cell: ({value}) => (<div className='tableCell'>{value}</div>)
         }, 
         { Header: '매출 금액', accessor: 'sale_amt', 
-          Cell: ({ value, row }) => (
+          Cell: ({ value, row }) => 
+            (<div className='tableCell'>{value}</div>)
+          /* (
             <div style={dynamicCellStyle(row, 'sale_amt')} className='tableCell'>
               {applyFunctions(value, v_handlingNum)}
             </div>
-          )
+          ) */
         }, 
         { Header: '대표 여부', accessor: 'delegate_tf', 
-          Cell: ({ value, row }) => (
+          Cell: ({ value, row }) => 
+            (<div className='tableCell'>{value}</div>)
+          /* (
             <div style={dynamicCellStyle(row, 'delegate_tf')} className='tableCell'>
               {v_handlingTF(value)}
             </div>
-          ),  
-        }, 
+          ),  */
+        },  
       ]
     },
     activitySelect1: {depth1: 'activity', depth2: '', endpoint: 'select-biz-opp-activity1/', component: Activity,

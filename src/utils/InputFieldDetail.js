@@ -433,11 +433,22 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             a_principal_product1_code: a.a_principal_product1_code,
             a_principal_product2_code: a.a_principal_product2_code, */
         }
+        
     }
+
+    const [isDeleted, setIsDeleted] = useState(false);
     // 2. UI 표현용
     useEffect(() => {
         // a_v_modalPropsData 데이터 핸들링 후 input 객체에 복사
         if (v_modalPropsData && show) {
+            // 삭제된 데이터일 시 
+            if (v_modalPropsData.biz_opp_detail_delete_date !== null) {
+                setIsDeleted(true);
+                return;
+            } else {
+                setIsDeleted(false);
+            }
+
             // 판품번호 disabled 제어
             console.log(v_modalPropsData.progress2_rate_code);
             if (v_modalPropsData.progress2_rate_code === '0006' || v_modalPropsData.progress2_rate_code === '0007') {
@@ -688,7 +699,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 }
             } else if (v_componentName === 'activity') {
                 if (msg === '수정' && a_v_modalPropsData) {
-                    console.log(input.biz_opp_activity.a_activity_details);
                     if (!input.biz_opp_activity?.a_activity_details && !input.biz_opp_activity?.a_activity_date) {
                         alert('수정할 내용을 입력해 주십시오.');
                         return;
@@ -697,11 +707,20 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         a_session_user_id: input.a_session_user_id, 
                         a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id, 
                         a_detail_no: a_v_modalPropsData.a_detail_no,
-                        a_activity_date: a_v_modalPropsData.a_activity_date,
-                        a_activity_details: input.biz_opp_activity.a_activity_details,
                         a_activity_no: a_v_modalPropsData.a_activity_no
                     };
-                    console.log(a_v_modalPropsData, input, updateInput);
+                    
+                    // a_activity_date가 존재하면 추가
+                    if (input.biz_opp_activity?.a_activity_date) {
+                        updateInput.a_activity_date = input.biz_opp_activity.a_activity_date;
+                    }
+                    
+                    // a_activity_details가 존재하면 추가
+                    if (input.biz_opp_activity?.a_activity_details) {
+                        updateInput.a_activity_details = input.biz_opp_activity.a_activity_details;
+                    }
+                    
+                    // console.log(a_v_modalPropsData, input, updateInput);
                     input = updateInput;
                     if (
                         (
@@ -964,29 +983,27 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     // ================= SalesDetail.js 데이터 들어온 이후 끝 ================= 
 
 
-
-
     const hideMsg = () => {
         // activity의 경우 수정, 삭제는 admin만 가능.
         if (v_componentName === 'activity') {
-            if (auth.userAuthCode === '0001') {
+            if (auth.userAuthCode !== '0001') {
+                onHide(true);
+            } else {
                 if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
                     onHide(true);
                 } else {
                     return;
                 }
-            } else {
-                onHide(true);
-            } 
+            }
         } else {
-            if (auth.userAuthCode !== '0002') {
+            if (auth.userAuthCode === '0002' || isDeleted === true) {
+                onHide(true);
+            } else {
                 if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
                     onHide(true);
                 } else {
                     return;
                 }
-            } else {
-                onHide(true);
             }
         }
     }
@@ -1011,6 +1028,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                         {
                                             (auth.userAuthCode === '0002') ? 
                                             ('사업 (기회) 상세 조회') : 
+                                            (isDeleted === true) ?
+                                            ('삭제된 사업 (기회) 상세 조회') :
                                             ((a_v_modalPropsData ? '사업 (기회) 수정': '사업 (기회) 등록'))
                                         }
                                     </Modal.Title>
@@ -1022,7 +1041,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             <>
                                             <Row className='d-flex justify-content-between'
                                             style={ 
-                                                (auth.userAuthCode === '0002') ? 
+                                                (auth.userAuthCode === '0002' || isDeleted === true) ? 
                                                 ({"pointerEvents": "none"}) : ({})
                                             }>
                                                 <Col xs={12} sm={12} md={3} lg={3} xl={3} className='col d-flex align-items-center floating'>
@@ -1035,7 +1054,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         // value={input.biz_opp_id}
                                                         defaultValue={a_v_modalPropsData?.a_biz_opp_id || ''} 
                                                         disabled={
-                                                            (auth.userAuthCode === '0002') ? 
+                                                            (auth.userAuthCode === '0002' || isDeleted === true) ? 
                                                             (false) : (true)
                                                         }
                                                         />
@@ -1048,7 +1067,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         placeholder='사업 (기회) 상세 번호 (자동 생성)'
                                                         defaultValue={a_v_modalPropsData?.a_detail_no || ''} 
                                                         disabled={
-                                                            (auth.userAuthCode === '0002') ? 
+                                                            (auth.userAuthCode === '0002' || isDeleted === true) ? 
                                                             (false) : (true)
                                                         }
                                                         />
@@ -1069,7 +1088,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             </Row>
                                             <Row className='d-flex justify-content-between'  
                                             style={ 
-                                                (auth.userAuthCode === '0002') ? 
+                                                (auth.userAuthCode === '0002' || isDeleted === true) ? 
                                                 ({"pointerEvents": "none"}) : ({})
                                             }>
                                                 
@@ -1189,7 +1208,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                         // value={input.sale_item_no || ''} 
                                                         defaultValue={a_v_modalPropsData?.a_sale_item_no || ''}
                                                         disabled={
-                                                        (auth.userAuthCode === '0002') ?
+                                                        (auth.userAuthCode === '0002' || isDeleted === true) ?
                                                         false :
                                                         isProDisabled === true ? true : false
                                                         }
@@ -1199,7 +1218,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             </Row>  
                                             <Row className='d-flex justify-content-between'  
                                             style={ 
-                                                (auth.userAuthCode === '0002') ? 
+                                                (auth.userAuthCode === '0002' || isDeleted === true) ? 
                                                 ({"pointerEvents": "none"}) : ({})
                                             }>
                                                 <Col xs={12} sm={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating checkbox'>
@@ -1264,7 +1283,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             </Row>
                                             <Row className='d-flex justify-content-between'
                                             style={ 
-                                                (auth.userAuthCode === '0002') ? 
+                                                (auth.userAuthCode === '0002' || isDeleted === true) ? 
                                                 ({"pointerEvents": "none"}) : ({})
                                             }>
                                                 <Col xs={12} sm={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating'>
@@ -1369,7 +1388,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                                 {/* 매출처 파라미터에 맞게 변경해 줘야 함 */}
                                                 <Col xs={12} md={6} lg={6} xl={3} className='col d-flex align-items-center floating' 
                                                 style={ 
-                                                    (auth.userAuthCode === '0002') ? 
+                                                    (auth.userAuthCode === '0002' || isDeleted === true) ? 
                                                     ({"pointerEvents": "none"}) : ({})
                                                 }>
                                                     <FloatingLabel label='매출처'>
@@ -1441,7 +1460,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                             </>
                                             <>
                                             {
-                                                (auth.userAuthCode === '0002') ? 
+                                                (auth.userAuthCode === '0002' || isDeleted === true) ? 
                                                 (<></>) : 
                                                 (
                                                 <Row className='d-flex justify-content-between activity'>
@@ -1497,7 +1516,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                                 </Modal.Body>
                                 <Modal.Footer className='btnArea justify-content-center'>
                                     {
-                                        (auth.userAuthCode === '0002') ? 
+                                        (auth.userAuthCode === '0002' || isDeleted === true) ? 
                                         (<></>) : 
                                         (a_v_modalPropsData ? 
                                             (<>
@@ -1635,7 +1654,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         updateUI();
     }, [/* currentPath */, show, onHide, insertInput, activityData, detailData, v_depts /* updateInput */, v_modalPropsData, v_propsData, /* deptData */, 
         v_deptHandling, v_teamHandling, v_userHandling, isProDisabled, 
-        delegateBiz, delegateCor
+        delegateBiz, delegateCor,
+        isDeleted
     ]);
 
     return (
@@ -1647,7 +1667,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 v_propsSaleList={
                     saleData.length === 0 ? null : 
                     saleData.some(e => e.length > 0) ? saleData : null}
-                setSalesDetailData={setSalesDetailData}/>
+                setSalesDetailData={setSalesDetailData}
+                isDeleted={isDeleted}/>
                 : ''
             }
         </div>

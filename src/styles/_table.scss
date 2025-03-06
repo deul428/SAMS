@@ -318,6 +318,7 @@ table {
             tr {
                 td {
                     &.historyCell {
+                        cursor: default;
                         padding: 0 !important;
                         height: 30px;
                         text-overflow: ellipsis;

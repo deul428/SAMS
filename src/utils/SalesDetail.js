@@ -9,7 +9,7 @@ import '../styles/_tree.scss';
 import '../styles/_button.scss';
 import { endsWith, lowerCase, sum, toLower, update } from "lodash";
 
-const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modalPropsData, v_propsSaleList, setSalesDetailData }) => {
+const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modalPropsData, v_propsSaleList, setSalesDetailData, isDeleted }) => {
     const auth = useSelector((state) => state.auth);
     // =================== 렌더 시 세팅 ===================  
     // -------------------- 기본 데이터 핸들링 --------------------
@@ -626,18 +626,17 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     };
 
     const hideMsg = () => {
-        if (auth.userAuthCode !== '0002') {
+        if (auth.userAuthCode === '0002' || isDeleted === true) {
+            onHide(true);
+        } else {
             if (window.confirm('저장하지 않고 나갈 시 데이터가 초기화됩니다. 정말 창을 닫으시겠습니까?')) {
                 onHide(true);
                 setIsSave(false);
             } else {
                 return;
             }
-        } else {
-            onHide(true);
         }
     }
-
 
     const prevShow = useRef(false);
     // 초기화
@@ -721,7 +720,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                                 // style={isDisabled ? {"display":"none"} : {"display":"inline-block"}}
                                 disabled={isDisabled ? false : true }
                             /> */}
-                                <div className='modalcntnt' style={(auth.userAuthCode === '0002') ? ({"pointerEvents": "none"}) : ({})}>
+                                <div className='modalcntnt' style={(auth.userAuthCode === '0002' || isDeleted === true) ? ({"pointerEvents": "none"}) : ({})}>
                                     <div className="inputField">
                                         {/* <div className="searchItem">
                                             <FloatingLabel label='검색' controlId="floatingInput">
@@ -809,7 +808,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                                 </div>
                             </Modal.Body>
                             <Modal.Footer className="btnArea justify-content-center">
-                                {(auth.userAuthCode === '0002') ?
+                                {(auth.userAuthCode === '0002' || isDeleted === true) ?
                                     <></> :
                                     <Button variant='primary' onClick={saveData}>선택</Button>}
                                 <Button variant="secondary" onClick={hideMsg}>
@@ -825,7 +824,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             }
         };
         updateUI();
-    }, [listData, listBizData, listCorData, show, onHide, /* selectedBizKeys */, sumBiz, sumCor, /* totalSaleAmt */]);
+    }, [listData, listBizData, listCorData, show, onHide, /* selectedBizKeys */, sumBiz, sumCor, /* totalSaleAmt */], isDeleted);
   
     return (
         <>

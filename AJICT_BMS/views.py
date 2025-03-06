@@ -78,6 +78,10 @@ def f_login(request):
          request.session['v_global_data'] = v_session
 
 
+         #test
+         print(f"f_login()에서의 v_rows : {v_rows}")
+
+
 #Session의 값 중 일부를 추출할 수 있음.
          #v_global_data = request.session.get('v_global_data',{})
          #v_user_name = v_global_data[0].get('user_name')
@@ -2133,10 +2137,6 @@ def f_renewal_biz_opp(request):
                         with connection.cursor() as v_cursor:
                            v_cursor.execute(v_sql_update_biz_opp_detail_sale_history,v_param_update_biz_opp_detail_sale_history)
                         v_param_update_biz_opp_detail_sale_history.clear()
-
-
-
-
                   if v_item.get('a_mode') == 'D':
                      v_sql_delete_biz_opp_detail_sale = """DELETE FROM ajict_bms_schema.biz_opp_detail_sale  
                                                            WHERE biz_opp_id = %s AND
@@ -2157,23 +2157,23 @@ def f_renewal_biz_opp(request):
                         v_cursor.execute(v_sql_delete_biz_opp_detail_sale,v_param_delete_biz_opp_detail_sale)
                      v_param_delete_biz_opp_detail_sale.clear()
                      v_sql_delete_biz_opp_detail_sale_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
-                                                                                                                                                      history_assistance_no,
-                                                                                                                                                      biz_opp_id,
-                                                                                                                                                      detail_no,
-                                                                                                                                                      great_classi_code,
-                                                                                                                                                      small_classi_code,
-                                                                                                                                                      delegate_tf,
-                                                                                                                                                      renewal_code,
-                                                                                                                                                      create_user)
-                                                                                                                                                     VALUES ({v_history_no},
-                                                                                                                                                             {v_max_history_assistance_no},
-                                                                                                                                                             %s,
-                                                                                                                                                             %s,
-                                                                                                                                                             %s,
-                                                                                                                                                             %s,
-                                                                                                                                                             %s,
-                                                                                                                                                             'D',
-                                                                                                                                                             %s)"""
+                                                                                                                              history_assistance_no,
+                                                                                                                              biz_opp_id,
+                                                                                                                              detail_no,
+                                                                                                                              great_classi_code,
+                                                                                                                              small_classi_code,
+                                                                                                                              delegate_tf,
+                                                                                                                              renewal_code,
+                                                                                                                              create_user)
+                                                                                                                             VALUES ({v_history_no},
+                                                                                                                                     {v_max_history_assistance_no},
+                                                                                                                                     %s,
+                                                                                                                                     %s,
+                                                                                                                                     %s,
+                                                                                                                                     %s,
+                                                                                                                                     %s,
+                                                                                                                                     'D',
+                                                                                                                                     %s)"""
                      v_param_delete_biz_opp_detail_sale_history.append(v_biz_opp_id)
                      v_param_delete_biz_opp_detail_sale_history.append(v_detail_no)
                      v_param_delete_biz_opp_detail_sale_history.append(v_item.get('a_great_classi_code'))
@@ -2188,13 +2188,6 @@ def f_renewal_biz_opp(request):
                      with connection.cursor() as v_cursor:
                         v_cursor.execute(v_sql_delete_biz_opp_detail_sale_history,v_param_delete_biz_opp_detail_sale_history)
                      v_param_delete_biz_opp_detail_sale_history.clear()
-
-
-
-
-
-
-
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
             v_square_bracket_return = [v_return]
             return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
@@ -2394,8 +2387,40 @@ def f_delete_biz_opp(request):
             print(f"f_select_biz_opp_activity1()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
-         with connection.cursor() as v_cursor:
-            v_cursor.execute(v_sql_delete_biz_opp_activity,v_param_delete_biz_opp_activity)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_delete_biz_opp_activity,v_param_delete_biz_opp_activity)
+
+
+            # v_sql_select_biz_opp_detail_sale = """SELECT user_id,
+            #                          user_name,
+            #                          cipher,
+            #                          dept_id,
+            #                          position1_code,
+            #                          position2_code,
+            #                          responsibility1_code,
+            #                          responsibility2_code,
+            #                          auth1_code,
+            #                          auth2_code,
+            #                          beginning_login_tf,
+            #                          create_user,
+            #                          create_date,
+            #                          update_user,
+            #                          update_date,
+            #                          delete_user,
+            #                          delete_date
+            #                   FROM ajict_bms_schema.aj_user
+            #                   WHERE user_id = %s AND
+            #                         cipher = %s AND
+            #                         delete_date IS NULL"""
+            # v_param3 = []
+            # v_param3.append(v_user_id)
+            # v_param3.append(v_cipher)
+            # with connection.cursor() as v_cursor:
+            #    v_cursor.execute(v_sql3,v_param3)
+            #    v_columns = [v_column[0] for v_column in v_cursor.description]
+            #    v_rows = v_cursor.fetchall()
+
+
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
             v_square_bracket_return = [v_return]
             return JsonResponse(v_square_bracket_return,safe = False,json_dumps_params = {'ensure_ascii':False})
@@ -2490,7 +2515,7 @@ def f_clone_biz_opp(request):
                                                   A.purchase_date,
                                                   A.purchase_amt,
                                                   A.collect_money_date,
-                                                  A.product_name,
+                                                  NULL,
                                                   %s
                                            FROM ajict_bms_schema.biz_opp_detail A
                                            WHERE A.biz_opp_id = %s AND

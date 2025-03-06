@@ -338,8 +338,8 @@ def f_select_biz_opp1(request):
                                  ajict_bms_schema.biz_opp_detail B
                             WHERE 1 = 1 AND
                                   A.biz_opp_id = B.biz_opp_id AND
-                                  A.delete_date IS NULL AND
-                                  B.delete_date IS NULL"""
+                                  A.delete_date IS NULL /*AND
+                                  B.delete_date IS NULL*/"""
 #                                  A.contract_date BETWEEN %s AND %s AND
 #                                  B.sale_date BETWEEN %s AND %s"""
          v_param2 = []
@@ -585,8 +585,8 @@ def f_select_biz_opp2(request):
                                  ajict_bms_schema.biz_opp_detail B
                             WHERE 1 = 1 AND
                                   A.biz_opp_id = B.biz_opp_id AND
-                                  A.delete_date IS NULL AND
-                                  B.delete_date IS NULL"""
+                                  A.delete_date IS NULL /*AND
+                                  B.delete_date IS NULL*/"""
          v_param2 = []
          if not v_contract_date_from:
             v_contract_date_from = '19500101'

@@ -336,8 +336,8 @@ def f_select_biz_opp1(request):
                                  ajict_bms_schema.biz_opp_detail B
                             WHERE 1 = 1 AND
                                   A.biz_opp_id = B.biz_opp_id AND
-                                  A.delete_date IS NULL /*AND
-                                  B.delete_date IS NULL*/"""
+                                  A.delete_date IS NULL AND
+                                  B.delete_date IS NULL"""
 #                                  A.contract_date BETWEEN %s AND %s AND
 #                                  B.sale_date BETWEEN %s AND %s"""
          v_param2 = []
@@ -569,9 +569,7 @@ def f_select_biz_opp2(request):
                             FROM ajict_bms_schema.biz_opp A,
                                  ajict_bms_schema.biz_opp_detail B
                             WHERE 1 = 1 AND
-                                  A.biz_opp_id = B.biz_opp_id AND
-                                  A.delete_date IS NULL /*AND
-                                  B.delete_date IS NULL*/"""
+                                  A.biz_opp_id = B.biz_opp_id"""
          v_param2 = []
          if not v_contract_date_from:
             v_contract_date_from = '19500101'
@@ -632,13 +630,19 @@ def f_select_biz_opp2(request):
             if v_responsibility1_code == 'RES' and v_responsibility2_code == '0001':
                v_sql_biz_opp += " AND B.user_id = %s"
                v_param2.append(v_session_user_id)
+         if v_body.get('a_delete_only') is True:
+            v_sql_biz_opp += " AND A.delete_date IS NOT NULL AND\
+                                   B.delete_date IS NOT NULL"
+         else:
+            v_sql_biz_opp += " AND A.delete_date IS NULL AND\
+                                   B.delete_date IS NULL"
          v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
                                      B.detail_no"
 
 
          #test
-         # v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
-         # print(f"f_select_biz_opp2()에서의 v_formatted_sql : {v_formatted_sql}")
+         v_formatted_sql = v_sql_biz_opp % tuple(map(repr,v_param2))
+         print(f"f_select_biz_opp2()에서의 v_formatted_sql : {v_formatted_sql}")
 
 
          with connection.cursor() as v_cursor:

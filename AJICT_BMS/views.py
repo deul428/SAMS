@@ -631,11 +631,9 @@ def f_select_biz_opp2(request):
                v_sql_biz_opp += " AND B.user_id = %s"
                v_param2.append(v_session_user_id)
          if v_body.get('a_delete_only') is True:
-            v_sql_biz_opp += " AND A.delete_date IS NOT NULL AND\
-                                   B.delete_date IS NOT NULL"
+            v_sql_biz_opp += " AND B.delete_date IS NOT NULL"
          else:
-            v_sql_biz_opp += " AND A.delete_date IS NULL AND\
-                                   B.delete_date IS NULL"
+            v_sql_biz_opp += " AND B.delete_date IS NULL"
          v_sql_biz_opp += " ORDER BY A.biz_opp_id,\
                                      B.detail_no"
 

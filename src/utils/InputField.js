@@ -55,6 +55,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         a_progress_rate_code_from: '',
         a_progress_rate_code_to: '',
         a_essential_achievement_tf: false,
+        a_delete_only: false,
         a_headquarters_dept_id: '',
         a_dept_id: '',
         a_user_name: '',
@@ -126,7 +127,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     return;
                 }
             }
-            console.log("submit 될 input data\n", input, "\ne: ", e);
+            console.log("submit 될 input data\n", input);
 
             const response = await apiMethods[method](endpoint, input);
             console.log(`API Get (수신)\nEndpoint: (inputField.js) ${endpoint}\nresponse: `, response);
@@ -731,7 +732,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                                     </Col>
                                     <Col xs={6} md={3} lg={3} xl={4}className='col d-flex align-items-center justify-content-start floating checkbox'>
                                         <Form.Label htmlFor='chckDelete'>삭제된 것만</Form.Label>
-                                        <Form.Check type={`checkbox`} id={`chckDelete`} /* checked={input?.a_essential_achievement_tf || false}  */name='' onChange={f_handlingInput}/>
+                                        <Form.Check type={`checkbox`} id={`chckDelete`} /* checked={input?.a_essential_achievement_tf || false}  */name='a_delete_only' onChange={f_handlingInput}/>
                                     </Col>
                                    {/*  <Col xs={12} md={0} lg={4} xl={4}className='col d-flex align-items-center justify-content-start floating' style={{'marginBottom':'0'}}>
                                     </Col> */}

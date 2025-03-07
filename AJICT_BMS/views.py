@@ -2334,9 +2334,66 @@ def f_delete_biz_opp(request):
                v_columns = [v_column[0] for v_column in v_cursor.description]
                v_rows = v_cursor.fetchall()
                v_data = [dict(zip(v_columns,row)) for row in v_rows]
+            v_sql_max = """SELECT COALESCE(MAX(history_assistance_no),0) FROM ajict_bms_schema.biz_opp_detail_sale_history WHERE history_no = %s"""
+            v_param_max = []
+            v_param_max.append(v_history_no)
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_max,v_param_max)
+               v_row = v_cursor.fetchone()
+               v_max_history_assistance_no = int(v_row[0])
+            v_param_insert_biz_opp_detail_sale_history = []
+            v_param_delete_biz_opp_detail_sale = []
             if v_data:
                for v_item in v_data:
-                  v_columns.clear()
+                  v_sql_insert_biz_opp_detail_sale_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
+                                                                                                                           history_assistance_no,
+                                                                                                                           biz_opp_id,
+                                                                                                                           detail_no,
+                                                                                                                           great_classi_code,
+                                                                                                                           small_classi_code,
+                                                                                                                           sale_amt,
+                                                                                                                           delegate_tf,
+                                                                                                                           renewal_code,
+                                                                                                                           create_user)
+                                                                                                                          VALUES (%s,
+                                                                                                                                  {v_max_history_assistance_no},
+                                                                                                                                  %s,
+                                                                                                                                  %s,
+                                                                                                                                  %s,
+                                                                                                                                  %s,
+                                                                                                                                  %s,
+                                                                                                                                  %s,
+                                                                                                                                  'D',
+                                                                                                                                  %s)"""
+                  v_param_insert_biz_opp_detail_sale_history.append(v_history_no)
+                  v_param_insert_biz_opp_detail_sale_history.append(v_biz_opp_id)
+                  v_param_insert_biz_opp_detail_sale_history.append(v_detail_no)
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('great_classi_code'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('small_classi_code'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('sale_amt'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_item.get('delegate_tf'))
+                  v_param_insert_biz_opp_detail_sale_history.append(v_session_user_id)
+
+                  #test
+                  v_formatted_sql = v_sql_insert_biz_opp_detail_sale_history % tuple(map(repr,v_param_insert_biz_opp_detail_sale_history))
+                  print(f"f_delete_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+                  with connection.cursor() as v_cursor:
+                     v_cursor.execute(v_sql_insert_biz_opp_detail_sale_history,v_param_insert_biz_opp_detail_sale_history)
+                  v_param_insert_biz_opp_detail_sale_history.clear()
+               v_sql_delete_biz_opp_detail_sale = """DELETE FROM ajict_bms_schema.biz_opp_detail_sale WHERE biz_opp_id = %s AND detail_no = %s"""
+               v_param_delete_biz_opp_detail_sale.append(v_biz_opp_id)
+               v_param_delete_biz_opp_detail_sale.append(v_detail_no)
+
+
+               #test
+               v_formatted_sql = v_sql_delete_biz_opp_detail_sale % tuple(map(repr,v_param_delete_biz_opp_detail_sale))
+               print(f"f_delete_biz_opp()에서의 v_formatted_sql : {v_formatted_sql}")
+
+
+               with connection.cursor() as v_cursor:
+                  v_cursor.execute(v_sql_delete_biz_opp_detail_sale,v_param_delete_biz_opp_detail_sale)
+
 
 
 
@@ -3743,8 +3800,8 @@ def f_select_biz_opp_history(request):
                                            A.u_delegate_tf,
                                            A.renewal_code,
                                            A.renewal_date,
-                                           A.create_user,
-                                           (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = A.create_user AND AA.delete_date IS NULL) AS create_name
+                                           A.create_user AS renewal_user,
+                                           (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = A.create_user AND AA.delete_date IS NULL) AS renewal_name
                                     FROM (SELECT AA1.history_no,
                                                  AA1.biz_opp_id,
                                                  BB1.detail_no,

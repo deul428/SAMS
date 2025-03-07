@@ -879,7 +879,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const [delegateBiz, setdelegateBiz] = useState(null);
     const [delegateCor, setdelegateCor] = useState(null);
     useEffect(() => {
-        console.log('props된 salesDetailData:' , salesDetailData, '\na_v_modalPropsData: ', a_v_modalPropsData);
+        // console.log('props된 salesDetailData:' , salesDetailData, '\na_v_modalPropsData: ', a_v_modalPropsData);
         const salesDetailDataArr = Object.entries(salesDetailData);
         const result = [];
         if (salesDetailDataArr.length > 0) {

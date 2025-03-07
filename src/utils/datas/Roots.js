@@ -54,7 +54,7 @@ const roots = {
         { Header: '이력 번호', accessor: 'history_no',
           Cell: ({value}) => (<div className='tableCell'>{value}</div>)
         },
-        { Header: '갱신자 명', accessor: 'create_name',
+        { Header: '갱신자 명', accessor: 'renewal_name',
           Cell: ({value}) => (<div className='tableCell'>{value}</div>)
         },
         { Header: '갱신 일시', accessor: 'renewal_date', 

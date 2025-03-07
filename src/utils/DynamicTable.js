@@ -168,7 +168,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // =================== input field에서 넘어온 값(res)에 따라 핸들링 ===================
   // res obj / res.data arr
   useEffect(() => {
-    console.log("res---------------------------------------(inputField에서 검색했을 때 나오는 데이터)\n", res);
+    // console.log("res---------------------------------------(inputField에서 검색했을 때 나오는 데이터)\n", res);
     if ((!res) || (Object.keys(res).length === 0) || (res.length === 0)) {
       setVHandlingHtml(<div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>);
       // return;

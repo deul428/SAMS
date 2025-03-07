@@ -429,7 +429,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
             );
         }, 0);
 
-        console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
+        // console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
     }, [inputValues]);
     // --------------------- input value 합산 끝 ---------------------  
     // =================== input value 받아와서 업데이트 끝 ===================

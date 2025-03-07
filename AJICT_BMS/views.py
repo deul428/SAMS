@@ -79,8 +79,8 @@ def f_login(request):
 
 
          #test
-         print(f"f_login()에서의 v_rows : {v_rows}")
-         print(f"f_login()에서의 v_data3 : {v_data3}")
+         # print(f"f_login()에서의 v_rows : {v_rows}")
+         # print(f"f_login()에서의 v_data3 : {v_data3}")
 
 
 #Session의 값 중 일부를 추출할 수 있음.
@@ -2345,6 +2345,7 @@ def f_delete_biz_opp(request):
             v_param_delete_biz_opp_detail_sale = []
             if v_data:
                for v_item in v_data:
+                  v_max_history_assistance_no = v_max_history_assistance_no + 1
                   v_sql_insert_biz_opp_detail_sale_history = f"""INSERT INTO ajict_bms_schema.biz_opp_detail_sale_history (history_no,
                                                                                                                            history_assistance_no,
                                                                                                                            biz_opp_id,

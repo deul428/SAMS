@@ -377,13 +377,24 @@
                                                 width: fit-content;
                                                 position: unset;
                                                 &.rc-tree-node-selected {
-                                                    background: rgba($color: $point-color, $alpha: 0.2);
-                                                    box-shadow: 0 0 0 1px rgba($color: $point-color, $alpha: 0.4);
+                                                    background: rgb(225, 241, 252);
+                                                    box-shadow: 0 0 0 1px transparent;
                                                     opacity: 1;
                                                     span.rc-tree-title {
                                                         input {
                                                             display: inline-block !important;
                                                         }
+                                                    }
+                                                    &:before {
+                                                        pointer-events: none;
+                                                        position: absolute;
+                                                        top: 0;
+                                                        left: 0;
+                                                        content: '';
+                                                        width: 3rem;
+                                                        height: inherit;
+                                                        background: rgb(225, 241, 252);
+                                                        // box-shadow: 0 0 0 1px rgba($color: $point-color, $alpha: 0.4);
                                                     }
                                                 }
                                                 span.rc-tree-title {
@@ -395,8 +406,8 @@
                                                             position: absolute;
                                                             top: 50%;
                                                             transform: translateY(-50%);
-                                                            left: 0.7rem;
-                                                            width: 1.2rem;
+                                                            left: 0rem;
+                                                            width: 3rem;
                                                             cursor: pointer;
                                                         }
                                                         div.titleItem {

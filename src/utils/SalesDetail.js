@@ -33,6 +33,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     }, [listData]);
     
 
+    // props된 매출 상세 데이터 저장
     const [v_propsSaleData, setVPropsSaleData] = useState([]);
     useEffect(() => {
         console.log("v_propsSaleList: ", v_propsSaleList);
@@ -112,7 +113,8 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 }));
             }
         } else {
-            console.log('loading...');
+            // 신규 등록 혹은 데이터 로딩 
+            // console.log('loading...');
             setInputValues({ biz: {}, cor: {}, a_product_name: "" });
             return;
         }
@@ -228,6 +230,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     
     // =================== onSelect 시 핸들링 ===================  
     const [forceRender, setForceRender] = useState(0);
+    // radio 버튼 클릭 시 UI에 노드 select 클래스 추가
     const checkSelect = (e) => {
         e.stopPropagation();
         e.target.parentElement.parentElement.parentElement.classList.add('rc-tree-node-selected');
@@ -249,6 +252,8 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
 
         const classiName = info.node?.title?.props?.["data-key"];
         const classiCode = info?.node?.small_classi_code;
+        console.log(info.selected, classiName);
+
         // onSelect로 호출한 node가 selected true인 경우 inputValues 객체에 키와 값을 추가 - 이미 키가 있으면 값만 업데이트 / false일 경우 키와 값을 삭제
         setInputValues((prev) => {
             const prevInput = prev[type] ? { ...prev[type] } : {};
@@ -269,11 +274,10 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         setForceRender(n => n+1);
     };
 
-    // 선택 해제된 classiCode는 UI에서 0으로 유지. 이 코드가 없을 시 selected된 요소를 false했다 true할 시 inputValues 객체는 숫자가 0으로 초기화되지만 UI는 초기화되지 않음. inputValues 값 및 UI 표현 값을 보존하기 위해 사용.
+    // select가 false인 node는 inputValues에서 삭제, radio 버튼 checked false
     useEffect(() => {
         // console.log("isSelected: ", isSelected, /* inputNumValue */);
         setForceRender(n => n+1);
-        // console.log(forceRender);
         if (isSelected === false) {
             setInputValues((prev) => {
                 return {
@@ -283,8 +287,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                     a_product_name: prev.a_product_name
                 };
             });
-            // setInputNumValue(0);
-        } 
+        }
     }, [isSelected]);
     // =================== onSelect 시 핸들링 끝 ===================  
 
@@ -689,7 +692,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     }, [show, isSave, v_propsSaleList]);
 
     useEffect(() => {
-        console.log('isParentHide', isParentHide);
+        // console.log('isParentHide', isParentHide);
         // 부모 모달이 닫힌 경우 
         if (isParentHide === true) {
             setIsSave(false); 

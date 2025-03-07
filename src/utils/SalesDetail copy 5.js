@@ -654,6 +654,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         case 2는 데이터 그대로 유지.
         case 3은 부모 컴포넌트에서 온 propsData가 있을 경우 그 데이터로 렌더링(3-1). 없을 경우 select 안 된 UI로 렌더링.(3-2)
         */
+        // 부모 모달이 닫힌 경우 
         if (isParentHide === true) {
             console.log('isParentHide false');
             setIsSave(false); 

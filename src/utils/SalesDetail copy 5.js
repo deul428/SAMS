@@ -654,6 +654,11 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         case 2는 데이터 그대로 유지.
         case 3은 부모 컴포넌트에서 온 propsData가 있을 경우 그 데이터로 렌더링(3-1). 없을 경우 select 안 된 UI로 렌더링.(3-2)
         */
+        if (isParentHide === true) {
+            console.log('isParentHide false');
+            setIsSave(false); 
+            setIsRecover(false);
+        } 
         // 이 모달을 나간 경우
         if (show === false) {
             // 이 모달에서 작업한 내용을 저장하지 않은 경우
@@ -673,39 +678,18 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                     setDefaultCorKeys([]);
                     setSalesDetailData([]);
                     setIsRecover(false);
-                } else { //v_propsSalesList가 있다면 (수정의 경우) 원래 내용으로 원복
+                } else { //v_propsSalesList가 있다면 (수정의 경우) 원래 내용으로 원복복
                     console.log("propsData 기반으로 상태 복원");
                     setVPropsSaleData([]);
                     setVPropsSaleData(v_propsSaleList);
                     setIsRecover(true);
                 }
-            // 선택 시
-            } else {
-
             }
         }
         // 이전 상태 업데이트
         prevShow.current = show;
-    }, [show, isSave, v_propsSaleList]);
+    }, [show, isSave, v_propsSaleList, isParentHide]);
 
-    useEffect(() => {
-        console.log('isParentHide', isParentHide);
-        // 부모 모달이 닫힌 경우 
-        if (isParentHide === true) {
-            setIsSave(false); 
-            setIsRecover(false);
-            setVPropsSaleData([]);
-            setSumBiz(null);
-            setSumCor(null);
-            setInputValues({ biz: {}, cor: {}, a_product_name: "" });
-            setSelectedBizKeys([]);
-            setSelectedCorKeys([]);
-            setIsSelected(false);
-            setDefaultBizKeys([]);
-            setDefaultCorKeys([]);
-            setSalesDetailData([]);
-        } 
-    }, [isParentHide])
     // UI 업데이트
     const [v_handlingHtml, setVHandlingHtml] = useState(null);
     useEffect(() => {

@@ -80,7 +80,7 @@ def f_login(request):
 
          #test
          print(f"f_login()에서의 v_rows : {v_rows}")
-         print(f"f_login()에서의 v_rows : {v_data3}")
+         print(f"f_login()에서의 v_data3 : {v_data3}")
 
 
 #Session의 값 중 일부를 추출할 수 있음.
@@ -2306,34 +2306,40 @@ def f_delete_biz_opp(request):
                v_cursor.execute(v_sql_delete_biz_opp_activity,v_param_delete_biz_opp_activity)
 
 
-            # v_sql_select_biz_opp_detail_sale = """SELECT user_id,
-            #                          user_name,
-            #                          cipher,
-            #                          dept_id,
-            #                          position1_code,
-            #                          position2_code,
-            #                          responsibility1_code,
-            #                          responsibility2_code,
-            #                          auth1_code,
-            #                          auth2_code,
-            #                          beginning_login_tf,
-            #                          create_user,
-            #                          create_date,
-            #                          update_user,
-            #                          update_date,
-            #                          delete_user,
-            #                          delete_date
-            #                   FROM ajict_bms_schema.aj_user
-            #                   WHERE user_id = %s AND
-            #                         cipher = %s AND
-            #                         delete_date IS NULL"""
-            # v_param3 = []
-            # v_param3.append(v_user_id)
-            # v_param3.append(v_cipher)
-            # with connection.cursor() as v_cursor:
-            #    v_cursor.execute(v_sql3,v_param3)
-            #    v_columns = [v_column[0] for v_column in v_cursor.description]
-            #    v_rows = v_cursor.fetchall()
+
+
+
+
+            v_sql_select_biz_opp_detail_sale = """SELECT biz_opp_id,
+                                                         detail_no,
+                                                         great_classi_code,
+                                                         small_classi_code,
+                                                         sale_amt,
+                                                         delegate_tf,
+                                                         create_user,
+                                                         create_date,
+                                                         update_user,
+                                                         update_date,
+                                                         delete_user,
+                                                         delete_date
+                                                  FROM ajict_bms_schema.biz_opp_detail_sale
+                                                  WHERE biz_opp_id = %s AND
+                                                        detail_no = %s"""
+            v_param_biz_opp_detail_sale = []
+            v_param_biz_opp_detail_sale.append(v_biz_opp_id)
+            v_param_biz_opp_detail_sale.append(v_detail_no)
+            v_data = []
+            with connection.cursor() as v_cursor:
+               v_cursor.execute(v_sql_select_biz_opp_detail_sale,v_param_biz_opp_detail_sale)
+               v_columns = [v_column[0] for v_column in v_cursor.description]
+               v_rows = v_cursor.fetchall()
+               v_data = [dict(zip(v_columns,row)) for row in v_rows]
+            if v_data:
+               for v_item in v_data:
+                  v_columns.clear()
+
+
+
 
 
             v_return = {'STATUS':'SUCCESS','MESSAGE':"저장되었습니다."}
@@ -3736,7 +3742,9 @@ def f_select_biz_opp_history(request):
                                            A.delegate_tf,
                                            A.u_delegate_tf,
                                            A.renewal_code,
-                                           A.renewal_date
+                                           A.renewal_date,
+                                           A.create_user,
+                                           (SELECT AA.user_name FROM ajict_bms_schema.aj_user AA WHERE AA.user_id = A.create_user AND AA.delete_date IS NULL) AS create_name
                                     FROM (SELECT AA1.history_no,
                                                  AA1.biz_opp_id,
                                                  BB1.detail_no,
@@ -3813,7 +3821,8 @@ def f_select_biz_opp_history(request):
                                                  NULL AS delegate_tf,
                                                  NULL AS u_delegate_tf,
                                                  AA1.renewal_code,
-                                                 AA1.create_date AS renewal_date
+                                                 AA1.create_date AS renewal_date,
+                                                 BB1.create_user
                                           FROM ajict_bms_schema.biz_opp_history AA1,
                                                ajict_bms_schema.biz_opp_detail_history BB1
                                           WHERE AA1.history_no = BB1.history_no AND
@@ -3884,7 +3893,8 @@ def f_select_biz_opp_history(request):
                                                  AA2.delegate_tf,
                                                  AA2.u_delegate_tf,
                                                  AA2.renewal_code,
-                                                 AA2.create_date AS renewal_date
+                                                 AA2.create_date AS renewal_date,
+                                                 AA2.create_user
                                           FROM ajict_bms_schema.biz_opp_detail_sale_history AA2
                                           WHERE AA2.biz_opp_id = %s AND
                                                 AA2.detail_no = %s) A

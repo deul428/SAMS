@@ -48,12 +48,17 @@ const ExcelTable = ({ response }) => {
   // 엑셀 데이터로 변환 후 다운로드
   const handleExport = () => {
     if (!tableData.length) return;
-    setTimeout(() => {
-      const worksheet = XLSX.utils.json_to_sheet(tableData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-      XLSX.writeFile(workbook, `사업기회_${moment().format('YYYY-MM-DD')}.xlsx`);
-    }, 500);
+    
+    if (window.confirm('사업 (기회)를 엑셀로 내보내시겠습니까?')) {
+      setTimeout(() => {
+        const worksheet = XLSX.utils.json_to_sheet(tableData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+        XLSX.writeFile(workbook, `사업기회_${moment().format('YYYY-MM-DD')}.xlsx`);
+      }, 500);
+    } else {
+      return;
+    }
   };
   return (
     <Button variant='warning' className='float-right mb-2 ms-2' onClick={handleExport}>엑셀 다운로드</Button>

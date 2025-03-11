@@ -7,11 +7,10 @@ import DynamicTable from '../utils/DynamicTable.js';
 import InputField from '../utils/InputField.js';
 import BizOppDetail from './BizOppDetail.js';
 import InputFieldDetail from '../utils/InputFieldDetail.js';
-import handleFileUpload from './test/ExcelTable';
+import ExcelTable from '../utils/ExcelTable';
 import roots from '../utils/datas/Roots.js';
 
 import { Button } from 'react-bootstrap';
-import ExcelTable from './test/ExcelTable';
 
 const BizOpp = () => {
     const navigate = useNavigate();

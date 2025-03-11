@@ -5,15 +5,9 @@ import { setLocation } from './redux/reducers/LocationSlice';
 import store from './redux/store';
 import roots from './utils/datas/Roots';
 import Header from './components/Header';
-import MultiTabComponent from './components/test/Tab';
-
 import './App.scss';
 import AuthLogin from './components/Login';
 import Auth from './utils/Auth';
-import ExcelTable from './components/test/ExcelTable';
-import Tree_uiUsed_productManage from './components/test/Tree_uiUsed_productManage';
-import ResizableTable from './components/test/ResizableTable';
-
 import usePreventRefresh from './hooks/usePreventRefresh';
 
 function AppCntnt() {
@@ -30,9 +24,6 @@ function AppCntnt() {
     <>
       {!hiddenPaths.includes(location.pathname) && <Header />}
       <div id='cntntArea'>
-          {/* {!hiddenPaths.includes(location.pathname) && <MultiTabComponent />} */}
-          {/* <ExcelTable></ExcelTable> */}
-          {/* <Tree_uiUsed_productManage></Tree_uiUsed_productManage> */}
         <Routes>
           <Route exact path='/' element={<AuthLogin />} />
           {Object.entries(roots).map(([key, value]) => (

@@ -4,7 +4,6 @@
 
 # 개발 중인 소스 혹은 소스 백업용 더미
 /resource_dummy
-/src/components/test
 # Node.js 관련
 /node_modules
 /.pnp

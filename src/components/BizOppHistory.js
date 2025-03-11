@@ -25,7 +25,7 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
             const response = await apiMethods[method](endpoint, input);
             // const response = await apiMethods.get(endpoint);
             
-            console.log(`API Get (수신)\nEndpoint: (BizOpp.js) ${endpoint}\nresponse: `, response);
+            // console.log(`API Get (수신)\nEndpoint: (BizOpp.js) ${endpoint}\nresponse: `, response);
             if (response.status.STATUS === 'FAIL' || response.status.STATUS === 'NONE') {
                 onHide(true);
                 alert(response.status.MESSAGE);
@@ -39,23 +39,16 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
             throw error;
         }
     };
-/*     if (show) {
-        console.log('모달 열림!');
-        f_handlingData();
-        return;
-    } */
     // ================= POST 끝 ================= 
 
     // -------------- 세션 대체용 userId 송신 -------------- 
     const auth = useSelector((state) => state.auth);
-    // console.log(auth);
     let userCheck = {
         a_session_user_id: auth.userId,
     }
 
     useEffect(() => {
         if(v_modalPropsData) {
-            console.log("show: ", show, "onHide: ", onHide, "v_modalPropsData: ", v_modalPropsData);
             userCheck = {
                 a_session_user_id: auth.userId,
                 a_biz_opp_id: v_modalPropsData.biz_opp_id,
@@ -65,12 +58,7 @@ const BizOppHistory = ({ show, onHide, v_modalPropsData }) => {
             f_handlingData('post', endpoint, userCheck);
         }
         
-        /* f_handlingData('get', endpoint).then(response => {
-            console.log("데이터 로드 완료:", response);
-        }).catch(error => {
-            console.error("데이터 로드 실패:", error);
-        }); */
-    }, [/* show, endpoint */v_modalPropsData]);
+    }, [v_modalPropsData]);
     // -------------- 세션 대체용 userId 송신 끝 -------------- 
 
 

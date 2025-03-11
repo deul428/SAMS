@@ -16,9 +16,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
   const [data, setData] = useState([]);
   // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
   useEffect(() => {
-    console.log("v_propsData: ", v_propsData);
     if (!v_propsData /* || Object.keys(v_propsData).length === 0 || !v_propsData.data.retrieve_biz_opp_history */) {
-      console.warn("v_propsData가 비어 있습니다.");
       setData([]); // 기본값으로 빈 배열 설정
       return;
     }
@@ -83,7 +81,6 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
         setBrowserWidth(window.innerWidth);
       }, 200);
     };
-    // console.log(browserWidth, window.innerWidth);
     window.addEventListener('resize', handleResize);  
     return () => {
       window.addEventListener('resize', handleResize);
@@ -202,7 +199,6 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
     ) { return <div>Loading...</div>; }
     
     if (data.length > 0 || data) {
-      // console.log("data: ", ...data, "page: ", ...page);
       let htmlContent = null;
       switch (v_componentName) {
         case `bizOppHistory`: 

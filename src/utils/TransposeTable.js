@@ -1,6 +1,5 @@
 export const transposeData = (tableData, tableColumns) => {
     if (!tableData || !tableData.length || !tableColumns || !tableColumns.length) {
-        console.warn('Invalid data or columns provided for transposition.');
         return { transposedColumns: [], transposedData: [] };
     }
 

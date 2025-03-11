@@ -24,7 +24,6 @@ function Header() {
         }
     }
     useEffect(() => {
-        // console.log('Redirect Path:', redirect); // 확인
         if (redirect) {
             navigate(redirect, { replace: true });
         }
@@ -71,7 +70,6 @@ function Header() {
                 setBrowserWidth(window.innerWidth);
             }, 200);
         };
-        // console.log(browserWidth, window.innerWidth);
         window.addEventListener('resize', handleResize);  
         return () => {
             window.addEventListener('resize', handleResize);

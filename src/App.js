@@ -25,9 +25,7 @@ function AppCntnt() {
     dispatch(setLocation(location.pathname));
   }, [location, dispatch]);
   
-  // const hiddenPaths = roots.map(route => `/${route.depth1[0]}`);
   const hiddenPaths = `/login`;
-  // console.log(hiddenPaths);
   return (
     <>
       {!hiddenPaths.includes(location.pathname) && <Header />}
@@ -37,13 +35,6 @@ function AppCntnt() {
           {/* <Tree_uiUsed_productManage></Tree_uiUsed_productManage> */}
         <Routes>
           <Route exact path='/' element={<AuthLogin />} />
-          {/* { roots.map((value, index) => (
-            <Route 
-              key={index} 
-              path={`/${value.depth1}/${value.depth2}`} 
-              element={<value.component />}
-            />
-          ))} */}
           {Object.entries(roots).map(([key, value]) => (
             <Route
               key={key}

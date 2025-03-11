@@ -1,80 +1,62 @@
+import moment from 'moment';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { Button } from 'react-bootstrap';
 import * as XLSX from 'xlsx';
 
-const ExcelTable = () => {
-  const [tableData, setTableData] = useState([]); // 테이블 데이터 상태 관리
-  const [columns, setColumns] = useState([]); // 테이블의 열 상태 관리
-
-  // 엑셀 파일 업로드 핸들러
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const binaryStr = e.target.result;
-      const workbook = XLSX.read(binaryStr, { type: 'binary' });
-      const sheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[sheetName];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' }); // 빈 셀도 처리
-      setTableData(jsonData);
-      setColumns(Object.keys(jsonData[0] || {})); // 첫 번째 행의 키를 열 이름으로 사용
-    };
-
-    reader.readAsBinaryString(file);
+const ExcelTable = ({ response }) => {
+  const [tableData, setTableData] = useState([]);
+  const [columns, setColumns] = useState([]);
+  
+  // 기존 JSON 데이터를 원하는 형식으로 변환하는 함수
+  const transformJsonData = (data) => {
+    return data.map((item) => ({
+      '사업 일련 번호': item.biz_opp_id,
+      '사업 복제 번호': item.detail_no,
+      '본부': item.change_preparation_high_dept_name,
+      '팀': item.change_preparation_dept_name,
+      '담당자': item.user_name,
+      '판품 번호': item.sale_item_no,
+      '사업 (기회) 명': item.biz_opp_name,
+      '최종 고객사': item.last_client_com2_name,
+      '진행률': item.progress2_rate_name,
+      '필달 여부': item.essential_achievement_tf,
+      '계약 일자': item.contract_date,
+      '매출 일자': item.sale_date,
+      '매입 일자': item.purchase_date,
+      '총 매출 금액': item.total_sale_amt,
+      '매입 금액': item.purchase_amt,
+      '매출 이익': item.sale_profit,
+      '대표 사업 구분': item.delegate_sale_com_name,
+      '대표 제조사명': item.delegate_biz_section_name,
+      '제품명': item.product_name
+    }));
   };
 
-  // 테이블 데이터를 엑셀 파일로 내보내기
+  useEffect(() => {
+    if (response) {
+      const formattedData = transformJsonData(response);
+      setTimeout(() => {
+        setTableData(formattedData);
+        setColumns(Object.keys(formattedData[0] || {}));
+      }, 0);
+    } else {
+      return;
+    }
+  }, [response]);
+
+  // 엑셀 데이터로 변환 후 다운로드
   const handleExport = () => {
-    const worksheet = XLSX.utils.json_to_sheet(tableData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-    XLSX.writeFile(workbook, 'table-data.xlsx'); // 다운로드 파일 이름 설정
+    if (!tableData.length) return;
+    setTimeout(() => {
+      const worksheet = XLSX.utils.json_to_sheet(tableData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+      XLSX.writeFile(workbook, `사업기회_${moment().format('YYYY-MM-DD')}.xlsx`);
+    }, 500);
   };
-
-  // 테이블 데이터 수정 핸들러
-  const handleCellChange = (rowIndex, columnKey, value) => {
-    const updatedData = [...tableData];
-    updatedData[rowIndex][columnKey] = value;
-    setTableData(updatedData);
-  };
-
   return (
-    <div>
-      <h1>Excel Upload and Table</h1>
-      <input
-        type='file'
-        accept='.xlsx, .xls'
-        onChange={handleFileUpload}
-        style={{ marginBottom: '20px' }}
-      />
-      <button onClick={handleExport} style={{ marginBottom: '20px' }}>
-        Export to Excel
-      </button>
-      <table border='1' cellPadding='5' style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            {columns.map((col) => (
-              <th key={col}>{col}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {tableData.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {columns.map((col) => (
-                <td key={col}>
-                  <input
-                    type='text'
-                    value={row[col]}
-                    onChange={(e) => handleCellChange(rowIndex, col, e.target.value)}
-                  />
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Button variant='warning' className='float-right mb-2 ms-2' onClick={handleExport}>엑셀 다운로드</Button>
   );
 };
 

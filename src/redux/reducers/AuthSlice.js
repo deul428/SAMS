@@ -18,7 +18,6 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         login(state, action) {
-            // console.log('action: auth.login', action.payload);  
             state.isLoggedIn = true;
             state.userId = action.payload.userId;
             state.userPw = action.payload.userPw;
@@ -29,7 +28,6 @@ const authSlice = createSlice({
         },
         // 추가적으로 데이터를 받을 필요가 없을 때는 action을 파라미터로 줄 필요가 없음.
         logout(state) {
-            // console.log('action: auth.logout');
             state.isLoggedIn = false;
             state.userId = '';
             state.userPw = '';

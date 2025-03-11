@@ -28,10 +28,6 @@ const AuthLogin = () => {
     const [input, setInput] = useState(p_login);
     const [pwInput, setPwInput] = useState(p_changePw);
 
-    useEffect(() => {
-        console.log('input:', input,'\npwInput:', pwInput);
-    }, [input, pwInput])
-
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
         // input 업데이트
@@ -89,7 +85,6 @@ const AuthLogin = () => {
                     await dispatch(login({ ...auth, userId: auth.userId, userPw: pwInput.a_new_cipher }));
     
                     setTimeout(() => {
-                        console.log(response);
                         alert('비밀번호가 변경되었습니다.');
                         // 이전 경로로 리디렉션
                         const from = location.state?.from?.pathname || `/${roots.home.url}`;
@@ -115,7 +110,7 @@ const AuthLogin = () => {
 
                 // 로그인 성공 시 객체 length 2. (데이터부, 상태부)
                 if (response.length === 2) {
-                    console.log("로그인 성공.", "\nresponse (data): ", res, "\nresponse (msg): ", resStts);
+                    // console.log("로그인 성공.", "\nresponse (data): ", res, "\nresponse (msg): ", resStts);
                     if (resStts.STATUS === 'LOGIN') {
                         // Redux에 로그인 정보 저장
                         await dispatch(login({ userId: input.a_user_id, userPw: input.a_cipher, userName: res.user_name, userResCode: res.responsibility2_code, userDeptCode: res.dept_id, userAuthCode: res.auth2_code }));
@@ -131,13 +126,10 @@ const AuthLogin = () => {
                             const from = location.state?.from?.pathname || `/${roots.home.url}`;
                             setRedirect(from);
                             return response;
-                            // const session = localStorage.setItem("sessionid", response.data.sessionid);
-                            // console.log("session: ", response.data.sessionid)
-                            // console.log(location.state?.from?.pathname);
                         }
                     }
                 } else if (response[0].STATUS === 'FAIL') {
-                    console.log("로그인 실패.\nresponse: ", response, response[0].STATUS)
+                    // console.log("로그인 실패.\nresponse: ", response, response[0].STATUS)
                     // 실패 메시지 알림
                     alert(response[0].MESSAGE || '알 수 없는 오류가 발생했습니다.');
                     return;
@@ -147,7 +139,7 @@ const AuthLogin = () => {
                 }
             }
         } catch (error) {
-            console.log('Error during login:', error);
+            // console.log('Error during login:', error);
             alert('로그인 중 오류가 발생했습니다. 관리자에게 문의하세요.', error);
         }
     };
@@ -161,7 +153,6 @@ const AuthLogin = () => {
 
     const prevAuth = useRef(false);
     useEffect(() => {
-        console.log(prevAuth.current, auth);
         // logout시 초기화
         if (prevAuth === true && auth.isLoggedIn === false) {
             setInput(p_login);

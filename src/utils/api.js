@@ -29,13 +29,6 @@ const apiUrl = axios.create({
 const api = {
     request: async (method, url, data = null) => {
         try {
-            /* if (method === 'post') {
-                console.log(data);
-                // if (Object.values(data).some(e => !e)){
-                //     alert(`user input is Null or ''.`);
-                // }
-                // return;
-            }; */
             const response = await apiUrl({ method, url, data });
             const cookies = document.cookie;
             // const test = response.set_cookie('csrftoken', 'your_token_value', secure=True, httponly=True, samesite='Lax');
@@ -43,7 +36,7 @@ const api = {
             // console.log(cookies, test);
             
             if (method !== 'get') {
-                console.log(`API Post/Patch/Put/Del (송신)\nEndpoint (출처): ${url}\nData:`, data);
+                // console.log(`API Post/Patch/Put/Del (송신)\nEndpoint (출처): ${url}\nData:`, data);
             } /* else {
                 console.log(`API Get (수신)\nEndpoint:\nresponse: `, response);
             } */

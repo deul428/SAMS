@@ -20,7 +20,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     // input field 값 input에 저장
     const f_handlingInput = (e) => {
-        console.log(e.target.name, e.target.value);
         /* if (e.target.name === 'a_essential_achievement_tf') {
             e.target.checked ? e.target.value = true : e.target.value = false;
         } */
@@ -29,13 +28,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             ...prevInput,
             [name]: type === 'checkbox' ? checked : value.trim(), //e.target.name의 값을 키로, e.target.value를 값으로 사용
         }));
-        /* const { name, value } = e.target;
-        // input 업데이트
-        setInput((prevInput) => {
-            const newState = { ...prevInput, [name]: value.trim() };
-            console.log("f_handlingInput 업데이트된 상태:", newState);
-            return newState;
-        }); */
     }        
 
     
@@ -102,9 +94,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
 
     // const [submit, setSubmit] = useState();
     const f_submitData = async (method, endpoint, input = null, e, msg) => {
-        /* if (input) {
-            console.log("input============================:\n", input);
-        } */
         if (e && e !== 'cancel') {
             e.preventDefault(); // submit 방지
         } 
@@ -127,21 +116,20 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     return;
                 }
             }
-            console.log("submit 될 input data\n", input);
+            // console.log("submit 될 input data\n", input);
 
             const response = await apiMethods[method](endpoint, input);
-            console.log(`API Get (수신)\nEndpoint: (inputField.js) ${endpoint}\nresponse: `, response);
+            // console.log(`API Get (수신)\nEndpoint: (inputField.js) ${endpoint}\nresponse: `, response);
             if (response.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
                 // alert(response.status.MESSAGE);
                 setRes([]);
                 return;
             } else {
                 setRes(response);
-                // setSubmit(response);
                 return response;
             }
         } catch (error) {
-            console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
+            // console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
             alert('로그인 중 오류가 발생했습니다. 관리자에게 문의하세요.', error);
         }
     }
@@ -154,7 +142,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
     // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
     useEffect(() => {
         if (!v_propsData || Object.keys(v_propsData).length === 0) {
-            console.warn('v_propsData가 비어 있습니다.');
             return;
         }
         const { retrieve_biz_opp, ...v_filter } = v_propsData.data;
@@ -174,12 +161,10 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     setEndpoint(roots.activitySelect2.endpoint);
                     break;
                 default:
-                    // console.log(v_componentName);
                     break;
             }
             setInput(getInitialInput());
         /* } */
-        // console.log("v_propsData: ", v_propsData);
     }, [v_propsData, v_componentName]);
     // ================= get data 핸들링 끝 ================= 
 
@@ -262,18 +247,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
     }
     // --------- From-to 매핑 끝 --------- 
 
-/*     // Redux와 React Router 동기화
-    useEffect(() => {
-        const syncPath = async () => {
-            if (!currentPath || currentPath === '/login' || currentPath === '/login/') {
-                await dispatch(setLocation(location.pathname)); // Redux 상태 업데이트를 보장
-            }
-        };
-        syncPath();
-    }, [currentPath, location.pathname, dispatch]);
-    
-    console.log(currentPath); */
-
     const [v_deptHandling, setVDeptHandling] = useState({
         deptValue: '',
         deptMsg: '-- 본부를 선택하세요 --',
@@ -297,8 +270,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
         // 권한별 UI 
         // Level 1. 권한(AUT) Check 0001admin / 0002guest / 0003none
         const f_authLevel1 = () => {
-            // console.log(`auth.userAuthCode: ${auth.userAuthCode} \nauth.userResCode: ${auth.userResCode} \nauth.userDeptCode: ${auth.userDeptCode}`);
-            
             switch(auth.userAuthCode) {
                 //1. admin
                 case '0001' :
@@ -478,9 +449,7 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             } else {
                 dept = '';
                 team = '';
-                console.log('no dept, no team');
             }
-            // console.log(dept, team);
     
             let checkDeptId = deptId.substr(0, 3);
             switch (checkDeptId) {
@@ -495,7 +464,6 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
             }
             f_teamLinkedDept(); 
             if (resCode === '0002') {
-                console.log(team, dept);
                 if (dept && team) {
                     setVTeamHandling({
                         teamValue: team[0].dept_id,
@@ -565,60 +533,21 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
                     a_dept_id: team[0].dept_id,
                 };
             } else {
-                // console.log('no team');
                 if (dept) {
                     updatedInput = {
                         ...input,
                         a_headquarters_dept_id: dept[0].dept_id,
                         a_dept_id: dept[0].dept_id,
                     };
-                } /* else {
-                    updatedInput = {
-                        ...input,
-                        a_headquarters_dept_id: '',
-                        a_dept_id: '',
-                    };
-                } */
+                }
             }
     
             setInput(updatedInput);
-            
-            // setInput((prevInput) => ({
-            //     ...prevInput,
-            //     a_headquarters_dept_id: team[0].high_dept_id, 
-            //     a_dept_id: team[0].dept_id,
-            //     // a_user_name: v_userHandling.userValue
-            // }));
-            
         }
-
         f_authLevel1();
     }
 
-    // setAuthLevels(authCheck());
-    // 디버깅용
-    /* useEffect(() => {
-        console.log(
-        `input: `, input,
-        `\n\n출처: f_authLevel()\nv_depts: `, v_depts, `\nv_teams: `, v_teams,
-
-        `\n\n출처: f_teamLinkedDept()\nv_teamByDept: `, v_teamByDept,
-        
-        `\nv_selectTeam: `, v_selectTeam,
-
-        `\nv_filteredProTo: `, v_filteredProTo,
-        `\n\nv_deptHandling: `, v_deptHandling, `\nv_teamHandling: `, v_teamHandling, `\nv_userHandling: `, v_userHandling
-        );
-    }, [
-        input,
-        v_depts, v_teams, v_teamByDept,
-        v_selectTeam,
-        v_filteredProTo,
-        v_deptHandling, v_teamHandling, v_userHandling
-    ]) */
-
     useEffect(() => {
-        // console.log("=-=-==-=--=data:-=-=-=--=-", data);
         if (Object.keys(data).length > 0) {
             switch(v_componentName) {
                 case 'bizOpp':
@@ -635,27 +564,9 @@ const InputField = ({ v_componentName, v_propsData, setRes, setListData, setAuth
     }, [data, v_propsData, /* submit */]);
     // ================= option 1 변경 시 2도 동적으로 변경 끝 ================= 
 
-
-    /*     // Redux와 React Router 동기화
-    useEffect(() => {
-        const syncPath = async () => {
-            if (!currentPath || currentPath === "/login") {
-                await dispatch(setLocation(location.pathname));
-            }
-        };
-
-        syncPath();
-    }, [currentPath, location.pathname, dispatch]); */
-
-
     // UI 업데이트
     useEffect(() => {
-        // console.log("f_handlingInput 업데이트된 상태:", input);
         const updateUI = () => {
-            /* if (!currentPath || currentPath === "/login") {
-                setVHandlingHtml(<h1>경로를 설정하는 중입니다...</h1>);
-                return;
-            } */
             switch (v_componentName) {
                 // biz-opp/
                 case `bizOpp`:

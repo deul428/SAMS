@@ -10,7 +10,6 @@ function LoginForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(testId, testPw);
     // 브라우저 세션 유지
     navigate('/board', { state: { testId, testPw }});
   }

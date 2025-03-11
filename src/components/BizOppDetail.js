@@ -64,7 +64,6 @@ const BizOppDetail = () => {
 
     const f_handlingInput = (e) => {
         const { name, value } = e.target;
-        // console.log({ name, value }, input);
         setInput({
             ...input,
             [name]: value.trim(),
@@ -85,7 +84,7 @@ const BizOppDetail = () => {
             // apiMethods[method]에서의 [method]: 객체에 동적으로 접근하는 키. method 변수 값에 따라 객체에서 해당 키에 해당하는 값을 동적으로 갖고 온다. 
             // 일반적으로 객체의 프로퍼티를 접근할 때에는 .을 사용하지만, 동적으로 키를 설정할 때에는 []를 사용한다.  apiMethods[method]는 apiMethods.특정method와 같은 의미이다.
             const response = await apiMethods[method](endpoint, input);
-            console.log(`API Get (수신)\nEndpoint: (BizOppDetail.js) ${endpoint}\nresponse: `, response);
+            // console.log(`API Get (수신)\nEndpoint: (BizOppDetail.js) ${endpoint}\nresponse: `, response);
     
             // 상태 업데이트: 데이터 갱신이 필요한 경우에만 호출
             if (isUpdateNeeded) {
@@ -101,7 +100,6 @@ const BizOppDetail = () => {
     };
     useEffect(() => {
         f_handlingData('get', endpoint);
-        // console.log(location);
     }, []);
 
     return (

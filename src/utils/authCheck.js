@@ -11,7 +11,7 @@ const authCheck = ({ data,
     // 권한별 UI 
     // Level 1. 권한(AUT) Check 0001admin / 0002guest / 0003none
     const f_authLevel1 = () => {
-        console.log(`auth.userAuthCode: ${auth.userAuthCode} \nauth.userResCode: ${auth.userResCode} \nauth.userDeptCode: ${auth.userDeptCode}`);
+        // console.log(`auth.userAuthCode: ${auth.userAuthCode} \nauth.userResCode: ${auth.userResCode} \nauth.userDeptCode: ${auth.userDeptCode}`);
         
         switch(auth.userAuthCode) {
             //1. admin
@@ -188,9 +188,7 @@ const authCheck = ({ data,
         } else {
             dept = '';
             team = '';
-            console.log('no dept, no team');
         }
-        console.log(dept, team);
 
         let checkDeptId = deptId.substr(0, 3);
         switch (checkDeptId) {
@@ -256,7 +254,6 @@ const authCheck = ({ data,
                 a_change_preparation_dept_id: team[0].change_preparation_dept_id,
             };
         } else {
-            console.log('no team');
             updatedInput = {
                 ...input,
                 // a_headquarters_dept_id: dept[0].change_preparation_high_dept_id,

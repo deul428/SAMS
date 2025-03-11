@@ -36,7 +36,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     // props된 매출 상세 데이터 저장
     const [v_propsSaleData, setVPropsSaleData] = useState([]);
     useEffect(() => {
-        console.log("v_propsSaleList: ", v_propsSaleList);
         if (v_propsSaleList) {
             setVPropsSaleData(v_propsSaleList);
         } else {
@@ -54,8 +53,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     // v_propsSaleData 변경 감지 (기존 로직 유지)
     useEffect(() => {
         if (v_propsSaleData.length !== 0 && v_modalPropsData) {
-            console.log("v_propsSaleData:", v_propsSaleData, "v_modalPropsData: ", v_modalPropsData);
-
             if (v_propsSaleData[0][0].biz_opp_id !== v_modalPropsData.biz_opp_id) {
                 return;
             }
@@ -94,11 +91,9 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 }
             });
 
-            console.log("변환된 데이터:", transformedData);
-
             // 초기 로딩 또는 데이터 업데이트
             if (!isRecover) {
-                console.log('🌟 v_propsData가 초기에 들어왔음', v_propsSaleData);
+                // console.log('v_propsData가 초기에 들어왔음', v_propsSaleData);
                 setInputValues(prev => ({
                     ...prev,
                     biz: {
@@ -124,8 +119,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     // isRecover 변경 감지: 기존 데이터로 강제 원복
     useEffect(() => {
         if (isRecover) {
-            console.log("isRecover 활성화: 수정 전 데이터로 복원!", v_propsSaleData);
-
             if (v_propsSaleData.length !== 0) {
                 const transformedData = {
                     biz: {},
@@ -154,8 +147,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                         ];
                     }
                 });
-
-                console.log("원복할 데이터:", transformedData);
 
                 setInputValues({
                     biz: transformedData.biz,
@@ -252,7 +243,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
 
         const classiName = info.node?.title?.props?.["data-key"];
         const classiCode = info?.node?.small_classi_code;
-        console.log(info.selected, classiName);
 
         // onSelect로 호출한 node가 selected true인 경우 inputValues 객체에 키와 값을 추가 - 이미 키가 있으면 값만 업데이트 / false일 경우 키와 값을 삭제
         setInputValues((prev) => {
@@ -276,7 +266,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
 
     // select가 false인 node는 inputValues에서 삭제, radio 버튼 checked false
     useEffect(() => {
-        // console.log("isSelected: ", isSelected, /* inputNumValue */);
         setForceRender(n => n+1);
         if (isSelected === false) {
             setInputValues((prev) => {
@@ -356,7 +345,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
  */
     const handleInputChange = (e, type, classiCode, isRadio = false) => {
         const classiName = e.currentTarget.dataset.key;
-        // console.log(e, type, classiCode, isRadio);
         setInputValues((prev) => {
             // type이 `a_product_name`일 경우 단순히값 저장 후 return
             if (type === "a_product_name") {
@@ -428,8 +416,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                     .filter(Boolean)
             );
         }, 0);
-
-        // console.log('inputValues: ', inputValues, '\nbizTotal: ', bizTotal, '\ncorTotal: ', corTotal);
     }, [inputValues]);
     // --------------------- input value 합산 끝 ---------------------  
     // =================== input value 받아와서 업데이트 끝 ===================
@@ -437,13 +423,11 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     // =================== 선택 버튼 클릭 시 ===================
     // inputValues로 저장해 둔 데이터 구조 변경
     const transformPrevData = (data) => {
-        console.log("transformData func, raw data: ", data);
         const result = {};
     
         if (data.length > 0) { 
             data.forEach((value) => {
                 value.map((e) => {
-                    // console.log(e, typeof e);
                     const lowerCode = e.great_classi_code ? e.great_classi_code.toLowerCase() : null; 
                     if (!lowerCode) { return; }
                     if (!result[lowerCode]) {
@@ -451,14 +435,12 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                     }
                     const small_classi_code = e.small_classi_code;
                     if (!small_classi_code) {
-                        console.warn("small_classi_code가 없음:", e);
                         return;
                     }
                     const small_classi_name = e.small_classi_name;
                     const sale_amt = e.sale_amt;
                     const delegate_tf = e.delegate_tf;
                     result[lowerCode][small_classi_code] = [small_classi_name, sale_amt, delegate_tf];
-                    // console.log([small_classi_name, sale_amt, delegate_tf]);
                 })
             });
         }
@@ -479,14 +461,14 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 }
             });
         } */
-        console.log("transformData func, data: ", result);
+        // console.log("transformData func, data: ", result);
         
         return result;
     };
 
     // a_mode 추가
     const addMode = (initialData, updatedData) => {
-        console.log("addMode \ninitialData: ", initialData, "\nupdatedData: ", updatedData);
+        // console.log("addMode \ninitialData: ", initialData, "\nupdatedData: ", updatedData);
         let result = JSON.parse(JSON.stringify(updatedData));
     
         // 초기 데이터가 없는 경우 모든 값에 "I" 추가
@@ -565,7 +547,7 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                 });
             }
         });
-        console.log('addmode result: ', result);
+        // console.log('addmode result: ', result);
         return result;
     };
     
@@ -587,7 +569,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         const current = inputValuesRef.current;
 
         let transformedData;
-        // console.log(v_propsSaleData, v_propsSaleData.length);
         if (v_propsSaleData && v_propsSaleData.length > 0 && (v_propsSaleData[0]?.length > 0 || v_propsSaleData[1]?.length > 0)) {
             transformedData = transformPrevData(v_propsSaleData);
         } else {
@@ -595,7 +576,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         }
         const finalData = addMode(transformedData, current);
         const finalDataCheck = hasDelegateTrue(finalData);
-        console.log('inputValues: ', inputValues, '\ntransformedData', transformedData, '\ncurrent: ', current);
 
         let total;
         if (sumBiz !== sumCor) {
@@ -644,7 +624,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     useEffect(() => {
         // 초기 렌더링 시 초기화 방지
         if (!prevShow.current && show === false) {
-            console.log("모달이 처음 로드됨 (초기화 방지)");
             prevShow.current = show;  // 이전 상태 업데이트
             return;
         }
@@ -661,10 +640,8 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
         if (show === false) {
             // 이 모달에서 작업한 내용을 저장하지 않은 경우
             if (isSave === false) {
-                console.log("모달 닫힘 & 저장 안 함: 이전 데이터 복원");
                 // 만약 v_propsSaleList가 없다면 (신규 등록의 경우) 모든 작업 내용 초기화
                 if (!v_propsSaleList || v_propsSaleList.length === 0) {
-                    console.log("데이터 없음 → 초기화");
                     setVPropsSaleData([]);
                     setSumBiz(null);
                     setSumCor(null);
@@ -677,7 +654,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
                     setSalesDetailData([]);
                     setIsRecover(false);
                 } else { //v_propsSalesList가 있다면 (수정의 경우) 원래 내용으로 원복
-                    console.log("propsData 기반으로 상태 복원");
                     setVPropsSaleData([]);
                     setVPropsSaleData(v_propsSaleList);
                     setIsRecover(true);
@@ -692,7 +668,6 @@ const SalesDetail = ({ isParentHide, v_treeName, show, onHide, listData, v_modal
     }, [show, isSave, v_propsSaleList]);
 
     useEffect(() => {
-        // console.log('isParentHide', isParentHide);
         // 부모 모달이 닫힌 경우 
         if (isParentHide === true) {
             setIsSave(false); 

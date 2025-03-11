@@ -89,7 +89,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
   // 초기 렌더링 시 빈 배열이 그대로 렌더링되어 오류 나는 것을 방지 + tableData 세팅
   useEffect(() => {
     if (!v_propsData || Object.keys(v_propsData).length === 0) {
-      console.warn("v_propsData가 비어 있습니다.");
       // setData([]); // 기본값으로 빈 배열 설정
       return;
     }  
@@ -100,7 +99,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       case 'activity':
         setData(v_propsData.data.retrieve_biz_opp_activity);
         setActivityRow([...v_propsData.data.retrieve_biz_opp_activity]);
-        // console.log("activityRow: ", activityRow);
         break;
       default: break;
     }
@@ -115,7 +113,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       alert('Guest 권한은 데이터를 복제할 수 없습니다.');
       return;
     }
-    console.log(row);
     if (row.biz_opp_detail_delete_date) {
       alert('삭제된 사업 (기회)는 복제할 수 없습니다.');
       return;
@@ -132,25 +129,23 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       a_biz_opp_id: input.biz_opp_id,
       a_detail_no: input.detail_no
     }
-    // console.log("e", e, "input", input);
     if (input && e) {
       e.stopPropagation(); //이벤트 전파 방지
       e.preventDefault(); 
     }
     
     input = copy;
-    console.log(input);
     try {
       const response = await apiMethods[method](endpoint, input);
       if (response?.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
         if(Array.isArray(response)){
-          console.log(response, response[0].STATUS, response[0].MESSAGE);
+          // console.log(response, response[0].STATUS, response[0].MESSAGE);
         } else {
-          console.log(response.status.STATUS, response.status.MESSAGE);
+          // console.log(response.status.STATUS, response.status.MESSAGE);
         }
         return;
       } else {
-        console.log('사업 (기회) 복제 response 송신 완료', "\nendpoint: ", endpoint, "\nresponse: ", response);
+        // console.log('사업 (기회) 복제 response 송신 완료', "\nendpoint: ", endpoint, "\nresponse: ", response);
         alert('정상적으로 복제되었습니다.'); 
         setIsRefresh(true);
         return response;
@@ -158,7 +153,7 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       // 송신 끝
       
     } catch (error) {
-      console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
+      // console.log('Error during login:', error, `f_handlingData(${method}) error! ${error.message}`);
       alert('오류가 발생했습니다. 관리자에게 문의하세요.', error);
     }
   }
@@ -174,7 +169,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       // return;
     } else {
       if (res.data.length > 0) {
-        // console.log("res.data.length: ", res.data.length);
         setData(res.data);
       }
     }
@@ -194,7 +188,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
         setBrowserWidth(window.innerWidth);
       }, 200);
     };
-    // console.log(browserWidth, window.innerWidth);
     window.addEventListener('resize', handleResize);  
     return () => {
       window.addEventListener('resize', handleResize);
@@ -307,22 +300,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
     </Pagination>
   )
   // =================== pagination 끝 ===================
-  // 24.12.31. 정렬 토글 아이콘 삽입하려다 못 함
-  const [sortStyle, setSortStyle] = useState({"opacity":"0.3"});
-
-  const f_sortStyle = (e, column) => {
-    console.log(column.isSorted);
-    if (column.isSorted/* column.isSorted && e.target === e.currentTarget */) {
-      console.log(e, column, e.target.style, e.target);
-      e.target.style.opacity = 1;
-      // setSortStyle({"opacity":"1"});
-    } 
-    if(e.target.style.opacity === 1) {
-      e.target.style.opacity = 0.3;
-      // setSortStyle({"opacity":"0.3"});
-    }
-  } 
-
   function groupByBizOppId(data) {
     return data.reduce((acc, item) => {
       const { biz_opp_id } = item;
@@ -365,7 +342,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
       return;
     }
     if ((typeof(data) === 'object' && data) || (Array.isArray(data) && data.length > 0)) {
-      // console.log("data: ", data, "res: ", res);
       switch (v_componentName) {
         case `bizOpp`: 
           htmlContent = (
@@ -408,7 +384,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
                       {row.cells.map((cell, index, num = 0) => {
                         const { key, ...restProps } = cell.getCellProps({ className: 'table-cell' });
                         num += 1;
-                        // console.log(row.index)
                         return (
                           <td key={key} {...restProps} className={key.slice(7)}>
                             {index === row.cells.length - 1
@@ -608,13 +583,6 @@ function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColum
           break;
       }
     }
-    /* 
-    if ((!data && !res) || (!data && Object.keys(res).length === 0) || (!data && res.length === 0)) {
-      // console.log('hrere');
-      htmlContent = <div style={{"textAlign" : "left", "margin": "3rem 0"}}>데이터가 존재하지 않습니다.</div>;
-      setVHandlingHtml(htmlContent);
-      // return;
-    }  */
   }, [v_childComponent, v_componentName, page, showModal, openStates]);
 
   return (

@@ -46,7 +46,7 @@ const Activity = () => {
             if (isUpdateNeeded) {
                 const updatedData = await apiMethods.get(endpoint);
             } 
-            console.log(`API Get (수신)\nEndpoint: (Activity.js) ${endpoint}\nresponse: `, response);
+            // console.log(`API Get (수신)\nEndpoint: (Activity.js) ${endpoint}\nresponse: `, response);
             if (Array.isArray(response)) {
                 alert(response[0].MESSAGE || '로그인 필요');
                 navigate(`/${roots.login.endpoint}`, { replace: true });
@@ -72,10 +72,8 @@ const Activity = () => {
     }, [endpoint]);
 
     useEffect(() => {
-        console.log(isRefresh);
         if(isRefresh === true) {
             setTimeout(() => {
-                console.log('isRefresh 시작');
                 f_handlingData('post', endpoint, userCheck);
             }, 1000);
         }

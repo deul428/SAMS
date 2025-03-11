@@ -201,9 +201,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         } else {
             dept = '';
             team = '';
-            console.log('no dept, no team');
         }
-        // console.log("dept: ", dept, "team: ", team);
 
         // 본부별 팀 그룹화 - acc에 high_dept_id가 없을 경우 생성
         const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
@@ -215,16 +213,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             return acc;
         }, {});
 
-        /* const mappingTeamByDept = v_propsData.data.search_team.reduce((acc, items) => {
-            const { change_preparation_high_dept_id } = items;
-            if (!acc[change_preparation_high_dept_id]) {
-                acc[change_preparation_high_dept_id] = [];
-            }
-        acc[change_preparation_high_dept_id].push(items);
-            return acc;
-        }, {}); */
-
-        // console.log("mappingTeamByDept: ", mappingTeamByDept);
         setVTeamByDept(mappingTeamByDept);
 
         switch(auth.userAuthCode) {
@@ -390,9 +378,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         updateValue(setUpdateInput);
     };
     
-/*     useEffect(() => {
-        console.log("input: ", insertInput, "\n\nchangeInput: ", updateInput);
-    }, [insertInput, updateInput]); */
     // ..................... post용 객체, input field value 저장해서 이후 서버로 송신 끝 .....................
     // ----------------- 1) 등록 및 수정 input 핸들링 끝 -----------------
 
@@ -532,25 +517,16 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 };
                 confirmMsg = `정말 ${input.a_biz_opp_id}번 사업 (기회)를 삭제하시겠습니까?`
             } else if (v_componentName === 'activity') {
-                console.log(input, a_v_modalPropsData);
                 input = { 
                     a_session_user_id: input.a_session_user_id, 
                     a_biz_opp_id: a_v_modalPropsData.a_biz_opp_id, 
                     a_detail_no: a_v_modalPropsData.a_detail_no,
                     a_activity_no: a_v_modalPropsData.a_activity_no 
                 };
-                console.log(input, a_v_modalPropsData);
                 confirmMsg = `해당 영업 활동 내역을 삭제하시겠습니까?`
 
             }
         } 
-            /* const updatedInput = f_warningMsg(); // 반환값을 변수에 저장
-            if (!updatedInput) {
-                // console.log("삭제 작업이 취소되었습니다."); // 취소 로그
-                return; // 삭제 취소 시 이후 코드 실행 중단
-            }
-            input = updatedInput; // Confirm이 true일 때만 input 업데이트
-        } */
 
         if (input && e && (msg === '등록' || msg === '수정')) {
             e.preventDefault(); 
@@ -588,7 +564,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     const validateNum = (obj, key) => obj?.[key] != null && obj[key].toString().trim() !== '' && !isNaN(Number(obj[key])) && Number(obj[key]) >= 0;
                     
                     if (!input || input.length === 0) {
-                        console.log('input이 없어요');
                         return;
                     } else {
                         const validateFields = [
@@ -626,10 +601,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     const validateNum = (obj, key) => obj?.[key] != null && obj[key].toString().trim() !== '' && !isNaN(Number(obj[key])) && Number(obj[key]) >= 0;
 
                     if (!input || input.length === 0) {
-                        console.log('input이 없어요');
                         return;
                     } else {
-                        console.log(input);
                         // 존재하는 필드만 검사하도록 수정
                         const validateFields = [
                             { key: 'a_user_name', parent: 'input', essential: true },
@@ -652,16 +625,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             { key: 'a_activity_date', parent: 'biz_opp_activity', essential: true, },
                         ];
 
-                        /* if (input.biz_opp_detail?.a_total_sale_amt) {
-                            console.log(`a_total_sale_amt ${typeof input.biz_opp_detail.a_total_sale_amt}`);
-                        }
-                        if (input.biz_opp_detail?.a_sale_profit) {
-                            console.log(`a_sale_profit ${typeof input.biz_opp_detail.a_sale_profit}`);
-                        }
-                        if (input.biz_opp_detail?.a_purchase_amt) {
-                            console.log(`a_purchase_amt ${typeof input.biz_opp_detail.a_purchase_amt}`);
-                        } */
-
                         const nullField = validateFields.find(({ key, parent, type, essential }) => {
                             let obj;
                             key === 'a_user_name' ? obj = input : obj = input[parent];
@@ -676,17 +639,13 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                             
                             // 필드 유형에 따라 검사
                             if (type === 'number') {
-                                // console.log(validateNum(obj, key));
                                 return !validateNum(obj, key);
                             } else if (type === 'boolean') return obj[key] == null;
                             
                             return !validateStr(obj, key);
                         });
 
-                        
-
                         if (nullField) {
-                            console.log("nullField: ", nullField.key);
                             const targetField = document.querySelector(`[name=${nullField.key}]`);
                             alert(`${targetField.nextSibling.innerText} 필드를 입력하세요.`);
                             if (targetField) {
@@ -725,7 +684,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         updateInput.a_activity_details = a_v_modalPropsData.a_activity_details;
                     }
                     
-                    console.log(a_v_modalPropsData, input, updateInput);
                     input = updateInput;
                     if (
                         (
@@ -755,11 +713,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             (confirmResult && msg === '삭제') || 
             (msg === '조회') || (msg === '사업데이터조회')) {
             try {
-                if ((msg !== '조회') && (msg !== '사업데이터조회')) { console.log("submit 될 input data\n", input); }
                 const response = await apiMethods[method](endpoint, input);
                 if (response?.status?.STATUS === 'NONE' || response[0]?.STATUS === 'FAIL') {
                     if (Array.isArray(response)){
-                        console.log(response, response[0].STATUS, response[0].MESSAGE);
+                        // console.log(response, response[0].STATUS, response[0].MESSAGE);
                         alert(response[0].MESSAGE);
                     } else {
                         if (msg === '사업데이터조회') {
@@ -770,11 +727,11 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                         } else {
                             alert(response.status.MESSAGE);
                         }
-                        console.log(response.status.STATUS, response.status.MESSAGE);
+                        // console.log(response.status.STATUS, response.status.MESSAGE);
                     }
                     return;
                 } else {
-                    console.log(`${v_componentName} [${msg}부] response 송신 완료 `, "\nendpoint: ", endpoint, "\nresponse: ", response);
+                    // console.log(`${v_componentName} [${msg}부] response 송신 완료 `, "\nendpoint: ", endpoint, "\nresponse: ", response);
                     if (msg === '사업데이터조회') {
                         setActivityData(response.data.select_biz_opp_activity);
                         setSaleBizData(response.data.select_biz_opp_detail_sale_biz);
@@ -802,11 +759,10 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                 // 송신 끝
                 
             } catch (error) {
-                console.log('Error during login:', error, `f_handlingData(${method}) error!\n ${error.message}`);
+                // console.log('Error during login:', error, `f_handlingData(${method}) error!\n ${error.message}`);
                 alert('오류가 발생했습니다. 관리자에게 문의하세요.', error);
             }
         } else {
-            console.log('return')
             return;
         }
     }
@@ -857,23 +813,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
     const closeModal = () => {
         setShowModal(false);
     };
-/*     // Redux와 React Router 동기화
-    useEffect(() => {
-        const syncPath = async () => {
-            if (!currentPath || currentPath === '/login') {
-                await dispatch(setLocation(location.pathname));
-            }
-        };
-
-        syncPath();
-    }, [currentPath, location.pathname, dispatch]); */
-/* 
-    useEffect(()=> {
-        console.log("v_teamHandling: \n", v_teamHandling, 
-        "\nv_deptHandling: \n", v_deptHandling,
-        "\nv_userHandling: \n", v_userHandling)
-    }, [v_teamHandling, v_deptHandling, v_userHandling]) */
-
     // ================= SalesDetail.js 데이터 들어온 이후 ================= 
     const [salesDetailData, setSalesDetailData] = useState([]);
     const [delegateBiz, setdelegateBiz] = useState(null);
@@ -889,10 +828,8 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     Object.entries(smallClassiObj).forEach(([small_classi_code, value]) => {
                         if (Array.isArray(value)) {
                             const [small_classi_name, sale_amt, a_delegate_tf, a_mode] = value;
-                            // console.log(`Processing: ${great_classi_code} - ${small_classi_code}, small_classi_name: ${small_classi_name}, sale_amt: ${sale_amt}, a_delegate_tf: ${a_delegate_tf}, a_mode: ${a_mode}`);
                             
                             if (!a_mode) {
-                                console.log('a_mode 오류: ', value);
                                 return;
                             }
                             result.push({
@@ -907,7 +844,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
                     });
                 });
             
-            console.log("salesDetailData transform Result:", result);
+            // console.log("salesDetailData transform Result:", result);
             result.map((e, index) => {
                 if (e.a_delegate_tf === true) {
                     if (e.a_great_classi_code === 'BIZ') {
@@ -919,7 +856,7 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
             })
             
             const filteredResult = result.map(({ a_small_classi_name, ...rest }) => rest);
-            console.log("filteredResult: ", filteredResult);
+            // console.log("filteredResult: ", filteredResult);
             if (filteredResult.length > 0) {
                 setInsertInput((prevInput) => {
                     return { 
@@ -981,10 +918,6 @@ const InputFieldDetail = ({ show, onHide, v_componentName, v_propsData, v_modalP
         
     }, [salesDetailData]);
 
-/*     useEffect(() => {
-        console.log("insertInput: ", insertInput);
-        console.log("updateInput: ", updateInput);
-    }, [insertInput, updateInput]) */
     // ================= SalesDetail.js 데이터 들어온 이후 끝 ================= 
 
 

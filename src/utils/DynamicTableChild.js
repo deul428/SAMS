@@ -183,7 +183,7 @@ function DynamicTableChild({ v_componentName, v_propsData }) {
              / {pageCount} 페이지로 이동
         </span>
         <select className='paginationSelect' value={pageSize} onChange={e => { setPageSize(Number(e.target.value));}}>
-          {[10, 15, 20, 25, 30, 35, 50].map(size => (
+          {[10, 15, 20, 25, 30, 35, 50, 1000].map(size => (
             <option key={size} value={size}>
               {size}열로 보기
             </option>

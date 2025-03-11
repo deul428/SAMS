@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { setLocation } from '../redux/reducers/LocationSlice';
 import { apiMethods } from './api';
 
-import SalesDetail from './SalesDetail';
+import SalesDetail from '../components/SalesDetail';
 
 import roots from './datas/Roots';
 import '../styles/_customModal.scss';

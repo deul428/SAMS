@@ -13,7 +13,6 @@ import { CaretUp, CaretDown, ArrowBarDown, ArrowBarUp, TrainFreightFront } from 
 import '../styles/_table.scss';
 import '../styles/_global.scss';
 import { useMemo, useRef } from 'react';
-import { transposeData } from './TransposeTable';
 
 function DynamicTable({ v_componentName, v_propsData, res, tableData, tableColumns, setIsRefresh }) {
   const auth = useSelector((state) => state.auth);

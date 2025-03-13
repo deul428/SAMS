@@ -6,9 +6,8 @@ import axios from 'axios';
 
 // axios 인스턴스 생성
 const apiUrl = axios.create({
-    baseURL: 'http://127.0.0.1:8000/', 
-    // baseURL: 'http://10.0.60.201:8000/',
-    // baseURL: 'http://ajict-bms.tail72a41d.ts.net:8000/',
+    // baseURL: 'http://127.0.0.1:8000/', 
+    baseURL: 'http://10.0.60.201:8000/',
     credentials: "include", // 세션 쿠키 포함
     // withCredentials: true, 
     headers: {

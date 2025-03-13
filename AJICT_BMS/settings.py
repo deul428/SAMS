@@ -23,12 +23,13 @@ SECRET_KEY = "django-insecure-gab36_^a*v$c(!e%_l(%sq=c6xvnq0$%$n75fo8=srep*!_@4r
 DEBUG = True
 
 
-#cci10000(2024-11-21, 2024-12-17)
+#cci10000(2024-11-21, 2024-12-17, 2025-01-24)
 # ALLOWED_HOSTS = []
 # ALLOWED_HOSTS = ["*"]
 
-ALLOWED_HOSTS = ["10.0.60.201","localhost","127.0.0.1","*"]
+#ALLOWED_HOSTS = ["10.0.60.201","localhost","127.0.0.1","*"]
 
+ALLOWED_HOSTS = ["10.0.60.201","localhost","127.0.0.1","100.80.70.26", "https://widespread-mirror-tue-hopes.trycloudflare.com", "http://ajict-bms.tail72a41d.ts.net", "*"]
 
 # Application definition
 
@@ -124,8 +125,8 @@ DATABASES = {"default": {"ENGINE":"django.db.backends.postgresql",
                          "NAME":"ajict_bms_db",
                          "USER":"ajict_bms_user",
                          "PASSWORD":"ajictcci4",
-                         "HOST":"10.0.60.201",
-#                         "HOST":"localhost",
+#                         "HOST":"10.0.60.201",
+                         "HOST":"127.0.0.1",
                          "PORT":"5432",
                          "CONN_MAX_AGE":6000}}
 
@@ -184,3 +185,18 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_COOKIE_SAMESITE = 'None'  # 크로스-도메인 요청에서도 쿠키 전송
 SESSION_COOKIE_SECURE = True  # 로컬 개발 환경에서 HTTP 사용 시 False
 CORS_ALLOW_CREDENTIALS = True
+
+
+#cci10000(2025-01-16)
+#LOGGING = {'version':1,
+#           'disable_existing_loggers':False,
+#           'handlers':{'file':{'level':'DEBUG',
+#                               'class':'logging.FileHandler',
+#                               'filename':'/AJICT/BMS/Back-end/AJICT_BMS/Django.log'}},
+#           'loggers':{'django':{'handlers':['file'],
+#                                'level':'DEBUG',
+#                                'propagate':True}}}
+
+
+#cci10000(2025-01-24)
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://10.0.60.201:3000", "http://100.80.70.26:3000", "https://widespread-mirror-tue-hopes.trycloudflare.com", "http://ajict-bms.tail72a41d.ts.net:3000"]

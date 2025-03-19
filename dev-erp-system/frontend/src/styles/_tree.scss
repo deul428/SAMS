@@ -1,0 +1,105 @@
+.rc-tree {
+    .rc-tree-list {
+        .rc-tree-list-holder {
+            div {
+                div.rc-tree-list-holder-inner {
+                    .rc-tree-treenode {
+                        position: relative;
+                        margin: 0.2rem 0;
+                        &.rc-tree-treenode-switcher-open {
+
+                        }
+                        &.rc-tree-treenode-switcher-close {
+                            
+                        }
+                        span.rc-tree-indent {
+
+                        }
+                        span.rc-tree-checkbox {
+                            &:before {
+                                content: '';
+                                top: 0;
+                                left: 0;
+                                background: pink;
+                                width: 100%;
+                                height: 100%;
+
+                            }
+                        }
+                        span.rc-tree-switcher {
+                            // width: 25%;
+                            // height: 1.5rem;
+                            // background: transparent;
+                            // background-image: unset;
+                            // /* background-size: cover; */
+                            // vertical-align: middle;
+                            // line-height: inherit;
+                            // margin: 0;
+                            // position: absolute;
+                            // /* top: 0; */
+                            // /* left: 0; */
+                            // z-index: 999;
+                            // // pointer-events: none;
+                            // background: pink;
+                            // opacity: 0.3;
+                        
+                            &.rc-tree-switcher_open {
+
+                            }
+                            &.rc-tree-switcher_close {
+                                
+                            }
+                            &.rc-tree-switcher-noop {
+                                pointer-events: none;
+                            }
+                        }
+                        span.rc-tree-node-content-wrapper {
+                            padding-right: 1.5rem;
+                            margin-left: 0;
+                            &.rc-tree-node-content-wrapper-open {
+
+                            }
+                            &.rc-tree-node-content-wrapper-close {
+
+                            }
+                            &.rc-tree-node-selected {
+                                span.rc-tree-title {
+                                }
+                            }
+                            span.rc-tree-iconEle {    
+                                background-size: cover;
+                                vertical-align: middle;
+                                background-position: center;
+                                transition: all 0.3ms linear;
+                                background-image: url(../assets/img/chevron-down.svg);
+                                margin-right: 0.2rem; 
+                                &.rc-tree-icon__open {
+                                }
+                                &.rc-tree-icon__close {
+                                    transform: rotate(-90deg);
+                                }
+                                &.rc-tree-icon__docu {
+                                    opacity: 0;
+                                    pointer-events: none;
+                                }
+                            }
+                            span.rc-tree-title {
+                                position: relative;
+                                height: 24px;
+                                line-height: 24px;
+                                span {
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.modal-content .modal-body .inputField .rc-tree {
+    width: 60%;
+    margin: 1rem auto 0;
+}

@@ -1,0 +1,68 @@
+@import './global';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/maps';
+// bootstrap의 기본 스타일 custom file
+$font-size-base: 2rem;
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-inner-spin-button { font-size: 1.1rem; cursor: pointer; }
+
+
+/* @media (min-width: 1200px) {
+  .modal-xl {
+    --bs-modal-width: 1400px;
+}
+} */
+$theme-colors: map-merge(
+  $theme-colors,
+  (
+    'primary': $point-color,
+  )
+);
+.btn-primary {
+  color: #fff !important;
+}
+
+.table {
+  // --#{$prefix}table-bg: pink !important;
+  tr:hover {
+    cursor: pointer;
+  }
+  th, td {
+    white-space: nowrap;
+    text-align: center;
+  }
+  th {
+    background-color: $point-color !important;
+    color: white !important;
+  }
+}
+#root .form-control {
+  // width: 80%;
+} 
+
+@import './mixin';
+
+// mobile, tablet은 햄버거 메뉴로 변경
+@include mobile335 {
+  .form-select-sm, .form-control-sm {
+    font-size: 1rem !important;
+    height: 4rem !important;
+    min-height: 4rem !important;
+    line-height: 2 !important;
+  }
+}
+@include tablet758 {
+  .form-select-sm, .form-control-sm {
+    font-size: 1rem !important;
+    height: 4rem !important;
+    min-height: 4rem !important;
+    line-height: 2 !important;
+  }
+}
+
+@include desktop1024 {
+}
+@include desktop1200 {
+}
+@import '~bootstrap/scss/bootstrap';

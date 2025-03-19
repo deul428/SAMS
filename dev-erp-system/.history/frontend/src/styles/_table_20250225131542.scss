@@ -1,0 +1,340 @@
+@import './global';
+@import './mixin';
+
+@include mobile335 {
+    table {
+        font-size: 0.9rem !important;
+        &.bizopp {
+            th, td {
+                width: 130px !important;
+                min-width: 130px !important;
+                max-width: 130px !important;
+                &.biz_opp_name {
+                    width: 220px !important;
+                    min-width: 220px !important;
+                    max-width: 220px !important;
+                }
+                &.change_preparation_high_dept_name,
+                &.sale_item_no,
+                &.essential_achievement_tf,
+                &.purchase_date,
+                &.purchase_amt,
+                &.sale_profit,
+                &.last_client_com2_name
+                {
+                    display: none;
+                }
+            }
+        }
+        &.activity {
+            div.d-flex.flex-column {
+                overflow-x: scroll;
+                tbody {
+                    .row {
+                        flex-direction: column;
+                        div.collapseBox {
+                            flex-direction: column;
+                            .col {
+                                th, td {
+
+                                }
+                            }
+                        }
+                        .col {
+                            th, td {    
+                                &.activityDetails {
+                                }
+                            }
+                            th {
+                            }
+                            td {
+                            }
+                            &.col_dept, &.col_team, &.col_detailNo, &.col_actDate {
+                                display: none !important;
+                            }
+                        }
+                    }
+                }
+                button.collapseController {
+                    // background-color: $point-color;
+                    background-color: rgba($color: $point-color, $alpha: 0.3);
+                    border: inherit;
+                    color: #000;
+                    width: 100%;
+                    height: 2rem;
+                    line-height: calc(2rem / 2);
+                    font-size: 0.8rem;
+                    display: inline-flex;    
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 0;
+                    transition: all 100ms linear;
+                    svg {
+                        margin-right: 0.5rem;
+                    }
+                    &:hover {
+                        filter: brightness(0.95);
+                        
+                    }
+                }
+            }
+        }
+    }
+}
+@include tablet758 {
+    table {
+        font-size: 0.9rem !important;
+        &.bizopp {
+            th, td {
+                width: 130px !important;
+                min-width: 130px !important;
+                max-width: 130px !important;
+                &.biz_opp_name {
+                    width: 220px !important;
+                    min-width: 220px !important;
+                    max-width: 220px !important;
+                }
+                &.change_preparation_high_dept_name,
+                &.sale_item_no,
+                &.essential_achievement_tf,
+                &.purchase_date,
+                &.purchase_amt,
+                &.sale_profit,
+                &.last_client_com2_name
+                {
+                    display: none;
+                }
+            }
+        }
+        &.activity {
+            div.d-flex.flex-column {
+                overflow-x: scroll;
+                tbody {
+                    .row {
+                        div.collapseBox {
+                            .col {
+                                th, td {
+
+                                }
+                            }
+                        }
+                        .col {
+                            th, td {    
+                                &.activityDetails {
+                                }
+                            }
+                            th {
+                            }
+                            td {
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@include desktop1024 {
+    
+}
+@include desktop1200 {
+    
+}
+
+table {
+    width: 100%;
+    font-size: 0.8rem;
+    thead {
+        th {}
+    }
+    thead, tbody {
+        th, td {
+            vertical-align: middle;
+            border: 1px solid #dee2e6;
+            min-width: 80px;
+            max-width: 250px;
+            overflow: hidden; 
+            white-space: nowrap; 
+            text-overflow: ellipsis; /* 말줄임표 추가 */
+            min-height: 32px;
+            // padding: 1rem 0.5rem;
+            // padding: 0;
+            /* &:nth-child(2), &:nth-child(3) {
+                min-width: 104px;
+            } */
+        }
+        td {
+            position: relative;
+            vertical-align: middle;
+            padding: 0.3rem 0.6rem !important;
+            
+            button {
+                width: 100%;
+            }
+        }
+    }
+    &.bizopp { 
+        thead {
+            th {
+            }
+        }
+        tbody {
+            tr {
+                td {
+                    table-layout: fixed;
+                    width: 104px;
+                    min-width: 104px;
+                    max-width: 104px;
+                    &.biz_opp_name {
+                        width: 200px;
+                        min-width: 200px;
+                        max-width: 200px;
+                    }
+                    &.bizopp_history, &.bizopp_copy {
+                        padding: 0 !important;
+                        width: 80px;
+                        min-width: 80px;
+                        max-width: 80px;
+                        button {
+                            width: inherit;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.activity {
+        div.d-flex.flex-column {
+            border: 1px solid #aaa !important;
+            width: 100%;
+            border: none;
+            tbody {
+                width: 100%;
+                display: table;
+                // overflow-x: hidden;
+                table-layout: fixed;
+                .row {
+                    // overflow-x: hidden;
+                    flex-wrap: nowrap;
+                    --bs-gutter-x: 0;
+                    padding: 0;
+                    width: 100%;
+                    div.collapseBox {
+                        background-color: $point2-color;
+                        padding: 0;
+                        display: inline-flex;
+                        width: 100%;
+                        word-break: break-all;
+                        cursor: pointer;
+                        .col {
+                            th, td {
+
+                            }
+                        }
+                    }
+                    .col {
+                        display: table !important;
+                        padding: 0;
+                        // overflow-x: hidden;
+                        th, td {
+                            overflow-x: hidden;
+                            text-overflow: ellipsis; 
+                            white-space: normal;
+                            min-width: unset;
+                            max-width: unset;
+                            &.activityDetails { 
+                                text-align: left;
+                                line-height: 1.25rem;
+                                flex: 1;
+                                display: -webkit-box;
+                                -webkit-line-clamp: 2;
+                                -webkit-box-orient: vertical;
+                                word-break: break-all;
+                                width: 100% !important;
+                            }
+                            /* display: inline-block;
+                            min-width: unset;
+                            max-width: unset;
+                            width: auto;
+                            padding: 0.3rem !important;
+                            border: 1px solid $base-color;
+                            &.activityDetails {
+                                text-align: left;
+                                line-height: 1.25rem;
+                                flex: 1; 
+                                overflow: hidden;
+                                white-space: normal;
+                                text-overflow: ellipsis;
+                                display: -webkit-box;
+                                -webkit-line-clamp: 2;
+                                -webkit-box-orient: vertical;
+                                word-break: break-all;
+                                width: auto;
+                            }    */
+                        }
+                        // width: calc(100% / 6);
+                        th {
+                            width: 6rem !important;
+                        }
+                        td {
+                            width: calc(100% - 6rem - 1.2rem) !important;
+                        }
+                    }
+                }
+                    
+            }
+            button.collapseController {
+                // background-color: $point-color;
+                background-color: rgba($color: $point-color, $alpha: 0.3);
+                border: inherit;
+                color: #000;
+                width: 100%;
+                height: 2rem;
+                line-height: calc(2rem / 2);
+                font-size: 0.8rem;
+                display: inline-flex;    
+                align-items: center;
+                justify-content: center;
+                border-radius: 0;
+                transition: all 100ms linear;
+                svg {
+                    margin-right: 0.5rem;
+                }
+                &:hover {
+                    filter: brightness(0.95);
+                    
+                }
+            }
+        }
+    }
+    &.bizoppHistory {
+        thead {
+
+        }
+        tbody {
+            tr {
+                td {
+                    &.historyCell {
+                        padding: 0 !important;
+                        height: 30px;
+                        text-overflow: ellipsis;
+                        max-width: unset;
+                        overflow-x: visible;
+                        .tableCell {
+                            padding: 0.3rem 0.6rem !important;
+                            height: inherit;
+                            line-height: 30px;
+                            line-height: calc(30px - 0.6rem);
+                            vertical-align: middle;
+                        }
+                    }  
+                }
+            }
+        }
+
+    }
+    button.btn.light {
+        // font-size: 0.75rem;
+    }
+}

@@ -1,0 +1,53 @@
+// @import './global';
+
+
+// 재사용 Style 선언부
+@mixin display-flex($display: inline-flex){
+    display: $display !important;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin hover($bg-color, $color: #fff) {
+    cursor: pointer;
+    transition: all 100ms linear;
+    &:hover, &.active {
+        background-color: $bg-color;
+        color: $color;
+    }
+}
+
+@mixin heading($h1, $h2, $h3, $h4, $h5) {
+    h1 { font-size: $h1; }
+    h2 { font-size: $h2; }
+    h3 { font-size: $h3; }
+    h4 { font-size: $h4; }
+    h5 { font-size: $h5; }
+}
+$breakpoint-mobile335: 335px;
+$breakpoint-tablet758: 758px;
+$breakpoint-desktop1024: 1024px;
+$breakpoint-desktop1200: 1200px;
+@mixin mobile335 {
+    @media (max-width: #{$breakpoint-tablet758 - 1px}) {
+        @content;
+    }
+}
+
+@mixin tablet758 {
+    @media (min-width: #{$breakpoint-tablet758}) and (max-width: #{$breakpoint-desktop1024 - 1px}) {
+        @content;
+    }
+}
+
+@mixin desktop1024 {
+    @media (min-width: #{$breakpoint-desktop1024}) and (max-width: #{$breakpoint-desktop1200 - 1px}) {
+        @content;
+    }
+}
+
+@mixin desktop1200 {
+    @media (min-width: #{$breakpoint-desktop1200}) {
+        @content;
+    }
+}

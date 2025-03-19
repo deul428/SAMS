@@ -1,0 +1,40 @@
+@import './global';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/maps';
+// bootstrap의 기본 스타일 custom file
+$font-size-base: 2rem;
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-inner-spin-button { font-size: 1.1rem; cursor: pointer; }
+
+
+/* @media (min-width: 1200px) {
+  .modal-xl {
+    --bs-modal-width: 1400px;
+}
+} */
+$theme-colors: map-merge(
+  $theme-colors,
+  (
+    'primary': $point-color,
+  )
+);
+.btn-primary {
+  color: #fff !important;
+}
+
+.table {
+  tr:hover {
+    cursor: pointer;
+  }
+  th, td {
+    white-space: nowrap;
+    text-align: center;
+  }
+  th {
+    background-color: $point-color !important;
+    color: white !important;
+  }
+}
+
+@import '~bootstrap/scss/bootstrap';
